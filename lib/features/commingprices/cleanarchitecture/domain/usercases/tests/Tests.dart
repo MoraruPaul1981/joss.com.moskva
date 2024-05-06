@@ -9,9 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
 
-import '../../../data/entities/Entities1CListManual.dart';
-import '../../../data/entities/Entities1CMap.dart';
-import '../../../data/remote/Futures/FutureGetPing.dart';
+
 
 ///TODO class TEst
 class Testing {

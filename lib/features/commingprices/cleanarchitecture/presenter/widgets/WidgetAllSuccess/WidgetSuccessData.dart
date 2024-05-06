@@ -8,12 +8,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/src/logger.dart';
 
-import '../../../data/entities/Entities1CList.dart';
-import '../../../data/entities/Entities1CListManual.dart';
+
 import '../../../data/entities/Entities1CMap.dart';
 import '../WidgetWaiting/Intarface/IntafaceSuccessData.dart';
 
-class   WidgetSuccessData implements IntafaceSuccessData {
+class   WidgetSuccessData implements IntafaceTransformationSuccessData {
 
   @override
   late Logger logger;
@@ -22,7 +21,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
   @override
   late BuildContext context;
   @override
-  late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
+  late List<Map<String, List<Entities1CMap>>> receiveddatafromC1;
 
   //TODO РАбоий Виджет
     @override
@@ -39,11 +38,20 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
     //TODO первая трансформацйия пришедших Данных
       receiveddatafromC1= firstTransformationionofincomingData( snapshot: snapshot,logger: logger);
-
     logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
         ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+
+      //TODO вторая трасформайция пришедших данных
+      Map<String, List<Entities1CMap>>   getsecondConversionData=secondConversionData(receiveddatafromC1:receiveddatafromC1,logger: logger,index:5);
+    logger.i('getsecondConversionData ..  '+getsecondConversionData!.length.toString()+
+        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+
+
+
     ////TODO сам виджет
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[600],
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.0), // here the desired height
@@ -65,13 +73,6 @@ class   WidgetSuccessData implements IntafaceSuccessData {
           repeatForever: false,
         ),
       ),
-
-
-
-
-
-
-
         centerTitle: true,
         elevation: 500,
       ),
@@ -130,7 +131,15 @@ class   WidgetSuccessData implements IntafaceSuccessData {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
                             child: ListTile(
-                              leading: const Icon(Icons.flight_sharp),
+                              leading: Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: const CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: Colors.grey,
+                                  child:
+                                  Icon(CupertinoIcons.airplane),//TODO Icons.macro_off
+                                ),
+                              ),
                               subtitle: Text(""),
                               trailing: Icon(Icons.more_vert),
                               onTap: () {
@@ -175,7 +184,22 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
 
 
-          //TODO  кенопка снизу
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //TODO КНОПКИ ВНИЗУ     //TODO КНОПКИ ВНИЗУ     //TODO КНОПКИ ВНИЗУ
 
     Row(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -242,6 +266,20 @@ class   WidgetSuccessData implements IntafaceSuccessData {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //TODO  первоя Трансформация ДАнных
   @override
   List<Map<String, List<Entities1CMap>>> firstTransformationionofincomingData(
@@ -273,15 +311,25 @@ return getfirstTransformationionofincomingData;
   //TODO  Вторая Трансформация ДАнных
 
   @override
-  Map<String, List<Entities1CMap>> secondConversionData(
-      {required List<Map<String, List<Entities1CMap>>> getlistMap,
-        required Logger logger}) {
+  Map<String, List<Entities1CMap>> secondConversionData({
+    required List<Map<String, List<Entities1CMap>>> receiveddatafromC1,
+    required Logger logger,
+     required int index}) {
     // TODO: implement secondConversionData
     //TODO
-    Map<String, List<Entities1CMap>>   getsecondConversionData={};
+    Map<String, List<Entities1CMap>>  getsecondConversionData={};
     try{
       //TODO первое получение Данных
-    //  getsecondConversionData
+      getsecondConversionData=  receiveddatafromC1.elementAt(index) as     Map<String, List<Entities1CMap>>  ;
+
+   List<Entities1CMap> childredRowCommintPrices=   getsecondConversionData.values.single;
+
+    String Key=   getsecondConversionData.keys.single;
+
+      String? getCfo=    childredRowCommintPrices.elementAt(0).CFO;
+
+
+
       logger.i('get getsecondConversionData ..  '+getsecondConversionData.toString()+
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 

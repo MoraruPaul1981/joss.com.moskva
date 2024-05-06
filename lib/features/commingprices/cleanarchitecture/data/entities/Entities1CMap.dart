@@ -1,12 +1,6 @@
 
 
-import 'dart:collection';
-
-
-import 'package:dart_json_mapper/dart_json_mapper.dart';
-
 import '../../domain/usercases/Interfaces/InterfaceEntities1CMap.dart';
-import 'Entities1CList.dart';
 
 
 
