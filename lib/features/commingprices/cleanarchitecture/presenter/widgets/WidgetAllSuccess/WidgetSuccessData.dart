@@ -50,14 +50,16 @@ class   WidgetSuccessData implements IntafaceSuccessData {
         child:
         AppBar(
         leading: new Icon(Icons.live_tv),
-        backgroundColor: Colors.blue[300],
+        backgroundColor: Colors.white,
         title: Padding(padding: EdgeInsets.all(1.0),
         child: AnimatedTextKit(
           animatedTexts: [
-            ColorizeAnimatedText('Согласования', textStyle: TextStyle(color: Colors.black,
-              fontSize: 22,
+            ColorizeAnimatedText('Согласования', textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
               fontWeight: FontWeight.w300,),textAlign:  TextAlign.center,
-                colors:[Colors.black,Colors.black,Colors.white,Colors.white] ),],
+                colors:[Colors.black,Colors.grey,Colors.white,Colors.black] ),],
+
           pause: Duration(microseconds: 10),
           isRepeatingAnimation: true,
           repeatForever: false,
@@ -202,7 +204,7 @@ class   WidgetSuccessData implements IntafaceSuccessData {
               onDestinationSelected: (int index) {
               print('NavigationBar.. выбор index ..$index');
               },
-              indicatorColor: Colors.red,
+              indicatorColor: Colors.grey,
               selectedIndex: 1,
               destinations: const <Widget>[
                 NavigationDestination(
