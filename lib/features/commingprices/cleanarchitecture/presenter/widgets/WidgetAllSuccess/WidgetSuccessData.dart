@@ -42,7 +42,7 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
-        //TODO вторая трасформайция пришедших данных
+     /*   //TODO вторая трасформайция пришедших данных
         Map<String, List<Entities1CMap>>   getsecondConversionData=secondConversionData(receiveddatafromC1:receiveddatafromC1,logger: logger,index:5);
       logger.i('getsecondConversionData ..  '+getsecondConversionData!.length.toString()+
           ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -55,7 +55,7 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
       //TODO четвертая  трасформайция пришедших данных
       String? getfourthtransformation= fourthtransformation(  getfourthtransformation:getthirdtransformationData,logger:logger);
       logger.i('getfourthtransformation ..  '+getfourthtransformation!.length.toString()+
-          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());*/
 
 
 
@@ -129,8 +129,31 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
                   Axis.vertical, // Axis.horizontal for horizontal list view.
                   itemCount: receiveddatafromC1!.length ,
                   itemBuilder: (context, index) {
+                    //TODO get Получаем данные для Заполения LustView
+
+                    //TODO вторая трасформайция пришедших данных
+                    Map<String, List<Entities1CMap>>   getsecondConversionData=secondConversionData(receiveddatafromC1:receiveddatafromC1,logger: logger,index:index);
+                    logger.i('getsecondConversionData ..  '+getsecondConversionData!.length.toString()+
+                        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+                    //TODO третья  трасформайция пришедших данных
+                    List<Entities1CMap> getthirdtransformationData= thirdtransformationData( thirdtransformationData:getsecondConversionData, logger:logger ,index:index);
+                    logger.i('getthirdtransformationData ..  '+getthirdtransformationData!.length.toString()+
+                        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+                    //TODO четвертая  трасформайция пришедших данных
+                    String? getfourthtransformation= fourthtransformation(  getfourthtransformation:getthirdtransformationData,logger:logger);
+                    logger.i('getfourthtransformation ..  '+getfourthtransformation!.length.toString()+
+                        ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+
+
                     final user = '86';
                     final UUID ='3333333';
+
+
+
+
                     //TODO
                     return Column(
                       children: [
@@ -168,7 +191,7 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
                                 height: 45,
                                 child: Center(
                                   child: Text(
-                                    'СОЮЗ  '+DateTime.now().toString(), //TODO       list[index].CFO.toString().trim(),
+                                    getfourthtransformation, //TODO       list[index].CFO.toString().trim(),
                                     style: TextStyle(
                                       height: 2,
                                       fontSize: 13,
