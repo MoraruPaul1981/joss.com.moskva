@@ -110,7 +110,7 @@ class WidgetStarWaiting extends State<StatefulWidgetCommingPrices> {
         //TODO DEFALUT
         logger.i('napshot.connectionState$snapshot.connectionState');
         //TODO нет пришгли  данных
-        widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingDontData(   context:context,   snapshot:snapshot,logger:logger);
+        widgetWatingCallBack = WidgetCallBaks().  getWidgetProccingDefault(   context:context,   snapshot:snapshot,logger:logger);
         //TODO return ERROR
         return widgetWatingCallBack;
 

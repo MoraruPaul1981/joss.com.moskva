@@ -93,7 +93,7 @@ class   WidgetSuccessData {
                   primary: false,
                   scrollDirection:
                   Axis.vertical, // Axis.horizontal for horizontal list view.
-                  itemCount: snapshot.data?.length,
+                  itemCount: receiveddatafromC1!.length ,
                   itemBuilder: (context, index) {
                     final user = '86';
                     final UUID ='3333333';
@@ -126,7 +126,7 @@ class   WidgetSuccessData {
                                 height: 45,
                                 child: Center(
                                   child: Text(
-                                    'СОЮЗ', //TODO       list[index].CFO.toString().trim(),
+                                    'СОЮЗ  '+DateTime.now().toString(), //TODO       list[index].CFO.toString().trim(),
                                     style: TextStyle(
                                       height: 2,
                                       fontSize: 13,
