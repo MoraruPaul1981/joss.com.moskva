@@ -15,13 +15,21 @@ class   WidgetSuccessData {
 
 
   //TODO сохранили как тест временно ...
-  late List<Entities1CList> list;//TODO сохранили как тест временно ...
+    late AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot;
+    late  Logger logger;
+    late List<Map<String, List<Entities1CMap>>>? receiveddatafromC1;
 
   //TODO РАбоий Виджет
   Widget getWidgetScaffold({
     required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot}
-      ){
+    required   AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
+    required  Logger logger
+  })
+
+  {
+    logger.i('snapshot ..  '+snapshot.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
+    logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     ////TODO сам виджет
     return new Scaffold(
       backgroundColor: Colors.blue[200],
@@ -87,8 +95,8 @@ class   WidgetSuccessData {
                   Axis.vertical, // Axis.horizontal for horizontal list view.
                   itemCount: snapshot.data?.length,
                   itemBuilder: (context, index) {
-                    final user = list[index].CFO.toString().trim();
-                    final UUID = list[index].UUID.toString().trim();
+                    final user = '86';
+                    final UUID ='3333333';
                     //TODO
                     return Column(
                       children: [
@@ -118,7 +126,7 @@ class   WidgetSuccessData {
                                 height: 45,
                                 child: Center(
                                   child: Text(
-                                    list[index].CFO.toString().trim(),
+                                    'СОЮЗ', //TODO       list[index].CFO.toString().trim(),
                                     style: TextStyle(
                                       height: 2,
                                       fontSize: 13,

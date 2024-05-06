@@ -82,14 +82,10 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   @override
   Widget getWidgetProccingNasData( {required BuildContext context,
     required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
-//TODO
-   /// List<Map<String, List<Entities1CMap>>> receiveddatafromC1 =snapshot.data as List<Map<String, List<Entities1CMap>>>;
     //TODO
-    List<Map<String, List<Entities1CMap>>>? receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
-    //TODO
-    logger.i('receiveddatafromC1CallBack ..  '+receiveddatafromC1!.length.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    logger.i('receiveddatafromC1CallBack ..  '+snapshot.data.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     //TODO передем на экрна полученные данные
-    return  WidgetSuccessData().getWidgetScaffold(context:context,snapshot:snapshot);
+    return  WidgetSuccessData().getWidgetScaffold(context:context,snapshot:snapshot,logger:logger);
   }
 
 
