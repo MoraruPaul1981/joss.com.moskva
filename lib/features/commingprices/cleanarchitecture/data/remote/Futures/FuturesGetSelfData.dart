@@ -83,7 +83,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
           //TODO получаем данные JSON
           logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
           ///TODO
-       var   get=getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList() as List<Map<String, List<Entities1CMap>>>  ;// TODO as List<Map<String, List<Entities1CMap>>>
+          getJson1cSucces=getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList()   ;// TODO as List<Map<String, List<Entities1CMap>>> as List<Map<String, List<Entities1CMap>>>
 
           print('get ..$get');
         }
