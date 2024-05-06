@@ -79,33 +79,61 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
         logger.i(' getListSeflData ..  '+getListSeflData.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
-        if (getListSeflData.isNotEmpty ) {
-          //TODO получаем данные JSON
+
+
+
+
+
+
+
+
+        Future<int> eventualError() async {
+
+          late   Future<List<Map<String, List<Entities1CMap>>>> getJson1cSucces;
+          if (getListSeflData.isNotEmpty ) {
+
+
+            //TODO получаем данные JSON
+            logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+            ///TODO
+            getJson1cSucces=Future(() => getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList() );
+            // TODO as List<Map<String, List<Entities1CMap>>> as List<Map<String, List<Entities1CMap>>>
+
+            logger.i(' getJson1cSucces ..  '+getJson1cSucces.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          }
           logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-
-          ///TODO
-          getJson1cSucces=Future(() => getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList() );// TODO as List<Map<String, List<Entities1CMap>>> as List<Map<String, List<Entities1CMap>>>
-
-          logger.i(' getJson1cSucces ..  '+getJson1cSucces.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+          return 11;
         }
 
-        logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+
+
+         Isolate.run(eventualError)
+            .then((value) => {
+          //TODO
+          logger.i(' value ..  '+value.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString()),
+
+        }).catchError(() {
+          print("Error!");
+        }).whenComplete(() {
+          print("Future complete.");
+        }) ;
+
+
+
+
+
+
+
+
+
       } else {
         //TODO
         logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
 
-       Isolate.run(eventualError)
-           .then((value) => {
-       //TODO
-       logger.i(' value ..  '+value.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString()),
 
-      }).catchError(() {
-         print("Error!");
-       }).whenComplete(() {
-         print("Future complete.");
-       });
-      ;
 
       //TODO
       logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -118,11 +146,6 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
   }
 
 
-
-  Future<int> eventualError() async {
-    await Future.delayed(const Duration(seconds: 1));
-    return 23232323;
-  }
 
 
 }
