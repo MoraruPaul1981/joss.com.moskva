@@ -11,7 +11,6 @@ import '../../../../data/entities/Entities1CMap.dart';
 
 abstract  class IntafaceSuccessData {
 
-
   //TODO переменные
     late AsyncSnapshot<List<Map<String, List<Entities1CMap>>>>  snapshot;
      late Logger   logger;
@@ -21,7 +20,8 @@ abstract  class IntafaceSuccessData {
 
   //TODO
   Widget getWidgetScaffold({required   context, required     snapshot, required    logger });
-
+//TODO
+  void firstTransformationionofincomingData({required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot});
 
 }
 

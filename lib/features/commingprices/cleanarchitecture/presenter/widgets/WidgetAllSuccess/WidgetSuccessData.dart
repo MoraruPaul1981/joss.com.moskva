@@ -37,7 +37,9 @@ class   WidgetSuccessData implements IntafaceSuccessData {
     logger.i('snapshot ..  '+snapshot.toString()+''+'Isolate.current.debugName'
         +Isolate.current.debugName.toString());
 
-    receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
+
+    //TODO первая трансформацйия пришедших Данных
+    firstTransformationionofincomingData( snapshot: snapshot);
 
     logger.i('receiveddatafromC1 ..  '+receiveddatafromC1!.length.toString()+
         ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -230,6 +232,25 @@ class   WidgetSuccessData implements IntafaceSuccessData {
 
     );
   }
+
+
+  //TODO  первоя Трансформация ДАнных
+  @override
+    void firstTransformationionofincomingData({required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot}) {
+      try{
+        //TODO первое получение Данных
+      receiveddatafromC1=  snapshot.data ?.cast<Map<String, List<Entities1CMap>>>().toList();
+      logger.i('get receiveddatafromC1 ..  '+receiveddatafromC1.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+
+      //TODO error
+    } catch (e, stacktrace) {
+  print(' get ERROR $e get stacktrace $stacktrace ');
+}
+
+
+}
+
 
 
 
