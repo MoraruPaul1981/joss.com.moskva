@@ -2,6 +2,7 @@
 
 import 'dart:isolate';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:commintprices/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,16 +51,23 @@ class   WidgetSuccessData implements IntafaceSuccessData {
         AppBar(
         leading: new Icon(Icons.live_tv),
         backgroundColor: Colors.blue[300],
-        title:
-        Text(
-          'Согласования',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w300,
-          ),
-          textAlign: TextAlign.center,
+        title: Padding(padding: EdgeInsets.all(1.0),
+        child: AnimatedTextKit(
+          animatedTexts: [
+            ColorizeAnimatedText('Согласование', textStyle: TextStyle(color: Colors.black,
+              fontSize: 22,
+              fontWeight: FontWeight.w200,),textAlign:  TextAlign.center,
+                colors:[Colors.black,Colors.white,Colors.grey,Colors.black] ),],
+          pause: Duration(microseconds: 100),
+          isRepeatingAnimation: true,
+          repeatForever: false,
         ),
+      ),
+
+
+
+
+
 
 
         centerTitle: true,
@@ -239,17 +247,20 @@ class   WidgetSuccessData implements IntafaceSuccessData {
         required Logger logger}) {
       //TODO
     List<Map<String, List<Entities1CMap>>>   getfirstTransformationionofincomingData=[];
+    //TODO
+    if (!snapshot.hasError && snapshot.hasData) {
       try{
-        //TODO первое получение Данных
-        getfirstTransformationionofincomingData=  snapshot.data!.cast<Map<String, List<Entities1CMap>>>().toList();
+              //TODO первое получение Данных
+              getfirstTransformationionofincomingData=  snapshot.data!.cast<Map<String, List<Entities1CMap>>>().toList();
 
-      logger.i('get getfirstTransformationionofincomingData ..  '+getfirstTransformationionofincomingData.toString()+
-          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+            logger.i('get getfirstTransformationionofincomingData ..  '+getfirstTransformationionofincomingData.toString()+
+                ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
-      //TODO error
-    } catch (e, stacktrace) {
-  print(' get ERROR $e get stacktrace $stacktrace ');
-}
+            //TODO error
+          } catch (e, stacktrace) {
+        print(' get ERROR $e get stacktrace $stacktrace ');
+      }
+    }
 return getfirstTransformationionofincomingData;
 
 }
