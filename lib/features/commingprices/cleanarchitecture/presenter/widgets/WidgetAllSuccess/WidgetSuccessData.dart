@@ -280,7 +280,7 @@ class   WidgetSuccessData implements IntafaceTransformationSuccessData {
 
 
 
-  //TODO  первоя Трансформация ДАнных
+  //TODO  Первоя Трансформация ДАнных
   @override
   List<Map<String, List<Entities1CMap>>> firstTransformationionofincomingData(
       {required  AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
@@ -309,14 +309,12 @@ return getfirstTransformationionofincomingData;
 
 
   //TODO  Вторая Трансформация ДАнных
-
   @override
   Map<String, List<Entities1CMap>> secondConversionData({
     required List<Map<String, List<Entities1CMap>>> receiveddatafromC1,
     required Logger logger,
      required int index}) {
     // TODO: implement secondConversionData
-    //TODO
     Map<String, List<Entities1CMap>>  getsecondConversionData={};
     try{
       //TODO первое получение Данных
@@ -329,6 +327,50 @@ return getfirstTransformationionofincomingData;
     }
     return getsecondConversionData;
   }
+
+
+
+  //TODO  Третья  Трансформация ДАнных
+  @override
+  List<Entities1CMap> thirdtransformationData({required Map<String, List<Entities1CMap>> thirdtransformationData, required Logger logger, required int index}) {
+    // TODO: implement thirdtransformationData
+    List<Entities1CMap> childredRowCommintPrices=[];
+    try{
+      childredRowCommintPrices=   thirdtransformationData.values.single;
+      //TODO
+      String Key=   thirdtransformationData.keys.single;
+
+      logger.i('get childredRowCommintPrices ..  '+childredRowCommintPrices.toString()+ ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+  } catch (e, stacktrace) {
+  print(' get ERROR $e get stacktrace $stacktrace ');
+}
+  return childredRowCommintPrices;
+  }
+
+
+
+
+  //TODO  Четвертый   Трансформация ДАнных
+  @override
+  String? fourthtransformation({required List<Entities1CMap> getfourthtransformation, required Logger logger}) {
+    // TODO: implement fourthtransformation
+    String? getCfo;
+    try{
+      getCfo=    getfourthtransformation.elementAt(0).CFO;
+      logger.i('get getCfo ..  '+getCfo.toString()+
+          ''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+    } catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+    return getCfo ;
+  }
+
+
+
+
+
+
+
 
 
 

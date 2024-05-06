@@ -32,7 +32,7 @@ abstract  class IntafaceTransformationSuccessData {
   List<Entities1CMap>  thirdtransformationData({required Map<String, List<Entities1CMap>>  thirdtransformationData, required Logger logger,required int index});
 
   //TODO  //TODO  Четвертая   Трансформация ДАнных
- String  fourthtransformation({required  List<Entities1CMap>  getfourthtransformation, required Logger logger});
+ String?  fourthtransformation({required  List<Entities1CMap>  getfourthtransformation, required Logger logger});
 
 
 
