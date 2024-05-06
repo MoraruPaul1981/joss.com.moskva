@@ -74,7 +74,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
         //TODO
         print('response1C.statusCode....$response1C.statusCode');
 
-
+      //TODO  первая операция ДИнамик
         List<dynamic>  getListSeflData=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
         logger.i(' getListSeflData ..  '+getListSeflData.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
