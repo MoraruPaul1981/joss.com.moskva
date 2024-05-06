@@ -127,6 +127,8 @@ Future<List<Map<String, List<Entities1CMap>>>> getthefinalSelfData(String? Ispin
       logger.i('Result IspingOtServer ..  '+IspingOtServer.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
       FuturesGetSelfData futuresGetSelfData=   new FuturesGetSelfData();
+
+
 //TODO получаем данные от 1с Севра
          Future<Response> responseSelfDataFuture =  futuresGetSelfData.getDownloadJsonMaps(url:parsedUrl ,IdUser:IdUser ,UUID:Uuid.toInt() ,logger: logger);
 

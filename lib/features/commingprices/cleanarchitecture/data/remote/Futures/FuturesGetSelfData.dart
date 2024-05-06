@@ -63,7 +63,7 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
   Future<List<Map<String, List<Entities1CMap>>>> getGeneratorProcessSelfData({required  Response response1C,
     required Logger logger}) {
     // TODO: implement getGeneratorMapCallBack
-   late  List<Map<String, List<Entities1CMap>>> getJson1cSucces;
+   late Future<List<Map<String, List<Entities1CMap>>>> getJson1cSucces ;
     try{
       print('response1C.statusCode $response1C.statusCode');
 
@@ -75,17 +75,18 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
         print('response1C.statusCode....$response1C.statusCode');
 
       //TODO  первая операция ДИнамик
-        final  List<dynamic>  getListSeflData=   new   getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
+        final  List<dynamic>  getListSeflData=       getDecodingCallback().   getResponseDecoderSelfData(response1C:response1C,logger: logger);
         logger.i(' getListSeflData ..  '+getListSeflData.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
 
         if (getListSeflData.isNotEmpty ) {
           //TODO получаем данные JSON
           logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
-          ///TODO
-          getJson1cSucces=getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList()   ;// TODO as List<Map<String, List<Entities1CMap>>> as List<Map<String, List<Entities1CMap>>>
 
-          print('get ..$get');
+          ///TODO
+          getJson1cSucces=Future(() => getListSeflData.map((model) => Entities1CMap().loopGeneratorMapPolo(  json:  model  )) .toList() );// TODO as List<Map<String, List<Entities1CMap>>> as List<Map<String, List<Entities1CMap>>>
+
+          logger.i(' getJson1cSucces ..  '+getJson1cSucces.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
         }
 
         logger.i('getListSeflData.isNotEmpty ..$getListSeflData.isNotEmpty'+'Isolate.current.debugName'+Isolate.current.debugName.toString());
@@ -93,6 +94,19 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
         //TODO
         logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       }
+
+       Isolate.run(eventualError)
+           .then((value) => {
+       //TODO
+       logger.i(' value ..  '+value.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString()),
+
+      }).catchError(() {
+         print("Error!");
+       }).whenComplete(() {
+         print("Future complete.");
+       });
+      ;
+
       //TODO
       logger.i(' response1C ..  '+response1C.toString()+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       //TODO error
@@ -100,7 +114,14 @@ class FuturesGetSelfData  implements InterfaceFutureResponse,InterfaceFutureSelf
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
 
-    return Future(() => getJson1cSucces) ; //TODO  Future.value('fg' as FutureOr<List<Map<String, List<Entities1CMap>>>>)
+    return  getJson1cSucces ; //TODO  Future.value('fg' as FutureOr<List<Map<String, List<Entities1CMap>>>>)
+  }
+
+
+
+  Future<int> eventualError() async {
+    await Future.delayed(const Duration(seconds: 1));
+    return 23232323;
   }
 
 
