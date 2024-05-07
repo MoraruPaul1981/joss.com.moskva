@@ -9,7 +9,7 @@ import '../Paramets/getParaments.dart';
 
 abstract  class InterfacePings {
   //TODO main metod
-  Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger});
+  Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger});
 
 
 

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
-
+import 'dart:isolate';
 
 
 
@@ -32,7 +32,7 @@ import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErr
   Future<void> startingCommintPrices() async {
     try {
       //TODO int LOGGER
-      Logger   logger =await compute((message) =>  GetErros().getFuturelogger(), 'message') ;///GetErros().getFuturelogger();
+      Logger   logger =await  GetErros().getFuturelogger();///GetErros().getFuturelogger();
 
       logger.i('start  Future<void> main()  async  logger .. $logger');
 

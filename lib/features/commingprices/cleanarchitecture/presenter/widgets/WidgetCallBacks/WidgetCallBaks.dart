@@ -28,7 +28,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   ///TODO  методы ожидания
   @override
   Widget getWidgetProccerWaiting({required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,required  Logger logger}){
 //TODO
   logger.i("starting  getWidgetProccingWait");
   IntarfaceWaiting  intarfaceWaiting= GetWidgetWaiting();
@@ -43,7 +43,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   ///TODO метод по умочанию
    @override
   Widget getWidgetProccingDefault( {required BuildContext context,
-     required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+     required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDefault");
     IntarfaceWaiting  intarfaceWaiting= GetWidgetDefault();
@@ -57,7 +57,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   ///TODO метод по умочанию
   @override
   Widget getWidgetProccingError( {required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingError");
     IntarfaceWaiting  intarfaceWaiting  = GetWidgetWaitingErrors();
@@ -74,7 +74,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   ///TODO метод есть данные
   @override
   Widget getWidgetProccingNasData( {required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,required  Logger logger}){
     //TODO
     logger.i('receiveddatafromC1CallBack ..  '+snapshot.data.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
     //TODO передем на экрна полученные данные
@@ -89,7 +89,7 @@ class WidgetCallBaks   implements IntarfaceCallBaks {
   ///TODO метод нет данных
   @override
   Widget getWidgetProccingDontData( {required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,required  Logger logger}){
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,required  Logger logger}){
 //TODO
     logger.i("starting  getWidgetProccingDontData");
     IntarfaceWaiting  intarfaceWaiting   = GetWidgetWaitingDontData();

@@ -25,10 +25,10 @@ late Logger logger;
 
 
   @override
-  Future<List<Map<String, List<Entities1CMap>>>> getResponse1c({ required BuildContext context, required Logger logger})  async {
+  Future<List<Map<String, List<Entities1CMap>>>>? getResponse1c({ required BuildContext context, required Logger logger})  async {
     // TODO: implement getJson1cPing
    late Completer<List<Map<String, List<Entities1CMap>>>> completer=Completer.sync();
-   late List<Map<String, List<Entities1CMap>>> getSelfDataCallBack =[];
+   late List<Map<String, List<Entities1CMap>>>? getSelfDataCallBack =[];
     try {
       //TODO init LOGER
       this.logger=logger;
@@ -53,11 +53,9 @@ late Logger logger;
           List<Map<String, List<Entities1CMap>>> getSelfDataCallBack=await  getthefinalSelfData(IspingOtServer, logger,IdUser,Uuid);
       logger.i('Result getSelfDataCallBack ..  '+getSelfDataCallBack.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
 
-
-
-
       //TODO закрвваем Compete после все отработынных операций  #3
-      completer.complete(getSelfDataCallBack );
+
+      completer.complete(getSelfDataCallBack    );
       logger.i('Result completer.isCompleted ..  '+completer.isCompleted.toString()+''+'Isolate.current.debugName'+Isolate.current.debugName.toString());
       return getSelfDataCallBack;
            //TODO END   CALL BACK
@@ -65,7 +63,7 @@ late Logger logger;
       print(' get ERROR $e get stacktrace $stacktrace ');
       //TODO
       //TODO закрвваем Compete
-      completer.completeError(getSelfDataCallBack );
+      completer.completeError(stacktrace );
     }
     return   completer.future;
   }

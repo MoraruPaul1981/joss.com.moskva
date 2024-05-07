@@ -17,7 +17,7 @@ abstract  class IntarfaceWaiting {
 
   //TODO
   Widget getWidgetWaitingPing({required BuildContext context,
-    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>> snapshot,
+    required AsyncSnapshot<List<Map<String, List<Entities1CMap>>>?> snapshot,
     required Color alwaysStop,
     required String currentText});
 
