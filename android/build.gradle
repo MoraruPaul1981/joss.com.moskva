@@ -16,9 +16,11 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.4.1'
-
         classpath 'androidx.multidex:multidex:2.0.1'
         classpath 'com.google.firebase:firebase-messaging:24.0.0'
+        classpath 'androidx.annotation:annotation:1.7.1'
+        classpath 'junit:junit:4.12'
+
     }
 }
 
