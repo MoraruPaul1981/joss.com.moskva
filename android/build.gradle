@@ -40,16 +40,3 @@ tasks.register("clean", Delete) {
 
 
 
-/*buildTypes {
-    release {
-        signingConfig signingConfigs.release
-    }
-}*/
-/*   signingConfig {
-      release {
-          keyAlias "tabels_releases"
-          storeFile file ("dsu1_keys.jks")
-          keyPassword "dsu1dsu1down"
-          storePassword "dsu1dsu1up"
-      }
-  }*/
