@@ -13,14 +13,13 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-
 def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('./android/key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystorePropertiesFile.withReader('UTF-8') { reader ->
-        keystoreProperties.load(reader)
-    }
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()){
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
+
+
 
 
 
@@ -46,22 +45,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-  /*  signingConfig {
-        release {
-            keyAlias "tabels_releases"
-            storeFile file ("dsu1_keys.jks")
-            keyPassword "dsu1dsu1down"
-            storePassword "dsu1dsu1up"
-
-      *//*      storePassword=dsu1dsu1up
-            keyPassword=dsu1dsu1down
-            keyAlias=tabels_releases
-            storeFile='C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\dsu1_keys.jks'*//*
-        }
-    }*/
-
-
-
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
@@ -78,42 +61,32 @@ android {
 
 
 
-    /*    buildTypes {
-            release {
-                // TODO: Add your own signing config for the release build.
-                // Signing with the debug keys for now, so `flutter run --release` works.
-                signingConfig signingConfigs.debug
-                signingConfig signingConfigs.release
-               // signingConfig signingConfigs.release
 
-            }
+
+
+
+    signingConfigs{
+        release {
+            keyAlias keystoreProperties['key']
+            keyPassword keystoreProperties['key password']
+            storeFile keystoreProperties['storeFile'] ?
+                    file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['store password']
         }
-    */
-
-
-
-    signingConfigs {
-        debug {
-            keyAlias 'fluttersouss'
-            keyPassword 'sousabtooo'
-            storeFile file('C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\flutter_keys.jks')
-            storePassword 'sousabtoo'
-        }
-
-            release {
-                keyAlias "fluttersouss"
-                storeFile file ("C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\flutter_keys.jks")
-                keyPassword "sousabtooo"
-                storePassword "sousabtoo"
+    }
+    buildTypes {
+        release {
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `flutter run --release` works.
+            signingConfig signingConfigs.release
         }
     }
 
 
 
+}
 
-    }
-
-    flutter {
-        source '../..'
-    }
+flutter {
+    source '../..'
+}
 
