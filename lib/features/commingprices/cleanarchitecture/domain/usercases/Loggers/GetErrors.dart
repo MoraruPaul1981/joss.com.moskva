@@ -39,7 +39,7 @@ class GetErros  implements InterfaceGetError {
   }
 
   @override
-  Future<Logger> getlogger() async {
+  Future<Logger> getFuturelogger() async {
     // TODO: implement getlogger
    late Logger  loggerfuture;
     // TODO: implement loggers

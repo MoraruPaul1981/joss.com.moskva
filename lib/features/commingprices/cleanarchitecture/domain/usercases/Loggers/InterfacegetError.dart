@@ -7,6 +7,6 @@ abstract class InterfaceGetError{
 
  Logger  loggers();
 
- Future<Logger>  getlogger();
+ Future<Logger>  getFuturelogger();
 
 }

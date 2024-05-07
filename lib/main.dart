@@ -1,9 +1,7 @@
-import 'dart:async';
-
 import 'package:commintprices/features/commingprices/cleanarchitecture/presenter/widgets/WidgetWaiting/WidgetStarWaiting.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
 import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
 
 
@@ -31,32 +29,23 @@ import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErr
 
 
 //TODO метод запуска coming prices
-  void startingCommintPrices() {
-
-    late Logger logger;
-
-    //TODO int LOGGER
-    Future<Logger>.value(  GetErros().loggers())
-
-        .then((value) {
-          //TODO then
-      logger= value;
-      logger.i('start  Future<void> main()  async  logger .. $logger');
-
-        return logger;
-
-      }).whenComplete(() {
+  Future<void> startingCommintPrices() async {
+    try {
+      //TODO int LOGGER
+      Logger   logger =await compute((message) =>  GetErros().getFuturelogger(), 'message') ;///GetErros().getFuturelogger();
 
       logger.i('start  Future<void> main()  async  logger .. $logger');
+
       //TODO starting UI
       runApp(  startingwidgetCommingPrices(  logger: logger));
 
       logger.i('end  Future<void> main()  async');
 
-    }).catchError(
-     (Object error) {
-     print(' get ERROR $error  ');
-     });
+    }   catch (e, stacktrace) {
+      print(' get ERROR $e get stacktrace $stacktrace ');
+    }
+
+
   }
 
 
