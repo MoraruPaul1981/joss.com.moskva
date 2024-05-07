@@ -14,8 +14,13 @@ if (localPropertiesFile.exists()) {
 }
 
 
-
-
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('./android/key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withReader('UTF-8') { reader ->
+        keystoreProperties.load(reader)
+    }
+}
 
 
 
@@ -86,28 +91,23 @@ android {
     */
 
 
-    def keystoreProperties = new Properties()
-    def keystorePropertiesFile = rootProject.file('key.properties')
-    if (keystorePropertiesFile.exists()){
-        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+    signingConfigs {
+        debug {
+            keyAlias 'fluttersouss'
+            keyPassword 'sousabtooo'
+            storeFile file('C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\flutter_keys.jks')
+            storePassword 'sousabtoo'
+        }
+
+            release {
+                keyAlias "fluttersouss"
+                storeFile file ("C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\flutter_keys.jks")
+                keyPassword "sousabtooo"
+                storePassword "sousabtoo"
+        }
     }
 
-    signingConfigs{
-        release {
-            keyAlias keystoreProperties['key']
-            keyPassword keystoreProperties['key password']
-            storeFile keystoreProperties['C:\\Users\\moraru_pi\\androidflutterprojects\\commintprices\\android\\certificates\\flutter_keys.jks'] ?
-                    file(keystoreProperties['storeFile']) : null
-            storePassword keystoreProperties['store password']
-        }
-    }
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.release
-        }
-    }
 
 
 
