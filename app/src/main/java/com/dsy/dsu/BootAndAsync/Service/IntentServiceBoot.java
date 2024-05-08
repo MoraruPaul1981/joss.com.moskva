@@ -1,12 +1,12 @@
 package com.dsy.dsu.BootAndAsync.Service;
 
 import android.app.IntentService;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.util.Log;
 
 import com.dsy.dsu.BootAndAsync.BlBootAsync.CompleteRemoteSyncService;
 import com.dsy.dsu.Errors.Class_Generation_Errors;
-import com.dsy.dsu.FirebaseAndOneSignal.OneSignal.StartigOneSignal.ServiceRegistraziyOneSIgnalAndFireBase;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer3;
 import com.dsy.dsu.Hilt.JbossAdrress.QualifierJbossServer4;
 
@@ -60,6 +60,12 @@ public class IntentServiceBoot extends IntentService {
     public IntentServiceBoot() {
 
         super("IntentServiceBoot");
+    }
+
+
+    @Override
+    public ContentResolver getContentResolver() {
+        return super.getContentResolver();
     }
 
     @Override

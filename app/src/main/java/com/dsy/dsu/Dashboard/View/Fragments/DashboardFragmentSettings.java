@@ -63,6 +63,7 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.net.ssl.SSLSocketFactory;
 
 import dagger.hilt.android.AndroidEntryPoint;

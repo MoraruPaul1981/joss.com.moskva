@@ -387,7 +387,7 @@ public class Bl_CommintigPay {
             bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
             Интент_BackВозвращаемАктивти.putExtras(bundleBinderUpdate);
         context.  startActivity( Интент_BackВозвращаемАктивти);
-            activity.finish();
+
 
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

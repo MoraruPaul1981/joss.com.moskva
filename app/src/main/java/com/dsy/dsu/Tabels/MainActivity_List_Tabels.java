@@ -306,7 +306,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                     bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
                     Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
                     activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
-                    activity.finish();
+
 
 
         /*            // TODO Запусукаем Фргамент НАстройки  dashbord

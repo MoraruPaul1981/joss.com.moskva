@@ -15,8 +15,11 @@ import com.dsy.dsu.Hilt.PublicId.QualifierPublicId;
 import com.dsy.dsu.WorkManagers.BL_WorkMangers.WorkInfoStates;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dagger.Module;
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
@@ -25,12 +28,14 @@ import dagger.hilt.components.SingletonComponent;
 @QualifierEventAsyncOrUpdatePOUsers
 @Module
 @InstallIn(SingletonComponent.class)
+@Named("startingEventAsyncOrUpdatePOUsers")
 public class StartingEventAsyncOrUpdatePOUsers {
 
     private Context context;
-
-    public  @Inject StartingEventAsyncOrUpdatePOUsers(@ApplicationContext Context context) {
+    private  Activity activity;
+    public  @Inject  StartingEventAsyncOrUpdatePOUsers(@ApplicationContext  Context context, Activity activity) {
         this.context = context;
+        this.activity = activity;
     }
 
     public void startServiceUpdatePO(){
@@ -39,7 +44,7 @@ public class StartingEventAsyncOrUpdatePOUsers {
 
             Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
             intentstartServiceOneSignal.setAction("IntentServiceBootUpdatePo.com");
-            context.startService(intentstartServiceOneSignal);
+            activity.startService(intentstartServiceOneSignal);
 
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -61,7 +66,7 @@ public class StartingEventAsyncOrUpdatePOUsers {
                 Intent intentstartServiceOneSignal=new Intent(context, IntentServiceBoot.class);
                 intentstartServiceOneSignal.setAction("IntentServiceBootAsync.com");
                 intentstartServiceOneSignal.setData( Uri.parse(uri));
-                context.startService(intentstartServiceOneSignal);
+                activity.startService(intentstartServiceOneSignal);
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

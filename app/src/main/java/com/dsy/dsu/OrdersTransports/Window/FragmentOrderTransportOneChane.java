@@ -628,7 +628,7 @@ public class FragmentOrderTransportOneChane extends Fragment {
                bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
                Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
                activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
-               activity.finish();
+
 
 
 

@@ -44,6 +44,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.net.ssl.SSLSocketFactory;
 
 // TODO: 19.01.2024  внутренаяя бизнес логика Активтив BootAndAsync
@@ -58,10 +60,14 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
     
     private  Context context;
 
-    
+    @Inject
+    @Named("startingEventAsyncOrUpdatePOUsers")
     StartingEventAsyncOrUpdatePOUsers startingEventAsyncOrUpdatePOUsers;
+
    LinkedHashMap<Integer,String> getHiltJbossDebug;
+
       LinkedHashMap<Integer,String> getHiltJbossReliz;
+
 
     public BL_innerMainActivityBootAndAsync(@NonNull SSLSocketFactory getsslSocketFactory2,
                                             @NonNull  ProgressBar progressbarbootandasync,
@@ -84,7 +90,6 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
         this.getHiltJbossDebug = getHiltJbossDebug;
         this.getHiltJbossReliz = getHiltJbossReliz;
         // TODO: 24.01.2024
-        startingEventAsyncOrUpdatePOUsers=new StartingEventAsyncOrUpdatePOUsers(context);
     }
 
 
@@ -305,7 +310,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
                 bundleBinderUpdate.putBoolean("CallBackMainActivityBootAndAsync", true);
                 Интент_ЗапускаетDashboard.putExtras(bundleBinderUpdate);
                 activity.  startActivity(Интент_ЗапускаетDashboard);//tso*/
-                activity.finish();
+
 
                 // TODO: 26.12.2022  конец основгого кода
                 Log.d(context.getClass().getName(), "\n" + " class "
@@ -373,7 +378,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
             Интент_ЗапускаетFaceApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             Интент_ЗапускаетFaceApp.setAction("MainActivityPasswords.class");
            activity.startActivity(Интент_ЗапускаетFaceApp);//tso
-           activity. finish();
+
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

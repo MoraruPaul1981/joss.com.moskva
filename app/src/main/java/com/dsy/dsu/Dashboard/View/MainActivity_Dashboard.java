@@ -88,8 +88,6 @@ public class MainActivity_Dashboard extends AppCompatActivity {
 
     private ServiceConnection   connectionОбновлениеПО;
 
-    protected BL_innerMainActivityBootAndAsync blInnerMainActivityBootAndAsync;
-
 
 
     EventBuss eventBuss;
