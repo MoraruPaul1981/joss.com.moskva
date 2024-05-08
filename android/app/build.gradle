@@ -66,6 +66,25 @@ android {
 
     signingConfigs {
         release {
+
+            v1SigningEnabled false
+            v2SigningEnabled true
+            enableV3Signing = true
+
+
+            storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
+            storePassword 'password'
+            keyAlias = 'upload'
+            keyPassword 'password'
+        }
+        debug {
+
+            v1SigningEnabled false
+            v2SigningEnabled true
+            enableV3Signing = true
+
+
+
             storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
             storePassword 'password'
             keyAlias = 'upload'
@@ -75,7 +94,12 @@ android {
 
     buildTypes {
         release {
+            println(signingConfigs.release)
             signingConfig signingConfigs.release
+        }
+        debug {
+            println(signingConfigs.debug)
+            signingConfig signingConfigs.debug
         }
     }
 
