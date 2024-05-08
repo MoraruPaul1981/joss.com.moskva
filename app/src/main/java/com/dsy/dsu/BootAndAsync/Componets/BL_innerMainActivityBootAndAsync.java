@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -496,14 +498,14 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
                 CurrentPotionСТрочеек = CurrentPotionСТрочеек + 1;
                 if (CurrentPotionСТрочеек >= progressbarbootandasync.getProgress()) {
                     progressbarbootandasync.setProgress(CurrentPotionСТрочеек, true);
-                    progressbarbootandasync.setProgressTintMode(PorterDuff.Mode.DARKEN);
+                /*    progressbarbootandasync.setProgressTintMode(PorterDuff.Mode.DARKEN);*/
+
+                    progressbarbootandasync.setProgressTintList(ColorStateList.valueOf(Color.GRAY));
                     // TODO: 14.08.2023
                     Integer secondaryProgres = CurrentPotionСТрочеек;
                     secondaryProgres++;
                     secondaryProgres++;
                     progressbarbootandasync.setSecondaryProgress(secondaryProgres);
-                    progressbarbootandasync.setSecondaryProgressTintMode(PorterDuff.Mode.DARKEN);
-
 
                 }
 
