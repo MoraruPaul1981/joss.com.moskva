@@ -64,11 +64,24 @@ android {
 
 
 
+    signingConfigs {
+        release {
+            storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
+            storePassword 'password'
+            keyAlias = 'upload'
+            keyPassword 'password'
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
 
 
 
-
-       signingConfigs {
+  /*     signingConfigs {
                release {
 
                    v1SigningEnabled false
@@ -80,6 +93,21 @@ android {
                       storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
                       storePassword keystoreProperties['storePassword']
                  }
+
+           debug {
+
+               v1SigningEnabled false
+               v2SigningEnabled true
+               enableV3Signing = true
+
+               keyAlias keystoreProperties['keyAlias']
+               keyPassword keystoreProperties['keyPassword']
+               storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+               storePassword keystoreProperties['storePassword']
+           }
+
+
+
            }
     buildTypes {
         release {
@@ -89,7 +117,7 @@ android {
                      signingConfig signingConfigs.debug
                       //signingConfig signingConfigs.release
         }
-    }
+    }*/
 
 
 }
