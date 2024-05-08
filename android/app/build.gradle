@@ -7,6 +7,14 @@ plugins {
 
 
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    println('Success Load key.properties' )
+}else {
+    println('Error Load key.properties' )
+}
 
 
 def localProperties = new Properties()
@@ -15,6 +23,9 @@ if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
         localProperties.load(reader)
     }
+    println('Success Load local.properties' )
+}else {
+    println('Error  Load local.properties' )
 }
 
 
@@ -62,75 +73,44 @@ android {
 
     signingConfigs {
         release {
-
             v1SigningEnabled false
             v2SigningEnabled true
             enableV3Signing = true
-
-
-            def keystoreProperties = new Properties()
-            keystorePropertiesFile = rootProject.file('key.properties')
-            if (keystorePropertiesFile.exists()){
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-                println(          keystoreProperties.get('storeFile'))
-
-             /*   storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
+         /*       storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
                 storePassword 'password'
                 keyAlias = 'upload'
                 keyPassword 'password'*/
-
-
-
-                storeFile keystoreProperties.get('storeFile')
-                keyAlias keystoreProperties.get('keyAlias')
-                keyPassword keystoreProperties.get('keyPassword')
-                storePassword keystoreProperties.get('storePassword')
-
-            }
-
-
-
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+               storeFile  file('C:/Users/moraru_pi/.android/upload-keystore4.jks')
+                storePassword keystoreProperties['storePassword']
         }
-        debug {
 
+
+        debug {
             v1SigningEnabled false
             v2SigningEnabled true
             enableV3Signing = true
-
-
-            def keystoreProperties = new Properties()
-            keystorePropertiesFile = rootProject.file('key.properties')
-            if (keystorePropertiesFile.exists()){
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-
-                println(          keystoreProperties.get('storeFile'))
-
-             /*   storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
+              /*storeFile file('C:/Users/moraru_pi/upload-keystore4.jks')
                 storePassword 'password'
                 keyAlias = 'upload'
                 keyPassword 'password'*/
-
-
-                storeFile keystoreProperties.get('storeFile')
-                keyAlias keystoreProperties.get('keyAlias')
-                keyPassword keystoreProperties.get('keyPassword')
-                storePassword keystoreProperties.get('storePassword')
-
-
-            }
-
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                 storeFile  file('C:/Users/moraru_pi/.android/upload-keystore4.jks')
+                storePassword keystoreProperties['storePassword']
         }
     }
 
+
+
     buildTypes {
         release {
-            println(signingConfigs.release)
+            println(' Success Comming Prisec setKEy Sing signingConfigs.release' )
             signingConfig signingConfigs.release
         }
         debug {
-            println(signingConfigs.debug)
+            println('Success Comming Prisec setKEy Sing signingConfigs.debug' )
             signingConfig signingConfigs.debug
         }
     }
