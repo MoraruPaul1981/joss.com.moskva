@@ -18,38 +18,38 @@ public class SubClassCreatingMainAllTables {
     }
 
     public CopyOnWriteArrayList<String> методCreatingMainTabels(@NotNull Context context) throws InterruptedException {
-        CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда = new CopyOnWriteArrayList();
+        CopyOnWriteArrayList<String> getMainListTable = new CopyOnWriteArrayList();
         try {
-            ИменаТаблицыОтАндройда.addIfAbsent("errordsu1");
-            ИменаТаблицыОтАндройда.addIfAbsent("depatment");
-            ИменаТаблицыОтАндройда.addIfAbsent("fio");
-            ИменаТаблицыОтАндройда.addIfAbsent("region");
-            ИменаТаблицыОтАндройда.addIfAbsent("cfo");
-            ИменаТаблицыОтАндройда.addIfAbsent("settings_tabels");
-            ИменаТаблицыОтАндройда.addIfAbsent("notifications");
-            ИменаТаблицыОтАндройда.addIfAbsent("templates");
-            ИменаТаблицыОтАндройда.addIfAbsent("fio_template");
-            ИменаТаблицыОтАндройда.addIfAbsent("chat_users");
-            ИменаТаблицыОтАндройда.addIfAbsent("chats");
-            ИменаТаблицыОтАндройда.addIfAbsent("data_chat");
-            ИменаТаблицыОтАндройда.addIfAbsent("tabel");
-            ИменаТаблицыОтАндройда.addIfAbsent("data_tabels");
-            ИменаТаблицыОтАндройда.addIfAbsent("view_onesignal");
-            ИменаТаблицыОтАндройда.addIfAbsent("data_notification");
-            ИменаТаблицыОтАндройда.addIfAbsent("nomen_vesov");
-            ИменаТаблицыОтАндройда.addIfAbsent("type_materials");
-            ИменаТаблицыОтАндройда.addIfAbsent("get_materials_data");
-            ИменаТаблицыОтАндройда.addIfAbsent("company");
-            ИменаТаблицыОтАндройда.addIfAbsent("track");
-            ИменаТаблицыОтАндройда.addIfAbsent("prof");
-            ИменаТаблицыОтАндройда.addIfAbsent("order_tc");
-            ИменаТаблицыОтАндройда.addIfAbsent("vid_tc");
-            ИменаТаблицыОтАндройда.addIfAbsent("materials_databinary");
-            ИменаТаблицыОтАндройда.addIfAbsent("organization");
+            getMainListTable.addIfAbsent("errordsu1");
+            getMainListTable.addIfAbsent("depatment");
+            getMainListTable.addIfAbsent("fio");
+            getMainListTable.addIfAbsent("region");
+            getMainListTable.addIfAbsent("cfo");
+            getMainListTable.addIfAbsent("settings_tabels");
+            getMainListTable.addIfAbsent("notifications");
+            getMainListTable.addIfAbsent("templates");
+            getMainListTable.addIfAbsent("fio_template");
+            getMainListTable.addIfAbsent("chat_users");
+            getMainListTable.addIfAbsent("chats");
+            getMainListTable.addIfAbsent("data_chat");
+            getMainListTable.addIfAbsent("tabel");
+            getMainListTable.addIfAbsent("data_tabels");
+            getMainListTable.addIfAbsent("view_onesignal");
+            getMainListTable.addIfAbsent("data_notification");
+            getMainListTable.addIfAbsent("nomen_vesov");
+            getMainListTable.addIfAbsent("type_materials");
+            getMainListTable.addIfAbsent("get_materials_data");
+            getMainListTable.addIfAbsent("company");
+            getMainListTable.addIfAbsent("track");
+            getMainListTable.addIfAbsent("prof");
+            getMainListTable.addIfAbsent("order_tc");
+            getMainListTable.addIfAbsent("vid_tc");
+            getMainListTable.addIfAbsent("materials_databinary");
+            getMainListTable.addIfAbsent("organization");
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  ИменаТаблицыОтАндройда" + ИменаТаблицыОтАндройда);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  getMainListTable" + getMainListTable);
 
             ///todo публикум название таблицы или цифру его
         } catch (Exception e) {
@@ -60,6 +60,6 @@ public class SubClassCreatingMainAllTables {
                     this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                     Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        return ИменаТаблицыОтАндройда;
+        return getMainListTable;
     }
 }
