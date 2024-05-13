@@ -31,7 +31,7 @@ Context context;
             int Проценты;
             ArrayList<String> ВерсииВсехFindCurrentTable= (ArrayList<String>) linkedHashMap.keySet().stream().collect(Collectors.toList());
 
-            Integer ПозицияТекущейТаблицы=      ВерсииВсехFindCurrentTable.indexOf(имяТаблицаAsync)+1;
+            Integer ПозицияТекущейТаблицы=      ВерсииВсехFindCurrentTable.indexOf(имяТаблицаAsync);
             Проценты = new Class_Visible_Processing_Async(context).
                     ГенерируемПРОЦЕНТЫДляAsync(ПозицияТекущейТаблицы, ВерсииВсехFindCurrentTable.size());
 

@@ -3124,6 +3124,18 @@ Class_GRUD_SQL_Operations classGrudSqlOperationsУдалениеДанныхЧе
                                         } else {
                                             ПутькФайлу = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS+ File.separator + PatchDeleteJsonAnalitic);
                                         }
+
+
+                                        if (ПутькФайлу.isFile() || ПутькФайлу.exists()) {
+                                            //TODO :
+                                            ПутькФайлу.delete();
+                                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                        }
+
+
+
                                         СамФайлJsonandApk[0] = new File(ПутькФайлу, "/" + ИмяФайлаЗагрузки );
                                         if (!СамФайлJsonandApk[0].getParentFile().mkdirs() ) {
                                             СамФайлJsonandApk[0].getParentFile().mkdirs();

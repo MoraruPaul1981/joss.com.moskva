@@ -1,5 +1,6 @@
 package com.dsy.dsu.BootAndAsync.Componets;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -486,6 +487,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
 
 
 
+    @SuppressLint("NewApi")
     private void МетодВизуализацииСинхронизации(@NonNull Bundle bundleCallsBackAsynsService) {
         try {
             if (progressbarbootandasync.isAttachedToWindow()) {
@@ -513,7 +515,7 @@ public class BL_innerMainActivityBootAndAsync extends MainActivityBootAndAsync {
                     progressbarbootandasync.setSecondaryProgress(secondaryProgres);
 
                 }
-
+                progressbarbootandasync.setStateDescription(ИмяТаблица);
                 progressbarbootandasync.requestLayout();
                 progressbarbootandasync.refreshDrawableState();
 

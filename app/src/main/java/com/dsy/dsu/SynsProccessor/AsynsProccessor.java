@@ -615,6 +615,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     + " ВерсииДатыСерверныхТаблиц "
                     + ВерсииДатыСерверныхТаблиц.toString());
 
+
+            /*
+//TODO :  Реальная Работа
+ */
+
 // TODO: 21.08.2023 ГЛАВНЫЙ ЦИКЛ СИХРОНИАЗЦИИ
             // TODO: 21.08.2023  только  Параллено
             ResultatSync[0] =        new ProccesorparallelSynch( context,
@@ -633,8 +638,11 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
                     + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
 
+/*
+//TODO :  ТЕСТ только
+ */
 
-      /*      // TODO: 21.08.2023  только Последовательно
+     /*       // TODO: 21.08.2023  только Последовательно
             ResultatSync[0] =        new ProcerPosledovatelnoSyncs( context,
                     jsonGenerator,
                     getsslSocketFactory2,
