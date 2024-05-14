@@ -690,34 +690,60 @@ try{
                     try{
                     ///todo revboot
                     ProgressDialog  progressDialogДляСинхронизации = new ProgressDialog(getActivity());
+
+                        final Boolean[] СтатусСервераСоюзаВключенИлиНЕт = {false};
+
                     Completable.complete().blockingSubscribe(new CompletableObserver() {
                         @Override
                         public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                            handlerAsync.post(() -> {
-                                progressDialogДляСинхронизации.setTitle("Обмен данными");
-                                progressDialogДляСинхронизации.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                progressDialogДляСинхронизации.setProgress(0);
-                                progressDialogДляСинхронизации.setCanceledOnTouchOutside(false);
-                                progressDialogДляСинхронизации.setMessage("В процессе ....");
-                                if (!progressDialogДляСинхронизации.isShowing()) {
-                                    progressDialogДляСинхронизации.show();
-                                }
-                            });
-
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            boolean СтатусСетиВыбранныйПользователем =
+                            Boolean     СтатусСетиВыбранныйПользователем  =
                                     new Class_Find_Setting_User_Network(getContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+
+                            // TODO: 26.06.2022
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
                             Class_Connections_Server class_connections_serverПингаСерераИзАктивтиМеню = new Class_Connections_Server(getActivity());
 
 
                             if (СтатусСетиВыбранныйПользователем == true) {
-                                Boolean СтатусСервераСоюзаВключенИлиНЕт =
+                                СтатусСервераСоюзаВключенИлиНЕт[0] =
                                         class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getContext(),getsslSocketFactory2,getHiltJbossDebug,getHiltJbossReliz);
-                                if (СтатусСервераСоюзаВключенИлиНЕт == true) {
+                                // TODO: 26.06.2022
+                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+                               }
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+
+                            // TODO: 26.06.2022
+                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " СтатусСервераСоюзаВключенИлиНЕт[0] " +СтатусСервераСоюзаВключенИлиНЕт[0]);
+
+                                if (   СтатусСервераСоюзаВключенИлиНЕт[0] == true) {
+
+
+                                    handlerAsync.post(() -> {
+                                        progressDialogДляСинхронизации.setTitle("Обмен данными");
+                                        progressDialogДляСинхронизации.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                        progressDialogДляСинхронизации.setProgress(0);
+                                        progressDialogДляСинхронизации.setCanceledOnTouchOutside(false);
+                                        progressDialogДляСинхронизации.setMessage("В процессе ....");
+                                        if (!progressDialogДляСинхронизации.isShowing()) {
+                                            progressDialogДляСинхронизации.show();
+                                        }
+                                    });
+
+
                                     // TODO: 23.08.2023
                                     new CreateSingleWorkManager(getContext()).getcreateSingleWorkManager(getContext() , Uri.EMPTY);
                                     // TODO: 26.06.2022
@@ -743,7 +769,7 @@ try{
                                     progressDialogДляСинхронизации.dismiss();
                                     progressDialogДляСинхронизации.cancel();
                                 }, 3000);
-                            }
+
                         }
 
                         @Override
