@@ -111,47 +111,8 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
 
     }
 
-    // TODO метод запуска СИНХРОНИЗАЦИИ  в фоне
-    public Long МетодЗАпускаФоновойСинхронизации(@NotNull Context context, @NonNull Handler handlerAsync)   {
-        Long      РезультатаСинхронизации = 0l;
-        try{
-            this.context=context;
 
-
-            preferences=  context .getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-
-            ГлавныеТаблицыСинхронизации = new PUBLIC_CONTENT(context).методCreatingMainTabels(context);
-            Log.d(this.getClass().getName(), "  ГлавныеТаблицыСинхрониазции " + ГлавныеТаблицыСинхронизации.size());
-            // TODO: 28.09.2022 запускам синхрогниазцию
-            РезультатаСинхронизации=         МетодСамогоФоновойСинхронизации();
-            Log.w(this.getClass().getName(), " ФОНОВАЯ СИНХОРОНИЗАЦИИИ ИДЁТ... СЛУЖБА "+РезультатаСинхронизации);
-
-
-
-
-            Log.d(context.getClass().getName(), "\n"
-                    + " время: " + new Date()+"\n+" +
-                    " Класс в процессе... " +  this.getClass().getName()+"\n"+
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            // TODO: 01.09.2021 метод вызова
-            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return РезультатаСинхронизации;
-    }
     // TODO: 25.09.2021 ВТОРАЯ ВЕСРИЯ ЗАПУСКА СИНХРОНМИАЗЦИИИ С ТАБЕЛЯ
-
-
-
-
-
-
     // TODO метод запуска СИНХРОНИЗАЦИИ  в фоне
     public Long МетодЗАпускаФоновойСинхронизации(@NotNull Context context )   {
         Long      РезультатаСинхронизации = 0l;
@@ -638,11 +599,9 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
                     + "\n" + "parallel"+" ResultatSync " + ResultatSync[0]);
 
-/*
-//TODO :  ТЕСТ только
- */
 
-     /*       // TODO: 21.08.2023  только Последовательно
+//TODO :  ТЕСТ только
+         /*   // TODO: 21.08.2023  только Последовательно
             ResultatSync[0] =        new ProcerPosledovatelnoSyncs( context,
                     jsonGenerator,
                     getsslSocketFactory2,
@@ -651,12 +610,12 @@ public class AsynsProccessor extends Class_MODEL_synchronized {
                     ИменаТаблицыОтАндройда,
                     ВерсииВсехСерверныхТаблиц,
                     ВерсииДатыСерверныхТаблиц,
-                    PublicID).startingAsyncParallels();
+                    PublicID).startingAsyncParallels();*/
             // TODO: 15.09.2023
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    "  ResultatSync[0] " + ResultatSync[0]);*/
+                    "  ResultatSync[0] " + ResultatSync[0]);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +

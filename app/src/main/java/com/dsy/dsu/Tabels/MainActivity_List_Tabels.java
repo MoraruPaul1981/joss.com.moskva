@@ -1080,7 +1080,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 }
 
             }
-            ДатаДляКалендаря=new getDatePicker(this, android.R.style.Widget_Material_DatePicker);
+            ДатаДляКалендаря=new getDatePicker(this,  android.R.style.Widget_Material_DatePicker);//TODO : android.R.style.Widget_Material_DatePicker
             ДатаДляКалендаря.setTitle("Календарь");
             ДатаДляКалендаря.setCancelable(false);
             ДатаДляКалендаря.setCanceledOnTouchOutside(false);
@@ -1095,6 +1095,11 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
             Drawable drawabledown=context.getDrawable(R.drawable.style_for_calendar1);
             ДатаДляКалендаря.getWindow().setBackgroundDrawable(drawabledown);
+            //todo:
+
+           /* ДатаДляКалендаря.getWindow().setNavigationBarColor(Color.RED);
+            ДатаДляКалендаря.getWindow().setStatusBarColor(Color.RED);
+            ДатаДляКалендаря.getWindow().setNavigationBarDividerColor(Color.RED);*/
 
 
             if (!ДатаДляКалендаря.isShowing()) {
