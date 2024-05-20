@@ -29,18 +29,24 @@ import 'dart:isolate';
 
 
 //TODO метод запуска coming prices
-  Future<void> startingCommintPrices() async {
+    void startingCommintPrices()  {
     try {
-      //TODO int LOGGER
-      Logger   logger =await  GetErros().getFuturelogger();///GetErros().getFuturelogger();
+      late Logger   logger;
+       //TODO int LOGGER
+       GetErros().getFuturelogger()
+           .then((value) {
+         //TODO then
+         logger=  value;
+         logger.i('start value .. ');
 
-      logger.i('start  Future<void> main()  async  logger .. $logger');
 
-      //TODO starting UI
-      runApp(  startingwidgetCommingPrices(  logger: logger));
+         //TODO starting UI
+         runApp(  startingwidgetCommingPrices(  logger: logger));
 
-      logger.i('end  Future<void> main()  async');
+         logger.i('start value ..  '+'Isolate.current.debugName'+Isolate.current.debugName.toString());
+         return logger;
 
+       });
     }   catch (e, stacktrace) {
       print(' get ERROR $e get stacktrace $stacktrace ');
     }
