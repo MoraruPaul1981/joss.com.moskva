@@ -10,10 +10,11 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
-import '../../../domain/usercases/AdressJboss/getAdress.dart';
-import '../../../domain/usercases/Converts/GetConverts.dart';
-import '../../../domain/usercases/Interfaces/InterfacePings.dart';
-import '../../../domain/usercases/decoding/getDecodingCallback.dart';
+import '../../../domain/businesslogic/Interfaces/InterfacePings.dart';
+import '../../../domain/businesslogic/adressJboss/getAdress.dart';
+import '../../../domain/businesslogic/converts/GetConverts.dart';
+
+import '../../../domain/businesslogic/decoding/getDecodingCallback.dart';
 import '../../entities/Entities1CMap.dart';
 import 'FuturesGetSelfData.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';

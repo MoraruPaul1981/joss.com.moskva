@@ -11,8 +11,8 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
 
-import '../../../domain/usercases/Converts/GetConverts.dart';
-import '../../../domain/usercases/decoding/getDecodingCallback.dart';
+import '../../../domain/businesslogic/converts/GetConverts.dart';
+import '../../../domain/businesslogic/decoding/getDecodingCallback.dart';
 import '../../entities/Entities1CMap.dart';
 import 'InterfacesFuture/InterfaceFutures/InterfaceFuture.dart';
 

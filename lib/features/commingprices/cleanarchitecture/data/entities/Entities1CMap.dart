@@ -1,9 +1,11 @@
 
 
-import '../../domain/usercases/Interfaces/InterfaceEntities1CMap.dart';
 
 
 
+
+
+import '../../domain/businesslogic/Interfaces/InterfaceEntities1CMap.dart';
 
 class Entities1CMap implements InterfaceEntities1CMap{
   //TODO main varible

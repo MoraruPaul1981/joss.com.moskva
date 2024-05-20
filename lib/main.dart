@@ -2,8 +2,9 @@ import 'package:commintprices/features/commingprices/cleanarchitecture/presenter
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'features/commingprices/cleanarchitecture/domain/usercases/Loggers/GetErrors.dart';
 import 'dart:isolate';
+
+import 'features/commingprices/cleanarchitecture/domain/businesslogic/Loggers/GetErrors.dart';
 
 
 
