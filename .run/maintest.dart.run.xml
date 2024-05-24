@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="maintest.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="attachArgs" value="--release" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/maintest.dart" />
+    <method v="2">
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="" externalProjectPath="$PROJECT_DIR$/.." vmOptions="" scriptParameters="" />
+    </method>
+  </configuration>
+</component>
