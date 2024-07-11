@@ -9,7 +9,10 @@
     android:background="#FFFFFF"
     tools:context=".Windows.MainActivityNewServerScanner"
     android:orientation="vertical">
-    <include layout="@layout/toolbar_laoytscanner"/>
+
+
+
+
     <RelativeLayout
         android:id="@+id/relativelayoutserverble"
         android:layout_width="match_parent"
@@ -18,12 +21,36 @@
         android:orientation="vertical"
         android:background="#FFFFFF">
 
-       <FrameLayout
-           android:id="@+id/framelauoutScanner"
-           android:layout_width="match_parent"
-           android:layout_above="@+id/ProgressBarServerscanner"
-           android:background="#FFFFFF"
-           android:layout_height="match_parent"/>
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:elevation="5dp"
+             app:tabMinWidth="150dp"
+            android:background="#A6A3A2"
+            app:tabIndicatorColor="@color/black"
+            app:tabIndicatorHeight="5dp"
+            app:tabTextColor="@color/white"
+            app:tabMode="fixed"
+            android:padding="2dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:tabRippleColor="#F5CBA7"
+                android:tabPadding="top"
+                android:padding="10dp"
+                android:text="Девайсы" />
+        </com.google.android.material.tabs.TabLayout>
+
+
+
+
+
+
 
         <ProgressBar
             android:id="@+id/ProgressBarServerscanner"
@@ -48,13 +75,14 @@
             android:id="@+id/BottomNavigationViewScanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
+            android:minHeight="60dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="#0A524B"
+            android:background="#A6A3A2"
             android:scrollbarFadeDuration="150"
             android:translationZ="5dp"
             app:itemIconTint="#F2F5F5"
+            app:itemTextColor="@color/black"
             app:menu="@menu/menufornavigator_scanner"
             tools:ignore="MissingConstraints" />
 

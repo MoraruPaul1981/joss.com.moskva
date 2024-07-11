@@ -3,20 +3,29 @@
 
 
     <item
-        android:id="@+id/id_lback"
+        android:id="@+id/exit"
         android:checkable="true"
-        android:contentDescription="Выйти"
+        android:contentDescription="exit"
         android:enabled="true"
         android:icon="@drawable/icon_scanner_exit_down"
         android:actionMenuTextColor="#0A524B"
-        android:tooltipText="назад в приложение"
+        android:tooltipText="Выйти"
         android:title="Выйти" />
 
 
 
 
     <item
-        android:id="@+id/id_scanner_history"
+        android:id="@+id/scan"
+        android:contentDescription="История"
+        android:icon="@drawable/icon_bluetooth_start"
+        android:title="Скан"
+        android:actionMenuTextColor="#0A524B"
+        android:tooltipText="Скан" />
+
+
+    <item
+        android:id="@+id/history"
         android:contentDescription="История"
         android:icon="@drawable/icon_history_scanner"
         android:title="История"
