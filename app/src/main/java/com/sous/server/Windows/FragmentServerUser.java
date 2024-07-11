@@ -717,7 +717,7 @@ public class FragmentServerUser extends Fragment {
         ///todo первый метод #1
         private void МетодКликGattServer(@NonNull MyViewHolder holder) {
             try {
-                Log.i(this.getClass().getName(), "   holder " + holder);
+                Log.i(this.getClass().getName(), "   holder " + holder);///*
                 holder.materialButtonСервер.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
