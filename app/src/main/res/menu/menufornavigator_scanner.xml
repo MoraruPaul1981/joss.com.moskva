@@ -8,7 +8,7 @@
         android:contentDescription="exit"
         android:enabled="true"
         android:icon="@drawable/icon_scanner_exit_down"
-        android:actionMenuTextColor="#0A524B"
+        android:actionMenuTextColor="@color/black"
         android:tooltipText="Выйти"
         android:title="Выйти" />
 
@@ -20,7 +20,7 @@
         android:contentDescription="История"
         android:icon="@drawable/icon_bluetooth_start"
         android:title="Скан"
-        android:actionMenuTextColor="#0A524B"
+        android:actionMenuTextColor="@color/black"
         android:tooltipText="Скан" />
 
 
@@ -29,7 +29,7 @@
         android:contentDescription="История"
         android:icon="@drawable/icon_history_scanner"
         android:title="История"
-        android:actionMenuTextColor="#0A524B"
+        android:actionMenuTextColor="@color/black"
         android:tooltipText="История" />
 
 

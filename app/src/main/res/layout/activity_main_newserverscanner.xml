@@ -84,6 +84,8 @@
             app:itemIconTint="#F2F5F5"
             app:itemTextColor="@color/black"
             app:menu="@menu/menufornavigator_scanner"
+            android:layout_margin="5dp"
+            android:padding="1dp"
             tools:ignore="MissingConstraints" />
 
     </RelativeLayout>
