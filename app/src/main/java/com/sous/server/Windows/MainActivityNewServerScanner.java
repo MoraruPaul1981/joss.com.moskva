@@ -35,7 +35,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.inject.Inject;
 import com.sous.server.Brodcasters.BroadcastReceiverWorkManagerScannersServer;
 import com.sous.server.Errors.SubClassErrors;
 import com.sous.server.R;
@@ -71,12 +70,13 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
     private Message handler;
     private NavigationBarView bottomNavigationView;
     private MaterialTextView materialTextViewToolBar;
+    @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewВыход;
+    @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewИстория;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragment;
-    private LinearLayout linearLayou;
+    private  LinearLayout linearLayou;
     private  Long version;
     private RelativeLayout relativeLayout;
     private OkHttpClient okHttpClient;
@@ -132,7 +132,8 @@ public class MainActivityNewServerScanner extends AppCompatActivity  {
             Log.i(this.getClass().getName(),  "  "
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " время " +new Date().toLocaleString()) ;
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()) ;
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " время " +new Date().toLocaleString()) ;
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +

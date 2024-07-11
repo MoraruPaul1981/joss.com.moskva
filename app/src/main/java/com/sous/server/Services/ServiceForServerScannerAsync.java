@@ -15,15 +15,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.inject.Singleton;
+
 import com.sous.server.Errors.SubClassErrors;
 import java.util.Date;
 
-import javax.inject.Inject;
 
-import roboguice.inject.ContextSingleton;
 
-@ContextSingleton
+
 public class ServiceForServerScannerAsync extends IntentService {
     public LocalBinderAsyncServer binder = new LocalBinderAsyncServer();
     private SharedPreferences preferences;
