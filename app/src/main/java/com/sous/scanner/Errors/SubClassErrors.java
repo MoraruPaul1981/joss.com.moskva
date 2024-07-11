@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Optional;
 
 public class SubClassErrors {
-    Context context;///
+    Context context;/////
     public SubClassErrors(@NonNull Context context) {
         this.context =context;
     }
