@@ -59,6 +59,10 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
             biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
 
+           /*  //TODO:Иниицилизуем БАз ДАнных */
+            biMainActivityNewServerScanner.   МетодInitDataBase();
+
+
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " время " + new Date().toLocaleString());

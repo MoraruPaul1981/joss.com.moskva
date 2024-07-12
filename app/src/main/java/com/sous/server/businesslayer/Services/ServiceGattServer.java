@@ -48,7 +48,7 @@ import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
 
 
-import com.sous.server.datalayer.Databases.Database.CREATE_DATABASEServer;
+
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 
 
@@ -71,7 +71,7 @@ import java.util.UUID;
  */
 public class ServiceGattServer extends IntentService {
     private SQLiteDatabase sqLiteDatabase;
-    private CREATE_DATABASEServer createDatabaseScanner;
+
     public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
 
     private String TAG;
@@ -104,8 +104,7 @@ public class ServiceGattServer extends IntentService {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            this.createDatabaseScanner = new CREATE_DATABASEServer(getApplicationContext());
-            this.sqLiteDatabase = createDatabaseScanner.getССылкаНаСозданнуюБазу();
+
             TAG = getClass().getName().toString();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();

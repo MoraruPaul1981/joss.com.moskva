@@ -16,8 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 
-import com.sous.server.datalayer.Databases.Database.CREATE_DATABASEServer;
+
 import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.datalayer.data.CREATE_DATABASEServerScanner;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +73,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
         try{
             if (Create_Database_СамаБАзаSQLite==null) {
                 Log.w(this.getClass().getName(), "Create_Database_СамаБАзаSQLite " + Create_Database_СамаБАзаSQLite);
-                Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServer(getContext()).getССылкаНаСозданнуюБазу();
+                Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServerScanner(getContext()).getССылкаНаСозданнуюБазу();
                 Log.w(this.getClass().getName(), "Create_Database_СамаБАзаSQLite " + Create_Database_СамаБАзаSQLite + " getContext()) " +getContext());
             }
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
