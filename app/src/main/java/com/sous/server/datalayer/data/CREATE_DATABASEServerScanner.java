@@ -58,6 +58,7 @@ public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpe
             Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+
         }
     }
     //  Cоздание ТАблиц
