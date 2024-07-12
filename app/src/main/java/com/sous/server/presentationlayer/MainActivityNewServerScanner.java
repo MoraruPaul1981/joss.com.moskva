@@ -1,4 +1,4 @@
-package com.sous.server.Windows;
+package com.sous.server.presentationlayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
 
@@ -47,10 +47,16 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
             fragmentManager = getSupportFragmentManager();
+            getTransactionscanner = fragmentManager.beginTransaction();
 
             getversionCurrentPC();
 
             МетодРАзрешенияBlurtooTКлиент();
+
+            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
+            МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
+
+
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -105,8 +111,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         try {
-            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-            МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -131,7 +136,6 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
     protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
             getTransactionscanner.addToBackStack("");
-            getTransactionscanner = fragmentManager.beginTransaction();
             getTransactionscanner.addToBackStack("");
             getTransactionscanner.add(R.id.fragment_boot_scannerserver, fragment);//.layout.activity_for_fragemtb_history_tasks
             getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE

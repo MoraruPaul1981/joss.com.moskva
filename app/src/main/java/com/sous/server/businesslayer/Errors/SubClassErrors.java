@@ -1,4 +1,4 @@
-package com.sous.server.Errors;
+package com.sous.server.businesslayer.Errors;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

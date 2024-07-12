@@ -1,8 +1,7 @@
-package com.sous.server.Windows;
+package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -43,9 +42,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textview.MaterialTextView;
-import com.sous.server.Services.ServiceGattServer;
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Services.ServiceGattServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
 

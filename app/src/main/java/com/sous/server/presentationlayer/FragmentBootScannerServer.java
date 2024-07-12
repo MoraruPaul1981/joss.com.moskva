@@ -1,4 +1,4 @@
-package com.sous.server.Windows;
+package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
 import java.util.Date;

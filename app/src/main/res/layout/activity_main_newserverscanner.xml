@@ -13,7 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".Windows.MainActivityNewServerScanner"
+    tools:context=".presentationlayer.MainActivityNewServerScanner"
     android:orientation="vertical">
 
 
@@ -37,8 +37,6 @@
                 android:id="@+id/tabItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:tabRippleColor="#F5CBA7"
-                android:tabPadding="top"
                 android:padding="10dp"
                 android:text="Девайсы" />
 

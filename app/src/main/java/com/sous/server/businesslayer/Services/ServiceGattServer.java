@@ -1,4 +1,4 @@
-package com.sous.server.Services;
+package com.sous.server.businesslayer.Services;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -47,34 +47,17 @@ import com.google.android.gms.tasks.OnTokenCanceledListener;
 import com.google.android.gms.tasks.Task;
 
 
-import com.sous.server.Databases.CREATE_DATABASEServer;
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.datalayer.Databases.Database.CREATE_DATABASEServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 
-
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import javax.net.ssl.SSLServerSocket;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
-
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.functions.Supplier;
-import io.reactivex.rxjava3.internal.operators.flowable.FlowableWindow;
 
 
 /**

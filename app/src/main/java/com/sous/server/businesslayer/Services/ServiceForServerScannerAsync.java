@@ -1,4 +1,4 @@
-package com.sous.server.Services;
+package com.sous.server.businesslayer.Services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 import java.util.Date;
 
 

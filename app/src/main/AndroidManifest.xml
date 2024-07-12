@@ -83,7 +83,7 @@
 
 
         <activity
-            android:name=".Windows.MainActivityNewServerScanner"
+            android:name=".presentationlayer.MainActivityNewServerScanner"
             android:exported="true"
             android:grantUriPermissions="true"
             android:label="Сервер"
@@ -135,7 +135,7 @@
         </activity>
         <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <provider
-            android:name=".ContentProvoders.ContentProviderServer"
+            android:name=".businesslayer.ContentProvoders.ContentProviderServer"
             android:authorities="com.sous.server.providerserver"
             android:directBootAware="true"
             android:enabled="true"
@@ -159,7 +159,7 @@
             android:exported="false"
             tools:node="merge" />
         <service
-            android:name=".Services.ServiceGattServer"
+            android:name=".businesslayer.Services.ServiceGattServer"
             android:enabled="true"
             android:exported="true"
             android:directBootAware="true"
@@ -201,7 +201,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".Services.ServiceForServerScannerAsync"
+            android:name=".businesslayer.Services.ServiceForServerScannerAsync"
             android:enabled="true"
             android:exported="true"
             android:directBootAware="true"
@@ -243,7 +243,7 @@
             </intent-filter>
         </service>
         <receiver
-            android:name=".Brodcasters.BroadcastReceiverWorkManagerScannersServer"
+            android:name=".businesslayer.Brodcasters.BroadcastReceiverWorkManagerScannersServer"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
@@ -256,7 +256,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".Firebases.MyFirebaseMessagingServiceServerScanners"
+            android:name=".businesslayer.Firebases.MyFirebaseMessagingServiceServerScanners"
             android:exported="false"
             android:directBootAware="true"
             android:showOnLockScreen="true"

@@ -1,4 +1,4 @@
-package com.sous.server.Services;
+package com.sous.server.businesslayer.Services;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -14,10 +14,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.sous.server.Errors.SubClassErrors;
-
-import java.util.Date;
-import java.util.concurrent.Executors;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 
 public class BindingServices {
 

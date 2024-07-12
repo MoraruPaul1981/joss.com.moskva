@@ -1,4 +1,4 @@
-package com.sous.server.Locations;
+package com.sous.server.businesslayer.Locations;
 
 import android.content.Context;
 import android.location.Location;

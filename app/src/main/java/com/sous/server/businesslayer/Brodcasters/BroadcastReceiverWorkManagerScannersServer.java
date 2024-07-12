@@ -1,19 +1,15 @@
-package com.sous.server.Brodcasters;
+package com.sous.server.businesslayer.Brodcasters;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 
-import androidx.lifecycle.LiveData;
 import androidx.work.BackoffPolicy;
 import androidx.work.Constraints;
 import androidx.work.Data;
@@ -22,15 +18,13 @@ import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.multiprocess.ListenableCallback;
 
 
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
-import com.sous.server.Firebases.MyFirebaseMessagingServiceServerScanners;
-import com.sous.server.Workmanagers.MyWorkAsyncScannerServer;
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Firebases.MyFirebaseMessagingServiceServerScanners;
+import com.sous.server.businesslayer.Workmanagers.MyWorkAsyncScannerServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 public class BroadcastReceiverWorkManagerScannersServer extends BroadcastReceiver {
     private Long version=0l;

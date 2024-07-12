@@ -1,4 +1,4 @@
-package com.sous.server.ContentProvoders;
+package com.sous.server.businesslayer.ContentProvoders;
 
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -16,8 +16,8 @@ import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
 
-import com.sous.server.Databases.CREATE_DATABASEServer;
-import com.sous.server.Errors.SubClassErrors;
+import com.sous.server.datalayer.Databases.Database.CREATE_DATABASEServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 
 import java.util.List;
 import java.util.Optional;

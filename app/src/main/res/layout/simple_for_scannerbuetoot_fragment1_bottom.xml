@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:minHeight="600dp"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
-    tools:context=".Windows.FragmentServerUser">
+    tools:context=".presentationlayer.FragmentServerUser">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bottomcontrolfragmen1"

@@ -1,46 +1,26 @@
-package com.sous.server.Workmanagers;
+package com.sous.server.businesslayer.Workmanagers;
 
 import static com.google.android.gms.common.util.CollectionUtils.listOf;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import androidx.annotation.ContentView;
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.ForegroundInfo;
-import androidx.work.WorkInfo;
-import androidx.work.WorkManager;
-import androidx.work.WorkQuery;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import androidx.work.impl.utils.futures.SettableFuture;
 
 
-import com.google.common.util.concurrent.ListenableFuture;
-import com.sous.server.Errors.SubClassErrors;
-import com.sous.server.R;
-import com.sous.server.Services.BindingServices;
-import com.sous.server.Services.ServiceForServerScannerAsync;
-import com.sous.server.Services.ServiceGattServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Services.BindingServices;
+import com.sous.server.businesslayer.Services.ServiceGattServer;
 
 import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.function.Consumer;
-
-import javax.inject.Inject;
 
 
 public class MyWorkAsyncScannerServer extends Worker {
