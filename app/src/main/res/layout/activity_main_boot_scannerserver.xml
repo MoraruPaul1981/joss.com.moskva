@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-android:id="@+id/activity_main_boot_scannerserver"
+android:id="@+id/id_activity_main_boot_scannerserver"
 android:layout_height="match_parent"
 android:layout_width="match_parent"
 android:translationZ="5dp"

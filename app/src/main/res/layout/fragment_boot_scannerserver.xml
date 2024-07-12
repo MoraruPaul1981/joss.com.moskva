@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragment_boot_scannerserver"
+    android:id="@+id/id_fragment_boot_scannerserver"
     tools:context=".presentationlayer.MainActivityNewServerScanner">
 
 
