@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-android:id="@+id/id_activity_main_boot_scannerserver"
 android:layout_height="match_parent"
 android:layout_width="match_parent"
 android:translationZ="5dp"
 android:padding="5dp"
 app:cardCornerRadius="0dp"
+android:background="@color/black"
 xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
-    app:cardBackgroundColor="@color/browser_actions_bg_grey"
 tools:context=".presentationlayer.MainActivityNewServerScanner">
 
 
     <FrameLayout
-        android:id="@+id/frameLayoutmain_boot"
+        android:id="@+id/id_frameLayoutmain_boot"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </FrameLayout>
-
 
 
 

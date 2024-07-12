@@ -57,7 +57,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
                    fragmentManager,this);
 
 
-        version=    biMainActivityNewServerScanner.  getversionCurrentPC();
+            version=    biMainActivityNewServerScanner.  getversionCurrentPC();
 
             biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
 

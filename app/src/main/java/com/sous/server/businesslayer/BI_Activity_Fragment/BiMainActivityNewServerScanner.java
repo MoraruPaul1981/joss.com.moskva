@@ -67,7 +67,7 @@ public class BiMainActivityNewServerScanner {
     public void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
             getTransactionscanner.addToBackStack("");
-            getTransactionscanner.add(R.id.id_fragment_boot_scannerserver, fragment);//.layout.activity_for_fragemtb_history_tasks
+            getTransactionscanner.add(R.id.id_frameLayoutmain_boot, fragment);//.layout.activity_for_fragemtb_history_tasks
             getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
             getTransactionscanner.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             getTransactionscanner.show(fragment);

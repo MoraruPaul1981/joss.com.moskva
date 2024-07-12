@@ -39,8 +39,9 @@ public class FragmentBootScannerServer extends Fragment {
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
-            version = pInfo.getLongVersionCode();
+
             getfragmentTransaction = (FragmentTransaction)   ((MainActivityNewServerScanner) getActivity()).getTransactionscanner;
+            version = (Long)   ((MainActivityNewServerScanner) getActivity()).version;
             Log.i(this.getClass().getName(),  "fragmentTransaction "+ getfragmentTransaction
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
@@ -96,12 +97,12 @@ public class FragmentBootScannerServer extends Fragment {
         try {
 
 
-                    getfragmentTransaction.addToBackStack("");
+              /*      getfragmentTransaction.addToBackStack("");
                     //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-            getfragmentTransaction.replace(R.id.fragment_newscanner1, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
+            getfragmentTransaction.replace(R.id.id_fragment_newscanner1, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
             getfragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
             getfragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            getfragmentTransaction.show(fragment);
+            getfragmentTransaction.show(fragment);*/
                     Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
 
