@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
 
-public class bindingServiceGattServer {
+public class BindingServiceGattServer {
 
     private ServiceGattServer.LocalBinderСерверBLE localBinderСерверBLEGatt;
     private Long version;

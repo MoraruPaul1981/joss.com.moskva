@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -23,7 +24,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
     protected FragmentManager fragmentManager;
     protected   FragmentTransaction getTransactionscanner;
     protected Long version;
-
+    protected Handler handlerGatt  ;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -44,7 +45,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
             fragmentManager = getSupportFragmentManager();
             getTransactionscanner = fragmentManager.beginTransaction();
 
-
+            handlerGatt = new Handler(getMainLooper());
 
 
        /*     TODO: запускаем БИзнес код ДЛя Активити Сервер Сканер НАчало !!!!

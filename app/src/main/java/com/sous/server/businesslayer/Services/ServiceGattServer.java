@@ -23,6 +23,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
@@ -93,6 +94,8 @@ public class ServiceGattServer extends IntentService {
     private FusedLocationProviderClient fusedLocationClientGoogle;
     private Location lastLocation;
 
+    private LocationManager locationManager;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -107,6 +110,13 @@ public class ServiceGattServer extends IntentService {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер = new Bundle();
+            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

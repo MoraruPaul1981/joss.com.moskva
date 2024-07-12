@@ -73,7 +73,7 @@ public class FragmentServerUser extends Fragment {
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<String> linkedКолПодкСерверу;
     private Long version;
-    private LocationManager locationManager;
+
     private ServiceGattServer.LocalBinderСерверBLE binderСерверBLE;
     private Message message;
     private    ProgressBar progressBarДЛяСервера;
@@ -97,7 +97,7 @@ public class FragmentServerUser extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             linkedКолПодкСерверу = new LinkedList<>();
-            locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
 
         } catch (Exception e) {
             e.printStackTrace();

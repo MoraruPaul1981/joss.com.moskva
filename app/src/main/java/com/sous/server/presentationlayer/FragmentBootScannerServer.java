@@ -3,6 +3,7 @@ package com.sous.server.presentationlayer;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,35 +12,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.BiFragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import java.util.Date;
-import  io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 
 
 public class FragmentBootScannerServer extends Fragment {
     private Long version;
     private FragmentTransaction getfragmentTransaction;
+    private Handler handlerGatt  ;
+    private     BiFragmentBootScannerServer biFragmentBootScannerServer;
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
-            getfragmentTransaction = (FragmentTransaction)   ((MainActivityNewServerScanner) getActivity()).getTransactionscanner;
-            version = (Long)   ((MainActivityNewServerScanner) getActivity()).version;
-            Log.i(this.getClass().getName(),  "fragmentTransaction "+ getfragmentTransaction
-                    +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+            getfragmentTransaction = (FragmentTransaction) ((MainActivityNewServerScanner) getActivity()).getTransactionscanner;
+            version = (Long) ((MainActivityNewServerScanner) getActivity()).version;
+            handlerGatt = (Handler) ((MainActivityNewServerScanner) getActivity()).handlerGatt;
+            Log.i(this.getClass().getName(), "fragmentTransaction " + getfragmentTransaction
+                    + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
 
-            // TODO: 20.02.2023 Запускаем бизнес логику запуска сканирование
-            BiFragmentBootScannerServer biFragmentBootScannerServer=new BiFragmentBootScannerServer(getContext(), getfragmentTransaction,getActivity());
-            biFragmentBootScannerServer.   МетодЗапускаФрагментаСканирования(new FragmentServerUser(),getfragmentTransaction);
+        /*    //TODO:*/
+            biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), getfragmentTransaction, getActivity());
 
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+            МетодЗапускаСервисаИBootFragment();
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -57,7 +63,37 @@ public class FragmentBootScannerServer extends Fragment {
         }
     }
 
+    private void МетодЗапускаСервисаИBootFragment(  ) {
+        // TODO: 20.02.2023 Запускаем бизнес логику запуска сканирование
 
+        //TODO: Запускаем Фрагмент Сканер Сервер
+        handlerGatt.post(new Runnable() {
+                             @Override
+                             public void run() {
+                                 biFragmentBootScannerServer.
+                                         МетодЗапускаФрагментаСканирования(new FragmentServerUser(),getfragmentTransaction)    ;
+                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                             }
+                         }
+        );
+
+
+        //TODO: Запускаем саму службу GATT  Сервер
+
+        handlerGatt.post(new Runnable() {
+                             @Override
+                             public void run() {
+                                 biFragmentBootScannerServer.МетодЗапускаСлужбыСканированияСервер();
+                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+                             }
+                         }
+        );
+    }
 
 
     @Override
