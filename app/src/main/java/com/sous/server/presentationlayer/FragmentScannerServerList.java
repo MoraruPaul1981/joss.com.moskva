@@ -10,7 +10,6 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -58,7 +57,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
-public class FragmentServerUser extends Fragment {
+public class FragmentScannerServerList extends Fragment {
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
     private RecyclerView recyclerView;
