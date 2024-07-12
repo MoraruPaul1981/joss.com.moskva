@@ -1,4 +1,4 @@
-package com.sous.server.businesslayer.Services;
+package com.sous.server.businesslayer.Services.blServices;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
@@ -15,10 +14,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.businesslayer.Services.ServiceGattServer;
 
-public class BindingServices {
+public class bindingServiceGattServer {
 
-    private  ServiceForServerScannerAsync.LocalBinderAsyncServer localBinderAsyncServer;
+    private ServiceGattServer.LocalBinderСерверBLE localBinderСерверBLEGatt;
     private Long version;
 
     // TODO: 29.11.2022 служба Синхрониазции
@@ -27,30 +27,16 @@ public class BindingServices {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            Intent intentБиндингсСлужбойCbyСнхрониазции = new Intent(context, ServiceForServerScannerAsync.class);
+            Intent intentБиндингсСлужбойCbyСнхрониазции = new Intent(context, ServiceGattServer.class);
             intentБиндингсСлужбойCbyСнхрониазции.setAction("sous.server.async");
             context.bindService(intentБиндингсСлужбойCbyСнхрониазции ,  new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
-                        localBinderAsyncServer = (ServiceForServerScannerAsync.LocalBinderAsyncServer) service;
+                        localBinderСерверBLEGatt = ( ServiceGattServer.LocalBinderСерверBLE) service;
                         if (service.isBinderAlive()) {
                             Log.i(context.getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
                                     + service.isBinderAlive());
-                            localBinderAsyncServer.linkToDeath(new IBinder.DeathRecipient() {
-                                @Override
-                                public void binderDied() {
-                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                            + " localBinderAsyncServer  "+service.isBinderAlive() );
-
-                                    Bundle bundle=new Bundle();
-                                    bundle.putBinder("binder",localBinderAsyncServer);
-                                    messenge.setData(bundle);
-                                    messenge.sendToTarget();
-                                }
-                            });
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -73,8 +59,7 @@ public class BindingServices {
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
                     try {
-                        Log.i(context.getClass().getName(), "    onServiceDisconnected  localBinderAsyncServer.isBinderAlive()" + localBinderAsyncServer.isBinderAlive());
-                        localBinderAsyncServer = null;
+                        Log.i(context.getClass().getName(), "    onServiceDisconnected  localBinderСерверBLEGatt.isBinderAlive()" + localBinderСерверBLEGatt.isBinderAlive());
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"

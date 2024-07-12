@@ -26,27 +26,20 @@ import java.util.Date;
 
 public class FragmentBootScannerServer extends Fragment {
     private Long version;
-    private NavigationBarView bottomNavigationView;
-    private MaterialTextView materialTextViewToolBar;
     private FragmentTransaction getfragmentTransaction;
-    private  Fragment fragment;
-    private RelativeLayout relativeLayout;
-    private Handler handler;
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
-            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
-
             getfragmentTransaction = (FragmentTransaction)   ((MainActivityNewServerScanner) getActivity()).getTransactionscanner;
             version = (Long)   ((MainActivityNewServerScanner) getActivity()).version;
             Log.i(this.getClass().getName(),  "fragmentTransaction "+ getfragmentTransaction
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
             // TODO: 20.02.2023 запучкаем фрагмент сканированеи
-            МетодЗапускаФрагментаСканирования(new FragmentServerUser());
+            МетодЗапускаФрагментаСканирования(new FragmentServerUser(),getfragmentTransaction);
 
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
@@ -93,7 +86,7 @@ public class FragmentBootScannerServer extends Fragment {
         return view;
     }
 
-    private void МетодЗапускаФрагментаСканирования(Fragment fragment) {  ///new FragmentServerUser();
+    private void МетодЗапускаФрагментаСканирования(Fragment fragmentServerUser,FragmentTransaction getfragmentTransaction) {  ///new FragmentServerUser();
         try {
 
 

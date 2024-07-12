@@ -1,4 +1,4 @@
-package com.sous.server.businesslayer.BI_Activity_Fragment;
+package com.sous.server.businesslayer.BI_presentationlayer.BI_Activity_Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
