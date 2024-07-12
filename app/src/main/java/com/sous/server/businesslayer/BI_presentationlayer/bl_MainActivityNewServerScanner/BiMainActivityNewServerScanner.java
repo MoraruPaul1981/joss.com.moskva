@@ -168,12 +168,13 @@ public class BiMainActivityNewServerScanner {
         }
     }
 
-    public void МетодInitDataBase() {
+    public SQLiteDatabase МетодInitDataBase() {
+        SQLiteDatabase Create_Database_СамаБАзаSQLite=null;
         try {
 
-            SQLiteDatabase Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServerScanner(context).getССылкаНаСозданнуюБазу();
+           Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServerScanner(context).getССылкаНаСозданнуюБазу();
 
-            ////CREATE_DATABASEServerScanner createDatabaseServerScanner= new CREATE_DATABASEServerScanner(context);
+        // CREATE_DATABASEServerScanner createDatabaseServerScanner= new CREATE_DATABASEServerScanner(context);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -192,6 +193,7 @@ public class BiMainActivityNewServerScanner {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+        return  Create_Database_СамаБАзаSQLite;
     }
 
 

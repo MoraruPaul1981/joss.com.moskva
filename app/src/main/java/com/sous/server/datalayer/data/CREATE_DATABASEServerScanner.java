@@ -17,18 +17,18 @@ import java.util.function.Consumer;
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpenHelper
-     static final int VERSION =0;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
+
    private   Context context;
-    private      SQLiteDatabase ССылкаНаСозданнуюБазу;
-    private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
+    private static     SQLiteDatabase ССылкаНаСозданнуюБазу;
+    private static final int DATABASE_VERSION = 1;
     private Long version=0l;
-    public SQLiteDatabase getССылкаНаСозданнуюБазу() {
-        Log.d(this.getClass().getName()," get () БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫТА ССылкаНаСозданнуюБазу.isOpen()  " +ССылкаНаСозданнуюБазу);
+    public static SQLiteDatabase getССылкаНаСозданнуюБазу() {
+     System.out.println(ССылкаНаСозданнуюБазу);
         return ССылкаНаСозданнуюБазу;
     }
 
     public CREATE_DATABASEServerScanner(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
-        super(context, "DatabaseScannerServer.db", null, VERSION ); // определяем имя базы данных  и ее версию
+        super(context, "DatabaseScannerServer.db", null, DATABASE_VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
             if (ССылкаНаСозданнуюБазу==null  ) {

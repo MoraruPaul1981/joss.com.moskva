@@ -3,6 +3,7 @@ package com.sous.server.presentationlayer;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.pm.ActivityInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
     protected   FragmentTransaction getTransactionscanner;
     protected Long version;
     protected Handler handlerGatt  ;
+    protected  SQLiteDatabase Create_Database_СамаБАзаSQLite;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -60,8 +62,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
             biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
 
            /*  //TODO:Иниицилизуем БАз ДАнных */
-            biMainActivityNewServerScanner.   МетодInitDataBase();
-
+             Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
