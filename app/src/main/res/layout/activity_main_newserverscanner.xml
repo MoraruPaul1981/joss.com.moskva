@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    android:id="@+id/card"
+    android:id="@+id/cardView"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:translationZ="5dp"
@@ -10,7 +10,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 <LinearLayout
-    android:id="@+id/activity_main_newscanner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -19,6 +18,7 @@
 
 
         <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_margin="5dp"
@@ -34,6 +34,7 @@
 
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:tabRippleColor="#F5CBA7"
@@ -64,6 +65,7 @@
             android:layout_height="6dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:padding="1dp"
             android:background="#FFFFFF"
             android:indeterminate="true"
             android:indeterminateOnly="true"
@@ -89,7 +91,6 @@
             android:layout_margin="5dp"
             android:padding="1dp"
             tools:ignore="MissingConstraints" />
-
 
 </LinearLayout>
 

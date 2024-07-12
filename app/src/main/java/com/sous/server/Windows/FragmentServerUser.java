@@ -176,7 +176,7 @@ public class FragmentServerUser extends Fragment {
 
     private void МетодВизуализацииКнопокИБар() {
         try {
-            ((MainActivityNewServerScanner) getActivity()).МетодВидимыеПрограссБарИКнопки();
+
             Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -430,7 +430,7 @@ public class FragmentServerUser extends Fragment {
             throws ExecutionException, InterruptedException {
         try {
             Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеBACK");
-            ((MainActivityNewServerScanner) getActivity()).МетодСобыытиеКнопокСканирования(new Intent("fragment"));
+
 
         } catch (Exception e) {
             e.printStackTrace();
