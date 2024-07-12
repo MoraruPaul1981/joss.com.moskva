@@ -2,26 +2,23 @@ package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.textview.MaterialTextView;
-import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
-
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.BiFragmentBootScannerServer;
+import com.sous.server.businesslayer.Errors.SubClassErrors;
 import java.util.Date;
+import  io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 
 public class FragmentBootScannerServer extends Fragment {
@@ -38,8 +35,9 @@ public class FragmentBootScannerServer extends Fragment {
             Log.i(this.getClass().getName(),  "fragmentTransaction "+ getfragmentTransaction
                     +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
-            // TODO: 20.02.2023 запучкаем фрагмент сканированеи
-            МетодЗапускаФрагментаСканирования(new FragmentServerUser(),getfragmentTransaction);
+            // TODO: 20.02.2023 Запускаем бизнес логику запуска сканирование
+            BiFragmentBootScannerServer biFragmentBootScannerServer=new BiFragmentBootScannerServer(getContext(), getfragmentTransaction,getActivity());
+            biFragmentBootScannerServer.   МетодЗапускаФрагментаСканирования(new FragmentServerUser(),getfragmentTransaction);
 
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
@@ -84,37 +82,6 @@ public class FragmentBootScannerServer extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
         return view;
-    }
-
-    private void МетодЗапускаФрагментаСканирования(Fragment fragmentServerUser,FragmentTransaction getfragmentTransaction) {  ///new FragmentServerUser();
-        try {
-
-
-              /*      getfragmentTransaction.addToBackStack("");
-                    //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-            getfragmentTransaction.replace(R.id.id_fragment_newscanner1, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
-            getfragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-            getfragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            getfragmentTransaction.show(fragment);*/
-                    Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-
-
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-            Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
     }
 
 

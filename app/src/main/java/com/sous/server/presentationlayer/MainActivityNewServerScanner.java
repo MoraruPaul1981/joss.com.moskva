@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.sous.server.businesslayer.BI_presentationlayer.BI_Activity_Fragment.BiMainActivityNewServerScanner;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_MainActivityNewServerScanner.BiMainActivityNewServerScanner;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -44,21 +44,19 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
             fragmentManager = getSupportFragmentManager();
             getTransactionscanner = fragmentManager.beginTransaction();
 
-       /*     TODO: запускаем бизнес логику Активити Сканера Сервера
+
+
+
+       /*     TODO: запускаем БИзнес код ДЛя Активити Сервер Сканер НАчало !!!!
        *       */
 
             BiMainActivityNewServerScanner biMainActivityNewServerScanner=new BiMainActivityNewServerScanner(getApplicationContext(),getTransactionscanner,
                    fragmentManager,this);
 
-
             version=    biMainActivityNewServerScanner.  getversionCurrentPC();
-
             biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
-
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
             biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
-
-
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
