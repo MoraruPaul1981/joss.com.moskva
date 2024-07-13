@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -17,6 +19,13 @@ import androidx.loader.content.AsyncTaskLoader;
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.BiFragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.businesslayer.eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.eventbus.ParamentsScannerServer;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Date;
 
 
@@ -39,16 +48,18 @@ public class FragmentBootServer extends Fragment {
             Log.i(this.getClass().getName(), "fragmentTransaction " + getfragmentTransaction
                     + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
 
-        /*    //TODO:*/
+        /*    //TODO:создаем класс для бизнес логики */
             biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), getfragmentTransaction, getActivity());
+
+            /*    //TODO:создаем подписку MessageScannerServer */
+            EventBus.getDefault().register(this);
+
 
             МетодЗапускаСервисаИBootFragment();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -123,6 +134,29 @@ public class FragmentBootServer extends Fragment {
         }
         return view;
     }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageScannerServer event) {
+        // Do something
+        ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
+       String s= paramentsScannerServer.getS1();
+       Integer i= paramentsScannerServer.getI1();
+        Toast.makeText(getContext(),s.toString()+""+i.toString(),Toast.LENGTH_LONG).show();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

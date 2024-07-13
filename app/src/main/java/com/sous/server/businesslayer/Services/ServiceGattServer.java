@@ -50,7 +50,11 @@ import com.google.android.gms.tasks.Task;
 
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.businesslayer.eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.eventbus.ParamentsScannerServer;
 
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -117,6 +121,11 @@ public class ServiceGattServer extends IntentService {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
+            ParamentsScannerServer sendparamentsScannerServer=    new ParamentsScannerServer();
+            sendparamentsScannerServer.setS1("dffdfdfdf");
+            sendparamentsScannerServer.setI1(34343434);
+
+            EventBus.getDefault().post(new MessageScannerServer(sendparamentsScannerServer));
 
         } catch (Exception e) {
             e.printStackTrace();
