@@ -61,7 +61,8 @@ public class ActivityServerScanner extends AppCompatActivity {
             version=    biMainActivityNewServerScanner.  getversionCurrentPC();
             biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-            biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
+            biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentServerbleRecyclerView());//todo Запускам клиента или сервер фрагмент
+         //   biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
 
            /*  //TODO:Иниицилизуем БАз ДАнных */
              Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();

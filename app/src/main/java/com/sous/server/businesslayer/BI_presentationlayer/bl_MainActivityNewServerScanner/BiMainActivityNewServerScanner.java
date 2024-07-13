@@ -68,7 +68,7 @@ public class BiMainActivityNewServerScanner {
     @SuppressLint("SuspiciousIndentation")
     public void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
-            getTransactionscanner.addToBackStack("");
+            getTransactionscanner.addToBackStack(null);
             getTransactionscanner.add(R.id.id_frameLayoutmain_boot, fragment);//.layout.activity_for_fragemtb_history_tasks
             getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
             getTransactionscanner.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);

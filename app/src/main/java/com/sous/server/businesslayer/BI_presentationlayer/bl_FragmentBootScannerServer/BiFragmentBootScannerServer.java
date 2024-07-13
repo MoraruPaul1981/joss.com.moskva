@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
+import com.sous.server.presentationlayer.FragmentServerbleRecyclerView;
 
 import java.util.Date;
 
@@ -20,29 +23,38 @@ public class BiFragmentBootScannerServer {
     protected  Context context;
     protected   FragmentTransaction getTransactionscanner;
     protected Long version;
-    protected FragmentManager fragmentManager;
-
     protected Activity getactivity;
 
-    public BiFragmentBootScannerServer(Context context, FragmentTransaction getfragmentTransaction, Activity getactivity) {
+    public BiFragmentBootScannerServer(Context context, FragmentTransaction getTransactionscanner, Activity getactivity,Long version) {
         this.context = context;
         this.getTransactionscanner = getTransactionscanner;
         this.version = version;
-        this.fragmentManager = fragmentManager;
         this.getactivity = getactivity;
     }
 
-    public void МетодЗапускаФрагментаСканирования(Fragment fragmentServerUser, FragmentTransaction getfragmentTransaction) {  ///new FragmentServerbleRecyclerView();
+    public void МетодЗапускаФрагментаСканирования(   ) {  ///new FragmentServerbleRecyclerView();
         try {
+            FragmentServerbleRecyclerView fragmentServerbleRecyclerView1=        new FragmentServerbleRecyclerView();
+            getTransactionscanner.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView1);//.layout.activity_for_fragemtb_history_tasks
+            //getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
+            getTransactionscanner.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            getTransactionscanner.show(fragmentServerbleRecyclerView1);
+
+
+            /*getfragmentTransaction.addToBackStack(null);
 
 
 
-              /*      getfragmentTransaction.addToBackStack("");
-                    //fragmentTransaction.add(R.id.framelauoutScanner, fragment.getClass(),bundle);//.layout.activity_for_fragemtb_history_tasks
-            getfragmentTransaction.replace(R.id.id_fragment_newscanner1, fragment).setPrimaryNavigationFragment(fragment);//.layout.activity_for_fragemtb_history_tasks
+
+
+            getfragmentTransaction.replace(R.id.id_fragment_newscanner1, fragmentServerbleRecyclerView1) ;
+
+
             getfragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
             getfragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            getfragmentTransaction.show(fragment);*/
+
+            getfragmentTransaction.show(fragmentServerbleRecyclerView1);*/
             Log.i(context.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " время " +new Date().toLocaleString() );
 

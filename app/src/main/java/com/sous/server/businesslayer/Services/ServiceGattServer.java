@@ -83,7 +83,6 @@ public class ServiceGattServer extends IntentService {
     private BluetoothGattServer server;
     private Long version = 0l;
     private  Activity activity;
-    private  Context context;
 
     private  BluetoothManager bluetoothManagerServer;
     private  BluetoothAdapter bluetoothAdapter ;
@@ -104,28 +103,19 @@ public class ServiceGattServer extends IntentService {
     public void onCreate() {
         super.onCreate();
         try {
-            Log.d(context.getClass().getName(), "\n"
+            Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-            TAG = context.getClass().getName().toString();
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            TAG = getApplicationContext().getClass().getName().toString();
+            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            bundleСервер = new Bundle();
-            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-            bluetoothManagerServer = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-            bluetoothAdapter = bluetoothManagerServer.getAdapter();
 
-            Log.d(context.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-            ParamentsScannerServer sendparamentsScannerServer=    new ParamentsScannerServer();
-            sendparamentsScannerServer.setS1("dffdfdfdf");
-            sendparamentsScannerServer.setI1(34343434);
-
-            EventBus.getDefault().post(new MessageScannerServer(sendparamentsScannerServer));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -144,17 +134,12 @@ public class ServiceGattServer extends IntentService {
 
     }
 
-
-
     public class LocalBinderСерверBLE extends Binder {
         public ServiceGattServer getService() {
             // Return this instance of LocalService so clients can call public methods
             return ServiceGattServer.this;
         }
 
-        public void linkToDeath(DeathRecipient deathRecipient) {
-            deathRecipient.binderDied();
-        }
     }
 
     @Nullable
@@ -169,40 +154,8 @@ public class ServiceGattServer extends IntentService {
 
     }
 
-    @Override
-    public boolean onUnbind(Intent intent) {
-        return super.onUnbind(intent);
-    }
 
-    @Override
-    public void onRebind(Intent intent) {
-        super.onRebind(intent);
-    }
 
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        super.onTaskRemoved(rootIntent);
-        try {
-                Log.d(getApplicationContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
 
     @SuppressLint("MissingPermission")
     @Override
@@ -232,6 +185,9 @@ public class ServiceGattServer extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
+
+            запускМанеджераBLE();
+
             Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!" + "\n" +
@@ -258,95 +214,90 @@ public class ServiceGattServer extends IntentService {
     }
 
 
-    @Override
-    public void onTrimMemory(int level) {
-        super.onTrimMemory(level);
-    }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void запускМанеджераBLE() {
         try{
-        Log.d(newBase.getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + newBase.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        this.context=newBase;
-        super.attachBaseContext(newBase);
-        // TODO: 30.06.2022 сама не постредствено запуск метода
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            bundleСервер = new Bundle();
+            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+            bluetoothAdapter = bluetoothManagerServer.getAdapter();
+            Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
     }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

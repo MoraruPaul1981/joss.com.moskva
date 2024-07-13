@@ -84,7 +84,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
-            linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
+          /*  linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
             progressBarДЛяСервера = (ProgressBar) view.findViewById(R.id.ProgressBarScannerfragment1);
             relativeLayoutСервер = (RelativeLayout) view.findViewById(R.id.recyclerviewfragment1);
             Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
@@ -95,7 +95,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             ArrayListДанныеФрагмент1.add("Фрагмент Сервера");
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            linkedКолПодкСерверу = new LinkedList<>();
+            linkedКолПодкСерверу = new LinkedList<>();*/
 
 
         } catch (Exception e) {
@@ -145,13 +145,13 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            МетодВизуализацииКнопокИБар();
+         /*   МетодВизуализацииКнопокИБар();
             МетодBackBindind();
             МетодHandler();
             МетодУстановкаБесконечнаяВидимсостиСервера();
             МетодБиндингаСканирование();
             МетодИнициализацииRecycleViewДляЗадач();
-            МетодКпопкаВозвращениеBACK();
+            МетодКпопкаВозвращениеBACK();*/
 
             Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
         } catch (Exception e) {
@@ -196,9 +196,9 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public void onResume() {
         super.onResume();
         try {
-            МетодЗаполенияRecycleViewДляЗадач();
+          /*  МетодЗаполенияRecycleViewДляЗадач();
             МетодСлушательObserverДляRecycleView();
-            МетодПерегрузкаRecyceView();
+            МетодПерегрузкаRecyceView();*/
             Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -991,18 +991,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
                         if (binderСерверBLE.isBinderAlive()) {
                             Log.i(getContext().getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
                                     + binderСерверBLE.isBinderAlive());
-                            binderСерверBLE.linkToDeath(new IBinder.DeathRecipient() {
-                                @Override
-                                public void binderDied() {
-                                    // TODO: 20.02.2023  back
-                                    Bundle bundle=new Bundle();
-                                    bundle.putBinder("binder", binderСерверBLE);
-                                    message.sendToTarget();
-                                    Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+" "+
-                                            binderСерверBLE.isBinderAlive());
 
-                                }
-                            });
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
