@@ -21,47 +21,30 @@ import java.util.Date;
 public class BiFragmentBootScannerServer {
 
     protected  Context context;
-    protected   FragmentTransaction getTransactionscanner;
+    protected  FragmentManager fragmentManager;
     protected Long version;
     protected Activity getactivity;
 
-    public BiFragmentBootScannerServer(Context context, FragmentTransaction getTransactionscanner, Activity getactivity,Long version) {
+    public BiFragmentBootScannerServer(Context context,   FragmentManager fragmentManager, Activity getactivity,Long version) {
         this.context = context;
-        this.getTransactionscanner = getTransactionscanner;
+        this.fragmentManager = fragmentManager;
         this.version = version;
         this.getactivity = getactivity;
     }
 
-    public void МетодЗапускаФрагментаСканирования(   ) {  ///new FragmentServerbleRecyclerView();
+    public void МетодЗапускаФрагментаСканирования(  @NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentServerbleRecyclerView();
         try {
-            FragmentServerbleRecyclerView fragmentServerbleRecyclerView1=        new FragmentServerbleRecyclerView();
-            getTransactionscanner.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView1);//.layout.activity_for_fragemtb_history_tasks
-            //getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
-            getTransactionscanner.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            getTransactionscanner.show(fragmentServerbleRecyclerView1);
+            FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
+            fragmentTransactionBoot.addToBackStack(null);
+            fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
+            fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            fragmentTransactionBoot.show(fragmentServerbleRecyclerView);
 
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-            /*getfragmentTransaction.addToBackStack(null);
-
-
-
-
-
-            getfragmentTransaction.replace(R.id.id_fragment_newscanner1, fragmentServerbleRecyclerView1) ;
-
-
-            getfragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
-
-            getfragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-
-            getfragmentTransaction.show(fragmentServerbleRecyclerView1);*/
-            Log.i(context.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " время " +new Date().toLocaleString() );
-
-
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-            Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

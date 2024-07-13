@@ -20,29 +20,31 @@ import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.datalayer.data.CREATE_DATABASEServerScanner;
 
+import java.util.Date;
+
 public class BiMainActivityNewServerScanner {
 
     protected  Context context;
-    protected   FragmentTransaction getTransactionscanner;
-    protected Long version;
+    protected  Long version=0l;
     protected FragmentManager fragmentManager;
-
     protected Activity getactivity;
 
-    public BiMainActivityNewServerScanner(Context context, FragmentTransaction getTransactionscanner,
-                                           FragmentManager fragmentManager, Activity getactivity) {
+    public BiMainActivityNewServerScanner(Context context ,FragmentManager fragmentManager, Activity getactivity ) {
         this.context = context;
-        this.getTransactionscanner = getTransactionscanner;
-        this.version = version;
         this.fragmentManager = fragmentManager;
         this.getactivity = getactivity;
     }
 
     public Long getversionCurrentPC() throws PackageManager.NameNotFoundException {
+        Long version=0l;
         try{
             PackageInfo pInfo =context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            this.version=version;
 
+            Log.i(this.getClass().getName(), "  "
+                    + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " время " + new Date().toLocaleString() + " version " +version);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
@@ -68,11 +70,16 @@ public class BiMainActivityNewServerScanner {
     @SuppressLint("SuspiciousIndentation")
     public void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
         try {
-            getTransactionscanner.addToBackStack(null);
-            getTransactionscanner.add(R.id.id_frameLayoutmain_boot, fragment);//.layout.activity_for_fragemtb_history_tasks
-            getTransactionscanner.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
-            getTransactionscanner.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            getTransactionscanner.show(fragment);
+            FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
+            fragmentTransactionBoot.addToBackStack(null);
+            fragmentTransactionBoot.add(R.id.id_frameLayoutmain_boot, fragment);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
+            fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            fragmentTransactionBoot.show(fragment);
+
+            Log.i(this.getClass().getName(), "  "
+                    + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " время " + new Date().toLocaleString());
 // TODO: 07.01.2022 GREAT OPERATIONS подпииска на данны
         } catch (Exception e) {
             e.printStackTrace();

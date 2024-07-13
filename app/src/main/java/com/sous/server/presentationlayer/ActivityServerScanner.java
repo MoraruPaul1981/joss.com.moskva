@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class ActivityServerScanner extends AppCompatActivity {
     protected FragmentManager fragmentManager;
-    protected   FragmentTransaction getTransactionscanner;
+
     protected Long version;
     protected Handler handlerGatt  ;
     protected AsyncTaskLoader asyncTaskLoaderGatt  ;
@@ -37,8 +37,8 @@ public class ActivityServerScanner extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main_boot_scannerserver);
 
-
             getSupportActionBar().hide(); ///скрывать тул бар
+
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
@@ -46,31 +46,13 @@ public class ActivityServerScanner extends AppCompatActivity {
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+              /////TODO создание Мэнеджера Фрагмент
             fragmentManager = getSupportFragmentManager();
-            getTransactionscanner = fragmentManager.beginTransaction();
-
+            /////TODO создание Мэнеджера Фрагмент
             handlerGatt = new Handler(getMainLooper());
-
-
-       /*     TODO: запускаем БИзнес код ДЛя Активити Сервер Сканер НАчало !!!!
-       *       */
-
-            BiMainActivityNewServerScanner biMainActivityNewServerScanner=new BiMainActivityNewServerScanner(getApplicationContext(),getTransactionscanner,
-                   fragmentManager,this);
-
-            version=    biMainActivityNewServerScanner.  getversionCurrentPC();
-            biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
-            // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-            biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentServerbleRecyclerView());//todo Запускам клиента или сервер фрагмент
-         //   biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
-
-           /*  //TODO:Иниицилизуем БАз ДАнных */
-             Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " время " + new Date().toLocaleString());
-            Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " время " + new Date().toLocaleString());
 
         } catch (Exception e) {
@@ -92,11 +74,45 @@ public class ActivityServerScanner extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try{
+          /*  //TODO: ссылка на класс бизнес логики Сервер Сканирование
+          *      */
+        BiMainActivityNewServerScanner biMainActivityNewServerScanner=new BiMainActivityNewServerScanner(getApplicationContext(), fragmentManager,this);
+
+        version=    biMainActivityNewServerScanner.  getversionCurrentPC();
+
+        biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
+
+        biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
+
+            /*  //TODO:Иниицилизуем БАз ДАнных */
+            Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();
+
+            Log.i(this.getClass().getName(), "  "
+                    + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " время " + new Date().toLocaleString());
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
+                Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
 
 
-
-
-
+    }
 }
 
 

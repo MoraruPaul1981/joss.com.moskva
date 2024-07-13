@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.AsyncTaskLoader;
 
@@ -31,7 +32,7 @@ import java.util.Date;
 
 public class FragmentBootServer extends Fragment {
     private Long version;
-    private FragmentTransaction getfragmentTransaction;
+    FragmentManager fragmentManager;
     private Handler handlerGatt  ;
     private AsyncTaskLoader asyncTaskLoaderGatt;
     private     BiFragmentBootScannerServer biFragmentBootScannerServer;
@@ -41,15 +42,10 @@ public class FragmentBootServer extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
-            getfragmentTransaction = (FragmentTransaction) ((ActivityServerScanner) getActivity()).getTransactionscanner;
+            fragmentManager = (FragmentManager) ((ActivityServerScanner) getActivity()).fragmentManager;
             version = (Long) ((ActivityServerScanner) getActivity()).version;
             handlerGatt = (Handler) ((ActivityServerScanner) getActivity()).handlerGatt;
             asyncTaskLoaderGatt = (AsyncTaskLoader) ((ActivityServerScanner) getActivity()).asyncTaskLoaderGatt;
-            Log.i(this.getClass().getName(), "fragmentTransaction " + getfragmentTransaction
-                    + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-
-        /*    //TODO:создаем класс для бизнес логики */
-            biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), getfragmentTransaction, getActivity(),version);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -77,6 +73,12 @@ public class FragmentBootServer extends Fragment {
         super.onStart();
         /*    //TODO:создаем подписку MessageScannerServer */
         EventBus.getDefault().register(this);
+
+
+        /*    //TODO:создаем класс для бизнес логики */
+        biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
+
+
 
         МетодЗапускаBootFragment(  );
 
@@ -148,21 +150,17 @@ public class FragmentBootServer extends Fragment {
        try{
         //TODO: Запускаем Фрагмент
 
-           //biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(   )    ;
-
-
-/*
         handlerGatt.post(new Runnable() {
                              @Override
                              public void run() {
-                                 biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  getfragmentTransaction)    ;
+                                 biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new  FragmentServerbleRecyclerView ())    ;
                                  Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                          " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                          " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                              }
                          }
         );
-*/
+
 
     } catch (Exception e) {
         e.printStackTrace();
