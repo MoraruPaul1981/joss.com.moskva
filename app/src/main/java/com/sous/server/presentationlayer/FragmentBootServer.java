@@ -21,6 +21,7 @@ import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.BiFragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.eventbus.MessageScannerStartRecyreViewFragment;
 import com.sous.server.businesslayer.eventbus.ParamentsScannerServer;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,7 +33,7 @@ import java.util.Date;
 
 public class FragmentBootServer extends Fragment {
     private Long version;
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     private Handler handlerGatt  ;
     private AsyncTaskLoader asyncTaskLoaderGatt;
     private     BiFragmentBootScannerServer biFragmentBootScannerServer;
@@ -67,43 +68,6 @@ public class FragmentBootServer extends Fragment {
         }
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        /*    //TODO:создаем подписку MessageScannerServer */
-        EventBus.getDefault().register(this);
-
-
-        /*    //TODO:создаем класс для бизнес логики */
-        biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
-
-
-
-        МетодЗапускаBootFragment(  );
-
-      ///  МетодЗапускаСервиса(  );
-
-
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        /*    //TODO:создаем подписку MessageScannerServer */
-        EventBus.getDefault().unregister(this);
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-    }
-
-
-
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
@@ -132,16 +96,81 @@ public class FragmentBootServer extends Fragment {
 
 
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageScannerServer event) {
-        // Do something
-        ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
-       String s= paramentsScannerServer.getS1();
-       Integer i= paramentsScannerServer.getI1();
-        Toast.makeText(getContext(),s.toString()+""+i.toString(),Toast.LENGTH_LONG).show();
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try{
+        /*    //TODO:создаем подписку MessageScannerServer */
+        EventBus.getDefault().register(this);
+
+
+        /*    //TODO:создаем класс для бизнес логики */
+        biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
+
+       МетодЗапускаСервиса(  );
+
+        Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        try{
+        /*    //TODO:создаем подписку MessageScannerServer */
+        EventBus.getDefault().unregister(this);
+        Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageScannerStartRecyreViewFragment event) {
+        // Do something
+        Boolean getReslutForStartRecyreView= event.флагЗапускаФрагментRecyreView;
+
+        Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                " getReslutForStartRecyreView " +getReslutForStartRecyreView);
+
+        Toast.makeText(getContext(),getReslutForStartRecyreView.toString() ,Toast.LENGTH_LONG).show();
+    }
 
 
 

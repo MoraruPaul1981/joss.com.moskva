@@ -25,7 +25,7 @@ import java.util.Date;
 public class BiMainActivityNewServerScanner {
 
     protected  Context context;
-    protected  Long version=0l;
+    protected  Long version;
     protected FragmentManager fragmentManager;
     protected Activity getactivity;
 
@@ -68,14 +68,14 @@ public class BiMainActivityNewServerScanner {
 
     // TODO: 05.12.2022  запуск клиента
     @SuppressLint("SuspiciousIndentation")
-    public void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
+    public void МетодЗапускBootФрагмента(@NonNull Fragment fragmentBoot) {
         try {
             FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
             fragmentTransactionBoot.addToBackStack(null);
-            fragmentTransactionBoot.add(R.id.id_frameLayoutmain_boot, fragment);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransactionBoot.add(R.id.id_frameLayoutmain_boot, fragmentBoot);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
             fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentTransactionBoot.show(fragment);
+            fragmentTransactionBoot.show(fragmentBoot);
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +

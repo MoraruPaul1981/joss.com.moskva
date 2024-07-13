@@ -120,7 +120,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_newscanner1, container, false);
+            view = inflater.inflate(R.layout.fragment_recyreviewerverscanner, container, false);
             Log.d(this.getClass().getName(), " onCreateView  viewДляПервойКнопкиHome_Задания  Fragment1_One_Tasks  onCreateView " +
                     "" + view);
         } catch (Exception e) {
