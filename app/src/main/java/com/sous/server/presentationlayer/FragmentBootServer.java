@@ -161,15 +161,15 @@ public class FragmentBootServer extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageScannerStartRecyreViewFragment event) {
         // Do something
-        Boolean getReslutForStartRecyreView= event.флагЗапускаФрагментRecyreView;
+        Boolean getReslutOTServiceGatt= event.флагЗапускаФрагментRecyreView;
 
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                " getReslutForStartRecyreView " +getReslutForStartRecyreView);
+                " getReslutOTServiceGatt " +getReslutOTServiceGatt);
 
-        Toast.makeText(getContext(),getReslutForStartRecyreView.toString() ,Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(),getReslutOTServiceGatt.toString() ,Toast.LENGTH_LONG).show();
     }
 
 

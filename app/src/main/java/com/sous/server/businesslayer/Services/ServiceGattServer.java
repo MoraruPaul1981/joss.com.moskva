@@ -169,34 +169,23 @@ public class ServiceGattServer extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-            
-            callBackFromServiceToRecyreViewFragment();
-            
-            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-            scheduler.scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(getApplicationContext().getClass().getName(), "\n"
-                            + " время: " + new Date() + "\n+" +
-                            " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!" + "\n" +
-                            " УДАЛЕНИЕ СТАТУСА Удаленная !!!!! " + "\n" +
-                            " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
-                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                            " new Date()  " + new Date().toLocaleString());
-                }
-            }, 0, 10, TimeUnit.SECONDS);
 
 
+      Boolean getStatusEnableBlueadapter=      enableBluetoothAdapter();
+
+            callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
 
+      /*      //TODO:Тест Код запуск кода по расписанию
+      *          */
+             //testMetodShedule10Secynd();
 
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!" + "\n" +
-                    " УДАЛЕНИЕ СТАТУСА Удаленная !!!!! " + "\n" +
-                    " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            // МетодЗапускаОбщиеКоды(getApplicationContext(),intent);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    "  getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
+
+
 // TODO: 30.06.2022 сама не постредствено запуск метода
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,63 +204,21 @@ public class ServiceGattServer extends IntentService {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void testMetodShedule10Secynd() {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!" + "\n" +
+                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!! " + "\n" +
+                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " new Date()  " + new Date().toLocaleString());
+            }
+        }, 0, 10, TimeUnit.SECONDS);
+    }
 
 
     private void launchmanagerBLE () {
@@ -304,16 +251,18 @@ public class ServiceGattServer extends IntentService {
 
 
 
-    private void callBackFromServiceToRecyreViewFragment() {
+    private void callBackFromServiceToRecyreViewFragment(@NonNull    Boolean getStatusEnableBlueadapter) {
         try{
-            MessageScannerStartRecyreViewFragment sendmessageScannerStartRecyreViewFragment=
-                    new MessageScannerStartRecyreViewFragment(true);
+            MessageScannerStartRecyreViewFragment sendmessageScannerStartRecyreViewFragment= new MessageScannerStartRecyreViewFragment(getStatusEnableBlueadapter);
 
-            EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
+            if (getStatusEnableBlueadapter==true) {
+                EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
+            }
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                     " getStatusEnableBlueadapter "+getStatusEnableBlueadapter);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -473,25 +422,15 @@ public class ServiceGattServer extends IntentService {
     }
 
     @SuppressLint("MissingPermission")
-    private void МетодПереполучениеBlutoochМенеджера() {
+    private Boolean enableBluetoothAdapter() {
         try{
-            if (bluetoothManagerServer!=null) {
-                bluetoothAdapter = bluetoothManagerServer.getAdapter();
-                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-            }
-            if (bluetoothAdapter != null) {
-            if (bluetoothAdapter.isEnabled() == false) {
+
+            if (bluetoothAdapter.isEnabled() ==false) {
                 bluetoothAdapter.enable();
             }
-
-                // TODO: 13.02.2023  ИНИЦИАЛИЗАЦИИ GPS через Google
-                МетодИницилиазцииGpsGoogle();
-                List<BluetoothDevice>   bluetoothDeviceListGattServer=    bluetoothManagerServer.getConnectedDevices(BluetoothProfile.GATT_SERVER);
-                Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
-                        " bluetoothDeviceListGattServer "+bluetoothDeviceListGattServer);
-        }
-            Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
-                     " bluetoothAdapter "+bluetoothAdapter);
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " bluetoothAdapter.isEnabled()  " +bluetoothAdapter.isEnabled() );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -506,7 +445,12 @@ public class ServiceGattServer extends IntentService {
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
+        return  bluetoothAdapter.isEnabled();
     }
+
+
+
+
 
     @SuppressLint("MissingPermission")
     private void МетодПерегрузкиСервераGatt(@NonNull MutableLiveData<Bundle> mutableLiveDataGATTServer) {
