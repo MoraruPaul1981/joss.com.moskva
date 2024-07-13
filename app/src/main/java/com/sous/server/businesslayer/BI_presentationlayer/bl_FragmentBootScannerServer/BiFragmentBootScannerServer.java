@@ -32,7 +32,7 @@ public class BiFragmentBootScannerServer {
         this.getactivity = getactivity;
     }
 
-    public void МетодЗапускаФрагментаСканирования(Fragment fragmentServerUser, FragmentTransaction getfragmentTransaction) {  ///new FragmentScannerServerList();
+    public void МетодЗапускаФрагментаСканирования(Fragment fragmentServerUser, FragmentTransaction getfragmentTransaction) {  ///new FragmentServerbleRecyclerView();
         try {
 
 
@@ -69,7 +69,7 @@ public class BiFragmentBootScannerServer {
 
 
 
-    public void МетодЗапускаСлужбыСканированияСервер() {  ///new FragmentScannerServerList();
+    public void МетодЗапускаСлужбыСканированияСервер() {  ///new FragmentServerbleRecyclerView();
         try {
 
             Intent startGATTServiceGattServer = new Intent(context, ServiceGattServer.class);

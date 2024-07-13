@@ -79,12 +79,12 @@ public class ServiceGattServer extends IntentService {
     private BluetoothGattServer server;
     private Long version = 0l;
     private  Activity activity;
+    private  Context context;
 
     private  BluetoothManager bluetoothManagerServer;
     private  BluetoothAdapter bluetoothAdapter ;
     public ServiceGattServer() {
-        super(
-                "ServiceGattServer");
+        super("ServiceGattServer");
     }
     private MutableLiveData<Bundle> mutableLiveDataGATTServer;
     private List<Address> addressesgetGPS;
@@ -100,18 +100,20 @@ public class ServiceGattServer extends IntentService {
     public void onCreate() {
         super.onCreate();
         try {
-            Log.d(getApplicationContext().getClass().getName(), "\n"
+            Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-            TAG = getClass().getName().toString();
-            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            TAG = context.getClass().getName().toString();
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             bundleСервер = new Bundle();
-            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            bluetoothManagerServer = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+            bluetoothAdapter = bluetoothManagerServer.getAdapter();
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(context.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
@@ -133,78 +135,6 @@ public class ServiceGattServer extends IntentService {
 
     }
 
-    @SuppressLint("MissingPermission")
-    private void МетодИницилиазцииGpsGoogle() {
-        try {
-            fusedLocationClientGoogle = LocationServices.getFusedLocationProviderClient(this);
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                Task<Location> locationResult = fusedLocationClientGoogle.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
-                    @NonNull
-                    @Override
-                    public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                        return null;
-                    }
-
-                    @Override
-                    public boolean isCancellationRequested() {
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                        return false;
-                    }
-                });
-            locationResult.addOnCompleteListener( new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful()==true && task.isComplete() ==true) {
-                          lastLocation=task.getResult();
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation +
-                                " task.isSuccessful() " +task.isSuccessful()+  "task.isComplete() "+task.isComplete());
-                        // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
-                        МетодПолучениеЛокацииGPS();
-                        bundleСервер.clear();
-                        bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                        getApplicationContext().getMainExecutor().execute (()->{
-                            mutableLiveDataGATTServer.setValue(bundleСервер);
-                        }); ;
-                    }
-                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                }
-            });
-
-            locationResult.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    ContentValues valuesЗаписываемОшибки = new ContentValues();
-                    valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                    valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                    valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                    valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    final Object ТекущаяВерсияПрограммы = version;
-                    Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                    valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                }
-            });
-
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
 
 
     public class LocalBinderСерверBLE extends Binder {
@@ -244,13 +174,11 @@ public class ServiceGattServer extends IntentService {
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         try {
-            if (rootIntent.getAction().equalsIgnoreCase("КлиентЗакрываетСлужбу")) {
                 Log.d(getApplicationContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                stopSelf();
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -328,14 +256,174 @@ public class ServiceGattServer extends IntentService {
 
     @Override
     protected void attachBaseContext(Context newBase) {
+        try{
         Log.d(newBase.getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + newBase.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        this.context=newBase;
         super.attachBaseContext(newBase);
+        // TODO: 30.06.2022 сама не постредствено запуск метода
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
-    // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: 30.11.2022  НАчинаем КОД       сервер СКАНИРОВАНИЯ
+    @SuppressLint("MissingPermission")
+    private void МетодИницилиазцииGpsGoogle() {
+        try {
+            fusedLocationClientGoogle = LocationServices.getFusedLocationProviderClient(this);
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+            Task<Location> locationResult = fusedLocationClientGoogle.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, new CancellationToken() {
+                @NonNull
+                @Override
+                public CancellationToken onCanceledRequested(@NonNull OnTokenCanceledListener onTokenCanceledListener) {
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    return null;
+                }
+
+                @Override
+                public boolean isCancellationRequested() {
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    return false;
+                }
+            });
+            locationResult.addOnCompleteListener( new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()==true && task.isComplete() ==true) {
+                        lastLocation=task.getResult();
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation +
+                                " task.isSuccessful() " +task.isSuccessful()+  "task.isComplete() "+task.isComplete());
+                        // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
+                        МетодПолучениеЛокацииGPS();
+                        bundleСервер.clear();
+                        bundleСервер.putString("Статус", "SERVER#SousAvtoStartingGPS");
+                        getApplicationContext().getMainExecutor().execute (()->{
+                            mutableLiveDataGATTServer.setValue(bundleСервер);
+                        }); ;
+                    }
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                }
+            });
+
+            locationResult.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    ContentValues valuesЗаписываемОшибки = new ContentValues();
+                    valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                    valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                    valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                    valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    final Object ТекущаяВерсияПрограммы = version;
+                    Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                    valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                    new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                }
+            });
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+
+
+
     @SuppressLint({"MissingPermission", "NewApi"})
     public synchronized   void МетодГлавныйЗапускGattServer(@NonNull Handler handler,
                                                             @NonNull Activity activity,
@@ -345,7 +433,7 @@ public class ServiceGattServer extends IntentService {
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         Log.w(this.getClass().getName(), " SERVER  МетодГлавныйЗапускGattServer  bluetoothManager  " + "server "+server);
         try {
-            МетодПереполучениеBlutoochМенеджера();
+
             if (bluetoothAdapter!=null) {
                 // TODO: 21.02.2023 Метод Перегрузки Сервера
                 МетодПерегрузкиСервераGatt(mutableLiveDataGATTServer);
@@ -379,7 +467,6 @@ public class ServiceGattServer extends IntentService {
     @SuppressLint("MissingPermission")
     private void МетодПереполучениеBlutoochМенеджера() {
         try{
-        bluetoothManagerServer = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
             if (bluetoothManagerServer!=null) {
                 bluetoothAdapter = bluetoothManagerServer.getAdapter();
                 Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
@@ -1045,7 +1132,8 @@ public class ServiceGattServer extends IntentService {
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
             ContentResolver resolver = getApplicationContext().getContentResolver();
             РезульататЗАписиНовогоДивайса=   resolver.bulkInsert(uri, contentValuesForProvider);
-            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  " +  РезульататЗАписиНовогоДивайса.toString() );
+            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  "
+                    +  РезульататЗАписиНовогоДивайса.toString() );
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();

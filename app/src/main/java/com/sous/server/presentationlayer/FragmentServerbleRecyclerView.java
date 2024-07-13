@@ -57,7 +57,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
-public class FragmentScannerServerList extends Fragment {
+public class FragmentServerbleRecyclerView extends Fragment {
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
     private RecyclerView recyclerView;

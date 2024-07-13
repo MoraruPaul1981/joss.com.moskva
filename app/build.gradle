@@ -56,6 +56,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
     /////TODO биботека для службы WOrk Manager
     implementation 'androidx.work:work-runtime:2.8.0'
     implementation 'androidx.work:work-runtime-ktx:2.8.0'
@@ -84,13 +85,16 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.14.2'
 
     //TODO Google Location
-    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.0.1'
+    implementation group: 'com.google.android.gms', name: 'play-services-location', version: '21.3.0'
 
 
-
-//TODO dagger2
-    // okhhtp подключаем работа с сестью
+//TODO работа с сетью
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+
+
+//TODO EventBus
+    implementation 'org.greenrobot:eventbus:3.3.1'
 
 
 

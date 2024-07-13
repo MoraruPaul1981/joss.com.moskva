@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.content.AsyncTaskLoader;
 
 import com.sous.server.businesslayer.BI_presentationlayer.bl_MainActivityNewServerScanner.BiMainActivityNewServerScanner;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
@@ -21,11 +22,12 @@ import com.sous.server.R;
 import java.util.Date;
 
 
-public class MainActivityNewServerScanner extends AppCompatActivity {
+public class ActivityServerScanner extends AppCompatActivity {
     protected FragmentManager fragmentManager;
     protected   FragmentTransaction getTransactionscanner;
     protected Long version;
     protected Handler handlerGatt  ;
+    protected AsyncTaskLoader asyncTaskLoaderGatt  ;
     protected  SQLiteDatabase Create_Database_СамаБАзаSQLite;
 
     @SuppressLint("RestrictedApi")
@@ -59,7 +61,7 @@ public class MainActivityNewServerScanner extends AppCompatActivity {
             version=    biMainActivityNewServerScanner.  getversionCurrentPC();
             biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
             // TODO: 07.02.2023 запус самого СЕРВЕРА СКАНРРОВНИЕ..
-            biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootScannerServer());//todo Запускам клиента или сервер фрагмент
+            biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
 
            /*  //TODO:Иниицилизуем БАз ДАнных */
              Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();
