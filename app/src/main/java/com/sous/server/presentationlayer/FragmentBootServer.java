@@ -159,6 +159,8 @@ public class FragmentBootServer extends Fragment {
     public void onMessageEvent(MessageScannerStartRecyreViewFragment event) {
         // Do something
         Boolean getReslutOTServiceGatt= event.флагЗапускаФрагментRecyreView;
+////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
+        forwardOtServiceGattEventBus(getReslutOTServiceGatt);
 
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
