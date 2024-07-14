@@ -195,7 +195,8 @@ public class FragmentBootServer extends Fragment {
             if (getReslutOTServiceGatt==true ) {
 
              //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
-                imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
+                //imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
+                imageviewbootscanner.setColorFilter(Color.argb(255, 0, 0, 0));
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
