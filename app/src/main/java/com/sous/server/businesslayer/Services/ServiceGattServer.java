@@ -90,7 +90,7 @@ public class ServiceGattServer extends IntentService {
 
     //TODO: Local
     protected FusedLocationProviderClient fusedLocationClientGoogle;
-    protected Location lastLocation;
+
     protected LocationManager locationManager;
     protected  List<BluetoothDevice> getListGattServer ;
 
@@ -328,12 +328,13 @@ public class ServiceGattServer extends IntentService {
             locationResult.addOnCompleteListener( new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
+                    //TODO:
                     if (task.isSuccessful()==true && task.isComplete() ==true) {
-                        lastLocation=task.getResult();
-                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "lastLocation " +lastLocation +
+                        Location getlastLocation    =task.getResult();
+                        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+  "getlastLocation " +getlastLocation +
                                 " task.isSuccessful() " +task.isSuccessful()+  "task.isComplete() "+task.isComplete());
                         // TODO: 21.02.2023 получаем Сами ДАнные от Location  полученого
-                        МетодПолучениеЛокацииGPS();
+                        МетодПолучениеЛокацииGPS(getlastLocation);
 
 
                         ///TODO: SuccessAddDevice
@@ -763,8 +764,7 @@ public class ServiceGattServer extends IntentService {
 
                 Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() +
                         " время " + new Date().toLocaleString() + " value " + value);
-                // TODO: 13.02.2023
-                МетодПолучениеЛокацииGPS();
+
                 // TODO: 07.02.2023  Записываем ВБАзу Данные{
                 // TODO: 13.02.2023
                 if (addressesgetGPS != null) {
@@ -952,42 +952,29 @@ public class ServiceGattServer extends IntentService {
     }
 
     @SuppressLint({"NewApi", "SuspiciousIndentation", "MissingPermission"})
-    private  void МетодПолучениеЛокацииGPS() {
+    private  void МетодПолучениеЛокацииGPS(@NonNull Location getlastLocation) {
         try{
-                if (lastLocation != null) {
+                if (getlastLocation != null) {
                     fusedLocationClientGoogle.flushLocations();
 
-                    while (lastLocation.isComplete()==false);
+                    while (getlastLocation.isComplete()==false);
 
-                        Log.i(this.getClass().getName(), "MyLocationListener GPS longitude "+lastLocation);
+                        Log.i(this.getClass().getName(), "MyLocationListener GPS getlastLocation "+getlastLocation);
                         String cityName = null;
                         Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
                         Log.i(this.getClass().getName(), "MyLocationListener GPS gcd "+gcd);
-                        try {
-                            addressesgetGPS = gcd.getFromLocation(lastLocation.getLatitude(),
-                                    lastLocation.getLongitude(), 1);
+
+                            addressesgetGPS = gcd.getFromLocation(getlastLocation.getLatitude(), getlastLocation.getLongitude(), 1);
 
                             Log.i(this.getClass().getName(), "MyLocationListener GPS addressesgetGPS "+addressesgetGPS);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            ContentValues valuesЗаписываемОшибки = new ContentValues();
-                            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            final Object ТекущаяВерсияПрограммы = version;
-                            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                        }
+
                         if (addressesgetGPS.size() > 0) {
                             System.out.println(addressesgetGPS.get(0).getLocality());
                             cityName = addressesgetGPS.get(0).getLocality();
                             Log.i(this.getClass().getName(), "MyLocationListener GPS cityName "+cityName);
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "cityName " +cityName );
                         }
+                        
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "addressesgetGPS " +addressesgetGPS );
                 }
         } catch (Exception e) {

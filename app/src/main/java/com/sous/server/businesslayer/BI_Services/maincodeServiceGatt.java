@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class maincodeServiceGatt {
+public class mainBinessCodeServiceGatt {
 
     private SQLiteDatabase sqLiteDatabase;
     public ServiceGattServer.LocalBinderСерверBLE binder;
