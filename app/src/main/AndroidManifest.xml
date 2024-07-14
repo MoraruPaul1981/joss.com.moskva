@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.intent.action.USER_PRESENT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
     <uses-permission android:name="android.permission_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -120,6 +119,22 @@
                 <action android:name="android.app.action.DEVICE_OWNER_CHANGED"/>
             </intent-filter>
         </receiver>
+
+        <provider android:name=".ContentProdiders.ContentProviderScanner"
+            android:authorities="com.sous.scanner.prodider"
+            android:directBootAware="true"
+            android:enabled="true"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="com.sous.scanner.prodider.pemission"
+            android:readPermission="true"
+            android:writePermission="true"
+            />
+
+        
+        
+        
 
         <activity
             android:name=".Window.MainActivityNewScanner"
@@ -262,6 +277,15 @@
                 android:name="com.onesignal.NotificationOpened.DEFAULT"
                 android:value="ENABLE" />
         </service>
+        
+        
+        
+        
+        
+        
+        
+        
+        
     </application>
 
 </manifest>

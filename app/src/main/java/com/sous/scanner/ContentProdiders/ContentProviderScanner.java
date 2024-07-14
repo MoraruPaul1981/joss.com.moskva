@@ -108,7 +108,7 @@ public class ContentProviderScanner extends android.content.ContentProvider {
                     table = "tablescannerpublic";
                     break;
                 default:
-                    table=    Optional.ofNullable(uri).map(Emmeter->Emmeter.toString().replace("content://com.dsy.dsu.providerdatabase/","")).get();
+                    table=    Optional.ofNullable(uri).map(Emmeter->Emmeter.toString().replace("content://com.sous.scanner.prodider/","")).get();
                     Log.w(getContext().getClass().getName(),
                             " defaluit table  " + table  + " uri " + uri);/////
                     break;
