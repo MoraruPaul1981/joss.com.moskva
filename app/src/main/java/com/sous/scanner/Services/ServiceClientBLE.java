@@ -2,7 +2,6 @@ package com.sous.scanner.Services;
 
 import static java.util.stream.Collectors.groupingBy;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.IntentService;
@@ -11,7 +10,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
@@ -19,33 +17,26 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.ParcelUuid;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 
 
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
-
-import org.reactivestreams.Publisher;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,14 +45,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CompletionService;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Action;
@@ -88,8 +74,11 @@ public class ServiceClientBLE extends IntentService {
     private String TAG;
     private Handler handler;
 
-    private BluetoothManager bluetoothManager;
+    private BluetoothManager bluetoothManagerServer;
     private BluetoothAdapter bluetoothAdapter;
+    private BluetoothAdapter   bluetoothAdapterGATT;
+    protected LocationManager locationManager;
+
     public ServiceClientBLE() {
         super("ServiceClientBLE");
     }
@@ -103,6 +92,16 @@ public class ServiceClientBLE extends IntentService {
         super.onCreate();
         // TODO: 07.02.2023 клиент сервер
         try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
+
+            bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
+
+
+            setingEnableApapterBLE() ;
+
+            getListDeviceForBluApdapter();
+
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -278,18 +277,14 @@ public class ServiceClientBLE extends IntentService {
         this.ДействиеДляСервераGATTОТКлиента=ДействиеДляСервераGATTОТКлиента;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         try{
+
             // TODO: 27.02.2023 Переплучние Bluettoth
-            МетодПреполучениеBluetooth();
-            if (bluetoothAdapter!=null) {
                 МетодЗапускаСканированиеКлиент();
-                Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
+
+                Log.w(this.getClass().getName(), "   bluetoothManager  "+ bluetoothManagerServer + " bluetoothAdapter "
                         +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
-            }else{
-                Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
-                        +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
-                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTBLEManager");
-            }
-            Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter "
+
+            Log.w(this.getClass().getName(), "   bluetoothManager  "+ bluetoothManagerServer + " bluetoothAdapter "
                     +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
         } catch (Exception e) {
             e.printStackTrace();
@@ -355,15 +350,32 @@ public class ServiceClientBLE extends IntentService {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                                         if (bluetoothAdapter!=null &&  bluetoothAdapter.isEnabled()==true){
+
                                             // TODO: 27.02.2023  сам адрес уваленого дивайса
-                                         BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
-                                            Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
-                                            // TODO: 12.02.2023  запускаем задачу в потоке
-                                            BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
-                                            // TODO: 26.01.2023  конец сервера GATT
-                                            МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
-                                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
-                                                    +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись+ " bluetoothGattCallback " +bluetoothGattCallback);
+                                       //  BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice(stringUUIDEntry.getKey());
+                                         bluetoothAdapterGATT.getBondedDevices().forEach(new java.util.function.Consumer<BluetoothDevice>() {
+                                             @Override
+                                             public void accept(BluetoothDevice bluetoothDevice) {
+
+                                                 Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
+
+                                                 Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
+                                                 Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
+
+                                                 // TODO: 12.02.2023  запускаем задачу в потоке
+                                                 BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                                                 
+                                                 // TODO: 26.01.2023  конец сервера GATT
+                                                 МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
+                                                 
+                                                 Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
+                                                         +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись+ " bluetoothGattCallback " +bluetoothGattCallback);
+                                             }
+                                         });
+
+                                            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                                         }
                                         return stringUUIDEntry;
                                     }
@@ -411,22 +423,17 @@ public class ServiceClientBLE extends IntentService {
     }
 
     @SuppressLint("MissingPermission")
-    private void МетодПреполучениеBluetooth() {
+    private void setingEnableApapterBLE() {
         try{
-        // TODO: 08.12.2022 сканирование Bluetooth
-        bluetoothManager = (BluetoothManager) activity.getSystemService(Context.BLUETOOTH_SERVICE);
-            if (bluetoothManager!=null) {
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString());
-                bluetoothAdapter = bluetoothManager.getAdapter();
                 if (bluetoothAdapter!=null) {
                     if (bluetoothAdapter.isEnabled()==false){
                         bluetoothAdapter.enable();
                     }
-                    List<BluetoothDevice>   bluetoothDeviceListGattClient= bluetoothManager.getConnectedDevices(BluetoothProfile.GATT);
+
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
-                             " bluetoothDeviceListGattClient  "+bluetoothDeviceListGattClient);
+                             " bluetoothAdapter  "+bluetoothAdapter);
                 }
-            }
+
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
                      " bluetoothAdapter " +bluetoothAdapter);
     } catch (Exception e) {
@@ -447,11 +454,53 @@ public class ServiceClientBLE extends IntentService {
 
 
     @SuppressLint("MissingPermission")
+    private void getListDeviceForBluApdapter() {
+        try{
+            bluetoothAdapterGATT=  bluetoothManagerServer.getAdapter() ;
+
+            bluetoothAdapterGATT.getBondedDevices().forEach(new java.util.function.Consumer<BluetoothDevice>() {
+                @Override
+                public void accept(BluetoothDevice bluetoothDevice) {
+                    Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
+                    Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
+
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                }
+            });
+
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                    " bluetoothAdapter " +bluetoothAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки=new ContentValues();
+            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+    @SuppressLint("MissingPermission")
                 private BluetoothGattCallback МетодРаботыСТекущийСерверомGATT(@NonNull  BluetoothDevice bluetoothDevice,@NonNull  UUID UuidГлавныйКлючСерверGATT) {
                     // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
-                 BluetoothGattCallback bluetoothGattCallback = null;
-                    try{
-                   bluetoothGattCallback = new BluetoothGattCallback() {
+           BluetoothGattCallback       bluetoothGattCallback = null;
+        try{
+                                bluetoothGattCallback = new BluetoothGattCallback() {
                         @Override
                         public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                             int newState) {
@@ -681,6 +730,7 @@ public class ServiceClientBLE extends IntentService {
                             Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
                             break;
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -740,7 +790,7 @@ public class ServiceClientBLE extends IntentService {
                     .delay(3,TimeUnit.SECONDS)
                     .take(3,TimeUnit.MINUTES)
                     .subscribeOn(Schedulers.single())
-                    .doOnNext(new io.reactivex.rxjava3.functions.Consumer<Long>() {
+                    .doOnNext(new Consumer<Long>() {
                         @Override
                         public void accept(Long aLong) throws Throwable {
                             // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
@@ -748,7 +798,7 @@ public class ServiceClientBLE extends IntentService {
                             Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl[0]);
                         }
                     })
-                    .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                    .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Throwable {
                             Log.e(context.getClass().getName(), "  doOnError МетодПолучениеНовгоКлюча_OndeSignal "  +"\n" +throwable.getMessage().toString());
