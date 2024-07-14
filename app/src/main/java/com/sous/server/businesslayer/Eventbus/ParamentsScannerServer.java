@@ -2,14 +2,20 @@ package com.sous.server.businesslayer.Eventbus;
 
 import android.os.Bundle;
 
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ParamentsScannerServer {
 
-   private String s1;
+
+
+    private String currentTask;
     private String s2;
     private  String s3;
-    private String s4;
+
+
+
+    private List<String> list;
     private  String s5;
 
 
@@ -18,15 +24,20 @@ public class ParamentsScannerServer {
 
 
 
-
-
-
-    public String getS1() {
-        return s1;
+    public List<String> getList() {
+        return list;
     }
 
-    public void setS1(String s1) {
-        this.s1 = s1;
+    public void setList(List<String> list) {
+        this.list = list;
+    }
+
+    public String getCurrentTask() {
+        return currentTask;
+    }
+
+    public void setCurrentTask(String currentTask) {
+        this.currentTask = currentTask;
     }
 
     private String getS2() {
@@ -45,13 +56,7 @@ public class ParamentsScannerServer {
         this.s3 = s3;
     }
 
-    private String getS4() {
-        return s4;
-    }
 
-    private void setS4(String s4) {
-        this.s4 = s4;
-    }
 
     private String getS5() {
         return s5;

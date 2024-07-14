@@ -174,9 +174,38 @@ public class FragmentBootServer extends Fragment {
         // Do something
         ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
         Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
+        String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
         ConcurrentHashMap getFlagMapOtServiceBte=  paramentsScannerServer.getConcurrentHashMapGattBundle();
+
+        if (CurrentTask.contentEquals("bluetootAdapterEnable")) {
 ////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
-        forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
+            forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+
+        } else {
+            if (CurrentTask.contentEquals("SuccessDeviceBluetoothAnServerGatt")) {
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                        " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+            }
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+
+        }
 
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
