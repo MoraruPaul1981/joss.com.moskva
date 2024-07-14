@@ -244,28 +244,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
         startActivity(discoverableIntent);
     }
 
-    ///todo первый метод #1
-    @SuppressLint("MissingPermission")
-    private void МетодЗапускGattServer() {
-        try {
-                    // TODO: 06.12.2022 запускаем GATT SERVER
-                    binderСерверBLE.getService().МетодГлавныйЗапускGattServer(handler, getActivity(), mutableLiveDataGATTServer);
-                    Log.d(getClass().getClass().getName(), "\n" + " МетодЗапускGattServer" + new Date());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
 
 
     void МетодСлушательObserverДляRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
@@ -722,7 +700,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
                         // Snackbar.make(v, "Сервер  Bluetooth ....",Snackbar.LENGTH_LONG).setAction("Action",null).show();
                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                         v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                        МетодЗапускGattServer();
+
                     }
                 });
             } catch (Exception e) {
@@ -1042,34 +1020,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     }
 
-    private void МетодBackBindind() {
-        try {
-            message = Message.obtain(new Handler(Looper.getMainLooper()), new Runnable() {
-                @Override
-                public void run() {
-               Bundle bundle=     message.getData();
-                    // TODO: 20.02.2023 Запукск Сервер из Биндинга
-                    МетодЗапускGattServer();
-                    Log.i(this.getClass().getName(),  "onStart() " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "bundle "+bundle );
-                }
-            });
-            message.setAsynchronous(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
+
 
 }
 

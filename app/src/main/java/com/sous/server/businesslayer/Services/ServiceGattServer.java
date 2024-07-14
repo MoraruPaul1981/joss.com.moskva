@@ -73,26 +73,26 @@ import java.util.concurrent.TimeUnit;
  * helper methods.
  */
 public class ServiceGattServer extends IntentService {
-    private SQLiteDatabase sqLiteDatabase;
+    protected SQLiteDatabase sqLiteDatabase;
     public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
-    private String TAG;
-
-    private BluetoothGattServer getBluetoothGattServer;
-    private BluetoothManager bluetoothManagerServer;
-    private BluetoothAdapter bluetoothAdapter;
-    private Long version = 0l;
-   private ConcurrentHashMap<String, Bundle> concurrentHashMapDeviceBTE;
 
 
-    private List<Address> addressesgetGPS;
-    private UUID getPublicUUID;
+    protected BluetoothGattServer getBluetoothGattServer;
+    protected BluetoothManager bluetoothManagerServer;
+    protected BluetoothAdapter bluetoothAdapter;
+    protected Long version = 0l;
+    protected ConcurrentHashMap<String, Bundle> concurrentHashMapDeviceBTE;
+
+
+    protected List<Address> addressesgetGPS;
+    protected UUID getPublicUUID;
 
 
     //TODO: Local
-    private FusedLocationProviderClient fusedLocationClientGoogle;
-    private Location lastLocation;
-    private LocationManager locationManager;
-    private  List<BluetoothDevice> getListGattServer ;
+    protected FusedLocationProviderClient fusedLocationClientGoogle;
+    protected Location lastLocation;
+    protected LocationManager locationManager;
+    protected  List<BluetoothDevice> getListGattServer ;
 
 
     public ServiceGattServer() {
@@ -110,7 +110,6 @@ public class ServiceGattServer extends IntentService {
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-            TAG = getApplicationContext().getClass().getName().toString();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
 
@@ -167,6 +166,9 @@ public class ServiceGattServer extends IntentService {
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
 
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
+
+
+            МетодИницилиазцииGpsGoogle();
 
 
             /*      //TODO:Тест Код запуск кода по расписанию
@@ -428,7 +430,7 @@ public class ServiceGattServer extends IntentService {
     public  void mainstartingServerGatt() {
         try {
 
-            Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
+            Log.d(this.getClass().getName(), "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
                     "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
@@ -680,11 +682,14 @@ public class ServiceGattServer extends IntentService {
             String uuid = МетодГенерацииUUID();
             contentValuesВставкаДанных.put("uuid", uuid);
             contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
-            Log.i(TAG, "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
+            Log.i(this.getClass().getName(), "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
+
             // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
             РезультатЗаписиДанныхПИнгаДвайсаВБАзу = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
-            Log.i(TAG, " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
+
+            Log.i(this.getClass().getName(), " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
                     " contentValuesВставкаДанных " + contentValuesВставкаДанных);
+
             if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу > 0) {
                 Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                 v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -773,14 +778,16 @@ public class ServiceGattServer extends IntentService {
                             + "\n" + "(корд1) " + addressesgetGPS.get(0).getLatitude()
                             + "\n" + "(корд2) " + addressesgetGPS.get(0).getLongitude();
                     characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
-                    Log.i(TAG, "SERVER#SousAvtoSuccess GPS" + " " + new Date().toLocaleString());
+
+                    Log.i(this.getClass().getName(), "SERVER#SousAvtoSuccess GPS" + " " + new Date().toLocaleString());
                 } else {
                     ДанныеСодранныеОтКлиента = "Девайс отмечен..." + "\n" + device.getName().toString() +
                             "\n" + device.getAddress().toString() +
                             "\n" + new Date().toLocaleString()
                             + "\n" + ПришлиДанныеОтКлиентаЗапрос;
                     characteristicsServerОтКлиента.setValue("SERVER#SousAvtoSuccess");
-                    Log.i(TAG, "SERVER#SousAvtoSuccess ---" + " " + new Date().toLocaleString());
+
+                    Log.i(this.getClass().getName(), "SERVER#SousAvtoSuccess ---" + " " + new Date().toLocaleString());
                 }
 
 
@@ -796,14 +803,17 @@ public class ServiceGattServer extends IntentService {
                             ДанныеСодранныеОтКлиента,
                             characteristicsServerОтКлиента,
                             addressesgetGPS, listПришлиДанныеОтКлиентаЗапрос);
-                    Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS + " РезультатЗаписиВБАзу " + РезультатЗаписиВБАзу);
+
+                    Log.i(this.getClass().getName(), "addressesgetGPS " + " " + addressesgetGPS + " РезультатЗаписиВБАзу " + РезультатЗаписиВБАзу);
+
                 } else {
                     РезультатЗаписиВБАзу = МетодЗаписиДевайсавБазу(device,
                             ПришлиДанныеОтКлиентаЗапрос,
                             ДанныеСодранныеОтКлиента,
                             characteristicsServerОтКлиента,
                             addressesgetGPS, listПришлиДанныеОтКлиентаЗапрос);
-                    Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS + " РезультатЗаписиВБАзу " + РезультатЗаписиВБАзу);
+
+                    Log.i(this.getClass().getName(), "addressesgetGPS " + " " + addressesgetGPS + " РезультатЗаписиВБАзу " + РезультатЗаписиВБАзу);
                 }
             } else {
                 Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
@@ -914,14 +924,12 @@ public class ServiceGattServer extends IntentService {
 
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
-                Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                         "\n"+ "newState " + newState +  "status "+ status);
-               // server.cancelConnection(device);
                 break;
             case BluetoothGatt.GATT_CONNECTION_CONGESTED:
-                Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                         "\n"+ "newState " + newState +  "status "+ status);
-                // server.cancelConnection(device);
                 break;
         }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -948,15 +956,18 @@ public class ServiceGattServer extends IntentService {
         try{
                 if (lastLocation != null) {
                     fusedLocationClientGoogle.flushLocations();
+
                     while (lastLocation.isComplete()==false);
-                        Log.i(TAG, "MyLocationListener GPS longitude "+lastLocation);
+
+                        Log.i(this.getClass().getName(), "MyLocationListener GPS longitude "+lastLocation);
                         String cityName = null;
                         Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
-                        Log.i(TAG, "MyLocationListener GPS gcd "+gcd);
+                        Log.i(this.getClass().getName(), "MyLocationListener GPS gcd "+gcd);
                         try {
                             addressesgetGPS = gcd.getFromLocation(lastLocation.getLatitude(),
                                     lastLocation.getLongitude(), 1);
-                            Log.i(TAG, "MyLocationListener GPS addressesgetGPS "+addressesgetGPS);
+
+                            Log.i(this.getClass().getName(), "MyLocationListener GPS addressesgetGPS "+addressesgetGPS);
                         } catch (IOException e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -974,7 +985,7 @@ public class ServiceGattServer extends IntentService {
                         if (addressesgetGPS.size() > 0) {
                             System.out.println(addressesgetGPS.get(0).getLocality());
                             cityName = addressesgetGPS.get(0).getLocality();
-                            Log.i(TAG, "MyLocationListener GPS cityName "+cityName);
+                            Log.i(this.getClass().getName(), "MyLocationListener GPS cityName "+cityName);
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "cityName " +cityName );
                         }
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "addressesgetGPS " +addressesgetGPS );
