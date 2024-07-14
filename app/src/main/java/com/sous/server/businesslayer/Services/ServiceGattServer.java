@@ -538,10 +538,9 @@ public class ServiceGattServer extends IntentService {
         void settingGattServerBluetoothGattService()  {
         try{
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
-            UUID UuidГлавныйКлючСерверGATT = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 12.02.2023 Адреса серверов для Клиентна
             getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothGattService service = new BluetoothGattService(UuidГлавныйКлючСерверGATT, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            BluetoothGattService service = new BluetoothGattService(getPublicUUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(getPublicUUID,
                     BluetoothGattCharacteristic.PROPERTY_READ |
@@ -626,7 +625,7 @@ public class ServiceGattServer extends IntentService {
                     + new Date().toLocaleString() + " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
             // TODO: 08.02.2023 методы после успешного получение данных от клиента
             ContentValues   contentValuesВставкаДанных = new ContentValues();
-            contentValuesВставкаДанных.put("operations", "Девайс отмечен");
+            contentValuesВставкаДанных.put("operations", "Девайс Отметился");
             ПришлиДанныеОтКлиентаЗапрос = listПришлиДанныеОтКлиентаЗапрос.get(0).substring(1, listПришлиДанныеОтКлиентаЗапрос.get(0).length());
             contentValuesВставкаДанных.put("completedwork", ПришлиДанныеОтКлиентаЗапрос);
             contentValuesВставкаДанных.put("macdevice", device.getAddress().toString());
@@ -640,7 +639,12 @@ public class ServiceGattServer extends IntentService {
             // TODO: 10.02.2023 версия данных
             // TODO: 10.02.2023 версия данных
             Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
-            contentValuesВставкаДанных.put("current_table", current_table);
+            contentValuesВставкаДанных.put("current_table", current_table+1);
+
+            Integer version = МетодПоискДАнныхПоБазе("SELECT MAX ( version  ) AS MAX_R  FROM scannerserversuccess");
+            contentValuesВставкаДанных.put("version", version+1);
+
+
             String uuid = МетодГенерацииUUID();
             contentValuesВставкаДанных.put("uuid", uuid);
             contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
@@ -949,17 +953,15 @@ public class ServiceGattServer extends IntentService {
         }
         return  0;
     }
-    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues contentValues) {
-        Integer РезульататЗАписиНовогоДивайса=0;
+    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues contentValuesDataOtAnsroid) {
+        Uri РезульататЗАписиНовогоДивайса = null;
         try{
-            ContentValues[] contentValuesForProvider=new ContentValues[0];
-            contentValuesForProvider[0].putAll(contentValues);
-            Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " linkedHashMapДанныеДляЗаписи) "
-                    + contentValues+ " contentValuesForProvider " +contentValuesForProvider) ;
+            Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " contentValuesDataOtAnsroid) "
+                    + contentValuesDataOtAnsroid ) ;
             String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://"+provider+"/" +"scannerserversuccess" + "");
             ContentResolver resolver = getApplicationContext().getContentResolver();
-            РезульататЗАписиНовогоДивайса=   resolver.bulkInsert(uri, contentValuesForProvider);
+            РезульататЗАписиНовогоДивайса=   resolver.insert(uri, contentValuesDataOtAnsroid);
             Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  "
                     +  РезульататЗАписиНовогоДивайса.toString() );
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
@@ -977,7 +979,7 @@ public class ServiceGattServer extends IntentService {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-        return  РезульататЗАписиНовогоДивайса;
+        return Integer.parseInt(РезульататЗАписиНовогоДивайса.toString())  ;
     }
 
     // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ

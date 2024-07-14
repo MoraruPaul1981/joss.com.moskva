@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.intent.action.USER_PRESENT" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
     <uses-permission android:name="android.permission_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -139,13 +138,14 @@
             android:authorities="com.sous.server.providerserver"
             android:directBootAware="true"
             android:enabled="true"
-            android:process=":serverblescanner"
             android:excludeFromRecents="true"
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="com.sous.server.providerserver.pemission"
             android:readPermission="true"
             android:writePermission="true" />
+
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -200,61 +200,8 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
-        <service
-            android:name=".businesslayer.Services.ServiceForServerScannerAsync"
-            android:enabled="true"
-            android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-            <intent-filter>
-                <action android:name="android.intent.action.BLUETOOTH_CONNECT" />
-                <action android:name="android.intent.action.BLUETOOTH" />
-                <action android:name="android.intent.action.BLUETOOTH_ADMIN" />
-                <action android:name="android.intent.action.BLUETOOTH_SCAN" />
-                <action android:name="android.intent.action.BLUETOOTH_ADVERTISE" />
-                <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.permission.WAKE_LOCK" />
-                <action android:name="android.intent.action.SCREEN_OFF" />
-                <action android:name="android.intent.action.SCREEN_ON" />
-                <action android:name="android.permission.BIND_JOB_SERVICE" />
-                <action android:name="android.intent.action.PACKAGE_INSTALL" />
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.permission.FOREGROUND_SERVICE" />
-                <action android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE" />
-                <action android:name="com.huawei.permission.SYSTEM_ALERT_WINDOW" />
-                <action android:name="android.permission.WAKE_LOCK" />
-                <action android:name="android.permission.SET_ALARM" />
-                <action android:name="com.android.alarm.permission.SET_ALARM" />
-                <action android:name="android.permission.FOREGROUND_SERVICE" />
-                <action android:name="android.permission.INSTANT_APP_FOREGROUND_SERVICE" />
-                <action android:name="android.permission.FOREGROUND_SERVICE" />
-                <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
-            </intent-filter>
-        </service>
-        <receiver
-            android:name=".businesslayer.Brodcasters.BroadcastReceiverWorkManagerScannersServer"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
-            <intent-filter android:priority="500" >
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+
+
         <service
             android:name=".businesslayer.Firebases.MyFirebaseMessagingServiceServerScanners"
             android:exported="false"
