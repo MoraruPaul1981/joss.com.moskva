@@ -283,13 +283,9 @@ public class FragmentBootServer extends Fragment {
     private void forwardSuccessDiveciWriteServiceGattEventBus(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
         try{
             //TODO: Запускаем Фрагмент
-            String s1= getListSuccessDerviceOtServerGatt.get(0);
-            String s2=  getListSuccessDerviceOtServerGatt.get(1);
-            String s3=  getListSuccessDerviceOtServerGatt.get(2);
-            String s4=  getListSuccessDerviceOtServerGatt.get(3);
-            String s5=  getListSuccessDerviceOtServerGatt.get(4);
+            String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
 
-          String ОтветОтGaTTДляПОльзваотеля="Коннет Девайс";
+          String ОтветОтGaTTДляПОльзваотеля="Device "+"\n"+getListOtAndroidGattClernt;
 
 
             Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
