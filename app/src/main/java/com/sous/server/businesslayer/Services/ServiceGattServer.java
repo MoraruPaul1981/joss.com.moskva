@@ -20,8 +20,6 @@ import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
@@ -36,17 +34,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.Priority;
-import com.google.android.gms.tasks.CancellationToken;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnTokenCanceledListener;
-import com.google.android.gms.tasks.Task;
 
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
-import com.sous.server.businesslayer.Eventbus.MessageScannerStartRecyreViewFragment;
+import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,8 +47,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -303,7 +293,12 @@ public class ServiceGattServer extends IntentService {
 //TODO: отвечам оюратно на фрагмент что включен Адаптер Blutooth
     private void callBackFromServiceToRecyreViewFragment(@NonNull    Boolean getStatusEnableBlueadapter) {
         try{
-            MessageScannerStartRecyreViewFragment sendmessageScannerStartRecyreViewFragment= new MessageScannerStartRecyreViewFragment(getStatusEnableBlueadapter);
+
+            ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
+            sendFragmentparamentsScannerServer.setФлагЗапускаФрагментRecyreView(getStatusEnableBlueadapter);
+            sendFragmentparamentsScannerServer.setConcurrentHashMapGattBundle(new ConcurrentHashMap<>());
+            //TODO: послымаем Из Службы Значение на Фрагмент
+            MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
             //TODO: ответ на экран работает ообрубование или нет
                 EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
 

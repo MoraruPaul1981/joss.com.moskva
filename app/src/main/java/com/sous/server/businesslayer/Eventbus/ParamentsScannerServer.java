@@ -1,5 +1,9 @@
 package com.sous.server.businesslayer.Eventbus;
 
+import android.os.Bundle;
+
+import java.util.concurrent.ConcurrentHashMap;
+
 public class ParamentsScannerServer {
 
    private String s1;
@@ -9,11 +13,12 @@ public class ParamentsScannerServer {
     private  String s5;
 
 
-    private   Integer i1;
-    private  Integer i2;
-    private  Integer i3;
-    private Integer i4;
-    private   Integer i5;
+    private     Boolean флагЗапускаФрагментRecyreView=false;
+    private ConcurrentHashMap<String, Bundle> concurrentHashMapGattBundle=new ConcurrentHashMap();
+
+
+
+
 
 
     public String getS1() {
@@ -56,43 +61,20 @@ public class ParamentsScannerServer {
         this.s5 = s5;
     }
 
-    public Integer getI1() {
-        return i1;
+
+    public Boolean getФлагЗапускаФрагментRecyreView() {
+        return флагЗапускаФрагментRecyreView;
     }
 
-    public void setI1(Integer i1) {
-        this.i1 = i1;
+    public void setФлагЗапускаФрагментRecyreView(Boolean флагЗапускаФрагментRecyreView) {
+        this.флагЗапускаФрагментRecyreView = флагЗапускаФрагментRecyreView;
     }
 
-    private Integer getI2() {
-        return i2;
+    public ConcurrentHashMap<String, Bundle> getConcurrentHashMapGattBundle() {
+        return concurrentHashMapGattBundle;
     }
 
-    private void setI2(Integer i2) {
-        this.i2 = i2;
-    }
-
-    private Integer getI3() {
-        return i3;
-    }
-
-    private void setI3(Integer i3) {
-        this.i3 = i3;
-    }
-
-    private Integer getI4() {
-        return i4;
-    }
-
-    private void setI4(Integer i4) {
-        this.i4 = i4;
-    }
-
-    private Integer getI5() {
-        return i5;
-    }
-
-    private void setI5(Integer i5) {
-        this.i5 = i5;
+    public void setConcurrentHashMapGattBundle(ConcurrentHashMap<String, Bundle> concurrentHashMapGattBundle) {
+        this.concurrentHashMapGattBundle = concurrentHashMapGattBundle;
     }
 }

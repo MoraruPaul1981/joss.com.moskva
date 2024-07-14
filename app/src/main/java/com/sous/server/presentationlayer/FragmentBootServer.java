@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,23 +14,22 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.Bi_FragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
-import com.sous.server.businesslayer.Eventbus.MessageScannerStartRecyreViewFragment;
+import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class FragmentBootServer extends Fragment {
@@ -171,17 +169,21 @@ public class FragmentBootServer extends Fragment {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageScannerStartRecyreViewFragment event) {
+    public void onMessageEvent(MessageScannerServer event) {
         // Do something
-        Boolean getReslutOTServiceGatt= event.флагЗапускаФрагментRecyreView;
+        // Do something
+        ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
+        Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
+        ConcurrentHashMap getFlagMapOtServiceBte=  paramentsScannerServer.getConcurrentHashMapGattBundle();
 ////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
-        forwardOtServiceGattEventBus(getReslutOTServiceGatt);
+        forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
 
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                " getReslutOTServiceGatt " +getReslutOTServiceGatt);
+                " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                 " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
 
 
     }
