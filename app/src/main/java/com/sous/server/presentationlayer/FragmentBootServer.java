@@ -29,7 +29,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 
 public class FragmentBootServer extends Fragment {
@@ -190,6 +192,14 @@ public class FragmentBootServer extends Fragment {
 
         } else {
             if (CurrentTask.contentEquals("SuccessDeviceBluetoothAnServerGatt")) {
+
+                //TODO: девай усешно записель состывокальс севреросм и мы его Показываем Пользователю  Фрагмент
+                List<String> getListSuccessDerviceOtServerGatt= paramentsScannerServer.getList();
+
+                forwardSuccessDiveciWriteServiceGattEventBus(getListSuccessDerviceOtServerGatt);
+
+
+
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -267,6 +277,67 @@ public class FragmentBootServer extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
+
+    @SuppressLint("ResourceType")
+    private void forwardSuccessDiveciWriteServiceGattEventBus(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
+        try{
+            //TODO: Запускаем Фрагмент
+            String s1= getListSuccessDerviceOtServerGatt.get(0);
+            String s2=  getListSuccessDerviceOtServerGatt.get(1);
+            String s3=  getListSuccessDerviceOtServerGatt.get(2);
+            String s4=  getListSuccessDerviceOtServerGatt.get(3);
+            String s5=  getListSuccessDerviceOtServerGatt.get(4);
+
+          String ОтветОтGaTTДляПОльзваотеля="Коннет Девайс";
+
+
+            Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
+
+                //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
+                //imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
+               /// imageviewbootscanner.setColorFilter(Color.argb(255, 0, 0, 0));
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  getListSuccessDerviceOtServerGatt " +getListSuccessDerviceOtServerGatt);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
