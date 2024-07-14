@@ -67,6 +67,9 @@ public class Bi_FragmentBootScannerServer {
         try {
 
             Intent startGATTServiceGattServer = new Intent(context, ServiceGattServer.class);
+            startGATTServiceGattServer.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startGATTServiceGattServer.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startGATTServiceGattServer.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             context.startService(startGATTServiceGattServer);
 
             Log.i(context.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+
