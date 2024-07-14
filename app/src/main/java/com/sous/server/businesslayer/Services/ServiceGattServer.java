@@ -164,22 +164,20 @@ public class ServiceGattServer extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
-
-
+            //TODO:получаем Статус Адаптера Bluetooth true, false  и оптравляем статус в активти
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
-
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
 
 
-//TODO :  главный метод службы запускаем Gatt Server
+        //TODO :  главный метод службы запускаем Gatt Server
 
             mainstartingServerGatt();
 
             //TODO:  для запущеного сервера Gatt ,дополвнительые параметры натсройки Charact and UUID
             settingGattServerBluetoothGattService();
 
-//TODO: как запутили серевр Допололнительно ловим Девайсы Bluetoorhs
+    //TODO: как LIST СПИСОК  серевр Допололнительно ловим Девайсы Bluetoorhs
             getListDeviceWithGattAdapter();
 
 

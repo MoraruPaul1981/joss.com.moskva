@@ -2,19 +2,25 @@ package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.Bi_FragmentBootScannerServer;
@@ -34,12 +40,21 @@ public class FragmentBootServer extends Fragment {
     private Handler handlerGatt  ;
     private AsyncTaskLoader asyncTaskLoaderGatt;
     private Bi_FragmentBootScannerServer biFragmentBootScannerServer;
+
+
+    private ImageView imageviewbootscanner;
+
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
+
+            imageviewbootscanner = (ImageView) view.findViewById(R.id.id_imageviewbootscanner);
+
+
+            /////todo Пришли переменные
             fragmentManager = (FragmentManager) ((ActivityServerScanner) getActivity()).fragmentManager;
             version = (Long) ((ActivityServerScanner) getActivity()).version;
             handlerGatt = (Handler) ((ActivityServerScanner) getActivity()).handlerGatt;
@@ -172,16 +187,31 @@ public class FragmentBootServer extends Fragment {
     }
 
 
-    private void forwardOtServiceGattEventBus( @NonNull Boolean getReslutOTServiceGatt ) {
+    @SuppressLint("ResourceType")
+    private void forwardOtServiceGattEventBus(@NonNull Boolean getReslutOTServiceGatt ) {
         try{
             //TODO: Запускаем Фрагмент
 
             if (getReslutOTServiceGatt==true ) {
 
+             //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
+                imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "  getReslutOTServiceGatt " +getReslutOTServiceGatt);
+
 
             } else {
 
                 Toast.makeText(getContext(),"Bluetooth не доступен !!!" ,Toast.LENGTH_LONG).show();
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "  getReslutOTServiceGatt " +getReslutOTServiceGatt);
+
             }
 
 
