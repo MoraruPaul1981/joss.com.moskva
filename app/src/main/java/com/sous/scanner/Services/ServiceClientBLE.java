@@ -85,7 +85,7 @@ public class ServiceClientBLE extends IntentService {
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private     Long version=0l;
     private  String ДействиеДляСервераGATTОТКлиента;
-    private  UUID uuidКлючСервераGATTЧтениеЗапись;
+    private  UUID getPublicUUID;
     private  BluetoothGatt gatt;
     @Override
     public void onCreate() {
@@ -313,7 +313,7 @@ public class ServiceClientBLE extends IntentService {
                     "\n"+" POOL "+Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " +Thread.getAllStackTraces().entrySet().size());//
             // TODO: 12.02.2023 адреса разыне колиентов
-            uuidКлючСервераGATTЧтениеЗапись =        ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            getPublicUUID =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             UUID   UuidГлавныйКлючСерверGATT =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
@@ -369,7 +369,7 @@ public class ServiceClientBLE extends IntentService {
                                                  МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
                                                  
                                                  Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
-                                                         +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись+ " bluetoothGattCallback " +bluetoothGattCallback);
+                                                         +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
                                              }
                                          });
 
@@ -400,7 +400,7 @@ public class ServiceClientBLE extends IntentService {
                                     @Override
                                     public void run() throws Throwable {
                                         Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()....  UuidГлавныйКлючСерверGATT "+ UuidГлавныйКлючСерверGATT
-                                                +"uuidКлючСервераGATTЧтениеЗапись " +uuidКлючСервераGATTЧтениеЗапись);
+                                                +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID);
                                     }
                                 });
                    flowableЦиклСервера.subscribe();
@@ -520,7 +520,7 @@ public class ServiceClientBLE extends IntentService {
                                     case 133 :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
                                                 "  "+new Date().toLocaleString());
-                                        МетодВыключениеКлиентаGatt();
+                                        ///МетодВыключениеКлиентаGatt();
                                         break;
                                     case BluetoothGatt.GATT_CONNECTION_CONGESTED :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
@@ -556,7 +556,7 @@ public class ServiceClientBLE extends IntentService {
                                     if (services!=null) {
                                         Boolean КоннектССевромGATT = gatt.connect();
                                         Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
-                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлючСервераGATTЧтениеЗапись);
+                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(getPublicUUID);
                                         gatt.setCharacteristicNotification(characteristics, true);
                                         characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
                                         if (characteristics != null) {
@@ -655,7 +655,7 @@ public class ServiceClientBLE extends IntentService {
                                             mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
                                         });
                                         // TODO: 20.02.2023 закрыаем сесию ссервром
-                                        МетодВыключениеКлиентаGatt();
+                                      //  МетодВыключениеКлиентаGatt();
                                     }
                                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + " время " +new Date().toLocaleString()+ " characteristic "+characteristic );
@@ -750,10 +750,10 @@ public class ServiceClientBLE extends IntentService {
                 @SuppressLint("MissingPermission")
                 public void МетодВыключениеКлиентаGatt() {
         try{
-                        if (gatt!=null) {
-                            gatt.close();
-                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
-                        }
+//                        if (gatt!=null) {
+//                            gatt.close();
+//                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);
+//                        }
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
                                 new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента
                                 + " gatt "+gatt);

@@ -772,7 +772,7 @@ public class FragmentScannerUser extends Fragment {
                                                     ДействиеДляСервераGATTОТКлиента = "с работы";
                                                     МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход);
                                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
-                                                    МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                                                //    МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                                                     // TODO: 22.02.2023
                                             }
@@ -806,7 +806,7 @@ public class FragmentScannerUser extends Fragment {
                                     ДействиеДляСервераGATTОТКлиента = "на работу";
                                     МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход);
                                     // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
-                                    МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                                  //  МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
                                             + " время " + new Date().toLocaleString());
                             }
@@ -829,7 +829,7 @@ public class FragmentScannerUser extends Fragment {
                         ДействиеДляСервераGATTОТКлиента = "на работу";
                         МетодЗапускаGattСервера(v, holder, holder.materialButtonКотрольПриход);
                         // TODO: 20.02.2023 Принудитльеное Разрыв Клиента с Сервом GATT
-                        МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
+                      ///  МетодПринудительноРазрываемвязисGatt(ДействиеДляСервераGATTОТКлиента);
                         Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
                     }
                 });*/
