@@ -540,7 +540,7 @@ public class ServiceGattServer extends IntentService {
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             UUID UuidГлавныйКлючСерверGATT = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             // TODO: 12.02.2023 Адреса серверов для Клиентна
-            getPublicUUID = ParcelUuid.fromString("20000000-0000-1000-8000-00805f9b34fb").getUuid();
+            getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
             BluetoothGattService service = new BluetoothGattService(UuidГлавныйКлючСерверGATT, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(getPublicUUID,
@@ -707,11 +707,11 @@ public class ServiceGattServer extends IntentService {
 
 
     @SuppressLint({"NewApi", "SuspiciousIndentation", "MissingPermission"})
-    private void МетодОтветаОТGATTСеврераКлиентуДанныеми(@NonNull BluetoothDevice device,
-                                                         @NonNull int requestId,
-                                                         @NonNull int offset,
-                                                         @NonNull byte[] value,
-                                                         @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента) {
+    private void callBackOtPhoneForServerGATT(@NonNull BluetoothDevice device,
+                                              @NonNull int requestId,
+                                              @NonNull int offset,
+                                              @NonNull byte[] value,
+                                              @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента) {
         String ПришлиДанныеОтКлиентаЗапрос = new String();
         String ДанныеСодранныеОтКлиента = new String();
         try {
@@ -809,7 +809,7 @@ public class ServiceGattServer extends IntentService {
                 if (characteristicsДляСерверОтКлиента != null && value != null) {
                     // TODO: 20.02.2023
                     // TODO: 12.02.2023 ОТВЕТ КЛИЕНТУ
-                    МетодОтветаОТGATTСеврераКлиентуДанныеми(device, requestId, offset, value, characteristicsДляСерверОтКлиента);
+                    callBackOtPhoneForServerGATT(device, requestId, offset, value, characteristicsДляСерверОтКлиента);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
