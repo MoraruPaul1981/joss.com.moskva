@@ -14,18 +14,17 @@ import androidx.fragment.app.FragmentTransaction;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
-import com.sous.server.presentationlayer.FragmentServerbleRecyclerView;
 
 import java.util.Date;
 
-public class BiFragmentBootScannerServer {
+public class Bi_FragmentBootScannerServer {
 
     protected  Context context;
     protected  FragmentManager fragmentManager;
     protected Long version;
     protected Activity getactivity;
 
-    public BiFragmentBootScannerServer(Context context,   FragmentManager fragmentManager, Activity getactivity,Long version) {
+    public Bi_FragmentBootScannerServer(Context context, FragmentManager fragmentManager, Activity getactivity, Long version) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.version = version;

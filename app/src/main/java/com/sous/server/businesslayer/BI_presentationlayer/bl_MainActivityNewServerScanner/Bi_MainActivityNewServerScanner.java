@@ -22,14 +22,14 @@ import com.sous.server.datalayer.data.CREATE_DATABASEServerScanner;
 
 import java.util.Date;
 
-public class BiMainActivityNewServerScanner {
+public class Bi_MainActivityNewServerScanner {
 
     protected  Context context;
     protected  Long version;
     protected FragmentManager fragmentManager;
     protected Activity getactivity;
 
-    public BiMainActivityNewServerScanner(Context context ,FragmentManager fragmentManager, Activity getactivity ) {
+    public Bi_MainActivityNewServerScanner(Context context , FragmentManager fragmentManager, Activity getactivity ) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.getactivity = getactivity;

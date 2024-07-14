@@ -37,7 +37,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
-import androidx.work.Data;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -51,9 +50,7 @@ import com.google.android.gms.tasks.Task;
 
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
-import com.sous.server.businesslayer.eventbus.MessageScannerServer;
-import com.sous.server.businesslayer.eventbus.MessageScannerStartRecyreViewFragment;
-import com.sous.server.businesslayer.eventbus.ParamentsScannerServer;
+import com.sous.server.businesslayer.Eventbus.MessageScannerStartRecyreViewFragment;
 
 
 import org.greenrobot.eventbus.EventBus;

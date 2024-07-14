@@ -1,4 +1,4 @@
-package com.sous.server.businesslayer.Services.blServices;
+package com.sous.server.businesslayer.BI_Services;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -27,16 +27,16 @@ public class BindingServiceGattServer {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            Intent intentБиндингсСлужбойCbyСнхрониазции = new Intent(context, ServiceGattServer.class);
-            intentБиндингсСлужбойCbyСнхрониазции.setAction("sous.server.async");
-            context.bindService(intentБиндингсСлужбойCbyСнхрониазции ,  new ServiceConnection() {
+            //TODO: запускаем службу сервер GATT через Bind
+            context.bindService(new Intent(context, ServiceGattServer.class) ,  new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
                         localBinderСерверBLEGatt = ( ServiceGattServer.LocalBinderСерверBLE) service;
                         if (service.isBinderAlive()) {
-                            Log.i(context.getClass().getName(), "  onServiceConnected  onServiceConnected  МетодБиндингаСканирование"
-                                    + service.isBinderAlive());
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -59,7 +59,9 @@ public class BindingServiceGattServer {
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
                     try {
-                        Log.i(context.getClass().getName(), "    onServiceDisconnected  localBinderСерверBLEGatt.isBinderAlive()" + localBinderСерверBLEGatt.isBinderAlive());
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
@@ -68,6 +70,11 @@ public class BindingServiceGattServer {
                     }
                 }
             },Context.BIND_AUTO_CREATE);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

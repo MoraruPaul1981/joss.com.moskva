@@ -11,10 +11,9 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.AsyncTaskLoader;
 
-import com.sous.server.businesslayer.BI_presentationlayer.bl_MainActivityNewServerScanner.BiMainActivityNewServerScanner;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_MainActivityNewServerScanner.Bi_MainActivityNewServerScanner;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -80,7 +79,7 @@ public class ActivityServerScanner extends AppCompatActivity {
         try{
           /*  //TODO: ссылка на класс бизнес логики Сервер Сканирование
           *      */
-        BiMainActivityNewServerScanner biMainActivityNewServerScanner=new BiMainActivityNewServerScanner(getApplicationContext(), fragmentManager,this);
+        Bi_MainActivityNewServerScanner biMainActivityNewServerScanner=new Bi_MainActivityNewServerScanner(getApplicationContext(), fragmentManager,this);
 
         version=    biMainActivityNewServerScanner.  getversionCurrentPC();
 

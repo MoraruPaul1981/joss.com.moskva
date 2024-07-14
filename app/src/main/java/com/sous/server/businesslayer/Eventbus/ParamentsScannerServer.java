@@ -1,4 +1,4 @@
-package com.sous.server.businesslayer.eventbus;
+package com.sous.server.businesslayer.Eventbus;
 
 public class ParamentsScannerServer {
 

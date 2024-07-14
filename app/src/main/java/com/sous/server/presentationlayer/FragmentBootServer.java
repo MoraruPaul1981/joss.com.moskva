@@ -14,15 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.sous.server.R;
-import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.BiFragmentBootScannerServer;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.Bi_FragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
-import com.sous.server.businesslayer.eventbus.MessageScannerServer;
-import com.sous.server.businesslayer.eventbus.MessageScannerStartRecyreViewFragment;
-import com.sous.server.businesslayer.eventbus.ParamentsScannerServer;
+import com.sous.server.businesslayer.Eventbus.MessageScannerStartRecyreViewFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,7 +33,7 @@ public class FragmentBootServer extends Fragment {
     private FragmentManager fragmentManager;
     private Handler handlerGatt  ;
     private AsyncTaskLoader asyncTaskLoaderGatt;
-    private     BiFragmentBootScannerServer biFragmentBootScannerServer;
+    private Bi_FragmentBootScannerServer biFragmentBootScannerServer;
     @SuppressLint("RestrictedApi")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -106,7 +103,7 @@ public class FragmentBootServer extends Fragment {
 
 
         /*    //TODO:создаем класс для бизнес логики */
-        biFragmentBootScannerServer = new BiFragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
+        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
        МетодЗапускаСервиса(  );
 

@@ -17,7 +17,7 @@ import androidx.work.WorkerParameters;
 
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
-import com.sous.server.businesslayer.Services.blServices.BindingServiceGattServer;
+import com.sous.server.businesslayer.BI_Services.BindingServiceGattServer;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
 
 import java.util.Date;
