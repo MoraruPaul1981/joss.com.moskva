@@ -60,6 +60,7 @@
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
 
+    <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
 
 
     <uses-feature android:name="android.hardware.telephony.gsm" android:required="false" />
