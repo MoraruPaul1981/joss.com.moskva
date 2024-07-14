@@ -222,7 +222,7 @@ public class ServiceGattServer extends IntentService {
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
              getListGattServer = (List<BluetoothDevice>) bluetoothManagerServer.getConnectedDevices(BluetoothProfile.GATT_SERVER);
-
+           // getListGattServer  = (List<BluetoothDevice>)   getBluetoothGattServer.getConnectedDevices();
 
 
             for (BluetoothDevice pairedDevice : getListGattServer )
@@ -649,10 +649,12 @@ public class ServiceGattServer extends IntentService {
 
 
     // TODO: 14.02.2023 Второй Метод БЕз GPS
+    @SuppressLint("MissingPermission")
     private Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
                                             @NonNull String ПришлиДанныеОтКлиентаЗапрос,
                                             @NonNull String ДанныеСодранныеОтКлиента,
                                             @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
+                                            List<Address> addressesgetGPS,
                                             @NonNull List<String> listПришлиДанныеОтКлиентаЗапрос) {
         Integer РезультатЗаписиДанныхПИнгаДвайсаВБАзу=0;
         try {
@@ -732,87 +734,6 @@ public class ServiceGattServer extends IntentService {
         return РезультатЗаписиДанныхПИнгаДвайсаВБАзу;
     }
 
-    private Integer МетодЗаписиДевайсавБазу(@NonNull BluetoothDevice device,
-                                            String ПришлиДанныеОтКлиентаЗапрос,
-                                            String ДанныеСодранныеОтКлиента,
-                                            @NonNull BluetoothGattCharacteristic characteristicsServerОтКлиента,
-                                            @NonNull List<Address> addressesgetGPS,
-                                            @NonNull List<String> listПришлиДанныеОтКлиентаЗапрос) {
-        Integer РезультатЗаписиДанныхПИнгаДвайсаВБАзу=0;
-        try {
-            ContentValues contentValuesВставкаДанных = new ContentValues();
-            // TODO: 08.02.2023 методы после успешного получение данных от клиента
-            contentValuesВставкаДанных = new ContentValues();
-            contentValuesВставкаДанных.put("operations", "Девайс отмечен");
-            ПришлиДанныеОтКлиентаЗапрос = listПришлиДанныеОтКлиентаЗапрос.get(0).substring(1, listПришлиДанныеОтКлиентаЗапрос.get(0).length());
-            contentValuesВставкаДанных.put("completedwork", ПришлиДанныеОтКлиентаЗапрос);
-            contentValuesВставкаДанных.put("macdevice", device.getAddress().toString());
-            contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
-            contentValuesВставкаДанных.put("city", addressesgetGPS.get(0).getLocality());
-            contentValuesВставкаДанных.put("adress", addressesgetGPS.get(0).getAddressLine(0));
-            contentValuesВставкаДанных.put("gps1", String.valueOf(addressesgetGPS.get(0).getLatitude()));
-            contentValuesВставкаДанных.put("gps2", String.valueOf(addressesgetGPS.get(0).getLongitude()));
-            contentValuesВставкаДанных.put("namedevice", device.getName().toString());
-            contentValuesВставкаДанных.put("iemi", listПришлиДанныеОтКлиентаЗапрос.get(1).substring(0, listПришлиДанныеОтКлиентаЗапрос.get(1).length() - 1));
-            // TODO: 10.02.2023 версия данных
-            Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
-            contentValuesВставкаДанных.put("current_table", current_table);
-            String uuid = МетодГенерацииUUID();
-            contentValuesВставкаДанных.put("uuid", uuid);
-            contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
-            Log.i(TAG, "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
-            // TODO: 27.02.2023 ЗАпись данные
-
-            // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
-            РезультатЗаписиДанныхПИнгаДвайсаВБАзу = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
-            Log.i(TAG, " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
-                    " contentValuesВставкаДанных " + contentValuesВставкаДанных);
-
-
-            if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу > 0) {
-                Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-                // TODO: 09.02.2023 сам статус дляОтвета;
-
-                ///TODO: SuccessAddDevice
-                Bundle    bundleAddDeviceSuccess = new Bundle();
-                bundleAddDeviceSuccess.putString("Статус", "SERVER#SousAvtoSuccess");
-                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-            } else {
-                // TODO: 09.02.2023 сам статус дляОтвета;
-                ///TODO: ErrorAddDevice
-                Bundle    bundleAddDeviceSuccess = new Bundle();
-                bundleAddDeviceSuccess.putString("Статус", "SERVER#SousAvtoERROR");
-                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" +
-                        "Без записи в базу !!!");
-                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-        return РезультатЗаписиДанныхПИнгаДвайсаВБАзу;
-    }
 
 
 
@@ -881,7 +802,7 @@ public class ServiceGattServer extends IntentService {
                             ПришлиДанныеОтКлиентаЗапрос,
                             ДанныеСодранныеОтКлиента,
                             characteristicsServerОтКлиента,
-                            listПришлиДанныеОтКлиентаЗапрос);
+                            addressesgetGPS, listПришлиДанныеОтКлиентаЗапрос);
                     Log.i(TAG, "addressesgetGPS " + " " + addressesgetGPS + " РезультатЗаписиВБАзу " + РезультатЗаписиВБАзу);
                 }
             } else {
@@ -968,9 +889,7 @@ public class ServiceGattServer extends IntentService {
         Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        bundleAddDeviceSuccess.clear();
-        bundleAddDeviceSuccess.putString("Статус","SERVERGATTRUNNIGERRORS");
-        mutableLiveDataGATTServer.setValue(bundleAddDeviceSuccess);
+
     }
     }
 
@@ -980,19 +899,19 @@ public class ServiceGattServer extends IntentService {
         try{
         Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
             // TODO: 27.02.2023 Переопреляем Адамтер Bluetooth
-            List<BluetoothDevice> bluetoothDeviceListGattServer=   getBluetoothGattServer.getConnectedDevices();
+
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTED:
                     getBluetoothGattServer.connect(device,false);
-                Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_CONNECTED " +   device.getAddress().toString()+
-                        "\n"+ "newState " + newState +  "status "+ status);
-                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                getApplicationContext().getMainExecutor().execute(()->{
-                    bundleAddDeviceSuccess.clear();
-                    bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
-                    bundleAddDeviceSuccess.putString("Дивайс", device.getName());
-                    mutableLiveDataGATTServer.setValue(bundleAddDeviceSuccess);
-                });
+
+                ///TODO: SucceessAddDevice
+                Bundle    bundleAddDeviceSuccess = new Bundle();
+                bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
+                bundleAddDeviceSuccess.putString("Дивайс", device.getName());
+                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" +
+                        "Без записи в базу !!!");
+                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
+
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
                 Log.i(TAG, " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
@@ -1005,8 +924,9 @@ public class ServiceGattServer extends IntentService {
                 // server.cancelConnection(device);
                 break;
         }
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
-                    "  bluetoothDeviceListGattServer " +bluetoothDeviceListGattServer.size());
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
