@@ -94,7 +94,10 @@ dependencies {
 
 
 //TODO EventBus
-    implementation 'org.greenrobot:Eventbus:3.3.1'
+    // https://mvnrepository.com/artifact/org.greenrobot/eventbus
+    implementation 'org.greenrobot:eventbus:3.3.1'
+
+
 
 
 

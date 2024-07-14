@@ -4,18 +4,18 @@
     <value>
       <entry key="server">
         <State>
-          <runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
             <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
+              <type value="QUICK_BOOT_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="A3NBB23331200012" />
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\moraru_pi\.android\avd\Pixel_6_API_29.avd" />
                 </Key>
               </deviceKey>
             </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-07-13T18:35:17.142005800Z" />
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-07-14T05:49:43.386616200Z" />
         </State>
       </entry>
     </value>

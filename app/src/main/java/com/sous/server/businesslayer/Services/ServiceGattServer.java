@@ -251,10 +251,8 @@ public class ServiceGattServer extends IntentService {
     private void callBackFromServiceToRecyreViewFragment(@NonNull    Boolean getStatusEnableBlueadapter) {
         try{
             MessageScannerStartRecyreViewFragment sendmessageScannerStartRecyreViewFragment= new MessageScannerStartRecyreViewFragment(getStatusEnableBlueadapter);
-
-            if (getStatusEnableBlueadapter==true) {
+            //TODO: ответ на экран работает ообрубование или нет
                 EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
-            }
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -420,14 +418,18 @@ public class ServiceGattServer extends IntentService {
 
     @SuppressLint("MissingPermission")
     private Boolean enableBluetoothAdapter() {
+        Boolean getStatusEnableBlueadapter=false;
         try{
 
-            if (bluetoothAdapter.isEnabled() ==false) {
-                bluetoothAdapter.enable();
+            if (bluetoothAdapter!=null) {
+                if (bluetoothAdapter.isEnabled() ==false) {
+                    bluetoothAdapter.enable();
+                    getStatusEnableBlueadapter=bluetoothAdapter.isEnabled();
+                }
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " bluetoothAdapter.isEnabled()  " +bluetoothAdapter.isEnabled() );
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " getStatusEnableBlueadapter  " +getStatusEnableBlueadapter);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -442,7 +444,7 @@ public class ServiceGattServer extends IntentService {
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
-        return  bluetoothAdapter.isEnabled();
+        return  getStatusEnableBlueadapter ;
     }
 
 
