@@ -1229,6 +1229,9 @@ public class FragmentScannerUser extends Fragment {
                 }
             };
             Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceClientBLE.class);
+            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             intentБиндингсСлужбойСканирования.setAction("com.scannerforble");
             getContext().bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
         } catch (Exception e) {

@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -560,7 +561,7 @@ public class ServiceClientBLE extends IntentService {
                                         if (characteristics != null) {
                                             characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
                                             // TODO: 20.02.2023  заполняем данными  клиента
-                                            ArrayList<String> linkedHashMapДанныеКлиентаДляGATT = МетодЗаполенияДаннымиКлиентаДЛяGAtt();
+                                            ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = МетодЗаполенияДаннымиКлиентаДЛяGAtt();
                                             characteristics.setValue(linkedHashMapДанныеКлиентаДляGATT.toString());
                                             // TODO: 20.02.2023  послылвем Сервреу Данные
                                             Boolean successОтправка = gatt.writeCharacteristic(characteristics);
@@ -596,8 +597,8 @@ public class ServiceClientBLE extends IntentService {
 
                         // TODO: 20.02.2023 Метод Вытаскиеваем ДАнные Симки пользователя  
                         @NonNull
-                        private ArrayList<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
-                            ArrayList <String> linkedHashMapДанныеКлиентаДляGATT = new ArrayList<>();
+                        private ConcurrentSkipListSet<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
+                            ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = new ConcurrentSkipListSet<>();
                             try {
                             linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
                                 // TODO: 27.02.2023  дполенилтельаня информация для вставки
@@ -608,10 +609,12 @@ public class ServiceClientBLE extends IntentService {
 
                                     linkedHashMapДанныеКлиентаДляGATT.add(currentaddressMaсithwhomtoсonnect);
 
+                                    linkedHashMapДанныеКлиентаДляGATT.add(new Date().toLocaleString());
+
                                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
                                             getIMEI + " getIMEI ");
 
-                                 linkedHashMapДанныеКлиентаДляGATT.stream().distinct().collect(Collectors.toList());
+
 
                                 Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
                                         + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
@@ -629,7 +632,7 @@ public class ServiceClientBLE extends IntentService {
                             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
                             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                         }
-                            return (ArrayList<String>) linkedHashMapДанныеКлиентаДляGATT.stream().distinct().collect(Collectors.toList());
+                            return linkedHashMapДанныеКлиентаДляGATT;
                         }
 
                         @Override
