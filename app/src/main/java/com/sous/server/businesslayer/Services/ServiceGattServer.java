@@ -51,7 +51,6 @@ import com.sous.server.businesslayer.Eventbus.MessageScannerStartRecyreViewFragm
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Date;
@@ -80,6 +79,10 @@ public class ServiceGattServer extends IntentService {
     protected BluetoothGattServer getBluetoothGattServer;
     protected BluetoothManager bluetoothManagerServer;
     protected BluetoothAdapter bluetoothAdapter;
+
+    protected  List<BluetoothDevice> getListGattServer ;
+
+
     protected Long version = 0l;
     protected ConcurrentHashMap<String, Bundle> concurrentHashMapDeviceBTE;
 
@@ -92,7 +95,7 @@ public class ServiceGattServer extends IntentService {
     protected FusedLocationProviderClient fusedLocationClientGoogle;
 
     protected LocationManager locationManager;
-    protected  List<BluetoothDevice> getListGattServer ;
+
 
 
     public ServiceGattServer() {
@@ -167,8 +170,19 @@ public class ServiceGattServer extends IntentService {
 
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
+   //TODO : инизиализация серврисов Goole
+            initGooleMapsLocation();
 
-            МетодИницилиазцииGpsGoogle();
+//TODO :  главный метод службы запускаем Gatt Server
+
+            mainstartingServerGatt();
+
+            //TODO:  для запущеного сервера Gatt ,дополвнительые параметры натсройки Charact and UUID
+            settingGattServerBluetoothGattService();
+
+//TODO: как запутили серевр Допололнительно ловим Девайсы Bluetoorhs
+            getListDeviceWithGattAdapter();
+
 
 
             /*      //TODO:Тест Код запуск кода по расписанию
@@ -199,6 +213,41 @@ public class ServiceGattServer extends IntentService {
 
     }
 
+    @SuppressLint("MissingPermission")
+    private void getListDeviceWithGattAdapter() {
+ try{
+        getListGattServer = (List<BluetoothDevice>) getBluetoothGattServer.getConnectedDevices();
+
+
+        for (BluetoothDevice pairedDevice : getListGattServer )
+        {
+            Log.d("BT", "pairedDevice.getName(): " + pairedDevice.getName());
+            Log.d("BT", "pairedDevice.getAddress(): " + pairedDevice.getAddress());
+        }
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                "  getListGattServer.size() " + getListGattServer.size());
+
+
+// TODO: 30.06.2022 сама не постредствено запуск метода
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+
+    }
+
     private void testMetodShedule10Secynd() {
         ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() {
@@ -223,16 +272,6 @@ public class ServiceGattServer extends IntentService {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
-             getListGattServer = (List<BluetoothDevice>) bluetoothManagerServer.getConnectedDevices(BluetoothProfile.GATT_SERVER);
-           // getListGattServer  = (List<BluetoothDevice>)   getBluetoothGattServer.getConnectedDevices();
-
-
-            for (BluetoothDevice pairedDevice : getListGattServer )
-            {
-                Log.d("BT", "pairedDevice.getName(): " + pairedDevice.getName());
-                Log.d("BT", "pairedDevice.getAddress(): " + pairedDevice.getAddress());
-            }
-
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -307,7 +346,7 @@ public class ServiceGattServer extends IntentService {
 
     // TODO: 30.11.2022  НАчинаем КОД       сервер СКАНИРОВАНИЯ
     @SuppressLint("MissingPermission")
-    private synchronized void МетодИницилиазцииGpsGoogle() {
+    private synchronized void initGooleMapsLocation() {
         try {
             fusedLocationClientGoogle = LocationServices.getFusedLocationProviderClient(this);
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
@@ -931,6 +970,14 @@ public class ServiceGattServer extends IntentService {
                 Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
                         "\n"+ "newState " + newState +  "status "+ status);
                 break;
+
+            case BluetoothGatt.GATT_SERVER:
+                Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                        "\n"+ "newState " + newState +  "status "+ status);
+                break;
+
+
+
         }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -974,7 +1021,7 @@ public class ServiceGattServer extends IntentService {
                             Log.i(this.getClass().getName(), "MyLocationListener GPS cityName "+cityName);
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "cityName " +cityName );
                         }
-                        
+
                     Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + "addressesgetGPS " +addressesgetGPS );
                 }
         } catch (Exception e) {
