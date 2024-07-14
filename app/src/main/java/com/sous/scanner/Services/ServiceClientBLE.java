@@ -342,7 +342,7 @@ public class ServiceClientBLE extends IntentService {
                             }
                         }
                     })
-                           .take(10,TimeUnit.SECONDS)
+                           .take(1,TimeUnit.MINUTES)
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -600,16 +600,21 @@ public class ServiceClientBLE extends IntentService {
                         private ConcurrentSkipListSet<String> МетодЗаполенияДаннымиКлиентаДЛяGAtt() {
                             ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = new ConcurrentSkipListSet<>();
                             try {
-                            linkedHashMapДанныеКлиентаДляGATT.add(ДействиеДляСервераGATTОТКлиента);
+
+
+
+
+                                //TODO :  отправлдяем данные
+                            linkedHashMapДанныеКлиентаДляGATT.add( "статус: "+ДействиеДляСервераGATTОТКлиента+"\n");
                                 // TODO: 27.02.2023  дполенилтельаня информация для вставки
 
                                 String getIMEI = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-                                    linkedHashMapДанныеКлиентаДляGATT.add(getIMEI);
+                                    linkedHashMapДанныеКлиентаДляGATT.add("imei: "+getIMEI+"\n");
 
-                                    linkedHashMapДанныеКлиентаДляGATT.add(currentaddressMaсithwhomtoсonnect);
+                                    linkedHashMapДанныеКлиентаДляGATT.add("mac: "+currentaddressMaсithwhomtoсonnect+"\n");
 
-                                    linkedHashMapДанныеКлиентаДляGATT.add(new Date().toLocaleString());
+                                    linkedHashMapДанныеКлиентаДляGATT.add("дата: "+new Date().toLocaleString()+"\n");
 
                                     Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
                                             getIMEI + " getIMEI ");
