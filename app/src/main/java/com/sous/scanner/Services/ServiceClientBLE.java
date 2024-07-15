@@ -319,7 +319,7 @@ public class ServiceClientBLE extends IntentService {
             // TODO: 12.02.2023 адреса разыне колиентов
             getPublicUUID =        ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
 
-            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
+            LinkedHashMap<String,UUID> BluetoothСерверов =new LinkedHashMap<>() ;
             // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
             BluetoothСерверов.put(getPublicUUID.toString(),getPublicUUID);
 
@@ -328,7 +328,7 @@ public class ServiceClientBLE extends IntentService {
             Flowable   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
-                                .repeatWhen(repeat->repeat.delay(5,TimeUnit.SECONDS))
+                                .repeatWhen(repeat->repeat.delay(20,TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -343,37 +343,44 @@ public class ServiceClientBLE extends IntentService {
                                 return true;
                             }
                         }
+                    }).doOnError(new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Throwable {
+                            throwable.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                        }
                     })
-                           .take(1,TimeUnit.MINUTES)
+                           .take(5,TimeUnit.MINUTES)
                                 .map(new Function<Map.Entry<String, UUID>, Object>() {
                                     @Override
                                     public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                                         if (bluetoothAdapterGATT!=null &&  bluetoothAdapterGATT.isEnabled()==true){
                                             //TODO:
-                                            Set<BluetoothDevice> deviceClientGatt= bluetoothAdapterGATT.getBondedDevices();
+                                            Set<BluetoothDevice> deviceClientGattEnable= bluetoothAdapterGATT.getBondedDevices();
 
-                                            if (bluetoothAdapterGATT.getBondedDevices().size()>0) {
+                                            if (deviceClientGattEnable.size()>0) {
                                                 ///TODO: Когда есть реальные Девайсы BLE
-                                                loopAllDiveceFotConnecting(stringUUIDEntry,deviceClientGatt);
+                                                loopAllDiveceFotConnecting(stringUUIDEntry,deviceClientGattEnable);
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                                        " bluetoothAdapterGATT.getBondedDevices() " +bluetoothAdapterGATT.getBondedDevices());
+                                                        " deviceClientGattEnable " +deviceClientGattEnable);
                                             } else {
 
                                                 ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
-                                                BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice("stringUUIDEntry.getKey()");
-                                              deviceClientGatt.add(bluetoothDevice);
-                                                ///TODO: когда ессть сами устройста
-                                                loopAllDiveceFotConnecting(stringUUIDEntry,deviceClientGatt);
+                                                BluetoothDevice bluetoothDevice=bluetoothAdapter.getRemoteDevice("98:2F:F8:19:BC:F7");//TODO: HUAWEI MatePad SE
+
+                                                ///TODO: когда ессть сами устройста Manual
+                                                manualDiveceFotConnecting(stringUUIDEntry,bluetoothDevice);
 
                                                 Log.d(this.getClass().getName(), "\n" + " class " +
                                                         Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "\n" +
-                                                        " deviceClientGatt " +deviceClientGatt);
+                                                        " deviceClientGattEnable " +deviceClientGattEnable);
 
                                             }
 
@@ -389,34 +396,9 @@ public class ServiceClientBLE extends IntentService {
                                         return stringUUIDEntry;
                                     }
 
-                                    private void loopAllDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry,Set<BluetoothDevice> deviceClientGatt) {
 
-                                        deviceClientGatt.forEach(new java.util.function.Consumer<BluetoothDevice>() {
-                                            @Override
-                                            public void accept(BluetoothDevice bluetoothDevice) {
 
-                                                Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
 
-                                                Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
-                                                Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
-                                                 getMacClient =     bluetoothDevice.getAddress();
-                                                getNameDeviceClient =     bluetoothDevice.getName();
-
-                                                Log.d("BT", "getMacClient " + getMacClient+
-                                                        " getNameDeviceClient " +getNameDeviceClient);
-
-                                                // TODO: 12.02.2023  запускаем задачу в потоке
-                                                BluetoothGattCallback bluetoothGattCallback=
-                                                        МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
-
-                                                // TODO: 26.01.2023  конец сервера GATT
-                                                МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
-
-                                                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
-                                                        +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
-                                            }
-                                        });
-                                    }
                                 })
                                 .doOnError(new Consumer<Throwable>() {
                                     @Override
@@ -458,6 +440,101 @@ public class ServiceClientBLE extends IntentService {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
+
+
+    //TODO запускаем Когда Адапетр BLE РЕАЛЬНЫЕ
+    @SuppressLint("MissingPermission")
+    private void loopAllDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry,Set<BluetoothDevice> deviceClientGatt) {
+  ///TODO: оБработка реальный адресов BLE
+        deviceClientGatt.forEach(new java.util.function.Consumer<BluetoothDevice>() {
+
+            @Override
+            public void accept(BluetoothDevice bluetoothDevice) {
+
+                Log.d(this.getClass().getName()," bluetoothDevice " +bluetoothDevice  );
+
+                Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
+                Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
+                getMacClient =     bluetoothDevice.getAddress();
+                getNameDeviceClient =     bluetoothDevice.getName();
+
+                Log.d("BT", "getMacClient " + getMacClient+
+                        " getNameDeviceClient " +getNameDeviceClient);
+
+                // TODO: 12.02.2023  запускаем задачу в потоке
+                BluetoothGattCallback bluetoothGattCallback=
+                        МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+
+                // TODO: 26.01.2023  конец сервера GATT
+                МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
+
+                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
+                        +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
+            }
+        });
+    }
+
+
+
+
+    //TODO запускаем Когда Адапетр BLE ИСКУСТВЕННЫЕ АДРЕС сервера
+    @SuppressLint("MissingPermission")
+    private void manualDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry,BluetoothDevice deviceClientGatt) {
+        ///TODO: оБработка реальный адресов BLE
+
+
+                Log.d(this.getClass().getName()," bluetoothDevice " +deviceClientGatt  );
+
+                Log.d("BT", "bluetoothDevice.getName(): " + deviceClientGatt.getName());
+                Log.d("BT", "bluetoothDevice.getAddress(): " + deviceClientGatt.getAddress());
+                getMacClient =     deviceClientGatt.getAddress();
+                getNameDeviceClient =     deviceClientGatt.getName();
+
+                Log.d("BT", "getMacClient " + getMacClient+
+                        " getNameDeviceClient " +getNameDeviceClient);
+
+                // TODO: 12.02.2023  запускаем задачу в потоке
+                BluetoothGattCallback bluetoothGattCallback=
+                        МетодРаботыСТекущийСерверомGATT(deviceClientGatt, stringUUIDEntry.getValue());
+
+                // TODO: 26.01.2023  конец сервера GATT
+                МетодЗапускаGATTКлиента(deviceClientGatt, bluetoothGattCallback);
+
+                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
+                        +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @SuppressLint("MissingPermission")
     private void setingEnableApapterBLE() {
