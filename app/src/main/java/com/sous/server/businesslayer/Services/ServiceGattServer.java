@@ -705,12 +705,33 @@ public class ServiceGattServer extends IntentService {
             РезультатЗаписиДанныхПИнгаДвайсаВБАзу = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
 
             Log.i(this.getClass().getName(), " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
-                    " contentValuesВставкаДанных " + contentValuesВставкаДанных);
+                    " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
+                    "  evice.getName().toString()  "+device.getName().toString());
 
-            if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу > 0) {
-                Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
+
+
+                if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу>0) {
+
+                    Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                    v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+
+
+
+                    listПришлиДанныеОтКлиентаЗапрос.add(device.getAddress().toString());
+                    listПришлиДанныеОтКлиентаЗапрос.add(device.getName().toString());
+
+                    //TODO:После успешной записи в Базу Новго Устройсто СОобщаепм это это Фрагменту
+                    sendStatusSucessEventBusDevece(listПришлиДанныеОтКлиентаЗапрос );
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
+                             " listПришлиДанныеОтКлиентаЗапрос " +listПришлиДанныеОтКлиентаЗапрос);
+
+                }
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -719,16 +740,6 @@ public class ServiceGattServer extends IntentService {
                         " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу );
 
 
-            } else {
-                // TODO: 09.02.2023 сам статус дляОтвета;
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу );
-
-
-            }
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -820,10 +831,7 @@ public class ServiceGattServer extends IntentService {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                         "  РезультатЗаписиВБАзу " +РезультатЗаписиВБАзу);
 
-                if (РезультатЗаписиВБАзу>0) {
-                    //TODO:посылаем данные о том на Фргмент что данные успешно записын с Клиента на Сервер GATT
-                    sendStatusSucessEventBusDevece(listПришлиДанныеОтКлиентаЗапрос);
-                }
+
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

@@ -38,6 +38,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class FragmentBootServer extends Fragment {
@@ -298,14 +301,24 @@ public class FragmentBootServer extends Fragment {
             //TODO: Запускаем Фрагмент
             String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
 
-          String ОтветОтGaTTДляПОльзваотеля=getListOtAndroidGattClernt;
+
+            getListOtAndroidGattClernt=getListOtAndroidGattClernt.replaceAll("^\\[|\\]$", "%%%%");
+
+          List<String> stringStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
+            stringStreamGetClientGatt.add(getListSuccessDerviceOtServerGatt.get(1));
+            stringStreamGetClientGatt.add(getListSuccessDerviceOtServerGatt.get(2));
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  getListSuccessDerviceOtServerGatt " +getListSuccessDerviceOtServerGatt);
 
 
 
             //Toast t =    Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG) ;
 
 
-            // Inflate the custom view from XML
+        /*    // Inflate the custom view from XML
             Toast toast = Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
 
@@ -316,11 +329,11 @@ public class FragmentBootServer extends Fragment {
             Typeface typeface = Typeface.create("serif", Typeface.BOLD);
             textView.setTypeface(typeface);
             textView.setPadding(10, 10, 10, 10);
-            textView.setText(ОтветОтGaTTДляПОльзваотеля);
+            textView.setText(ОтветОтGaTTДляПОльзваотеля);*/
 
-            toast.setView(textView);
+     /*       toast.setView(textView);
             toast.show();
-
+*/
 
 
             //Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
