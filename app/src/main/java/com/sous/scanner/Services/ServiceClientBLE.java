@@ -327,13 +327,15 @@ public class ServiceClientBLE extends IntentService {
             Flowable   flowableЦиклСервера=     Flowable.fromIterable(BluetoothСерверов.entrySet())
                                 .onBackpressureBuffer(true)
                                 .subscribeOn(Schedulers.newThread())
-                                .repeatWhen(repeat->repeat.delay(2,TimeUnit.SECONDS))
+                                .repeatWhen(repeat->repeat.delay(5,TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                             if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
                                     || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoDONTDIVICE")  ) {
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue() "+mediatorLiveDataGATT.getValue() +new Date().toLocaleString());
+                                МетодВыключениеКлиентаGatt();
+
                                 return false;
                             } else {
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue()  " +mediatorLiveDataGATT.getValue()+new Date().toLocaleString());
@@ -364,7 +366,8 @@ public class ServiceClientBLE extends IntentService {
                                                          " getNameDeviceClient " +getNameDeviceClient);
 
                                                  // TODO: 12.02.2023  запускаем задачу в потоке
-                                                 BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                                                 BluetoothGattCallback bluetoothGattCallback=
+                                                         МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
                                                  
                                                  // TODO: 26.01.2023  конец сервера GATT
                                                  МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
@@ -513,18 +516,15 @@ public class ServiceClientBLE extends IntentService {
                                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
                                         });
                                          Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
-                                        Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
+                                        Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT + " newState " +newState);
                                         break;
                                     case BluetoothProfile.STATE_DISCONNECTED :
                                     case BluetoothGatt.GATT_FAILURE:
                                     case 133 :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
-                                                "  "+new Date().toLocaleString());
-                                        МетодВыключениеКлиентаGatt();
+                                        Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                         break;
                                     case BluetoothGatt.GATT_CONNECTION_CONGESTED :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange" +
-                                                "  "+new Date().toLocaleString());
+                                        Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoReetBoot");
                                         });
