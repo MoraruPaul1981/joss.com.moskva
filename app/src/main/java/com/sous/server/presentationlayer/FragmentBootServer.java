@@ -1,9 +1,12 @@
 package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -119,8 +122,15 @@ public class FragmentBootServer extends Fragment {
         /*    //TODO:создаем подписку MessageScannerServer */
         EventBus.getDefault().register(this);
 
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-        /*    //TODO:создаем класс для бизнес логики */
+
+
+
+            /*    //TODO:создаем класс для бизнес логики */
         biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
        МетодЗапускаСервиса(  );

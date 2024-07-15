@@ -18,11 +18,12 @@ public class SubClassErrors {
     public  void МетодЗаписиОшибок(@NonNull   ContentValues contentValuesДляЗаписиОшибки) {
         try {
             Log.i( context.getClass().getName(), "contentValuesДляЗаписиОшибки  " + contentValuesДляЗаписиОшибки);
-            Uri uri = Uri.parse("content://com.sous.server.providerserver/" +"errordsu1" + "");
-       //     Uri uri = Uri.parse("content://dsu1.scanner.myapplication.contentproviderfordatabasescanner/" +"errordsu1" + "");
-            ContentResolver resolver = context.getContentResolver();
+
+            Uri uri = Uri.parse("content://com.sous.server.providerserver/errordsu1" );
+            ContentResolver resolver = context. getContentResolver();
         Uri    insertData=   resolver.insert(uri, contentValuesДляЗаписиОшибки);
-            Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ РезультатВставки ОШИБКА " +  insertData );
+            Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ РезультатВставки ОШИБКА " +  insertData +
+                     " contentValuesДляЗаписиОшибки  " +contentValuesДляЗаписиОшибки);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e( context.getClass().getName(), "SubClassErrors ДЛЯ SCANNER error " + e +

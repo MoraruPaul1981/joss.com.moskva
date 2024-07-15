@@ -42,6 +42,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
             ИменаТаблицыОтАндройда=new CopyOnWriteArrayList<>();
             ИменаТаблицыОтАндройда.add("errordsu1");
             ИменаТаблицыОтАндройда.add("scannerserversuccess");
+            ИменаТаблицыОтАндройда.add("scannerlistdevices");
             Log.d(this.getClass().getName(),  " ContentProviderServer" +uriMatcherДЛяПровайдераКонтентБазаДанных );
             Log.d(this.getClass().getName(), " ИменаТаблицыОтАндройда "+ИменаТаблицыОтАндройда );
             uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(ИменаТаблицыОтАндройда.size());
@@ -49,6 +50,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
                 @Override
                 public void accept(String ЭлементТаблица) {
                     uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.sous.server.providerserver",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
+
                     Log.d(this.getClass().getName(), " ЭлементТаблица "+ЭлементТаблица + " ТекущаяСтрокаПриДОбавлениииURL " +ТекущаяСтрокаПриДОбавлениииURL);
                     ТекущаяСтрокаПриДОбавлениииURL++;
                 }
@@ -109,7 +111,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
                 Create_Database_СамаБАзаSQLite.beginTransaction();
             }
             Log.d(this.getClass().getName(), " uri"+uri );
-            cursor = Create_Database_СамаБАзаSQLite.rawQuery(strings[0], null);
+            cursor = Create_Database_СамаБАзаSQLite.rawQuery(s, null);
             cursor.moveToFirst();
             if (Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.endTransaction();

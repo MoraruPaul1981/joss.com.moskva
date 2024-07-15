@@ -20,7 +20,7 @@ public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpe
 
    private   Context context;
     private static     SQLiteDatabase ССылкаНаСозданнуюБазу;
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private Long version=0l;
     public static SQLiteDatabase getССылкаНаСозданнуюБазу() {
      System.out.println(ССылкаНаСозданнуюБазу);
@@ -136,7 +136,10 @@ public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpe
                     "Metod TEXT ," +
                     "LineError INTEGER ," +
                     "date_update NUMERIC ," +
-                    "whose_error INTEGER  )");
+                    "user_update INTEGER , " +
+                    "current_table NUMERIC ,  " +
+                    " whose_error INT ," +
+                    " uuid  NUMERIC  )");
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -163,18 +166,17 @@ public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpe
                         ССылкаНаСозданнуюБазу.execSQL("drop table  if exists   "+"scannerserversuccess"+"");//test
                         ССылкаНаСозданнуюБазу.execSQL("Create table if not exists   "+"scannerserversuccess"+" (" +
                                 "id  INTEGER     ," +
-                                " servermac  TEXT ," +
-                                " operations TEXT  ," +
+                                " operations  TEXT ," +
                                 " completedwork TEXT  ," +
-                                " namedevice TEXT ," +
-                                " macdevice TEXT  ," +
+                                " namedevice TEXT  ," +
+                                " macdevice TEXT ," +
                                 " gps1  NUMERIC ," +
                                 " gps2  NUMERIC ," +
                                 " getstatusrow INTEGER  DEFAULT 0 ," +
                                 " adress TEXT ," +
                                 " city TEXT ," +
                                 " date_update NUMERIC   ," +
-                                " uuid NUMERIC UNIQUE DEFAULT 0  ,"+
+                                " uuid  NUMERIC UNIQUE DEFAULT 0  ,"+
                                 " version  NUMERIC ," +
                                 " sim  INTEGER ," +
                                 " iemi  INTEGER ," +

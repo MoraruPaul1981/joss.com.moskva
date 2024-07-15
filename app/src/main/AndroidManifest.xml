@@ -138,12 +138,9 @@
         <provider
             android:name=".businesslayer.ContentProvoders.ContentProviderServer"
             android:authorities="com.sous.server.providerserver"
-            android:directBootAware="true"
             android:enabled="true"
-            android:excludeFromRecents="true"
             android:exported="true"
             android:grantUriPermissions="true"
-            android:permission="com.sous.server.providerserver.pemission"
             android:readPermission="true"
             android:writePermission="true" />
 
