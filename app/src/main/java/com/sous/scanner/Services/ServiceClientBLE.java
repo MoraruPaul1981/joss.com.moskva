@@ -37,7 +37,6 @@ import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -45,7 +44,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
@@ -83,10 +81,11 @@ public class ServiceClientBLE extends IntentService {
     }
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private     Long version=0l;
-    private  String ДействиеДляСервераGATTОТКлиента;
+    private  String getWorkerStateClient;
     private  UUID getPublicUUID;
     private  BluetoothGatt gatt;
-    private String currentaddressMaсithwhomtoсonnect;
+    private String getMacClient;
+    private String getNameDeviceClient;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -274,7 +273,7 @@ public class ServiceClientBLE extends IntentService {
         this.activity = activity;
         this.handler = handler;
         this.mediatorLiveDataGATT=mediatorLiveDatagatt;
-        this.ДействиеДляСервераGATTОТКлиента=ДействиеДляСервераGATTОТКлиента;
+        this.getWorkerStateClient =ДействиеДляСервераGATTОТКлиента;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         try{
 
@@ -358,9 +357,11 @@ public class ServiceClientBLE extends IntentService {
 
                                                  Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
                                                  Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
-                                                  currentaddressMaсithwhomtoсonnect =     bluetoothDevice.getAddress();
+                                                  getMacClient =     bluetoothDevice.getAddress();
+                                                 getNameDeviceClient =     bluetoothDevice.getName();
 
-                                                 Log.d("BT", "ТекущийMacДивайсяСКоторымЯКонекту " + currentaddressMaсithwhomtoсonnect);
+                                                 Log.d("BT", "getMacClient " + getMacClient+
+                                                         " getNameDeviceClient " +getNameDeviceClient);
 
                                                  // TODO: 12.02.2023  запускаем задачу в потоке
                                                  BluetoothGattCallback bluetoothGattCallback=       МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
@@ -559,7 +560,7 @@ public class ServiceClientBLE extends IntentService {
                                         gatt.setCharacteristicNotification(characteristics, true);
                                         characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
                                         if (characteristics != null) {
-                                            characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
+                                            characteristics.setValue("действие:" + getWorkerStateClient);
                                             // TODO: 20.02.2023  заполняем данными  клиента
                                             ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = МетодЗаполенияДаннымиКлиентаДЛяGAtt();
                                             characteristics.setValue(linkedHashMapДанныеКлиентаДляGATT.toString());
@@ -572,7 +573,7 @@ public class ServiceClientBLE extends IntentService {
 
                                             Log.i(TAG, "characteristics" + new Date().toLocaleString()+  " characteristics "
                                                     +characteristics+ " successОтправка " +successОтправка+
-                                                    " ДействиеДляСервераGATTОТКлиента "+ДействиеДляСервераGATTОТКлиента);
+                                                    " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                         }
                                     }
                                 }else{
@@ -601,28 +602,18 @@ public class ServiceClientBLE extends IntentService {
                             ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = new ConcurrentSkipListSet<>();
                             try {
 
-
-
-
+                                linkedHashMapДанныеКлиентаДляGATT.add("device: "+ getNameDeviceClient +"\n");
+                                linkedHashMapДанныеКлиентаДляGATT.add("mac: "+ getMacClient +"\n");
                                 //TODO :  отправлдяем данные
-                            linkedHashMapДанныеКлиентаДляGATT.add( "статус: "+ДействиеДляСервераGATTОТКлиента+"\n");
-                                // TODO: 27.02.2023  дполенилтельаня информация для вставки
-
+                               linkedHashMapДанныеКлиентаДляGATT.add( "статус: "+ getWorkerStateClient +"\n");
                                 String getIMEI = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                                linkedHashMapДанныеКлиентаДляGATT.add("imei: "+getIMEI+"\n");
+                                linkedHashMapДанныеКлиентаДляGATT.add("дата: "+new Date().toLocaleString()+"\n");
 
-                                    linkedHashMapДанныеКлиентаДляGATT.add("imei: "+getIMEI+"\n");
+                                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+
+                                        " время " +new Date().toLocaleString() +
+                                        getIMEI + " getIMEI "+ " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
 
-                                    linkedHashMapДанныеКлиентаДляGATT.add("mac: "+currentaddressMaсithwhomtoсonnect+"\n");
-
-                                    linkedHashMapДанныеКлиентаДляGATT.add("дата: "+new Date().toLocaleString()+"\n");
-
-                                    Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() +
-                                            getIMEI + " getIMEI ");
-
-
-
-                                Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                                        + " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -761,7 +752,7 @@ public class ServiceClientBLE extends IntentService {
                             gatt.disconnect();
                             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);}
                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                                new Date().toLocaleString() + ДействиеДляСервераGATTОТКлиента
+                                new Date().toLocaleString() + getWorkerStateClient
                                 + " gatt "+gatt);
                     //TODO
                 } catch (Exception e) {
