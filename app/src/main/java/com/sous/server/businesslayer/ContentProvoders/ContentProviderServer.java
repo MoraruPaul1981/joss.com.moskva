@@ -107,7 +107,6 @@ public class ContentProviderServer extends android.content.ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
         Cursor cursor = null;
         try{
-            Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServerScanner(getContext()).getССылкаНаСозданнуюБазу();
             if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.beginTransaction();
             }
@@ -153,7 +152,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues contentValues) {
 
-        Integer  ОтветВставкиДанных = null;
+        Uri geturiInsert = null;
         try {
             if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.beginTransaction();
@@ -162,7 +161,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
             // TODO: 14.10.2022 метод определения текущней таблицы
             String table = МетодОпределяемТаблицу(uri);
 
-            Long   РезультатВставкиДанныхСканирование  = Create_Database_СамаБАзаSQLite.insertOrThrow(table, null, contentValues);
+            Long   РезультатВставкиДанныхСканирование  = Create_Database_СамаБАзаSQLite.insert(table, null, contentValues);
             // TODO: 30.10.2021
             Log.w(getContext().getClass().getName(), " РезультатВставкиДанных  " + РезультатВставкиДанныхСканирование);/////
             if (РезультатВставкиДанныхСканирование> 0) {
@@ -170,10 +169,17 @@ public class ContentProviderServer extends android.content.ContentProvider {
                     Create_Database_СамаБАзаSQLite.setTransactionSuccessful();
                     // TODO: 22.09.2022 увеличивает версию данных
                 }
+                geturiInsert=Uri.parse(РезультатВставкиДанныхСканирование.toString());
             }
             if (Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.endTransaction();
             }
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " geturiInsert  " +geturiInsert);
+
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
         } catch (Exception e) {
@@ -190,7 +196,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
             valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-        return uri;
+        return geturiInsert;
     }
 
 
@@ -256,7 +262,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
                                     .doOnNext(new io.reactivex.rxjava3.functions.Consumer<ContentValues>() {
                                         @Override
                                         public void accept(ContentValues contentValues) throws Throwable {
-                                            Long   РезультатВставкиДанныхСканирование  = Create_Database_СамаБАзаSQLite.insertOrThrow(table, null, contentValues);
+                                            Long   РезультатВставкиДанныхСканирование  = Create_Database_СамаБАзаSQLite.insert(table, null, contentValues);
                                             // TODO: 30.10.2021
                                             Log.w(getContext().getClass().getName(), " РезультатВставкиДанных  " + РезультатВставкиДанныхСканирование);/////
                                             ОтветВставкиДанных[0] =РезультатВставкиДанныхСканирование.intValue();

@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
+
 import java.util.Date;
 
 public class SubClassErrors {
@@ -32,5 +34,25 @@ public class SubClassErrors {
         }
 
     }
+
+
+
+    public  void МетодЗаписиОшибокИзServerGatt(@NonNull   ContentValues contentValuesДляЗаписиОшибки, ContentProviderServer contentProviderServer) {
+        try {
+            Log.i( context.getClass().getName(), "contentValuesДляЗаписиОшибки  " + contentValuesДляЗаписиОшибки);
+            Uri uri = Uri.parse("content://com.sous.server.providerserver/errordsu1" );
+            Uri    insertData=   contentProviderServer.insert(uri, contentValuesДляЗаписиОшибки);
+            Log.w(context.getClass().getName(), " РЕЗУЛЬТАТ РезультатВставки ОШИБКА " +  insertData +
+                    " contentValuesДляЗаписиОшибки  " +contentValuesДляЗаписиОшибки);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e( context.getClass().getName(), "SubClassErrors ДЛЯ SCANNER error " + e +
+                    " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber()+ " date " +new Date().toGMTString());
+        }
+
+    }
+
+
 
 }
