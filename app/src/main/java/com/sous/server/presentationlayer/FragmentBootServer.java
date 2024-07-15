@@ -3,13 +3,16 @@ package com.sous.server.presentationlayer;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -285,10 +288,32 @@ public class FragmentBootServer extends Fragment {
             //TODO: Запускаем Фрагмент
             String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
 
-          String ОтветОтGaTTДляПОльзваотеля="Device "+"\n"+getListOtAndroidGattClernt;
+          String ОтветОтGaTTДляПОльзваотеля=getListOtAndroidGattClernt;
 
 
-            Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
+
+            //Toast t =    Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG) ;
+
+
+            // Inflate the custom view from XML
+            Toast toast = Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
+
+            TextView textView = new TextView(getContext());
+            textView.setBackgroundColor(Color.DKGRAY);
+            textView.setTextColor(Color.WHITE);
+            textView.setTextSize(30);
+            Typeface typeface = Typeface.create("serif", Typeface.BOLD);
+            textView.setTypeface(typeface);
+            textView.setPadding(10, 10, 10, 10);
+            textView.setText(ОтветОтGaTTДляПОльзваотеля);
+
+            toast.setView(textView);
+            toast.show();
+
+
+
+            //Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
 
                 //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
                 //imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
