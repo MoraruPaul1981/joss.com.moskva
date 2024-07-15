@@ -17,6 +17,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
@@ -37,6 +38,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
+import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
@@ -154,6 +156,7 @@ public class ServiceGattServer extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         try {
+
             //TODO:получаем Статус Адаптера Bluetooth true, false  и оптравляем статус в активти
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
@@ -661,6 +664,11 @@ public class ServiceGattServer extends IntentService {
             contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
             Log.i(this.getClass().getName(), "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
 
+
+
+
+
+
             // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
             РезультатЗаписиДанныхПИнгаДвайсаВБАзу = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
 
@@ -671,11 +679,7 @@ public class ServiceGattServer extends IntentService {
                 Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                 v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
-                ///TODO: Succenss AddDevice
-                Bundle    bundleAddDeviceSuccess = new Bundle();
-                bundleAddDeviceSuccess.putString("Статус", "SERVER#SousAvtoSuccess");
-                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", listПришлиДанныеОтКлиентаЗапрос.toString());
-                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
+
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -685,12 +689,6 @@ public class ServiceGattServer extends IntentService {
 
             } else {
                 // TODO: 09.02.2023 сам статус дляОтвета;
-                ///TODO: ErrorAddDevice
-                Bundle    bundleAddDeviceSuccess = new Bundle();
-                bundleAddDeviceSuccess.putString("Статус", "SERVER#SousAvtoERROR");
-                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" +
-                        "Без записи в базу !!!");
-                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1013,17 +1011,20 @@ public class ServiceGattServer extends IntentService {
         }
         return  0;
     }
-    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues contentValuesDataOtAnsroid) {
+    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues contentValuesDataOtAnsroid) throws InterruptedException {
+
         Uri РезульататЗАписиНовогоДивайса = null;
         try{
+            ContentProviderServer contentProviderServer=new ContentProviderServer();
             Log.i(this.getClass().getName(), "запись сотрудника в базу"+ " contentValuesDataOtAnsroid) "
                     + contentValuesDataOtAnsroid ) ;
-            String provider = "com.sous.server.providerserver";
             Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-            ContentResolver resolver =  getContentResolver();
-            РезульататЗАписиНовогоДивайса=   resolver.insert(uri, contentValuesDataOtAnsroid);
+
+            РезульататЗАписиНовогоДивайса=   contentProviderServer.insert(uri, contentValuesDataOtAnsroid);
+
             Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  РезульататЗАписиНовогоДивайса ЗНАЧЕНИЯ  "
                     +  РезульататЗАписиНовогоДивайса.toString() );
+
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
             e.printStackTrace();
@@ -1047,10 +1048,12 @@ public class ServiceGattServer extends IntentService {
         Integer   ВерсияДАнных = 0;
         try{
             Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-            ContentResolver resolver =  getContentResolver();
-            String[] columns = new String[]{MediaStore.Audio.AudioColumns.DATA};
-            Cursor cursorПолучаемДЛяСевреа = resolver.query(uri, columns, СамЗапрос,
-                    null,null,null);
+
+            ContentProviderServer contentProviderServer=new ContentProviderServer();
+            contentProviderServer.attachInfo(getApplicationContext(),new ProviderInfo());
+            contentProviderServer.onCreate();
+
+            Cursor cursorПолучаемДЛяСевреа = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
 
 
             cursorПолучаемДЛяСевреа.moveToFirst();

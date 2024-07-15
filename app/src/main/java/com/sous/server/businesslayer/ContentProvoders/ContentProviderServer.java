@@ -107,6 +107,7 @@ public class ContentProviderServer extends android.content.ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
         Cursor cursor = null;
         try{
+            Create_Database_СамаБАзаSQLite=new CREATE_DATABASEServerScanner(getContext()).getССылкаНаСозданнуюБазу();
             if (!Create_Database_СамаБАзаSQLite.inTransaction()) {
                 Create_Database_СамаБАзаSQLite.beginTransaction();
             }
