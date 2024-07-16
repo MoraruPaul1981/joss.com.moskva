@@ -100,7 +100,6 @@ public class ServiceClientBLE extends IntentService {
 
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
 
-
             setingEnableApapterBLE();
 
             getListDeviceForBluApdapter();
@@ -306,12 +305,16 @@ public class ServiceClientBLE extends IntentService {
             Flowable flowableЦиклСервера = Flowable.fromIterable(BluetoothСерверов.entrySet())
                     .onBackpressureBuffer(true)
                     .subscribeOn(Schedulers.newThread())
-                    .repeatWhen(repeat -> repeat.delay(20, TimeUnit.SECONDS))
+                    .throttleFirst(250,TimeUnit.MICROSECONDS)
+                    .repeatWhen(repeat -> repeat.delay(5, TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                             if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoDONTDIVICE")) {
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoDONTDIVICE")
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoERROR")) {
+
+
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue() + new Date().toLocaleString());
                                 МетодВыключениеКлиентаGatt();
 
@@ -708,6 +711,9 @@ try{
                                     BluetoothGattService services = gatt.getService(UuidГлавныйКлючСерверGATT);
                                     if (services!=null) {
                                         Boolean КоннектССевромGATT = gatt.connect();
+
+                                       gatt.beginReliableWrite();
+
                                         Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
                                         BluetoothGattCharacteristic characteristics = services.getCharacteristic(getPublicUUID);
                                         gatt.setCharacteristicNotification(characteristics, true);
@@ -723,12 +729,19 @@ try{
 
                                             if (successОтправка) {
                                                 mediatorLiveDataGATT.setValue("SERVER#SousAvtoSuccess");
+                                                gatt.executeReliableWrite();
+                                            }else {
+                                                gatt.abortReliableWrite();
                                             }
 
                                             Log.i(TAG, "characteristics" + new Date().toLocaleString()+  " characteristics "
                                                     +characteristics+ " successОтправка " +successОтправка+
                                                     " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                         }
+                                    }else {
+                                        mediatorLiveDataGATT.setValue("SERVER#SousAvtoERROR");
+                                        Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
+
                                     }
                                 }else{
                                     mediatorLiveDataGATT.setValue("SERVER#SousAvtoERROR");
@@ -756,10 +769,10 @@ try{
                             ConcurrentSkipListSet<String> linkedHashMapДанныеКлиентаДляGATT = new ConcurrentSkipListSet<>();
                             try {
                                 //TODO :  отправлдяем данные
-                               linkedHashMapДанныеКлиентаДляGATT.add( "статус: "+ getWorkerStateClient +"\n");
+                               linkedHashMapДанныеКлиентаДляGATT.add(   getWorkerStateClient +"\n");
                                 String getIMEI = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                                linkedHashMapДанныеКлиентаДляGATT.add("imei: "+getIMEI+"\n");
-                                linkedHashMapДанныеКлиентаДляGATT.add("дата: "+new Date().toLocaleString()+"\n");
+                                linkedHashMapДанныеКлиентаДляGATT.add(  getIMEI+"\n");
+                                linkedHashMapДанныеКлиентаДляGATT.add(  new Date().toLocaleString()+"\n");
 
                                 Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+
                                         " время " +new Date().toLocaleString() +
@@ -847,6 +860,16 @@ try{
                 }
                     return  bluetoothGattCallback;
                 }
+
+
+
+
+
+
+
+
+
+
 
 
     @SuppressLint("MissingPermission")
