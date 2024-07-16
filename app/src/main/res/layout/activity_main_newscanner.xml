@@ -13,6 +13,7 @@
 
 
 <RelativeLayout
+    android:id="@+id/id_relativecayoutscanner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -34,6 +35,7 @@
         app:tabTextColor="#A6A3A2"
         app:tabSelectedTextColor="#A6A3A2"
         app:tabMode="fixed"
+        android:visibility="visible"
         android:padding="2dp">
 
 
@@ -48,7 +50,7 @@
 
 
        <FrameLayout
-           android:id="@+id/framelauoutScanner"
+           android:id="@+id/framelauoutbleprimary"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_margin="1dp"

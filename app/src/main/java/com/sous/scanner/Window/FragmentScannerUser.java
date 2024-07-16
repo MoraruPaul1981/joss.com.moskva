@@ -291,7 +291,6 @@ public class FragmentScannerUser extends Fragment {
 
     private void МетодВизуализацииКнопокИБар() {
         try {
-            ((MainActivityNewScanner) getActivity()).МетодВидимыеПрограссБарИКнопки();
             Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
         } catch (Exception e) {
             e.printStackTrace();

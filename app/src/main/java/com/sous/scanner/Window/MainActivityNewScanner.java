@@ -4,63 +4,48 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.MutableLiveData;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Binder;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.UserHandle;
-import android.os.UserManager;
-import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.textview.MaterialTextView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.sous.scanner.Broadcastreceiver.MyDeviceAdminReceiver;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 public class MainActivityNewScanner extends AppCompatActivity  {
-   private Message handler;
+   public Message handlerScanner;
     private NavigationBarView bottomNavigationView;
     @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewВыход;
@@ -70,6 +55,8 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     private FragmentTransaction fragmentTransaction;
 
     private com.google.android.material.card.MaterialCardView cardVievscanner;
+
+    protected TabLayout  tabLayout ;
 
     private     Long version=0l;
 
@@ -95,9 +82,13 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // TODO: 08.12.2022
-
             cardVievscanner = (MaterialCardView) findViewById(R.id.id_cardViewblescanner);
-            bottomNavigationView = (NavigationBarView)  cardVievscanner.findViewById(R.id.BottomNavigationViewScanner)  ;
+            RelativeLayout relativecayoutscanner = (RelativeLayout) cardVievscanner. findViewById(R.id.id_relativecayoutscanner);
+
+            bottomNavigationView = (NavigationBarView)  relativecayoutscanner.findViewById(R.id.BottomNavigationViewScanner)  ;
+            tabLayout = (TabLayout)  relativecayoutscanner.findViewById(R.id.tabLayout)  ;
+
+
             bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
             // TODO: 05.12.2022 строчлочки
             bottomNavigationItemViewВыход = bottomNavigationView.findViewById(R.id.id_lback);
@@ -105,14 +96,15 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             bottomNavigationItemViewВыход.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             bottomNavigationItemViewИстория.setItemRippleColor(ColorStateList.valueOf(Color.RED));
 
-
+            // TODO: 16.07.2024
             fragmentManager = getSupportFragmentManager();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
 
             МетодHandles();
-            МетодПрячемБарИКнопки();
+
+
             // TODO: 19.02.2023 разрешает обновлени BLE
             МетодРАзрешенияBlurtooTКлиент();
             // TODO: 24.02.2023 advens
@@ -122,6 +114,10 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             // TODO: 24.01.2023  переходят после получение binder
             МетодЗапускBootФрагмента(new FragmentBootScanner());//todo Запускам клиента или сервер фрагмент
 
+            Bundle result = new Bundle();
+            result.putString("bundleKey", "result");
+            fragmentManager.setFragmentResult("requestKey", result);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -139,77 +135,10 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     }
 
-    private void МетодРазрешенияДополнительное() {
-        try {
-            ComponentName componentName = new ComponentName(this, MyDeviceAdminReceiver.class);
-            MyDeviceAdminReceiver myDeviceAdminReceiver=new MyDeviceAdminReceiver();
-            Intent broadcastReceiver_sous_notificatioons = new Intent(this, MyDeviceAdminReceiver.class);
-            registerReceiver(myDeviceAdminReceiver,new IntentFilter(),DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN, handler.getTarget());
-            DevicePolicyManager  devicePolicyManager=  myDeviceAdminReceiver.getManager(getApplication());
 
-            if ( devicePolicyManager.isAdminActive(componentName)==true) {
-                Intent intent = new Intent(DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE);//DevicePolicyManager.ACTION_PROVISION_MANAGED_PROFILE
-                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_DELEGATION_SCOPES,componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_ALLOWED_PROVISIONING_MODES,componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,componentName);
-                intent.putExtra(DevicePolicyManager.EXTRA_PROVISIONING_MODE,1);
-                startActivity(intent);
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-            } else {
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                        +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-            }
-         // TODO: 24.02.2023
-           if(devicePolicyManager.isDeviceOwnerApp(componentName.getPackageName())){
-               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                       +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-            }else{
-               Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()
-                       +" devicePolicyManager.isAdminActive(componentName) "+devicePolicyManager.isAdminActive(componentName));
-           }
-
-            devicePolicyManager.setProfileEnabled(componentName);
-         /*   List scopess = new ArrayList<>();
-            scopess.add(DevicePolicyManager.DELEGATION_CERT_INSTALL);
-            scopess.add(DevicePolicyManager.DELEGATION_APP_RESTRICTIONS);
-            scopess.add(DevicePolicyManager.DELEGATION_BLOCK_UNINSTALL);
-            scopess.add(DevicePolicyManager.DELEGATION_PERMISSION_GRANT);
-            scopess.add(DevicePolicyManager.DELEGATION_PACKAGE_ACCESS);
-            scopess.add(DevicePolicyManager.DELEGATION_ENABLE_SYSTEM_APP);
-           devicePolicyManager.setDelegatedScopes(componentName,componentName.getPackageName(),scopess);*/
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
-
-    public void МетодПрячемБарИКнопки() {
-        bottomNavigationView.setVisibility(View.INVISIBLE);
-        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-    }
-
-    public void МетодВидимыеПрограссБарИКнопки() {
-        bottomNavigationView.setVisibility(View.VISIBLE);
-        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-    }
 
     public void МетодHandles() {
-       handler=new Handler(Looper.getMainLooper(), new Handler.Callback() {
+       handlerScanner =new Handler(Looper.getMainLooper(), new Handler.Callback() {
            @Override
            public boolean handleMessage(@NonNull Message msg) {
                return true;
@@ -264,7 +193,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         try {
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.replace(R.id.framelauoutScanner, getfragmentBootScanner)
+            fragmentTransaction.add(R.id.framelauoutbleprimary, getfragmentBootScanner)
                     .setPrimaryNavigationFragment(getfragmentBootScanner);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
