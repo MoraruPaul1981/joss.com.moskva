@@ -734,19 +734,21 @@ public class ServiceGattServer extends IntentService {
                     + new Date().toLocaleString() + " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
 
 
+         List<String> getStream= Stream.of(listПришлиДанныеОтКлиентаЗапрос.get(0).replaceAll("^\\[|\\]$", "").split(",")).collect(Collectors.toList());
+
+
+
             // TODO: 08.02.2023 Добавляем Данные для Записи в базу через Адаптер ContentValues
             contentValuesВставкаДанных.put("macdevice", device.getAddress().toString());
             contentValuesВставкаДанных.put("namedevice", device.getName().toString());
 
+            contentValuesВставкаДанных.put("iemi", getStream.get(0).toString());
+            contentValuesВставкаДанных.put("date_update", getStream.get(1).toString());
+            contentValuesВставкаДанных.put("completedwork", getStream.get(2).toString());
+            contentValuesВставкаДанных.put("operations", getStream.get(2).toString());
 
 
-           Integer getStartimei=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf("[imei:");
-            Integer getEndimei=   listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", дата:");
 
-            Integer getStartдата=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", дата:");
-            Integer getEndдата=   listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", статус:");
-
-            Integer getStartстатус=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", статус:");
 
 
 
