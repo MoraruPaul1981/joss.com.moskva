@@ -1,12 +1,18 @@
 package com.sous.server.businesslayer.Locations;
 
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /*---------- Listener class to get coordinates ------------- */
 public class MyLocationListener implements LocationListener {
@@ -24,7 +30,7 @@ public class MyLocationListener implements LocationListener {
         String longitude = "Longitude: " + loc.getLongitude();
         /*------- To get city name from coordinates -------- */
         Log.i(TAG, "MyLocationListener GPS longitude "+longitude);
-      /*  String cityName = null;
+   String cityName = null;
         Geocoder gcd = new Geocoder(context, Locale.getDefault());
         Log.i(TAG, "MyLocationListener GPS gcd "+gcd);
         List<Address> addresses;
@@ -35,12 +41,12 @@ public class MyLocationListener implements LocationListener {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if (addresses.size() > 0) {
+        if (addresses.size() > 0) {
                 System.out.println(addresses.get(0).getLocality());
                 cityName = addresses.get(0).getLocality();
                 Log.i(TAG, "MyLocationListener GPS cityName "+cityName);
             }
-        Log.i(TAG, "MyLocationListener GPS addresses "+addresses);*/
+        Log.i(TAG, "MyLocationListener GPS addresses "+addresses);
         }
 
     @Override

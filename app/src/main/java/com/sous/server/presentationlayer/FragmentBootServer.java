@@ -211,9 +211,10 @@ public class FragmentBootServer extends Fragment {
 
                 //TODO: девай усешно записель состывокальс севреросм и мы его Показываем Пользователю  Фрагмент
                 List<String> getListSuccessDerviceOtServerGatt= paramentsScannerServer.getList();
-
-                forwardSuccessDiveciWriteServiceGattEventBus(getListSuccessDerviceOtServerGatt);
-
+             //TODO: обрабатываем получаный Листа данных от Кликента и далеее его показыаеи UI event
+                List<String> listStreamGetClientGatt  =     forwardSuccessDiveciWriteServiceGattEventBus(getListSuccessDerviceOtServerGatt);
+              //TODO:   показыаеи UI event
+                forwardSuccessDiveceUIEventAnd(listStreamGetClientGatt);
 
 
                 Log.d(getContext().getClass().getName(), "\n"
@@ -295,38 +296,54 @@ public class FragmentBootServer extends Fragment {
     }
 
 
+    
+    
     @SuppressLint("ResourceType")
-    private void forwardSuccessDiveciWriteServiceGattEventBus(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
+    private List<String> forwardSuccessDiveciWriteServiceGattEventBus(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
+        List<String> listStreamGetClientGatt = null;
         try{
             //TODO: Запускаем Фрагмент
             String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
-
-
             getListOtAndroidGattClernt=getListOtAndroidGattClernt.replaceAll("^\\[|\\]$", "");
-
-          List<String> ListStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
-            ListStreamGetClientGatt.add("mac: "+getListSuccessDerviceOtServerGatt.get(1));
-            ListStreamGetClientGatt.add("device: " +getListSuccessDerviceOtServerGatt.get(2));
+            listStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
+            listStreamGetClientGatt.add("mac: "+getListSuccessDerviceOtServerGatt.get(1));
+            listStreamGetClientGatt.add("device: " +getListSuccessDerviceOtServerGatt.get(2));
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                     "  getListSuccessDerviceOtServerGatt " +getListSuccessDerviceOtServerGatt);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+        return  listStreamGetClientGatt;
+    }
 
-            getListOtAndroidGattClernt =  ListStreamGetClientGatt.get(4)+"\n"
-                    + ListStreamGetClientGatt.get(3)+"\n"+
-                     ListStreamGetClientGatt.get(0)+ ListStreamGetClientGatt.get(1) +ListStreamGetClientGatt.get(2);
-            //Toast t =    Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG) ;
 
 
+    @SuppressLint("ResourceType")
+    private void forwardSuccessDiveceUIEventAnd(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
+        try{
+            //TODO: Запускаем Фрагмент
+            String   getListOtAndroidGattClernt =  getListSuccessDerviceOtServerGatt.get(4)+"\n"
+                    + getListSuccessDerviceOtServerGatt.get(3)+"\n"+
+                    getListSuccessDerviceOtServerGatt.get(0)+
+                    getListSuccessDerviceOtServerGatt.get(1)
+                    +getListSuccessDerviceOtServerGatt.get(2);
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  getListOtAndroidGattClernt " +getListOtAndroidGattClernt);
-
-    // Inflate the custom view from XML
+            // Inflate the custom view from XML
             Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
 
@@ -341,15 +358,6 @@ public class FragmentBootServer extends Fragment {
 
             toast.setView(textView);
             toast.show();
-
-
-
-            //Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
-
-                //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
-                //imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
-               /// imageviewbootscanner.setColorFilter(Color.argb(255, 0, 0, 0));
-
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -371,10 +379,6 @@ public class FragmentBootServer extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-
-
-
-
 
 
 

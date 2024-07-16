@@ -16,15 +16,22 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
+import android.location.GnssAntennaInfo;
+import android.location.GnssMeasurementsEvent;
+import android.location.GnssNavigationMessage;
+import android.location.GnssStatus;
+import android.location.GpsStatus;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
@@ -42,6 +49,7 @@ import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
+import com.sous.server.businesslayer.Locations.GattLocationListener;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -51,6 +59,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -92,6 +101,7 @@ public class ServiceGattServer extends IntentService {
 
     protected   ContentProviderServer contentProviderServer;
 
+    protected      SharedPreferences sharedPreferencesGatt;
     public ServiceGattServer() {
         super("ServiceGattServer");
     }
@@ -109,11 +119,17 @@ public class ServiceGattServer extends IntentService {
 
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+          sharedPreferencesGatt = getSharedPreferences("gatt", Context.MODE_PRIVATE);
 
+          //TODO методы параменторв Службы Gaat
             launchmanagerBLE();//TODO: запускаем Новый Манаджер BTE
 
 
             getContentProvider();
+
+
+            langingGPSforGATTServer(  sharedPreferencesGatt);
+
 
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -136,6 +152,52 @@ public class ServiceGattServer extends IntentService {
         }
 
     }
+
+    @SuppressLint({"MissingPermission", "NewApi"})
+    private void langingGPSforGATTServer(@NonNull SharedPreferences sharedPreferencesGatt) {
+        try{
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER,
+                    2000,
+                    10, new GattLocationListener(getApplicationContext(), sharedPreferencesGatt,  contentProviderServer));
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void getContentProvider() throws InterruptedException {
         try{
@@ -316,6 +378,7 @@ public class ServiceGattServer extends IntentService {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
+
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -663,29 +726,48 @@ public class ServiceGattServer extends IntentService {
 
     // TODO: 14.02.2023 Второй Метод БЕз GPS
     @SuppressLint("MissingPermission")
-    private Integer wtireNewSucceesDeviceOtGattServer(@NonNull BluetoothDevice device,
+    private ContentValues addToContevaluesNewSucceesDeviceOtGattServer(@NonNull BluetoothDevice device,
                                                       @NonNull List<String> listПришлиДанныеОтКлиентаЗапрос) {
-        Integer РезультатЗаписиДанныхПИнгаДвайсаВБАзу=0;
+        ContentValues   contentValuesВставкаДанных =   new ContentValues();;
         try {
             Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                     + new Date().toLocaleString() + " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
-            // TODO: 08.02.2023 методы после успешного получение данных от клиента
-            ContentValues   contentValuesВставкаДанных = new ContentValues();
-            contentValuesВставкаДанных.put("operations", "Девайс Отметился");
-            contentValuesВставкаДанных.put("completedwork", "ПришлиДанныеОтКлиентаЗапрос");
+
+
+            // TODO: 08.02.2023 Добавляем Данные для Записи в базу через Адаптер ContentValues
             contentValuesВставкаДанных.put("macdevice", device.getAddress().toString());
+            contentValuesВставкаДанных.put("namedevice", device.getName().toString());
+
+
+
+           Integer getStartimei=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf("[imei:");
+            Integer getEndimei=   listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", дата:");
+
+            Integer getStartдата=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", дата:");
+            Integer getEndдата=   listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", статус:");
+
+            Integer getStartстатус=     listПришлиДанныеОтКлиентаЗапрос.toString().indexOf(", статус:");
+
+
+
             contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
             contentValuesВставкаДанных.put("city", "без gps");
             contentValuesВставкаДанных.put("adress", "без gps");
             contentValuesВставкаДанных.put("gps1", "без gps");
             contentValuesВставкаДанных.put("gps2", "без gps");
-            contentValuesВставкаДанных.put("namedevice", device.getName().toString());
+            contentValuesВставкаДанных.put("operations", "Девайс Отметился");
+            contentValuesВставкаДанных.put("completedwork", "ПришлиДанныеОтКлиентаЗапрос");
             contentValuesВставкаДанных.put("iemi", listПришлиДанныеОтКлиентаЗапрос.toString());
+
+
+
+
             // TODO: 10.02.2023 версия данных
             // TODO: 10.02.2023 версия данных
             Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
-
             contentValuesВставкаДанных.put("current_table", current_table);
+
+
 
             Integer version = МетодПоискДАнныхПоБазе("SELECT MAX ( version  ) AS MAX_R  FROM scannerserversuccess");
             contentValuesВставкаДанных.put("version", version);
@@ -693,51 +775,16 @@ public class ServiceGattServer extends IntentService {
 
             String uuid = МетодГенерацииUUID();
             contentValuesВставкаДанных.put("uuid", uuid);
+
+
             contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
             Log.i(this.getClass().getName(), "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
-
-
-
-
-
-
-            // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
-            РезультатЗаписиДанныхПИнгаДвайсаВБАзу = МетодЗаписиОтмечаногоСотрудникаВБАзу(contentValuesВставкаДанных);
-
-            Log.i(this.getClass().getName(), " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " + РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
-                    " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
-                    "  evice.getName().toString()  "+device.getName().toString());
-
-
-
-
-                if (РезультатЗаписиДанныхПИнгаДвайсаВБАзу>0) {
-
-                    Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                    v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-
-
-
-                    listПришлиДанныеОтКлиентаЗапрос.add(device.getAddress().toString());
-                    listПришлиДанныеОтКлиентаЗапрос.add(device.getName().toString());
-
-                    //TODO:После успешной записи в Базу Новго Устройсто СОобщаепм это это Фрагменту
-                    sendStatusSucessEventBusDevece(listПришлиДанныеОтКлиентаЗапрос );
-
-
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                            " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу +
-                             " listПришлиДанныеОтКлиентаЗапрос " +listПришлиДанныеОтКлиентаЗапрос);
-
-                }
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        " РезультатЗаписиДанныхПИнгаДвайсаВБАзу " +РезультатЗаписиДанныхПИнгаДвайсаВБАзу );
+                        " contentValuesВставкаДанных " +contentValuesВставкаДанных );
 
 
         } catch (Exception e) {
@@ -754,9 +801,40 @@ public class ServiceGattServer extends IntentService {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
-        return РезультатЗаписиДанныхПИнгаДвайсаВБАзу;
+        return contentValuesВставкаДанных;
     }
 
+    // TODO: 14.02.2023 Второй Метод БЕз GPS
+    @SuppressLint("MissingPermission")
+    private Integer wtireNewSucceesDeviceOtGattServer(@NonNull   ContentValues   contentValuesВставкаДанных) {
+        Integer   resultAddDeviceToGattaDtabse = 0;
+        try {
+
+
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse );
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+        }
+        return resultAddDeviceToGattaDtabse;
+    }
 
 
 
@@ -824,14 +902,24 @@ public class ServiceGattServer extends IntentService {
 
 
 //TODO:ЗАписываем Новый Успешный Девайс в Базу от Gatt server
-               Integer    РезультатЗаписиВБАзу = wtireNewSucceesDeviceOtGattServer(device, listПришлиДанныеОтКлиентаЗапрос);
+               ContentValues    contentValuesВставкаДанных = addToContevaluesNewSucceesDeviceOtGattServer(device, listПришлиДанныеОтКлиентаЗапрос);
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  РезультатЗаписиВБАзу " +РезультатЗаписиВБАзу);
+                        "  contentValuesВставкаДанных " +contentValuesВставкаДанных);
 
 
+
+                // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
+                Integer   resultAddDeviceToGattaDtabse= wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
+
+                Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
+                        " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
+                        "  evice.getName().toString()  "+device.getName().toString());
+
+
+                forwardUIAfterSuccessAddDiveceDatBAseGatt(device, resultAddDeviceToGattaDtabse, listПришлиДанныеОтКлиентаЗапрос);
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -863,10 +951,42 @@ public class ServiceGattServer extends IntentService {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull BluetoothDevice device,
+                                                           Integer resultAddDeviceToGattaDtabse,
+                                                           List<String> listПришлиДанныеОтКлиентаЗапрос) {
+        try{
+        if (resultAddDeviceToGattaDtabse >0) {
+            Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+            v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
+            listПришлиДанныеОтКлиентаЗапрос.add(device.getAddress().toString());
+            listПришлиДанныеОтКлиентаЗапрос.add(device.getName().toString());
 
+            //TODO:После успешной записи в Базу Новго Устройсто СОобщаепм это это Фрагменту
+            sendStatusSucessEventBusDevece(listПришлиДанныеОтКлиентаЗапрос);
 
-
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
+                    " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
+    }
 
 
     private   void sendStatusSucessEventBusDevece(@NonNull   List<String> listПришлиДанныеОтКлиентаЗапрос) {
