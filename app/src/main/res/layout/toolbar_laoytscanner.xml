@@ -22,7 +22,7 @@
             android:gravity="center"
             android:minWidth="200dp"
             android:minHeight="40dp"
-            android:text="Клиент"
+            android:text="Девайс"
             android:textAlignment="center"
 
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"

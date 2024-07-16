@@ -1,29 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/activity_main_newscanner"
+<com.google.android.material.card.MaterialCardView
+    android:id="@+id/cardView"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:translationZ="1dp"
+    android:padding="1dp"
+    android:background="#FFFFFF"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Window.MainActivityNewScanner">
+
+
+<RelativeLayout
+    android:id="@+id/activity_main_newscanner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".Window.MainActivityNewScanner"
     android:orientation="vertical">
-    <include layout="@layout/toolbar_laoytscanner"/>
-    <RelativeLayout
-        android:id="@+id/activitynain_for_Taskslinelayoutrela3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:elevation="3dp"
+        app:tabMinWidth="150dp"
+        android:background="#FFFFFF"
+        app:tabIndicatorColor="#A6A3A2"
+        app:tabIndicatorHeight="2dp"
+        app:tabTextColor="#A6A3A2"
+        app:tabSelectedTextColor="#A6A3A2"
+        app:tabMode="fixed"
+        android:padding="2dp">
+
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Девайс Bluetooth" />
+
+    </com.google.android.material.tabs.TabLayout>
+
 
        <FrameLayout
            android:id="@+id/framelauoutScanner"
            android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_margin="1dp"
+           android:padding="2dp"
            android:layout_above="@+id/ProgressBarscanner"
-           android:background="#FFFFFF"
-           android:layout_height="match_parent"/>
+           android:layout_below="@+id/tabLayout"
+           android:background="#FFFFFF" />
 
         <ProgressBar
             android:id="@+id/ProgressBarscanner"
@@ -44,16 +77,17 @@
             android:id="@+id/BottomNavigationViewScanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="50dp"
+            android:minHeight="55dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="#0A524B"
+            android:background="#A6A3A2"
+            app:itemTextColor="@color/black"
             android:scrollbarFadeDuration="150"
             android:translationZ="5dp"
             app:itemIconTint="#F2F5F5"
             app:menu="@menu/menufornavigator_scanner"
             tools:ignore="MissingConstraints" />
 
-    </RelativeLayout>
-</LinearLayout>
 
+</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
