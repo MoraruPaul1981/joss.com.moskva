@@ -45,6 +45,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textview.MaterialTextView;
 import com.sous.scanner.Broadcastreceiver.MyDeviceAdminReceiver;
@@ -59,21 +60,20 @@ import java.util.List;
 
 
 public class MainActivityNewScanner extends AppCompatActivity  {
-    private String TAG;
-    private Message handler;
+   private Message handler;
     private NavigationBarView bottomNavigationView;
+    @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewВыход;
+    @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewИстория;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragment;
-    private LinearLayout linearLayou;
-    private RelativeLayout relativeLayout;
+
+    private com.google.android.material.card.MaterialCardView cardVievscanner;
+
     private     Long version=0l;
-    private  Message message;
-    private MaterialTextView materialTextViewToolBar;
-    private  MutableLiveData<Binder> event;
-    @SuppressLint("RestrictedApi")
+
+    @SuppressLint({"RestrictedApi", "MissingInflatedId"})
     @RequiresPermission(anyOf = {
 
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -87,7 +87,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main_newscanner);
-            TAG = getClass().getName().toString();
             getSupportActionBar().hide(); ///скрывать тул бар
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -96,16 +95,17 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                     | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             // TODO: 08.12.2022
-            bottomNavigationView = (NavigationBarView) findViewById(R.id.BottomNavigationViewScanner);
+
+            cardVievscanner = (MaterialCardView) findViewById(R.id.id_cardViewblescanner);
+            bottomNavigationView = (NavigationBarView)  cardVievscanner.findViewById(R.id.BottomNavigationViewScanner)  ;
             bottomNavigationView.setLabelVisibilityMode(NavigationBarView.LABEL_VISIBILITY_UNLABELED);
-            materialTextViewToolBar=( MaterialTextView)  findViewById(R.id.text_scanner_work);
             // TODO: 05.12.2022 строчлочки
             bottomNavigationItemViewВыход = bottomNavigationView.findViewById(R.id.id_lback);
             bottomNavigationItemViewИстория = bottomNavigationView.findViewById(R.id.id_scanner_history);
             bottomNavigationItemViewВыход.setItemRippleColor(ColorStateList.valueOf(Color.RED));
             bottomNavigationItemViewИстория.setItemRippleColor(ColorStateList.valueOf(Color.RED));
-            linearLayou = (LinearLayout) findViewById(R.id.activity_main_newscanner);
-            relativeLayout = (RelativeLayout) findViewById(R.id.activitynain_for_Taskslinelayoutrela3);
+
+
             fragmentManager = getSupportFragmentManager();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
@@ -200,17 +200,11 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     public void МетодПрячемБарИКнопки() {
         bottomNavigationView.setVisibility(View.INVISIBLE);
-        materialTextViewToolBar.setVisibility(View.INVISIBLE);
-        relativeLayout.refreshDrawableState();
-        relativeLayout.forceLayout();
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     }
 
     public void МетодВидимыеПрограссБарИКнопки() {
         bottomNavigationView.setVisibility(View.VISIBLE);
-        materialTextViewToolBar.setVisibility(View.VISIBLE);
-        relativeLayout.refreshDrawableState();
-        relativeLayout.forceLayout();
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     }
 
@@ -266,15 +260,22 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     // TODO: 05.12.2022  запуск клиента
     @SuppressLint("SuspiciousIndentation")
-    protected void МетодЗапускBootФрагмента(@NonNull Fragment fragment) {
+    protected void МетодЗапускBootФрагмента(@NonNull Fragment getfragmentBootScanner) {
         try {
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.addToBackStack("");
-            fragmentTransaction.replace(R.id.framelauoutScanner, fragment);//.layout.activity_for_fragemtb_history_tasks
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.replace(R.id.framelauoutScanner, getfragmentBootScanner)
+                    .setPrimaryNavigationFragment(getfragmentBootScanner);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
             fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentTransaction.show(fragment);
-            Log.i(this.getClass().getName(),  "МетодЗапускКлиентаИлиСервера " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+            fragmentTransaction.show(getfragmentBootScanner);
+            //TODO:
+            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " fragmentTransaction " +fragmentManager);
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    android:id="@+id/cardView"
+    android:id="@+id/id_cardViewblescanner"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:translationZ="1dp"
@@ -13,7 +13,6 @@
 
 
 <RelativeLayout
-    android:id="@+id/activity_main_newscanner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -85,6 +84,8 @@
             android:scrollbarFadeDuration="150"
             android:translationZ="5dp"
             app:itemIconTint="#F2F5F5"
+            android:layout_margin="5dp"
+            android:padding="1dp"
             app:menu="@menu/menufornavigator_scanner"
             tools:ignore="MissingConstraints" />
 
