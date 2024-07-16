@@ -1,5 +1,6 @@
 package com.sous.server.businesslayer.Eventbus;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import java.util.List;
@@ -15,7 +16,8 @@ public class ParamentsScannerServer {
 
 
 
-    private List<String> list;
+
+    private ContentValues contentValues;
     private  String s5;
 
 
@@ -24,12 +26,12 @@ public class ParamentsScannerServer {
 
 
 
-    public List<String> getList() {
-        return list;
+    public ContentValues getContentValues() {
+        return contentValues;
     }
 
-    public void setList(List<String> list) {
-        this.list = list;
+    public void setContentValues(ContentValues contentValues) {
+        this.contentValues = contentValues;
     }
 
     public String getCurrentTask() {

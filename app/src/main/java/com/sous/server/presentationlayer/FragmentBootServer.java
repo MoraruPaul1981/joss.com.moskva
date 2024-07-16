@@ -210,11 +210,10 @@ public class FragmentBootServer extends Fragment {
             if (CurrentTask.contentEquals("SuccessDeviceBluetoothAnServerGatt")) {
 
                 //TODO: девай усешно записель состывокальс севреросм и мы его Показываем Пользователю  Фрагмент
-                List<String> getListSuccessDerviceOtServerGatt= paramentsScannerServer.getList();
-             //TODO: обрабатываем получаный Листа данных от Кликента и далеее его показыаеи UI event
-                List<String> listStreamGetClientGatt  =     forwardSuccessDiveciWriteServiceGattEventBus(getListSuccessDerviceOtServerGatt);
+                ContentValues     getListSuccessDerviceOtServerGatt= paramentsScannerServer.getContentValues();
+
               //TODO:   показыаеи UI event
-                forwardSuccessDiveceUIEventAnd(listStreamGetClientGatt);
+                forwardSuccessDiveceUIEventAnd(getListSuccessDerviceOtServerGatt);
 
 
                 Log.d(getContext().getClass().getName(), "\n"
@@ -298,50 +297,26 @@ public class FragmentBootServer extends Fragment {
 
     
     
+
+
+
     @SuppressLint("ResourceType")
-    private List<String> forwardSuccessDiveciWriteServiceGattEventBus(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
-        List<String> listStreamGetClientGatt = null;
+    private void forwardSuccessDiveceUIEventAnd(@NonNull  ContentValues     getListSuccessDerviceOtServerGatt) {
         try{
             //TODO: Запускаем Фрагмент
-            String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
-            getListOtAndroidGattClernt=getListOtAndroidGattClernt.replaceAll("^\\[|\\]$", "");
-            listStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
-            listStreamGetClientGatt.add("mac: "+getListSuccessDerviceOtServerGatt.get(1));
-            listStreamGetClientGatt.add("device: " +getListSuccessDerviceOtServerGatt.get(2));
+           String   getListOtAndroidGattClernt =   getListSuccessDerviceOtServerGatt.getAsString("namedevice")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("macdevice")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("iemi")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("completedwork")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("date_update")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("city")+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("gps1")+"\n";
+                   getListSuccessDerviceOtServerGatt.getAsString("gps2");
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  getListSuccessDerviceOtServerGatt " +getListSuccessDerviceOtServerGatt);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-        return  listStreamGetClientGatt;
-    }
-
-
-
-    @SuppressLint("ResourceType")
-    private void forwardSuccessDiveceUIEventAnd(@NonNull List<String> getListSuccessDerviceOtServerGatt) {
-        try{
-            //TODO: Запускаем Фрагмент
-            String   getListOtAndroidGattClernt =  getListSuccessDerviceOtServerGatt.get(4)+"\n"
-                    + getListSuccessDerviceOtServerGatt.get(3)+"\n"+
-                    getListSuccessDerviceOtServerGatt.get(0)+
-                    getListSuccessDerviceOtServerGatt.get(1)
-                    +getListSuccessDerviceOtServerGatt.get(2);
+                    "  getListOtAndroidGattClernt " +getListOtAndroidGattClernt);
 
             // Inflate the custom view from XML
             Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt, Toast.LENGTH_LONG);

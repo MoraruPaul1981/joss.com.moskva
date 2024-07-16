@@ -749,17 +749,17 @@ public class ServiceGattServer extends IntentService {
 
 
 
-
-
-
-            contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
-            contentValuesВставкаДанных.put("city", "без gps");
-            contentValuesВставкаДанных.put("adress", "без gps");
-            contentValuesВставкаДанных.put("gps1", "без gps");
-            contentValuesВставкаДанных.put("gps2", "без gps");
-            contentValuesВставкаДанных.put("operations", "Девайс Отметился");
-            contentValuesВставкаДанных.put("completedwork", "ПришлиДанныеОтКлиентаЗапрос");
-            contentValuesВставкаДанных.put("iemi", listПришлиДанныеОтКлиентаЗапрос.toString());
+            contentValuesВставкаДанных.put("city",    sharedPreferencesGatt.getString("getLocality",""));
+            contentValuesВставкаДанных.put("gps1", sharedPreferencesGatt.getString("getLongitude",""));
+            contentValuesВставкаДанных.put("gps2", sharedPreferencesGatt.getString("getLatitude",""));
+            contentValuesВставкаДанных.put("adress",  sharedPreferencesGatt.getString("getCountryName","")+" "+
+                    sharedPreferencesGatt.getString("getLocality","")+" "+
+                    sharedPreferencesGatt.getString("getSubAdminArea","")+" "+
+                    sharedPreferencesGatt.getString("getLatitude","")+" "+
+                    sharedPreferencesGatt.getString("getLongitude","")+" "+
+                    sharedPreferencesGatt.getString("getLocale","")+" "+
+                    sharedPreferencesGatt.getString("getThoroughfare","")+" "+
+                    sharedPreferencesGatt.getString("getSubThoroughfare","")+" " );
 
 
 
@@ -778,9 +778,6 @@ public class ServiceGattServer extends IntentService {
             String uuid = МетодГенерацииUUID();
             contentValuesВставкаДанных.put("uuid", uuid);
 
-
-            contentValuesВставкаДанных.put("date_update", new Date().toLocaleString());
-            Log.i(this.getClass().getName(), "contentValuesВставкаДанных.length" + contentValuesВставкаДанных.size());
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -808,17 +805,20 @@ public class ServiceGattServer extends IntentService {
 
     // TODO: 14.02.2023 Второй Метод БЕз GPS
     @SuppressLint("MissingPermission")
-    private Integer wtireNewSucceesDeviceOtGattServer(@NonNull   ContentValues   contentValuesВставкаДанных) {
-        Integer   resultAddDeviceToGattaDtabse = 0;
+    private Integer wtireNewSucceesDeviceOtGattServer(@NonNull   ContentValues   contentValuesВставкаДанныхGattServer) {
+        Uri    resultAddDeviceToGattaDtabse = null;
         try {
+                Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
+                resultAddDeviceToGattaDtabse=   contentProviderServer.insert(uri, contentValuesВставкаДанныхGattServer);
 
-
-
+                Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse );
+                    " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse+ " contentValuesВставкаДанныхGattServer " +contentValuesВставкаДанныхGattServer );
 
 
         } catch (Exception e) {
@@ -835,7 +835,7 @@ public class ServiceGattServer extends IntentService {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
-        return resultAddDeviceToGattaDtabse;
+        return Integer.parseInt(resultAddDeviceToGattaDtabse.toString() );
     }
 
 
@@ -920,9 +920,9 @@ public class ServiceGattServer extends IntentService {
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
                         "  evice.getName().toString()  "+device.getName().toString());
 
-
-                forwardUIAfterSuccessAddDiveceDatBAseGatt(device, resultAddDeviceToGattaDtabse, listПришлиДанныеОтКлиентаЗапрос);
-
+                if (resultAddDeviceToGattaDtabse >0) {
+                    forwardUIAfterSuccessAddDiveceDatBAseGatt(device, contentValuesВставкаДанных);
+                }
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -955,25 +955,21 @@ public class ServiceGattServer extends IntentService {
 
     @SuppressLint("MissingPermission")
     private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull BluetoothDevice device,
-                                                           Integer resultAddDeviceToGattaDtabse,
-                                                           List<String> listПришлиДанныеОтКлиентаЗапрос) {
+                                                           @NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
         try{
-        if (resultAddDeviceToGattaDtabse >0) {
+
             Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
             v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
-            listПришлиДанныеОтКлиентаЗапрос.add(device.getAddress().toString());
-            listПришлиДанныеОтКлиентаЗапрос.add(device.getName().toString());
 
-            //TODO:После успешной записи в Базу Новго Устройсто СОобщаепм это это Фрагменту
-            sendStatusSucessEventBusDevece(listПришлиДанныеОтКлиентаЗапрос);
+            //TODO:Event Send To Fragment Boot After Success DataBase and Divece
+            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
-                    " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
-        }
+                    " contentValuesВставкаДанныхGaTT " + contentValuesВставкаДанныхGaTT);
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -991,11 +987,11 @@ public class ServiceGattServer extends IntentService {
     }
 
 
-    private   void sendStatusSucessEventBusDevece(@NonNull   List<String> listПришлиДанныеОтКлиентаЗапрос) {
+    private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
         try{
         ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
-        sendFragmentparamentsScannerServer.setList(listПришлиДанныеОтКлиентаЗапрос);
+        sendFragmentparamentsScannerServer.setContentValues(contentValuesВставкаДанныхGaTT);
         //TODO: послымаем Из Службы Значение на Фрагмент
         MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
         //TODO: ответ на экран работает ообрубование или нет
