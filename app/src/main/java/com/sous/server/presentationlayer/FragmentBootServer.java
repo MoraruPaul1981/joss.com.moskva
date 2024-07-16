@@ -304,14 +304,14 @@ public class FragmentBootServer extends Fragment {
     private void forwardSuccessDiveceUIEventAnd(@NonNull  ContentValues     getListSuccessDerviceOtServerGatt) {
         try{
             //TODO: Запускаем Фрагмент
-           String   getListOtAndroidGattClernt =   getListSuccessDerviceOtServerGatt.getAsString("namedevice")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("macdevice")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("iemi")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("completedwork")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("date_update")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("city")+"\n"+
-                   getListSuccessDerviceOtServerGatt.getAsString("gps1")+"\n";
-                   getListSuccessDerviceOtServerGatt.getAsString("gps2");
+           String   getListOtAndroidGattClernt =   getListSuccessDerviceOtServerGatt.getAsString("namedevice").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("macdevice").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("iemi").trim().trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("completedwork").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("date_update").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("city").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("gps1").trim()+"\n"+
+                   getListSuccessDerviceOtServerGatt.getAsString("gps2").trim()+"\n";
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -319,7 +319,7 @@ public class FragmentBootServer extends Fragment {
                     "  getListOtAndroidGattClernt " +getListOtAndroidGattClernt);
 
             // Inflate the custom view from XML
-            Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt.trim(), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
 
             TextView textView = new TextView(getContext());
@@ -329,7 +329,7 @@ public class FragmentBootServer extends Fragment {
             Typeface typeface = Typeface.create("serif", Typeface.BOLD);
             textView.setTypeface(typeface);
             textView.setPadding(10, 10, 10, 10);
-            textView.setText(getListOtAndroidGattClernt);
+            textView.setText(getListOtAndroidGattClernt.trim());
 
             toast.setView(textView);
             toast.show();
