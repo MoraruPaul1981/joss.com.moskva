@@ -302,11 +302,11 @@ public class FragmentBootServer extends Fragment {
             String getListOtAndroidGattClernt= getListSuccessDerviceOtServerGatt.get(0);
 
 
-            getListOtAndroidGattClernt=getListOtAndroidGattClernt.replaceAll("^\\[|\\]$", "%%%%");
+            getListOtAndroidGattClernt=getListOtAndroidGattClernt.replaceAll("^\\[|\\]$", "");
 
-          List<String> stringStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
-            stringStreamGetClientGatt.add(getListSuccessDerviceOtServerGatt.get(1));
-            stringStreamGetClientGatt.add(getListSuccessDerviceOtServerGatt.get(2));
+          List<String> ListStreamGetClientGatt= Stream.of(getListOtAndroidGattClernt.split(",")).collect(Collectors.toList());
+            ListStreamGetClientGatt.add("mac: "+getListSuccessDerviceOtServerGatt.get(1));
+            ListStreamGetClientGatt.add("device: " +getListSuccessDerviceOtServerGatt.get(2));
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -314,12 +314,20 @@ public class FragmentBootServer extends Fragment {
                     "  getListSuccessDerviceOtServerGatt " +getListSuccessDerviceOtServerGatt);
 
 
-
+            getListOtAndroidGattClernt =  ListStreamGetClientGatt.get(4)+"\n"
+                    + ListStreamGetClientGatt.get(3)+"\n"+
+                     ListStreamGetClientGatt.get(0)+ ListStreamGetClientGatt.get(1) +ListStreamGetClientGatt.get(2);
             //Toast t =    Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG) ;
 
 
-        /*    // Inflate the custom view from XML
-            Toast toast = Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля, Toast.LENGTH_LONG);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  getListOtAndroidGattClernt " +getListOtAndroidGattClernt);
+
+    // Inflate the custom view from XML
+            Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt, Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
 
             TextView textView = new TextView(getContext());
@@ -329,11 +337,11 @@ public class FragmentBootServer extends Fragment {
             Typeface typeface = Typeface.create("serif", Typeface.BOLD);
             textView.setTypeface(typeface);
             textView.setPadding(10, 10, 10, 10);
-            textView.setText(ОтветОтGaTTДляПОльзваотеля);*/
+            textView.setText(getListOtAndroidGattClernt);
 
-     /*       toast.setView(textView);
+            toast.setView(textView);
             toast.show();
-*/
+
 
 
             //Toast.makeText(getContext(),ОтветОтGaTTДляПОльзваотеля ,Toast.LENGTH_LONG).show();
