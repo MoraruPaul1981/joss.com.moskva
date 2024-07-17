@@ -48,7 +48,29 @@
 
 
 
-            <!--    //TODO: Главный Компонент -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_server_ble"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:textSize="10sp"
+            app:cardBackgroundColor="#FFFAFA"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
+            app:strokeColor="#F5FFFA"
+            app:cardMaxElevation="5dp"
+            app:strokeWidth="1dp"
+            android:translationZ="15dp"
+            android:animateLayoutChanges="true"
+            android:layout_below="@+id/tabLayout_server_ble"
+            android:layout_above="@+id/id_progressbar_server_ble">
+
+
+
+                <!--    //TODO: Главный Компонент -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/id_recyclerview_server_ble"
                     android:layout_width="match_parent"
@@ -62,6 +84,13 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
 
+</com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
         <ProgressBar
             android:id="@+id/id_progressbar_server_ble"
             android:layout_width="match_parent"
@@ -70,7 +99,7 @@
             android:progress="50"
             android:indeterminateOnly="true"
             android:indeterminateTint="#A6A3A2"
-            android:layout_above="@+id/BottomNavigationViewScanner"
+            android:layout_above="@+id/bottomnavigationview_server_ble"
             android:scaleX="1"
             android:scaleY="2"
             style="?android:attr/progressBarStyleHorizontal"/>
@@ -79,7 +108,7 @@
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/BottomNavigationViewScanner"
+            android:id="@+id/bottomnavigationview_server_ble"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="55dp"
