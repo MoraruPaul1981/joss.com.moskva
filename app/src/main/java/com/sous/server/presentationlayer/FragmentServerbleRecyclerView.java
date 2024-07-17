@@ -53,7 +53,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private RecyclerView     recyclerview_server_ble;
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
-    private InterfaceServerRecyreView getInterfaceServerRecyreView;
+    private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
+    private Bl_FragmentRecyreViewServerWithData getblFragmentRecyreViewServerWithData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,14 +107,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
             if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
 
                 // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-                getInterfaceServerRecyreView=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
+                getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
 
             }else {
 
                 // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-                getInterfaceServerRecyreView=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
+                getblFragmentRecyreViewServerWithData=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
             }
@@ -181,14 +182,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 EventBus.getDefault().register(this);
             }
             // TODO: 17.07.2024 get data ot Fragment BOOT
-            blFragmentRecyreViewServer.   receiveddatafromBootFragmentServer(getArguments());
-            blFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
+            getInterfaceServerRecyreView.   receiveddatafromBootFragmentServer(getArguments());
+            getInterfaceServerRecyreView.     getDISCOVERABLE_DURATIONs();
 
 
-            blFragmentRecyreViewServer.     setManagerfromRecyclerView();
-            blFragmentRecyreViewServer.     addAdapterServerforRecyreview();
-            blFragmentRecyreViewServer.     getObserverRecyreView();
-            blFragmentRecyreViewServer.     reBootrecyclerView();
+            getInterfaceServerRecyreView.     setManagerfromRecyclerView();
+            getInterfaceServerRecyreView.     addAdapterServerforRecyreview();
+            getInterfaceServerRecyreView.     getObserverRecyreView();
+            getInterfaceServerRecyreView.     reBootrecyclerView();
 
 
 
