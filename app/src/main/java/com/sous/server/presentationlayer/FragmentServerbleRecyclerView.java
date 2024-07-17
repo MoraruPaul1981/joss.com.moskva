@@ -48,10 +48,12 @@ import com.sous.server.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -77,6 +79,43 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private Message message;
     private    ProgressBar progressBarДЛяСервера;
     private    RelativeLayout relativeLayoutСервер;
+
+
+    // TODO: 17.07.2024
+    private  ConcurrentHashMap concurrentHashMapReceivedFromBootFragmentGatta;
+
+
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try {
+            // TODO: 17.07.2024 получаем дданые от другово фрагмента
+            receiveddatafromBootFragmentServer();
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
+
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -84,6 +123,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
+
+
           /*  linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
             progressBarДЛяСервера = (ProgressBar) view.findViewById(R.id.ProgressBarScannerfragment1);
             relativeLayoutСервер = (RelativeLayout) view.findViewById(R.id.recyclerviewfragment1);
@@ -96,7 +137,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             linkedКолПодкСерверу = new LinkedList<>();*/
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,9 +160,11 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_recyreviewerverscanner, container, false);
-            Log.d(this.getClass().getName(), " onCreateView  viewДляПервойКнопкиHome_Задания  Fragment1_One_Tasks  onCreateView " +
-                    "" + view);
+            view = inflater.inflate(R.layout.fragment_serverbte_recyreview, container, false);
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -140,6 +182,35 @@ public class FragmentServerbleRecyclerView extends Fragment {
         return view;
     }
 
+
+
+
+    private void receiveddatafromBootFragmentServer() {
+        try{
+        Bundle bundleFragmentBoottoServerFragment = getArguments();
+        Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
+          concurrentHashMapReceivedFromBootFragmentGatta= (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
+
+        Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+
+
+    }
 
     @Override
     public void onStart() {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,9 @@ import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Bi_FragmentBootScannerServer {
 
@@ -31,9 +34,12 @@ public class Bi_FragmentBootScannerServer {
         this.getactivity = getactivity;
     }
 
-    public void МетодЗапускаФрагментаСканирования(  @NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentServerbleRecyclerView();
+    public void МетодЗапускаФрагментаСканирования(  @NonNull Fragment fragmentServerbleRecyclerView ,
+                                                    @NonNull ConcurrentHashMap<String,ContentValues> concurrentHashMapSucceesDataOtClient) {  ///new FragmentServerbleRecyclerView();
         try {
             FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
+            Bundle bundleFragmentBoottoServerFragment = new Bundle();
+            bundleFragmentBoottoServerFragment.putSerializable("fromFragmentServer", (Serializable) concurrentHashMapSucceesDataOtClient);
             fragmentTransactionBoot.addToBackStack(null);
             fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
@@ -42,7 +48,8 @@ public class Bi_FragmentBootScannerServer {
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "concurrentHashMapSucceesDataOtClient  " +concurrentHashMapSucceesDataOtClient);
 
         } catch (Exception e) {
             e.printStackTrace();

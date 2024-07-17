@@ -213,8 +213,10 @@ public class FragmentBootServer extends Fragment {
                 ContentValues     getListSuccessDerviceOtServerGatt= paramentsScannerServer.getContentValues();
 
               //TODO:   показыаеи UI event
-                forwardSuccessDiveceUIEventAnd(getListSuccessDerviceOtServerGatt);
+                ConcurrentHashMap<String,ContentValues> concurrentHashMapSucceesDataOtClient=      forwardSuccessDiveceUIEventAnd(getListSuccessDerviceOtServerGatt);
 
+                // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
+                forwardSuccessDeviceStrtingFragmentServer(concurrentHashMapSucceesDataOtClient);
 
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -301,7 +303,8 @@ public class FragmentBootServer extends Fragment {
 
 
     @SuppressLint("ResourceType")
-    private void forwardSuccessDiveceUIEventAnd(@NonNull  ContentValues     getListSuccessDerviceOtServerGatt) {
+    private ConcurrentHashMap forwardSuccessDiveceUIEventAnd(@NonNull  ContentValues     getListSuccessDerviceOtServerGatt) {
+        ConcurrentHashMap<String,ContentValues> concurrentHashMapSucceesDataOtClient=new ConcurrentHashMap<>();
         try{
             //TODO: Запускаем Фрагмент
            String   getListOtAndroidGattClernt =   getListSuccessDerviceOtServerGatt.getAsString("namedevice").trim()+"\n"+
@@ -317,6 +320,9 @@ public class FragmentBootServer extends Fragment {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                     "  getListOtAndroidGattClernt " +getListOtAndroidGattClernt);
+            // TODO: 17.07.2024 add
+
+            concurrentHashMapSucceesDataOtClient.put(getListOtAndroidGattClernt,getListSuccessDerviceOtServerGatt);
 
             // Inflate the custom view from XML
             Toast toast = Toast.makeText(getContext(),getListOtAndroidGattClernt.trim(), Toast.LENGTH_LONG);
@@ -353,6 +359,48 @@ public class FragmentBootServer extends Fragment {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+        return  concurrentHashMapSucceesDataOtClient;
+    }
+
+
+
+
+
+    private void forwardSuccessDeviceStrtingFragmentServer(@NonNull   ConcurrentHashMap<String,ContentValues> concurrentHashMapSucceesDataOtClient) {
+        try{
+            //TODO: Запускаем Фрагмент
+                //TODO: Запускаем Фрагмент Server Fragment
+                handlerGatt.post(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new  FragmentServerbleRecyclerView (),concurrentHashMapSucceesDataOtClient)   ;
+
+                                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                     }
+                                 }
+                );
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  concurrentHashMapSucceesDataOtClient " +concurrentHashMapSucceesDataOtClient);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
     }
 
 
@@ -369,43 +417,6 @@ public class FragmentBootServer extends Fragment {
 
 
 
-
-
-
-
-
-
-    private void МетодЗапускаBootFragment(  ) {
-       try{
-        //TODO: Запускаем Фрагмент
-
-        handlerGatt.post(new Runnable() {
-                             @Override
-                             public void run() {
-                                 biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new  FragmentServerbleRecyclerView ())    ;
-                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                             }
-                         }
-        );
-
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-    }
 
 
 
