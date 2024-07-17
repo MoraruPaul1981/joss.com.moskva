@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.pm.PackageInfo;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -65,6 +66,9 @@ public class FragmentBootScanner extends Fragment {
 
                 //TODO: Закрывакем верхний Tabloyrt
                 hidingscannerTaylaut();
+
+
+                getListerBuingindServiceFragmentBoot( );
 
                 // TODO: 16.07.2024  startting Fragment Scannig
                 landingFragmentScannerUser( );
@@ -178,22 +182,9 @@ public class FragmentBootScanner extends Fragment {
 
     public void landingFragmentScannerUser( ) {
         try {
-            getParentFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
-                @Override
-                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
-                    // We use a String here, but any type that can be put in a Bundle is supported.
-                    String result = bundle.getString("bundleKey");
-                    // Do something with the result.
-                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                }
-            });
-            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-    /*        handlerScanner.getTarget().postDelayed(new Runnable() {
+
+ /*        handlerScanner.getTarget().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     FragmentScannerUser fragmentScannerUser=new FragmentScannerUser();
@@ -230,7 +221,43 @@ public class FragmentBootScanner extends Fragment {
     }
 
 
+    public void getListerBuingindServiceFragmentBoot( ) {
+        try {
+            getParentFragmentManager().setFragmentResultListener("requestKeyScannerBindindService", this, new FragmentResultListener() {
+                @Override
+                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                    // We use a String here, but any type that can be put in a Bundle is supported.
+                    binderСканнер= (ServiceClientBLE.LocalBinderСканнер) bundle.getBinder("bundleKey");
+                    // Do something with the result.
+                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            " binderСканнер " +binderСканнер);
+                }
+            });
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
 

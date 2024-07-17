@@ -67,6 +67,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
@@ -124,7 +125,7 @@ public class FragmentScannerUser extends Fragment {
     private FragmentTransaction fragmentTransaction;
     private Fragment fragment;
     private Message handler;
-    private ServiceClientBLE.LocalBinderСканнер binderСканнер;
+
 
 
 
@@ -133,6 +134,8 @@ public class FragmentScannerUser extends Fragment {
     private Long version = 0l;
     private SharedPreferences preferences;
     private String ДействиеДляСервераGATTОТКлиента;
+
+    private ServiceClientBLE.LocalBinderСканнер binderСканнер;
 
 
     @Override
@@ -143,6 +146,16 @@ public class FragmentScannerUser extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+
+            // TODO: 08.02.2023  Биндинг службы
+            getListerBuingindServiceFragmentScanner( );
+
+            МетодВизуализацииКнопокИБар();
+
+            МетодИнициализацииRecycleViewДляЗадач();
+
+            МетодHandler();
+
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -238,15 +251,10 @@ public class FragmentScannerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-            МетодВизуализацииКнопокИБар();
-            // TODO: 08.02.2023  Биндинг службы
-            МетодБиндингаСканирование();
-            МетодИнициализацииRecycleViewДляЗадач();
-            МетодКпопкаВозвращениеBACK();
-            МетодHandler();
-            МетодКпопкаВозвращениеBACK();
             МетодЗаполенияRecycleViewДляЗадач();
+
             МетодСлушательObserverДляRecycleView();
+
             МетодПерегрузкаRecyceView();
 
             // TODO: 20.02.2023 ТЕКСТ КОД
@@ -482,29 +490,6 @@ public class FragmentScannerUser extends Fragment {
     }
 
     // TODO: 02.03.2022 выход
-
-    private void МетодКпопкаВозвращениеBACK()
-            throws ExecutionException, InterruptedException {
-        try {
-            Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеBACK");
-            ((MainActivityNewScanner) getActivity()).МетодКнопкаBackExit(new Intent("fragment"));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
@@ -1213,79 +1198,7 @@ public class FragmentScannerUser extends Fragment {
     }
 
 
-    // TODO: 29.11.2022 служба сканирования
-    private void МетодБиндингаСканирование() {
-        try {
-            ServiceConnection connectionСканирование = new ServiceConnection() {
-                @Override
-                public void onServiceConnected(ComponentName name, IBinder service) {
-                    try {
-                        binderСканнер = (ServiceClientBLE.LocalBinderСканнер) service;
-                        if (binderСканнер.isBinderAlive()) {
-                            Log.i(getContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
-                                    + binderСканнер.isBinderAlive());
-                            binderСканнер.linkToDeath(new IBinder.DeathRecipient() {
-                                @Override
-                                public void binderDied() {
-                                    Log.i(this.getClass().getName(), "linkToDeath" + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString() +
-                                            " binderСканнер.isBinderAlive() " + binderСканнер.isBinderAlive());
-                                }
-                            });
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
 
-                }
-
-                @Override
-                public void onServiceDisconnected(ComponentName name) {
-                    try {
-                        Log.i(getContext().getClass().getName(), "    onServiceDisconnected  binderСканнер.isBinderAlive()" + binderСканнер.isBinderAlive());
-                        binderСканнер = null;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :"
-                                + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    }
-                }
-            };
-            Intent intentБиндингсСлужбойСканирования = new Intent(getContext(), ServiceClientBLE.class);
-            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            intentБиндингсСлужбойСканирования.setAction("com.scannerforble");
-            getContext().bindService(intentБиндингсСлужбойСканирования, Context.BIND_AUTO_CREATE, Executors.newSingleThreadExecutor(), connectionСканирование);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
 
 
 
@@ -1331,10 +1244,51 @@ public class FragmentScannerUser extends Fragment {
         }
         return linkedHashMapДанныеКлиентаДляGATT[0];
     }
-}
 
-//todo тест
-class ТестКлассСканнер {
+
+
+
+
+    public void getListerBuingindServiceFragmentScanner( ) {
+        try {
+            getParentFragmentManager().setFragmentResultListener("requestKeyScannerBindindService", this, new FragmentResultListener() {
+                @Override
+                public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
+                    // We use a String here, but any type that can be put in a Bundle is supported.
+                    binderСканнер= (ServiceClientBLE.LocalBinderСканнер) bundle.getBinder("bundleKey");
+                    // Do something with the result.
+                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            " binderСканнер " +binderСканнер);
+                }
+            });
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
 
 
 

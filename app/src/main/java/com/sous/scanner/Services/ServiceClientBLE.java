@@ -68,7 +68,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class ServiceClientBLE extends IntentService {
     private SQLiteDatabase sqLiteDatabase;
-    private CREATE_DATABASEScanner createDatabaseScanner;
+
     public LocalBinderСканнер binder = new LocalBinderСканнер();
     private Context context;
     private Activity activity;
@@ -95,24 +95,23 @@ public class ServiceClientBLE extends IntentService {
         super.onCreate();
         // TODO: 07.02.2023 клиент сервер
         try {
+            this.sqLiteDatabase = new CREATE_DATABASEScanner(getApplicationContext()).getССылкаНаСозданнуюБазу();
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
-
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
 
             setingEnableApapterBLE();
-
             getListDeviceForBluApdapter();
 
-            Log.d(context.getClass().getName(), "\n"
+            TAG = getClass().getName().toString();
+            PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+            version = pInfo.getLongVersionCode();
+
+
+            Log.d(getApplicationContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-            this.createDatabaseScanner = new CREATE_DATABASEScanner(context);
-            this.sqLiteDatabase = createDatabaseScanner.getССылкаНаСозданнуюБазу();
-            TAG = getClass().getName().toString();
-            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            version = pInfo.getLongVersionCode();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -611,17 +610,19 @@ try{
     private void getListDeviceForBluApdapter() {
         try{
             bluetoothAdapterGATT=  bluetoothManagerServer.getAdapter() ;
-            bluetoothAdapterGATT.getBondedDevices().forEach(new java.util.function.Consumer<BluetoothDevice>() {
-                @Override
-                public void accept(BluetoothDevice bluetoothDevice) {
-                    Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
-                    Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
+            if (bluetoothAdapterGATT!=null) {
+                bluetoothAdapterGATT.getBondedDevices().forEach(new java.util.function.Consumer<BluetoothDevice>() {
+                    @Override
+                    public void accept(BluetoothDevice bluetoothDevice) {
+                        Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
+                        Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
 
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                }
-            });
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    }
+                });
+            }
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
