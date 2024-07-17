@@ -6,8 +6,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:translationZ="5dp"
-        android:padding="10dp"
+        android:padding="1dp"
+        android:layout_margin="1dp"
+        android:translationZ="1dp"
         tools:context=".Window.MainActivityNewScanner">
 
 
@@ -20,35 +21,38 @@
         android:orientation="vertical">
 
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerviewnewscanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:padding="5dp"
-            android:background="#FFFFFF"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:background="#F0FFFF"
             android:minHeight="500dp"
             android:visibility="visible"
+            android:padding="1dp"
+            android:layout_margin="1dp"
             tools:ignore="MissingConstraints" />
-        <ProgressBar
-            android:id="@+id/ProgressBarScannerfragment1"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-            android:layout_above="@+id/RecyclerViewNewScanner"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="1dp"
-            android:background="#FFFFFF"
-            android:indeterminate="true"
-            android:indeterminateOnly="true"
-            android:indeterminateTint="#2196F3"
-            android:scaleX="1"
-            android:scaleY="3"
-            android:visibility="invisible" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

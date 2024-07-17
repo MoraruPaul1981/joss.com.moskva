@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -41,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
 import com.sous.scanner.Services.ServiceClientBLE;
@@ -83,6 +85,9 @@ public class FragmentScannerUser extends Fragment {
     private String ДействиеДляСервераGATTОТКлиента;
 
     private ServiceClientBLE.LocalBinderСканнер binderСканнер;
+
+
+    private  TabLayout tabLayoutScanner;
 
 
     @Override
@@ -129,6 +134,7 @@ public class FragmentScannerUser extends Fragment {
             cardView_scannerble_fragment = (MaterialCardView) view.findViewById(R.id.id_cardView_scannerble_fragment);
             recyclerviewsccanerble    = (RelativeLayout) cardView_scannerble_fragment.findViewById(R.id.recyclerviewsccanerble);
             recyclerviewnewscanner = (RecyclerView) recyclerviewsccanerble.findViewById(R.id.recyclerviewnewscanner);
+            tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -185,6 +191,7 @@ public class FragmentScannerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
+            visilingscannerTaylaut();
             МетодЗаполенияRecycleViewДляЗадач();
             МетодСлушательObserverДляRecycleView();
             МетодПерегрузкаRecyceView();
@@ -1216,6 +1223,29 @@ public class FragmentScannerUser extends Fragment {
         }
     }
 
+
+    public void visilingscannerTaylaut() {
+        try{
+            tabLayoutScanner.setVisibility(View.VISIBLE);
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
 
