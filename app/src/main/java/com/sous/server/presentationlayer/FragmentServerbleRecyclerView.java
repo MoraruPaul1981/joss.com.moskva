@@ -1,7 +1,7 @@
 package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -23,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -31,11 +29,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
@@ -50,13 +47,8 @@ import com.sous.server.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -64,11 +56,9 @@ import java.util.stream.Collectors;
 public class FragmentServerbleRecyclerView extends Fragment {
 
 
-    private ServiceGattServer.LocalBinderСерверBLE binderСерверBLE;
-    private Message message;
-    private FragmentManager fragmentManager;
 
-    private MyRecycleViewAdapter myRecycleViewAdapter;
+    private FragmentManager fragmentManager;
+    private MyRecycleViewAdapterServer myRecycleViewAdapterServer;
     private MyViewHolder myViewHolder;
     private RecyclerView recyclerView;
     // TODO: 17.07.2024
@@ -82,6 +72,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private RecyclerView     recyclerview_server_ble;
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
+    private  Bl_FragmentRecyreViewServer blFragmentRecyreViewServer;
+    private Activity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,9 +84,10 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            activity=getActivity();
 
-            // TODO: 17.07.2024 получаем дданые от другово фрагмента
-            receiveddatafromBootFragmentServer();
+            // TODO: 17.07.2024 ссылка на бизнес логика данного фрагмента server BLE
+              blFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer(getContext());
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -126,8 +119,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
             relativeLayout_server_ble    = (RelativeLayout) maincardView_server_ble_fragment.findViewById(R.id.id_relativeLayout_server_ble);
             tabLayout_server_ble = (TabLayout) relativeLayout_server_ble.findViewById(R.id.id_tabLayout_server_ble);
               card_server_ble_inner = (MaterialCardView) tabLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
-             recyclerview_server_ble = (RecyclerView) relativeLayout_server_ble.findViewById(R.id.id_recyclerview_server_ble);
-             progressbar_server_ble = (ProgressBar) relativeLayout_server_ble.findViewById(R.id.id_progressbar_server_ble);
+             recyclerview_server_ble = (RecyclerView) card_server_ble_inner.findViewById(R.id.id_recyclerview_server_ble);
+             progressbar_server_ble = (ProgressBar) recyclerview_server_ble.findViewById(R.id.id_progressbar_server_ble);
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -179,37 +172,17 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
 
 
-    private void receiveddatafromBootFragmentServer() {
-        try{
-        Bundle bundleFragmentBoottoServerFragment = getArguments();
-        Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
-          concurrentHashMapReceivedFromBootFragmentGatta= (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
 
-        Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
-
-
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         try {
+            // TODO: 17.07.2024 get data ot Fragment BOOT
+            blFragmentRecyreViewServer.   receiveddatafromBootFragmentServer(getArguments());
+
+            blFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
+
          /*   МетодВизуализацииКнопокИБар();
             МетодBackBindind();
             МетодHandler();
@@ -218,7 +191,9 @@ public class FragmentServerbleRecyclerView extends Fragment {
             МетодИнициализацииRecycleViewДляЗадач();
             МетодКпопкаВозвращениеBACK();*/
 
-            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -236,50 +211,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     }
 
-    private void МетодВизуализацииКнопокИБар() {
-        try {
 
-            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
-
-    // TODO: 12.03.2022  метод с бизнес логикой
-    @Override
-    public void onResume() {
-        super.onResume();
-        try {
-          /*  МетодЗаполенияRecycleViewДляЗадач();
-            МетодСлушательObserverДляRecycleView();
-            МетодПерегрузкаRecyceView();*/
-            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
 
     @Override
     public void onDestroy() {
@@ -302,200 +234,22 @@ public class FragmentServerbleRecyclerView extends Fragment {
     }
 
 
-    private void МетодУстановкаБесконечнаяВидимсостиСервера() {
-        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-        //startActivity(discoverableIntent);
-        startActivity(discoverableIntent);
-    }
 
 
 
-    void МетодСлушательObserverДляRecycleView() {  // TODO: 04.03.2022  класс в котором находяться слушатели
-        try {
-            myRecycleViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-                @Override
-                public void onChanged() {
-                    super.onChanged();
-                    try {
-                        Log.d(this.getClass().getName(), "onChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
 
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount) {
-                    super.onItemRangeChanged(positionStart, itemCount);
-                    // TODO: 05.03.2022  СТАТУС ЗНАЧКА С ДОПОЛНИТЕЛЬНЫЙ СТАТУСОМ
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
 
-                @Override
-                public void onItemRangeChanged(int positionStart, int itemCount, @Nullable Object payload) {
-                    super.onItemRangeChanged(positionStart, itemCount, payload);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeChanged ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
-
-                @Override
-                public void onItemRangeInserted(int positionStart, int itemCount) {
-                    super.onItemRangeInserted(positionStart, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeInserted ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
-
-                @Override
-                public void onItemRangeRemoved(int positionStart, int itemCount) {
-                    super.onItemRangeRemoved(positionStart, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "onItemRangeRemoved ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
-
-                @Override
-                public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
-                    super.onItemRangeMoved(fromPosition, toPosition, itemCount);
-                    try {
-                        Log.d(this.getClass().getName(), "     onItemRangeMoved ");
-                        //TODO
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                }
-            });
-            //TODO
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
 
     // TODO: 02.03.2022 выход
 
-    private void МетодКпопкаВозвращениеBACK()
-            throws ExecutionException, InterruptedException {
-        try {
-            Log.d(this.getClass().getName(), "  выходим из задания МетодКпопкаВозвращениеBACK");
 
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-    }
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
     void МетодЗаполенияRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1  ARRAYJSONПолучениеДанныхОт1с  "
-                    + ArrayListДанныеФрагмент1);
-            myRecycleViewAdapter = new MyRecycleViewAdapter(ArrayListДанныеФрагмент1);
-            recyclerView.setAdapter(myRecycleViewAdapter);
+            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1  ARRAYJSONПолучениеДанныхОт1с  ");
+            myRecycleViewAdapterServer = new MyRecycleViewAdapterServer(concurrentHashMapReceivedFromBootFragmentGatta);
+            recyclerView.setAdapter(myRecycleViewAdapterServer);
             Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerView);
             //TODO
         } catch (Exception e) {
@@ -518,8 +272,9 @@ public class FragmentServerbleRecyclerView extends Fragment {
     // TODO: 04.03.2022 прозвомжность инициализации RecycleView
     void МетодИнициализацииRecycleViewДляЗадач() {
         try {
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1  БуферПолучениеДанныхОт1с  "
-                    + ArrayListДанныеФрагмент1);
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(linearLayoutManager);//TODO new LinearLayoutManager(getContext())
@@ -550,8 +305,13 @@ public class FragmentServerbleRecyclerView extends Fragment {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
-                МетодИнициализацииСканера(itemView);
-                Log.d(this.getClass().getName(), "  private class MyViewHolderДляЧата extends RecyclerView.ViewHolder  itemView   " + itemView);
+                initServerBle(itemView);
+
+                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        "  itemView " +itemView);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -568,7 +328,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             }
         }
 
-        private void МетодИнициализацииСканера(@NonNull View itemView) {
+        private void initServerBle(@NonNull View itemView) {
             try {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
                 materialButtonСервер = itemView.findViewById(R.id.bottomcontrolfragmen1);
@@ -590,22 +350,26 @@ public class FragmentServerbleRecyclerView extends Fragment {
         }
     }
 
-    class MyRecycleViewAdapter extends RecyclerView.Adapter<MyViewHolder> {
-        private ArrayList ArrayListДанныеОтСканироваиниеДивайсов;
+    class MyRecycleViewAdapterServer extends RecyclerView.Adapter<MyViewHolder> {
+        private ConcurrentHashMap<String,ContentValues> concurrentHashMapReceivedFromBootFragmentGatta;
 
-        public MyRecycleViewAdapter(@NotNull ArrayList ArrayListДанныеОтСканироваиниеДивайсов) {
-            this.ArrayListДанныеОтСканироваиниеДивайсов = ArrayListДанныеОтСканироваиниеДивайсов;
-            if (ArrayListДанныеОтСканироваиниеДивайсов.size() > 0) {
-                Log.i(this.getClass().getName(), " ArrayListДанныеОтСканироваиниеДивайсов  " + ArrayListДанныеОтСканироваиниеДивайсов.size());
-            }
+        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues>  concurrentHashMapReceivedFromBootFragmentGatta) {
+            this.concurrentHashMapReceivedFromBootFragmentGatta = concurrentHashMapReceivedFromBootFragmentGatta;
+              //TODO
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull List<Object> payloads) {
-            Log.i(this.getClass().getName(), "   onBindViewHolder  position" + position + " ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов);
             try {
-                ///todo ЩЕЛКАЕМ КАЖДУЮ СТРОЧКУ ОТДЕЛЬНО
-                Log.d(this.getClass().getName(), " ArrayListДанныеОтСканироваиниеДивайсов " + ArrayListДанныеОтСканироваиниеДивайсов);
+                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " concurrentHashMapReceivedFromBootFragmentGatta " + concurrentHashMapReceivedFromBootFragmentGatta);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
