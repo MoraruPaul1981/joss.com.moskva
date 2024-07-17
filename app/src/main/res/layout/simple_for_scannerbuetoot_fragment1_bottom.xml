@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragmentuserscanner"
@@ -15,7 +16,7 @@
         android:id="@+id/textView5getstatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="10dp"
         android:drawableLeft="@drawable/icon_dsu1_scanner_status_last"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
@@ -29,15 +30,16 @@
         android:translationZ="50dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bottomcontrolfragmen2"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:layout_marginBottom="68dp"
+        android:layout_marginBottom="76dp"
         android:clickable="true"
         android:focusable="auto"
         android:fontFamily="serif-monospace"
@@ -55,14 +57,14 @@
         app:backgroundTint="#009688"
         app:cardBackgroundColor="#9EAFB3"
         app:cardCornerRadius="10dp"
-        app:cardElevation="40dp"
-        app:cardMaxElevation="150dp"
+        app:cardElevation="10dp"
+        app:cardMaxElevation="15dp"
         app:cornerRadius='150dp'
         app:icon="@drawable/icon_dsu1_scannergattcrabot"
         app:iconGravity="textStart"
         app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#C62828"
         app:strokeColor="#F5FFFA"
@@ -74,7 +76,7 @@
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
         android:layout_width="220dp"
         android:layout_height="220dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="72dp"
         android:clickable="true"
         android:focusable="auto"
         android:fontFamily="serif-monospace"
@@ -98,7 +100,7 @@
         app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:rippleColor="#C62828"
         app:strokeColor="#F5FFFA"
