@@ -1,21 +1,9 @@
 package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Looper;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,38 +17,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
-import com.sous.server.businesslayer.Services.ServiceGattServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 
 public class FragmentServerbleRecyclerView extends Fragment {
 
-
-
     private FragmentManager fragmentManager;
 
     // TODO: 17.07.2024
-    private  ConcurrentHashMap<String,ContentValues> concurrentHashMapReceivedFromBootFragmentGatta;
+    private  ConcurrentHashMap<String,ContentValues> mapReceivedFromBootFragmentGatta=new ConcurrentHashMap<>();
     private  Long version;
 
     private  MaterialCardView  maincardView_server_ble_fragment;
@@ -71,7 +45,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
     private  Bl_FragmentRecyreViewServer blFragmentRecyreViewServer;
-    private Activity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +55,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
-            activity=getActivity();
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -119,8 +91,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 
+            // TODO: 17.07.2024 тест код  
+            mapReceivedFromBootFragmentGatta.put("CunncurentMap",new ContentValues());
+            
+            
+            
+
             // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-            blFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,concurrentHashMapReceivedFromBootFragmentGatta,
+            blFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
                     version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                     progressbar_server_ble,animation,getContext(),getActivity());
 
@@ -150,7 +128,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_serverbte_recyreview, container, false);
+            view = inflater.inflate(R.layout.fragment_main_server_bte, container, false);
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -183,8 +161,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
         try {
             // TODO: 17.07.2024 get data ot Fragment BOOT
             blFragmentRecyreViewServer.   receiveddatafromBootFragmentServer(getArguments());
-
             blFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
+
+
+            blFragmentRecyreViewServer.     setManagerfromRecyclerView();
+            blFragmentRecyreViewServer.     addAdapterServerforRecyreview();
+            blFragmentRecyreViewServer.     getObserverRecyreView();
+
+
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
