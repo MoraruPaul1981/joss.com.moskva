@@ -33,7 +33,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
+public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecyreView {
 
     private FragmentManager fragmentManager;
     private  MyRecycleViewAdapterServer myRecycleViewAdapterServer;
@@ -54,19 +54,19 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
 
     private Activity activity;
 
-    public Bl_FragmentRecyreViewServer(FragmentManager fragmentManager,
-                                       RecyclerView recyclerViewServer,
-                                       ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,
-                                       Long version,
-                                       MaterialCardView maincardView_server_ble_fragment,
-                                       RelativeLayout relativeLayout_server_ble,
-                                       TabLayout tabLayout_server_ble,
-                                       MaterialCardView card_server_ble_inner,
-                                       RecyclerView recyclerview_server_ble,
-                                       ProgressBar progressbar_server_ble,
-                                       Animation animation,
-                                       Context context,
-                                       Activity activity) {
+    public Bl_FragmentRecyreViewServerWithData(FragmentManager fragmentManager,
+                                               RecyclerView recyclerViewServer,
+                                               ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,
+                                               Long version,
+                                               MaterialCardView maincardView_server_ble_fragment,
+                                               RelativeLayout relativeLayout_server_ble,
+                                               TabLayout tabLayout_server_ble,
+                                               MaterialCardView card_server_ble_inner,
+                                               RecyclerView recyclerview_server_ble,
+                                               ProgressBar progressbar_server_ble,
+                                               Animation animation,
+                                               Context context,
+                                               Activity activity) {
         // TODO: 17.07.2024
         this.fragmentManager = fragmentManager;
         this.recyclerViewServer = recyclerViewServer;
@@ -672,5 +672,5 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
 
     }
 
-
+    
 }

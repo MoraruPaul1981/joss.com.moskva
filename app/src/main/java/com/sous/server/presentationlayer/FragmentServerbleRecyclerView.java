@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServerWithData;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.InterfaceServerRecyreView;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -51,7 +53,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private RecyclerView     recyclerview_server_ble;
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
-    private  Bl_FragmentRecyreViewServer blFragmentRecyreViewServer;
+    private InterfaceServerRecyreView getInterfaceServerRecyreView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,16 +100,24 @@ public class FragmentServerbleRecyclerView extends Fragment {
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 
-            // TODO: 17.07.2024 тест код
-            mapReceivedFromBootFragmentGatta.put("CunncurentMap",new ContentValues());
-            
-            
-            
 
-            // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-            blFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
-                    version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                    progressbar_server_ble,animation,getContext(),getActivity());
+            
+            
+            if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
+
+                // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
+                getInterfaceServerRecyreView=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
+                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
+                        progressbar_server_ble,animation,getContext(),getActivity());
+
+            }else {
+
+                // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
+                getInterfaceServerRecyreView=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
+                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
+                        progressbar_server_ble,animation,getContext(),getActivity());
+            }
+
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

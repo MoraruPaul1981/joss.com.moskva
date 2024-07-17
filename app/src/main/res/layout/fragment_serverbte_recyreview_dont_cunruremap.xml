@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:background="#F0FFFF"
+            android:background="#8BC34A"
             android:minHeight="500dp"
             android:visibility="visible"
             android:padding="2dp"

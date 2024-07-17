@@ -414,7 +414,7 @@ public class FragmentBootServer extends Fragment {
             //TODO: Запускаем Фрагмент
             //TODO: Запускаем Фрагмент Server Fragment
 
-                                     biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new  FragmentServerbleRecyclerView ())   ;
+                                     biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new FragmentServerbleRecyclerView())   ;
 
                                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
