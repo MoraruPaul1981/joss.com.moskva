@@ -91,7 +91,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 
-            // TODO: 17.07.2024 тест код  
+            // TODO: 17.07.2024 тест код
             mapReceivedFromBootFragmentGatta.put("CunncurentMap",new ContentValues());
             
             
@@ -167,6 +167,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             blFragmentRecyreViewServer.     setManagerfromRecyclerView();
             blFragmentRecyreViewServer.     addAdapterServerforRecyreview();
             blFragmentRecyreViewServer.     getObserverRecyreView();
+            blFragmentRecyreViewServer.     reBootrecyclerView();
 
 
 

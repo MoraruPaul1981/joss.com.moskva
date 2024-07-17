@@ -388,10 +388,10 @@ public class Bl_FragmentRecyreViewServer {
 
 
     class MyRecycleViewAdapterServer extends RecyclerView.Adapter<MyViewHolder> {
-        private ConcurrentHashMap<String,ContentValues> concurrentHashMapReceivedFromBootFragmentGatta;
+        private ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta;
 
-        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues>  concurrentHashMapReceivedFromBootFragmentGatta) {
-            this.concurrentHashMapReceivedFromBootFragmentGatta = concurrentHashMapReceivedFromBootFragmentGatta;
+        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta) {
+            this.getMapReceivedFromBootFragmentGatta = getMapReceivedFromBootFragmentGatta;
             //TODO
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -404,7 +404,7 @@ public class Bl_FragmentRecyreViewServer {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " concurrentHashMapReceivedFromBootFragmentGatta " + concurrentHashMapReceivedFromBootFragmentGatta);
+                        " concurrentHashMapReceivedFromBootFragmentGatta " + getMapReceivedFromBootFragmentGatta);
 
 
             } catch (Exception e) {
@@ -611,7 +611,7 @@ public class Bl_FragmentRecyreViewServer {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"     getItemId concurrentHashMapReceivedFromBootFragmentGatta "
-                        + concurrentHashMapReceivedFromBootFragmentGatta );
+                        + getMapReceivedFromBootFragmentGatta);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -626,14 +626,14 @@ public class Bl_FragmentRecyreViewServer {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
-            return concurrentHashMapReceivedFromBootFragmentGatta.size();
+            return getMapReceivedFromBootFragmentGatta.size();
         }
     }
 
 
 
     //TODO метод делает callback с ответом на экран
-    private void МетодПерегрузкаRecyceView() {
+    public void reBootrecyclerView() {
         try {
             recyclerViewServer.getAdapter().notifyDataSetChanged();
             recyclerViewServer.requestLayout();
