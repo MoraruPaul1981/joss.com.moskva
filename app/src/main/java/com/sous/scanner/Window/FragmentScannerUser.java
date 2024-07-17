@@ -457,7 +457,9 @@ public class FragmentScannerUser extends Fragment {
         try {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerviewnewscanner.setLayoutManager(linearLayoutManager);//TODO new LinearLayoutManager(getContext())
+            recyclerviewnewscanner.setLayoutManager(linearLayoutManager);
+            recyclerviewnewscanner.setNestedScrollingEnabled(false);
+            recyclerviewnewscanner.setHasFixedSize(false);//TODO new LinearLayoutManager(getContext())
             recyclerviewnewscanner.getAdapter().notifyDataSetChanged();
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
