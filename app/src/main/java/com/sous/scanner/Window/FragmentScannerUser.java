@@ -864,23 +864,24 @@ public class FragmentScannerUser extends Fragment {
             try{
                 materialButtonGattClient.getHandler().postDelayed(()->{
                     // TODO: 17.07.2024
-                      if(!finalCallBackStateLiveData.contentEquals("SERVER#SousAvtoSuccess"))
+                      if(!finalCallBackStateLiveData.contentEquals("SERVER#SousAvtoSuccess")) {
                           // TODO: 17.07.2024
                           binderСканнер.getService().МетодВыключениеКлиентаGatt();
-                        // TODO: 17.07.2024
-                        onStart();
+                          // TODO: 17.07.2024
+                          onStart();
 
-                  //      Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
+                          //      Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
 
 
-                    Snackbar snackbar=        Snackbar . make ( recyclerviewnewscanner.getRootView() , "Время сессии закончилась !!!" , Snackbar.LENGTH_LONG) ;
-                    final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
-                    params.setMargins(20,0,20,50);
-                    params.gravity = Gravity.BOTTOM;
-                    snackBarView.setBackgroundColor(Color.GRAY);
-                    snackBarView.setLayoutParams(params);
-                    snackbar.show();
+                          Snackbar snackbar = Snackbar.make(recyclerviewnewscanner.getRootView(), "Время сессии закончилась !!!", Snackbar.LENGTH_LONG);
+                          final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
+                          FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
+                          params.setMargins(20, 0, 20, 50);
+                          params.gravity = Gravity.BOTTOM;
+                          snackBarView.setBackgroundColor(Color.GRAY);
+                          snackBarView.setLayoutParams(params);
+                          snackbar.show();
+                      }
 
                     Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -890,7 +891,7 @@ public class FragmentScannerUser extends Fragment {
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            },2000);
+            },20000);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1294,10 +1295,10 @@ public class FragmentScannerUser extends Fragment {
     //TODO метод делает callback с ответом на экран
     private void МетодПерегрузкаRecyceView() {
         try {
-           /* recyclerviewnewscanner.requestLayout();
+            recyclerviewnewscanner.getAdapter().notifyDataSetChanged();
+            recyclerviewnewscanner.requestLayout();
             recyclerviewnewscanner.forceLayout();
             recyclerviewnewscanner.refreshDrawableState();
-            recyclerviewnewscanner.getAdapter().notifyDataSetChanged();*/
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
