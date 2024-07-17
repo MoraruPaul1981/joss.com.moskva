@@ -304,8 +304,7 @@ public class ServiceClientBLE extends IntentService {
             Flowable flowableЦиклСервера = Flowable.fromIterable(BluetoothСерверов.entrySet())
                     .onBackpressureBuffer(true)
                     .subscribeOn(Schedulers.newThread())
-                    .throttleFirst(250,TimeUnit.MICROSECONDS)
-                    .repeatWhen(repeat -> repeat.delay(5, TimeUnit.SECONDS))
+                    .repeatWhen(repeat -> repeat.delay(3, TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -331,7 +330,7 @@ public class ServiceClientBLE extends IntentService {
                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     })
-                    .take(5, TimeUnit.MINUTES)
+                    .take(15, TimeUnit.SECONDS)
                     .map(new Function<Map.Entry<String, UUID>, Object>() {
                         @Override
                         public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -745,7 +744,7 @@ try{
 
                                     }
                                 }else{
-                                    mediatorLiveDataGATT.setValue("SERVER#SousAvtoERROR");
+                                    mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
                                     Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
                                 }
                             } catch (Exception e) {
