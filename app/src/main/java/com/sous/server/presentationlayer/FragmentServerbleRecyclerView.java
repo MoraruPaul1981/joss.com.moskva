@@ -41,6 +41,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
@@ -60,33 +62,18 @@ import java.util.stream.Collectors;
 
 
 public class FragmentServerbleRecyclerView extends Fragment {
-    private MyRecycleViewAdapter myRecycleViewAdapter;
-    private MyViewHolder myViewHolder;
-    private RecyclerView recyclerView;
-    private LinearLayout linearLayou;
-    private Animation animationServer;
-    private ArrayList<String> ArrayListДанныеФрагмент1 = new ArrayList();
-    private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
-    private Fragment fragment;
-    private Handler handler;
 
-    private MutableLiveData<Bundle> mutableLiveDataGATTServer;
-    private List<String> linkedКолПодкСерверу;
-    private Long version;
 
     private ServiceGattServer.LocalBinderСерверBLE binderСерверBLE;
     private Message message;
-    private    ProgressBar progressBarДЛяСервера;
-    private    RelativeLayout relativeLayoutСервер;
+    private FragmentManager fragmentManager;
 
-
+    private MyRecycleViewAdapter myRecycleViewAdapter;
+    private MyViewHolder myViewHolder;
+    private RecyclerView recyclerView;
     // TODO: 17.07.2024
-    private  ConcurrentHashMap concurrentHashMapReceivedFromBootFragmentGatta;
-
-
-
-
+    private  ConcurrentHashMap<String,ContentValues> concurrentHashMapReceivedFromBootFragmentGatta;
+    private  Long version;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,8 +108,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
-            recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
+            cardView_scannerble_fragment = (MaterialCardView) view.findViewById(R.id.id_cardView_scannerble_fragment);
+            recyclerviewsccanerble    = (RelativeLayout) cardView_scannerble_fragment.findViewById(R.id.recyclerviewsccanerble);
+            recyclerviewnewscanner = (RecyclerView) recyclerviewsccanerble.findViewById(R.id.recyclerviewnewscanner);
+            tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
 
           /*  linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
