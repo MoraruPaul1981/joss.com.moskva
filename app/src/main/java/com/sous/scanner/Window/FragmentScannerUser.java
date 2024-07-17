@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,11 +16,13 @@ import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -40,6 +43,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
@@ -71,7 +75,7 @@ public class FragmentScannerUser extends Fragment {
     private Message handler;
     private  MaterialCardView cardView_scannerble_fragment;
     private  RelativeLayout recyclerviewsccanerble ;
-    private Animation animation;
+
 
     private String КлючДляFibaseOneSingnal;
     private Long version = 0l;
@@ -191,7 +195,6 @@ public class FragmentScannerUser extends Fragment {
         View view = null;
         try {
             view = inflater.inflate(R.layout.fragment_scanner_recyreview, container, false);
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" view " +view);
@@ -707,14 +710,22 @@ public class FragmentScannerUser extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
 
-// TODO: 17.07.2024  Главные кнопки Кнопка на Работу 
+// TODO: 17.07.2024  Главные кнопки Кнопка на Работу
+
+                МетодАнимацииButtonКотрольПриход(holder);
+
                 eventButtonmaterialButtonКотрольПриход(holder);
 
-// TODO: 17.07.2024  Главнаня кнопка с Работы
+
+
+         // TODO: 17.07.2024  Главнаня кнопка с Работы
+
+                МетодАнимацииButtonКотрольВыход(holder);
+
                 eventButtonmaterialButtonКотрольВыход(holder);
 
 
-                МетодАнимации(holder);
+
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -735,9 +746,11 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
-        private void МетодАнимации(MyViewHolder holder) {
+        private void МетодАнимацииButtonКотрольВыход( @NonNull MyViewHolder holder) {
             try {
-                holder.materialButtonКотрольПриход.startAnimation(animation);
+             Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+                animation.setDuration(100l);
+                holder.materialButtonКотрольВыход.startAnimation(animation);
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder);
                 //TODO
             } catch (Exception e) {
@@ -756,6 +769,29 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
+
+        private void МетодАнимацииButtonКотрольПриход( @NonNull MyViewHolder holder) {
+            try {
+                Animation   animation2 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+                animation2.setDuration(200l);
+                holder.materialButtonКотрольПриход.startAnimation(animation2);
+                Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder);
+                //TODO
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                final Object ТекущаяВерсияПрограммы = version;
+                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            }
+        }
 
         ///todo первый метод #1
         private void eventButtonmaterialButtonКотрольПриход(@NonNull MyViewHolder holder) {
@@ -785,7 +821,7 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-                                MutableLiveData<String> mediatorLiveDataGATTПриход = new MediatorLiveData();
+                             final    MutableLiveData<String> mediatorLiveDataGATTПриход = new MediatorLiveData();
 
                                     ДействиеДляСервераGATTОКотрольПриход[0] = "на работу";
 
@@ -828,15 +864,25 @@ public class FragmentScannerUser extends Fragment {
             try{
                 materialButtonGattClient.getHandler().postDelayed(()->{
                     // TODO: 17.07.2024
-                      if(!finalCallBackStateLiveData.trim().equalsIgnoreCase("SERVER#SousAvtoSuccess"))
+                      if(!finalCallBackStateLiveData.contentEquals("SERVER#SousAvtoSuccess"))
                           // TODO: 17.07.2024
                           binderСканнер.getService().МетодВыключениеКлиентаGatt();
                         // TODO: 17.07.2024
                         onStart();
 
-                        Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
+                  //      Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
 
-                        Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+
+                    Snackbar snackbar=        Snackbar . make ( recyclerviewnewscanner.getRootView() , "Время сессии закончилась !!!" , Snackbar.LENGTH_LONG) ;
+                    final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
+                    params.setMargins(20,0,20,50);
+                    params.gravity = Gravity.BOTTOM;
+                    snackBarView.setBackgroundColor(Color.GRAY);
+                    snackBarView.setLayoutParams(params);
+                    snackbar.show();
+
+                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
@@ -844,7 +890,7 @@ public class FragmentScannerUser extends Fragment {
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            },20000);
+            },2000);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -893,7 +939,7 @@ public class FragmentScannerUser extends Fragment {
                                 ДействиеДляСервераGATTКотрольВыход[0] = "с работы";
 
 
-                                MutableLiveData<String> mediatorLiveDataGATTВыход = new MediatorLiveData();
+                              final   MutableLiveData<String> mediatorLiveDataGATTВыход = new MediatorLiveData();
 
                                 МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход,  ДействиеДляСервераGATTКотрольВыход[0],mediatorLiveDataGATTВыход);
 
@@ -967,8 +1013,6 @@ public class FragmentScannerUser extends Fragment {
                                                      @NonNull MaterialButton materialButtonКакоеДействие,
                                                      MutableLiveData<String> mediatorLiveDataGATTClient  ) {
             try {
-                v.startAnimation(animation);
-
 
                 if (mediatorLiveDataGATTClient .hasActiveObservers()) {
                     mediatorLiveDataGATTClient .removeObservers(lifecycleOwner);
@@ -1046,7 +1090,12 @@ public class FragmentScannerUser extends Fragment {
                                     // TODO: 07.02.2023 Успешный статус
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        materialButtonКакоеДействие.startAnimation(animation);
+                                        // TODO: 17.07.2024
+                                        Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+                                        animation.setDuration(100l);
+                                        v.startAnimation(animation);
+                                        
+                                        
                                         materialButtonКакоеДействие.setText("Успешно !!!");
                                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
                                         v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
