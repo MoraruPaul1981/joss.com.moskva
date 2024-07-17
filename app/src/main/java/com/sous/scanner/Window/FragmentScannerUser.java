@@ -123,7 +123,7 @@ public class FragmentScannerUser extends Fragment {
 
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
-    private Fragment fragment;
+
     private Message handler;
 
 
@@ -147,14 +147,14 @@ public class FragmentScannerUser extends Fragment {
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
 
-            // TODO: 08.02.2023  Биндинг службы
-            getListerBuingindServiceFragmentScanner( );
+            fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
 
-            МетодВизуализацииКнопокИБар();
+            КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
 
-            МетодИнициализацииRecycleViewДляЗадач();
+            mediatorLiveDataGATT = new MediatorLiveData();
 
-            МетодHandler();
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -186,16 +186,6 @@ public class FragmentScannerUser extends Fragment {
         try {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
             recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
-            linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
-            Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
-            fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setPrimaryNavigationFragment(fragment);
-            Bundle bundle = getArguments();
-            КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
-            mediatorLiveDataGATT = new MediatorLiveData();
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -222,6 +212,17 @@ public class FragmentScannerUser extends Fragment {
         View view = null;
         try {
             view = inflater.inflate(R.layout.fragment_scanner_recyreview, container, false);
+
+
+
+            // TODO: 08.02.2023  Биндинг службы
+            getListerBuingindServiceFragmentScanner( );
+
+            МетодВизуализацииКнопокИБар();
+
+            МетодИнициализацииRecycleViewДляЗадач();
+
+            МетодHandler();
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -251,6 +252,7 @@ public class FragmentScannerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
+
             МетодЗаполенияRecycleViewДляЗадач();
 
             МетодСлушательObserverДляRecycleView();
@@ -1151,9 +1153,6 @@ public class FragmentScannerUser extends Fragment {
             recyclerView.requestLayout();
             recyclerView.forceLayout();
             recyclerView.refreshDrawableState();
-            linearLayou.requestLayout();
-            linearLayou.forceLayout();
-            linearLayou.refreshDrawableState();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

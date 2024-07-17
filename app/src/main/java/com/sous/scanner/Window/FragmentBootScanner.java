@@ -182,28 +182,19 @@ public class FragmentBootScanner extends Fragment {
 
     public void landingFragmentScannerUser( ) {
         try {
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.addToBackStack(null);
+        FragmentScannerUser fragmentScannerUser=new FragmentScannerUser();
+        fragmentTransaction.replace(R.id.framelauoutbleprimary, fragmentScannerUser);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
+        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        fragmentTransaction.show(fragmentScannerUser);
+
+        Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
 
- /*        handlerScanner.getTarget().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    FragmentScannerUser fragmentScannerUser=new FragmentScannerUser();
-                    fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.framelauoutbleprimary, fragmentScannerUser)
-                            .setPrimaryNavigationFragment(fragmentScannerUser);//.layout.activity_for_fragemtb_history_tasks
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
-                    fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                    fragmentTransaction.show(fragmentScannerUser);
-
-                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                }
-            },5000);*/
-
-            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
