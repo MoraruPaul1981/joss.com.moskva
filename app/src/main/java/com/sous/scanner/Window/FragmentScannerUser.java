@@ -1,74 +1,35 @@
 package com.sous.scanner.Window;
 
-import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_CARRIER;
-import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_IMS;
-import static android.telephony.SubscriptionManager.PHONE_NUMBER_SOURCE_UICC;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.PendingIntent;
-import android.app.admin.DeviceAdminReceiver;
-import android.app.admin.DevicePolicyManager;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcel;
-import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.ContactsContract;
-import android.provider.Settings;
-import android.provider.Telephony;
-import android.telecom.PhoneAccountHandle;
-import android.telephony.CellInfo;
-import android.telephony.CellSignalStrength;
-import android.telephony.NetworkRegistrationInfo;
-import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
-import android.telephony.TelephonyDisplayInfo;
-import android.telephony.TelephonyManager;
-import android.telephony.emergency.EmergencyNumber;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.RequiresPermission;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
@@ -79,6 +40,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
 import com.sous.scanner.Services.ServiceClientBLE;
@@ -87,45 +49,30 @@ import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.BiFunction;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Unit;
 
 
 public class FragmentScannerUser extends Fragment {
     private MyRecycleViewAdapter myRecycleViewAdapter;
     private MyViewHolder myViewHolder;
-    private RecyclerView recyclerView;
-    private LinearLayout linearLayou;
-    private Animation animation;
+    private RecyclerView recyclerviewnewscanner;
 
     private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
 
     private Message handler;
-
+    private  MaterialCardView cardView_scannerble_fragment;
+    private  RelativeLayout recyclerviewsccanerble ;
+    private Animation animation;
 
 
 
@@ -141,22 +88,17 @@ public class FragmentScannerUser extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         try{
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
-
             fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-
             КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
 
+            // TODO: 08.02.2023  Биндинг службы
+            getListerBuingindServiceFragmentScanner( );
+            МетодHandler();
             mediatorLiveDataGATT = new MediatorLiveData();
-
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-
-
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -184,8 +126,10 @@ public class FragmentScannerUser extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
-            recyclerView = (RecyclerView) view.findViewById(R.id.RecyclerViewNewScanner);
+            cardView_scannerble_fragment = (MaterialCardView) view.findViewById(R.id.id_cardView_scannerble_fragment);
+            recyclerviewsccanerble    = (RelativeLayout) cardView_scannerble_fragment.findViewById(R.id.recyclerviewsccanerble);
+            recyclerviewnewscanner = (RecyclerView) recyclerviewsccanerble.findViewById(R.id.recyclerviewnewscanner);
+
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -212,18 +156,7 @@ public class FragmentScannerUser extends Fragment {
         View view = null;
         try {
             view = inflater.inflate(R.layout.fragment_scanner_recyreview, container, false);
-
-
-
-            // TODO: 08.02.2023  Биндинг службы
-            getListerBuingindServiceFragmentScanner( );
-
-            МетодВизуализацииКнопокИБар();
-
-            МетодИнициализацииRecycleViewДляЗадач();
-
-            МетодHandler();
-
+            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" view " +view);
@@ -252,11 +185,8 @@ public class FragmentScannerUser extends Fragment {
     public void onStart() {
         super.onStart();
         try {
-
             МетодЗаполенияRecycleViewДляЗадач();
-
             МетодСлушательObserverДляRecycleView();
-
             МетодПерегрузкаRecyceView();
 
             // TODO: 20.02.2023 ТЕКСТ КОД
@@ -499,8 +429,8 @@ public class FragmentScannerUser extends Fragment {
            ArrayList<String> ArrayListСканер = new ArrayList();
             ArrayListСканер.add("Фрагмент Клиента");
             myRecycleViewAdapter = new MyRecycleViewAdapter(ArrayListСканер);
-            recyclerView.setAdapter(myRecycleViewAdapter);
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerView);
+            recyclerviewnewscanner.setAdapter(myRecycleViewAdapter);
+            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerviewnewscanner);
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
@@ -524,9 +454,9 @@ public class FragmentScannerUser extends Fragment {
         try {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            recyclerView.setLayoutManager(linearLayoutManager);//TODO new LinearLayoutManager(getContext())
+            recyclerviewnewscanner.setLayoutManager(linearLayoutManager);//TODO new LinearLayoutManager(getContext())
             // TODO: 28.02.2022 создаем наш первый RecyclerView recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerView);
+            Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 recyclerView   " + recyclerviewnewscanner);
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
@@ -1150,9 +1080,9 @@ public class FragmentScannerUser extends Fragment {
     //TODO метод делает callback с ответом на экран
     private void МетодПерегрузкаRecyceView() {
         try {
-            recyclerView.requestLayout();
-            recyclerView.forceLayout();
-            recyclerView.refreshDrawableState();
+            recyclerviewnewscanner.requestLayout();
+            recyclerviewnewscanner.forceLayout();
+            recyclerviewnewscanner.refreshDrawableState();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

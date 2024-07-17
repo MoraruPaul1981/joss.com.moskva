@@ -38,7 +38,7 @@ import java.util.Date;
 public class FragmentBootScanner extends Fragment {
     Long version=0l;
     private FragmentManager fragmentManager;
-    private FragmentTransaction fragmentTransaction;
+
 
     private ImageView textViewZnak;
 
@@ -101,7 +101,6 @@ public class FragmentBootScanner extends Fragment {
             PackageInfo     pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -182,7 +181,7 @@ public class FragmentBootScanner extends Fragment {
 
     public void landingFragmentScannerUser( ) {
         try {
-        fragmentTransaction = fragmentManager.beginTransaction();
+            FragmentTransaction   fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.addToBackStack(null);
         FragmentScannerUser fragmentScannerUser=new FragmentScannerUser();
         fragmentTransaction.replace(R.id.framelauoutbleprimary, fragmentScannerUser);

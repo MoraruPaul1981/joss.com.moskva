@@ -1,32 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/fragment1scanner"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".Window.FragmentScannerUser"
-    android:orientation="vertical">
-    <ScrollView
-        android:id="@+id/scrollview_new_materials"
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/id_cardView_scannerble_fragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_height="match_parent"
-        android:scrollbars="horizontal|vertical"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll"
-        android:fillViewport="true">
+        android:layout_width="match_parent"
+        android:translationZ="5dp"
+        android:padding="10dp"
+        tools:context=".Window.MainActivityNewScanner">
+
+
+
     <RelativeLayout
-        android:id="@+id/recyclerviewfragment1"
+        android:id="@+id/recyclerviewsccanerble"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minHeight="350dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:orientation="vertical">
+
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewNewScanner"
+            android:id="@+id/recyclerviewnewscanner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
@@ -56,6 +51,5 @@
             android:visibility="invisible" />
 
     </RelativeLayout>
-    </ScrollView>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
 
