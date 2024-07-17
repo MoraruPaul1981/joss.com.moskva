@@ -86,6 +86,8 @@ public class FragmentScannerUser extends Fragment {
     // TODO: 30.01.2023 ВТОРАЯ ЧАСТЬ ОТВЕТ ПРОВЕТ GATT SERVER/CLIENT
     private  LifecycleOwner lifecycleOwner ;
 
+    private  String finalCallBackStateLiveData;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -825,22 +827,24 @@ public class FragmentScannerUser extends Fragment {
         private void limitAnConnectionSessionGattaWithServer(@NonNull MaterialButton materialButtonGattClient) {
             try{
                 materialButtonGattClient.getHandler().postDelayed(()->{
-
                     // TODO: 17.07.2024
+                      if(!finalCallBackStateLiveData.trim().equalsIgnoreCase("SERVER#SousAvtoSuccess"))
+                          // TODO: 17.07.2024
+                          binderСканнер.getService().МетодВыключениеКлиентаGatt();
+                        // TODO: 17.07.2024
+                        onStart();
 
-                    binderСканнер.getService().МетодВыключениеКлиентаGatt();
+                        Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
 
-                    // TODO: 17.07.2024
-                    onStart();
+                        Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
-                    Toast.makeText(getContext(), "Сессия с сервером закончилась !!! ", Toast.LENGTH_SHORT).show();
 
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-            },15000);
+            },20000);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -975,8 +979,16 @@ public class FragmentScannerUser extends Fragment {
                     @Override
                     public void onChanged(@NonNull  String ОтветОтСерврера) {
                         if (mediatorLiveDataGATTClient .getValue() != null) {
-                            Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATTClient  " + mediatorLiveDataGATTClient );
-                            // TODO: 24.01.2023  показываем поозователю Статуса
+                            //todo  get State Ot Gatt Server
+                            finalCallBackStateLiveData=mediatorLiveDataGATTClient .getValue();
+
+                            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                     " finalCallBackStateLiveData    " +finalCallBackStateLiveData + " mediatorLiveDataGATTClient .getValue(  " +mediatorLiveDataGATTClient .getValue() );
+
+
+                            // TODO: 24.01.2023  State get ot Gatt Server
                             switch (mediatorLiveDataGATTClient .getValue().toString()) {
                                 case "SERVER#SERVER#SouConnect":
                                     handler.getTarget().post(() -> {
