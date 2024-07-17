@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
@@ -703,8 +705,10 @@ public class FragmentScannerUser extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
 
+// TODO: 17.07.2024  Главные кнопки Кнопка на Работу 
                 eventButtonmaterialButtonКотрольПриход(holder);
 
+// TODO: 17.07.2024  Главнаня кнопка с Работы
                 eventButtonmaterialButtonКотрольВыход(holder);
 
 
@@ -760,7 +764,7 @@ public class FragmentScannerUser extends Fragment {
                 final String[] ДействиеДляСервераGATTОКотрольПриход = new String[1];
                 // TODO: 22.02.2023 для второй кнопки
                 RxView.clicks(holder.materialButtonКотрольПриход)
-                        .throttleFirst(250, TimeUnit.MILLISECONDS)
+                        .throttleFirst(1, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -772,6 +776,12 @@ public class FragmentScannerUser extends Fragment {
                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() );
+
+
+                                //TODO лимит на подключение к серверу
+                                limitAnConnectionSessionGattaWithServer( holder.materialButtonКотрольПриход);
+
+
 
                                 MutableLiveData<String> mediatorLiveDataGATTПриход = new MediatorLiveData();
 
@@ -796,11 +806,6 @@ public class FragmentScannerUser extends Fragment {
                             }
                         });
 
-//TODO Долгий Клтк дял Выключени Клиента GATT
-                MaterialButton materialButtonПриходLongClikk=       holder.materialButtonКотрольПриход;
-                clickLongButtonStopGattClient(materialButtonПриходLongClikk, ДействиеДляСервераGATTОКотрольПриход[0]);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -817,40 +822,39 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
-        private void clickLongButtonStopGattClient(@NonNull MaterialButton materialButtonКотрольПриход,
-                                                   @NonNull String  ДействиеДляСервераGATTОКотрольПриход) {
-            RxView.longClicks(materialButtonКотрольПриход)
-                    .observeOn(AndroidSchedulers.mainThread()).subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
-                        @Override
-                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                            Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " время " + new Date().toLocaleString());
-                        }
+        private void limitAnConnectionSessionGattaWithServer(@NonNull MaterialButton materialButtonGattClient) {
+            try{
+                materialButtonGattClient.getHandler().postDelayed(()->{
 
-                        @Override
-                        public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
-                            Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " время " + new Date().toLocaleString());
+                    // TODO: 17.07.2024
 
-                            binderСканнер.getService().МетодВыключениеКлиентаGatt();
+                    binderСканнер.getService().МетодВыключениеКлиентаGatt();
 
-//TODO после Остановки Сервер перегружаем внешнмий вид Клиента  GATT
-                            onStart();
+                    // TODO: 17.07.2024
+                    onStart();
+
+                    Toast.makeText(getContext(), "Сессия с сервером закончилась !!! ", Toast.LENGTH_SHORT).show();
+
+                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
 
-                        }
-                        @Override
-                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                            Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " время " +new Date().toLocaleString() );
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                    + " время " + new Date().toLocaleString());
-                        }
-                    });
+            },15000);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
         }
 
 
@@ -862,7 +866,7 @@ public class FragmentScannerUser extends Fragment {
                 final String[] ДействиеДляСервераGATTКотрольВыход = new String[1];
 
                 RxView.clicks(holder.materialButtonКотрольВыход)
-                        .throttleFirst(250, TimeUnit.MILLISECONDS)
+                        .throttleFirst(1, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -876,6 +880,12 @@ public class FragmentScannerUser extends Fragment {
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() +
                                         " disposable[0] " );
+
+                                //TODO лимит на подключение к серверу
+                                limitAnConnectionSessionGattaWithServer( holder.materialButtonКотрольПриход);
+
+
+
                                 ДействиеДляСервераGATTКотрольВыход[0] = "с работы";
 
 
@@ -899,11 +909,6 @@ public class FragmentScannerUser extends Fragment {
                                         + " время " +new Date().toLocaleString() );
                             }
                         });
-
-
-                //TODO Долгий Клтк дял Выключени Клиента GATT
-                MaterialButton materialButtonВыходLongClikk=       holder.materialButtonКотрольВыход;
-                clickLongButtonStopGattClient(materialButtonВыходLongClikk,ДействиеДляСервераGATTКотрольВыход[0]);
 
 
             } catch (Exception e) {
