@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
-    android:id="@+id/id_cardView_server_ble_fragment"
+    android:id="@+id/id_maincardView_server_ble_fragment"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:translationZ="5dp"
@@ -12,6 +12,7 @@
     tools:context=".presentationlayer.ActivityServerScanner">
 
 <RelativeLayout
+    android:id="@+id/id_relativeLayout_server_ble"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -19,7 +20,7 @@
     android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout_server_ble"
+            android:id="@+id/id_tabLayout_server_ble"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_width="180dp"
@@ -50,7 +51,7 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_server_ble"
+            android:id="@+id/id_card_server_ble_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
@@ -65,7 +66,7 @@
             app:strokeWidth="1dp"
             android:translationZ="15dp"
             android:animateLayoutChanges="true"
-            android:layout_below="@+id/tabLayout_server_ble"
+            android:layout_below="@+id/id_tabLayout_server_ble"
             android:layout_above="@+id/id_progressbar_server_ble">
 
 

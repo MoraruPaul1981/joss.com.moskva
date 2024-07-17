@@ -75,10 +75,24 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private  ConcurrentHashMap<String,ContentValues> concurrentHashMapReceivedFromBootFragmentGatta;
     private  Long version;
 
+    private  MaterialCardView  maincardView_server_ble_fragment;
+    private  RelativeLayout  relativeLayout_server_ble;
+    private TabLayout   tabLayout_server_ble;
+    private MaterialCardView     card_server_ble_inner;
+    private RecyclerView     recyclerview_server_ble;
+    private ProgressBar     progressbar_server_ble;
+    private  Animation animation;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+            fragmentManager = getActivity().getSupportFragmentManager();
+            animation  = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+
+            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+            version = pInfo.getLongVersionCode();
+
             // TODO: 17.07.2024 получаем дданые от другово фрагмента
             receiveddatafromBootFragmentServer();
 
@@ -108,29 +122,16 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            cardView_scannerble_fragment = (MaterialCardView) view.findViewById(R.id.id_cardView_scannerble_fragment);
-            recyclerviewsccanerble    = (RelativeLayout) cardView_scannerble_fragment.findViewById(R.id.recyclerviewsccanerble);
-            recyclerviewnewscanner = (RecyclerView) recyclerviewsccanerble.findViewById(R.id.recyclerviewnewscanner);
-            tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
-
+            maincardView_server_ble_fragment = (MaterialCardView) view.findViewById(R.id.id_maincardView_server_ble_fragment);
+            relativeLayout_server_ble    = (RelativeLayout) maincardView_server_ble_fragment.findViewById(R.id.id_relativeLayout_server_ble);
+            tabLayout_server_ble = (TabLayout) relativeLayout_server_ble.findViewById(R.id.id_tabLayout_server_ble);
+              card_server_ble_inner = (MaterialCardView) tabLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
+             recyclerview_server_ble = (RecyclerView) relativeLayout_server_ble.findViewById(R.id.id_recyclerview_server_ble);
+             progressbar_server_ble = (ProgressBar) relativeLayout_server_ble.findViewById(R.id.id_progressbar_server_ble);
+            //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-          /*  linearLayou = (LinearLayout) view.findViewById(R.id.fragment1scanner);
-            progressBarДЛяСервера = (ProgressBar) view.findViewById(R.id.ProgressBarScannerfragment1);
-            relativeLayoutСервер = (RelativeLayout) view.findViewById(R.id.recyclerviewfragment1);
-            Log.d(this.getClass().getName(), " recyclerView " + recyclerView);
-            fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            mutableLiveDataGATTServer = new MutableLiveData<>();
-            animationServer = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-            ArrayListДанныеФрагмент1.add("Фрагмент Сервера");
-            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
-            version = pInfo.getLongVersionCode();
-            linkedКолПодкСерверу = new LinkedList<>();*/
-
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
