@@ -87,13 +87,16 @@ public class Bl_FragmentRecyreViewServer {
     // TODO: 17.07.2024
     public void receiveddatafromBootFragmentServer(@NonNull Bundle getArguments) {
         try{
-            Bundle bundleFragmentBoottoServerFragment = getArguments;
-            Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
-            mapReceivedFromBootFragmentGatta = (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
+            if (getArguments!=null) {
+                Bundle bundleFragmentBoottoServerFragment = getArguments;
+                Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
+                mapReceivedFromBootFragmentGatta = (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
+            }
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " getArguments " +getArguments);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

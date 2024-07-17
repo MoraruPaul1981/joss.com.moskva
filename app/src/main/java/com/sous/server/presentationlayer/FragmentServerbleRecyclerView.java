@@ -24,8 +24,15 @@ import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
+import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
+import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -85,9 +92,9 @@ public class FragmentServerbleRecyclerView extends Fragment {
             maincardView_server_ble_fragment = (MaterialCardView) view.findViewById(R.id.id_maincardView_server_ble_fragment);
             relativeLayout_server_ble    = (RelativeLayout) maincardView_server_ble_fragment.findViewById(R.id.id_relativeLayout_server_ble);
             tabLayout_server_ble = (TabLayout) relativeLayout_server_ble.findViewById(R.id.id_tabLayout_server_ble);
-              card_server_ble_inner = (MaterialCardView) tabLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
-             recyclerview_server_ble = (RecyclerView) card_server_ble_inner.findViewById(R.id.id_recyclerview_server_ble);
-             progressbar_server_ble = (ProgressBar) recyclerview_server_ble.findViewById(R.id.id_progressbar_server_ble);
+              card_server_ble_inner = (MaterialCardView) relativeLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
+             recyclerview_server_ble = (RecyclerView) relativeLayout_server_ble.findViewById(R.id.id_recyclerview_server_ble);
+             progressbar_server_ble = (ProgressBar) relativeLayout_server_ble.findViewById(R.id.id_progressbar_server_ble);
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 
@@ -159,6 +166,10 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public void onStart() {
         super.onStart();
         try {
+            /*    //TODO:создаем подписку MessageScannerServer */
+            if (!EventBus.getDefault().isRegistered(this)) {
+                EventBus.getDefault().register(this);
+            }
             // TODO: 17.07.2024 get data ot Fragment BOOT
             blFragmentRecyreViewServer.   receiveddatafromBootFragmentServer(getArguments());
             blFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
@@ -195,8 +206,11 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         try {
+        /*    //TODO:создаем подписку MessageScannerServer */
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -216,6 +230,81 @@ public class FragmentServerbleRecyclerView extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageScannerServer event) {
+        // Do something
+        try {
+            // Do something
+            ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
+            Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
+            String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
+            ConcurrentHashMap getFlagMapOtServiceBte=  paramentsScannerServer.getConcurrentHashMapGattBundle();
+
+
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 

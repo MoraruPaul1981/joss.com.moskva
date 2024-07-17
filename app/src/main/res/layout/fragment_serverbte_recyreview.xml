@@ -34,7 +34,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:background="#FFFFFF"
+            android:background="#F0FFFF"
             android:minHeight="500dp"
             android:visibility="visible"
             android:padding="5dp"
@@ -47,14 +47,7 @@
 
 
 
-        <ProgressBar
-            android:id="@+id/id_progressbar_server_ble"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="100"
-            android:progress="50"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_alignParentBottom="true" />
+
 
     </RelativeLayout>
 
