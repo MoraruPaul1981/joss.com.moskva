@@ -25,8 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
-import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServerWithData;
-import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.InterfaceServerRecyreView;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -40,7 +38,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.ToDoubleBiFunction;
 
 
 public class FragmentServerbleRecyclerView extends Fragment {
@@ -57,7 +54,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
     private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
-    private Bl_FragmentRecyreViewServerWithData getblFragmentRecyreViewServerWithData;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -196,6 +193,11 @@ public class FragmentServerbleRecyclerView extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         try {
@@ -262,21 +264,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     private void selectingwhichdatatodownload(@NonNull  ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
         try{
-            if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
-
-                // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные
-                getblFragmentRecyreViewServerWithData=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
-                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());
-
-                getblFragmentRecyreViewServerWithData.     getDISCOVERABLE_DURATIONs();
-                getblFragmentRecyreViewServerWithData.     setManagerfromRecyclerView();
-                getblFragmentRecyreViewServerWithData.     addAdapterServerforRecyreview(  mapReceivedFromBootFragmentGatta);
-                getblFragmentRecyreViewServerWithData.     getObserverRecyreView();
-                getblFragmentRecyreViewServerWithData.     reBootrecyclerView();
-
-
-            }else {
 
                 // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
@@ -293,9 +280,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 getblFragmentRecyreViewServer.     getObserverRecyreView();
                 getblFragmentRecyreViewServer.     reBootrecyclerView();
 
-
-
-            }
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -349,7 +333,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
 
             if ( CurrentTask.equalsIgnoreCase("SuccessDeviceBluetoothAnServerGatt")) {
-                ConcurrentHashMap<String,ContentValues> getFlagMapOtServiceBte=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
+                ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
                 Cursor getCursor=  paramentsScannerServer.getCursor() ;
                 // TODO: 18.07.2024
                 Log.d(getContext().getClass().getName(), "\n"
@@ -358,7 +342,17 @@ public class FragmentServerbleRecyclerView extends Fragment {
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                         " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
                         " CurrentTask  "  +CurrentTask+
-                         "getFlagMapOtServiceBte " +getFlagMapOtServiceBte+ "getCursor " +getCursor );
+                         "mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta+ "getCursor " +getCursor );
+
+
+
+                getblFragmentRecyreViewServer.     rebootRecyreViewApdater(  mapReceivedFromBootFragmentGatta,     getCursor);
+
+                getblFragmentRecyreViewServer.     getObserverRecyreView();
+
+                getblFragmentRecyreViewServer.     reBootrecyclerView();
+
+
 
                 
                 

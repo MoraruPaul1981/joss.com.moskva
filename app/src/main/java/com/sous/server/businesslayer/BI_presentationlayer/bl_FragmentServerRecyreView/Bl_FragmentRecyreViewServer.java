@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -330,12 +331,16 @@ public class Bl_FragmentRecyreViewServer  {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
-                initingComponentsforRecyreView(itemView);
+                if(mapReceivedFromBootFragmentGatta!=null    ) {
+                    if (mapReceivedFromBootFragmentGatta.size()>0) {
+                        initingComponentsforRecyreView(itemView);
+                    }
 
+                }
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "  itemView " +itemView);
+                        "  itemView " +itemView + " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -504,6 +509,28 @@ public class Bl_FragmentRecyreViewServer  {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = null;
             try {
+                // TODO: 18.07.2024 первый запуск без данных
+                if(mapReceivedFromBootFragmentGatta==null    ){
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                    // TODO: 18.07.2024 второй  запуск   данных  есть
+
+                }else {
+
+                    if(  mapReceivedFromBootFragmentGatta.size()>0){
+
+                        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                    }else {
+                        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                        // TODO: 18.07.2024 второй  запуск   данных  есть
+
+
+                    }
+
+                }
+                Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
+                        " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
 
                  // view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                   //view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
@@ -514,7 +541,8 @@ public class Bl_FragmentRecyreViewServer  {
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
+                        " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -536,10 +564,13 @@ public class Bl_FragmentRecyreViewServer  {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
+                if(mapReceivedFromBootFragmentGatta!=null    ) {
+                    if (mapReceivedFromBootFragmentGatta.size()>0) {
+                        getCkickfAnRecyclerview(holder);
 
-                getCkickfAnRecyclerview(holder);
-
-                МетодАнимации(holder);
+                        МетодАнимации(holder);
+                    }
+                }
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -683,6 +714,41 @@ public class Bl_FragmentRecyreViewServer  {
     }
 
 
+
+    public void rebootRecyreViewApdater(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,@NonNull Cursor getCursor) {
+        try{
+            if (mapReceivedFromBootFragmentGatta.size()>0) {
+
+                recyclerViewServer.removeAllViewsInLayout();
+
+                myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta=mapReceivedFromBootFragmentGatta;
+
+
+            myRecycleViewAdapterServer.notifyDataSetChanged();
+            RecyclerView.Adapter recyclerViewadapter=         recyclerViewServer.getAdapter();
+            recyclerViewadapter.notifyDataSetChanged();
+            recyclerViewServer.swapAdapter(recyclerViewadapter,true);
+
+            }
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta +" getCursor " +getCursor);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
 
