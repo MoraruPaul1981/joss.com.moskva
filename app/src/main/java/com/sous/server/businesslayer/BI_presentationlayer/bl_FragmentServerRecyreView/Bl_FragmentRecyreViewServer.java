@@ -22,10 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 
@@ -322,30 +321,30 @@ public class Bl_FragmentRecyreViewServer  {
     }
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        private MaterialCardView card_server_dont_data_oncreateviewholder;
-        private  TextInputLayout textinputlayout_namedevice;
+        private MaterialCardView  card_server_success_data_oncreateviewholder;
 
-
+        private TabLayout  tabLayout_server_ble;
         // TODO: 18.07.2024 TextInputEditText все компонеты
         private    TextInputEditText textinputtext_namedevice;
+
         private    TextInputEditText textinputtext_macdevice;
         private    TextInputEditText  textinputtext_completedwork;
         private    TextInputEditText  textinputtext_iemi;
         private    TextInputEditText  extinputtext_date_update;
         private    TextInputEditText textinputtext_city;
 
+        private TextInputEditText textinputtext_adress ;
+
+        private TextInputEditText textinputtext_gps1 ;
+
+        private TextInputEditText textinputtext_gps2 ;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
                 //todo init componets
-                if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta!=null) {
-                    if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta.size()>0) {
-                        //todo init componets  При наличи данных 
-                        initingComponentsforRecyreView(itemView);
-                    }
-                }
+                        initingComponentsforRecyreView(  itemView);
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -374,61 +373,39 @@ public class Bl_FragmentRecyreViewServer  {
             try {
 
                 // TODO: 18.07.2024 Сами компаненты при неличии
-                    card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
-                    textinputlayout_namedevice = card_server_dont_data_oncreateviewholder.findViewById(R.id.id_textinputlayout_namedevice);
+                    //card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_mini_data_oncreateviewholder);
+                    card_server_success_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_success_data_oncreateviewholder);
+                    //TODO Если инициализация проша тогда Инициализируем Компоненты
+                if (card_server_success_data_oncreateviewholder!=null) {
 
-                        // TODO: 18.07.2024 TextInputEditText все компонеты
-                        textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
+                     tabLayout_server_ble = itemView.findViewById(R.id.id_tabLayout_server_ble);
 
-                        textinputtext_macdevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_macdevice);
+                    // TODO: 18.07.2024 TextInputEditText все компонеты
+                    textinputtext_namedevice = itemView.findViewById(R.id.id_textinputtext_namedevice);
 
-                        textinputtext_completedwork = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_completedwork);
+                    textinputtext_macdevice = itemView.findViewById(R.id.id_textinputtext_macdevice);
 
-                        textinputtext_iemi = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_iemi);
+                    textinputtext_completedwork = itemView.findViewById(R.id.id_textinputtext_completedwork);
 
-                        extinputtext_date_update = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_date_update);
+                    textinputtext_iemi = itemView.findViewById(R.id.id_textinputtext_iemi);
 
-                        textinputtext_city = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_city);
+                    extinputtext_date_update = itemView.findViewById(R.id.id_textinputtext_date_update);
 
-
-                ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta = myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta;
-
-
-                Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " itemView  " +itemView
-                        +" myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "+myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta);
+                    textinputtext_city = itemView.findViewById(R.id.id_textinputtext_city);
 
 
-/*
-                textinputtext_namedevice
-                        textinputtext_macdevice*/
+                     textinputtext_adress = itemView.findViewById(R.id.id_textinputtext_adress);
 
-                textinputtext_namedevice.setClickable(false);
-                textinputtext_namedevice.setFocusable(false);
+                     textinputtext_gps1 = itemView.findViewById(R.id.id_textinputtext_gps1);
+
+                     textinputtext_gps2 = itemView.findViewById(R.id.id_textinputtext_gps2);
 
 
 
 
 
-                textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
-                    @Override
-                    public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
-                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " itemView  " +itemView);
-                    }
-                });
+                }
 
-
-
-
-
-
-
-          
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -458,12 +435,12 @@ public class Bl_FragmentRecyreViewServer  {
     class MyRecycleViewAdapterServer extends RecyclerView.Adapter<MyViewHolder> {
         public ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta;
 
-        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta) {
-            this.getMapReceivedFromBootFragmentGatta = getMapReceivedFromBootFragmentGatta;
+        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues> mapReceivedFromBootFragmentGatta) {
+            this.getMapReceivedFromBootFragmentGatta = mapReceivedFromBootFragmentGatta;
             //TODO
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
         }
 
         @Override
@@ -473,7 +450,6 @@ public class Bl_FragmentRecyreViewServer  {
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                         " concurrentHashMapReceivedFromBootFragmentGatta " + getMapReceivedFromBootFragmentGatta);
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -561,15 +537,18 @@ public class Bl_FragmentRecyreViewServer  {
             try {
                 // TODO: 18.07.2024 первый запуск без данных
                 if(getMapReceivedFromBootFragmentGatta==null    ){
+                    // TODO: 18.07.2024 Когда Данные НЕТ !!!
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                     // TODO: 18.07.2024 второй  запуск   данных  есть
 
                 }else {
 
                     if(getMapReceivedFromBootFragmentGatta.size()>0){
-
+                        // TODO: 18.07.2024 Когда Данные есть
                         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                      //  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_mini_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1*/
                     }else {
+                        // TODO: 18.07.2024 Когда Данные НЕТ !!!
                         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                         // TODO: 18.07.2024 второй  запуск   данных  есть
 
@@ -611,20 +590,36 @@ public class Bl_FragmentRecyreViewServer  {
             return myViewHolder;
         }
 
+
+
+
+
+
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 if(getMapReceivedFromBootFragmentGatta!=null    ) {
                     if (getMapReceivedFromBootFragmentGatta.size()>0) {
-                        getCkickfAnRecyclerview(holder);
 
-                        МетодАнимации(holder);
+                        tabLayoutClick(holder);
+
+                        datafillingRecyclerview(holder,getMapReceivedFromBootFragmentGatta);
+
+                        settingAnimatios(holder);
+
+                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                                + "\n" + " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta
+                                + " holder " +holder);
+
                     }
                 }
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                        + "\n" + " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -642,59 +637,6 @@ public class Bl_FragmentRecyreViewServer  {
             }
         }
 
-        private void МетодАнимации(@NonNull  MyViewHolder holder) {
-            try {
-                holder.card_server_dont_data_oncreateviewholder.startAnimation(animation);
-                Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " holder  "+ holder);
-                //TODO
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                ContentValues valuesЗаписываемОшибки = new ContentValues();
-                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                final Object ТекущаяВерсияПрограммы = version;
-                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-            }
-        }
-
-
-        ///todo первый метод #1
-        private void getCkickfAnRecyclerview(@NonNull MyViewHolder holder) {
-            try {
-                Log.i(this.getClass().getName(), "   holder " + holder);///*/
-                holder.card_server_dont_data_oncreateviewholder.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.i(this.getClass().getName(), "   запуск сервера МетодЗапускGattServer " + v);
-                        Snackbar.make(v, "recyclerview_server_ble ....",Snackbar.LENGTH_LONG)
-                                .setAction("Action",null).show();
-
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                ContentValues valuesЗаписываемОшибки = new ContentValues();
-                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                final Object ТекущаяВерсияПрограммы = version;
-                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-            }
-        }
 
 
 
@@ -777,11 +719,8 @@ public class Bl_FragmentRecyreViewServer  {
     public void rebootRecyreViewApdater(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,@NonNull Cursor getCursor) {
         try{
             if (mapReceivedFromBootFragmentGatta.size()>0) {
-
                 recyclerViewServer.removeAllViewsInLayout();
-
                 myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta=mapReceivedFromBootFragmentGatta;
-
 
             myRecycleViewAdapterServer.notifyDataSetChanged();
             RecyclerView.Adapter recyclerViewadapter=         recyclerViewServer.getAdapter();
@@ -808,6 +747,149 @@ public class Bl_FragmentRecyreViewServer  {
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
+    private void settingAnimatios(@NonNull  MyViewHolder holder) {
+        try {
+            holder.card_server_success_data_oncreateviewholder.startAnimation(animation);
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " holder  "+ holder);
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+    ///todo первый метод #1
+    private void tabLayoutClick(@NonNull MyViewHolder holder) {
+        try {
+            holder.tabLayout_server_ble.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                            " itemView  " +holder.itemView);
+
+                    tab.view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " itemView  " +holder.itemView);
+                        }
+                    });
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                            " itemView  " +holder.itemView);
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                    Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                            " itemView  " +holder.itemView);
+
+                    tab.view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " itemView  " +holder.itemView);
+                        }
+                    });
+
+                }
+            });
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" holder " +holder.itemView);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+    private void     datafillingRecyclerview(@NonNull MyViewHolder holder,@NonNull  ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta) {
+        try {
+
+           String getCurrentKeyDivece = getMapReceivedFromBootFragmentGatta.keySet().stream().findAny().get();
+
+            ContentValues getContentValuesCurrentDivece =  (ContentValues) getMapReceivedFromBootFragmentGatta.values().stream().findAny().get();
+
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " itemView  " +holder.itemView
+                    +" myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "+myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta);
+
+
+
+            holder. textinputtext_namedevice.setClickable(false);
+            holder.  textinputtext_namedevice.setFocusable(false);
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " concurrentHashMapReceivedFromBootFragmentGatta " + getMapReceivedFromBootFragmentGatta);
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" holder " +holder.itemView);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+
 
 
 

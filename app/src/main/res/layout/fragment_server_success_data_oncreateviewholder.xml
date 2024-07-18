@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/id_card_server_dont_data_oncreateviewholder"
+    android:id="@+id/id_card_server_success_data_oncreateviewholder"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
@@ -47,7 +47,7 @@
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption"
             android:padding="2dp">
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tabItem_server_ble"
+                android:id="@+id/id_tabItem_server_ble"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
