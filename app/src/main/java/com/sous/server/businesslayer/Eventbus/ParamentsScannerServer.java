@@ -1,10 +1,12 @@
 package com.sous.server.businesslayer.Eventbus;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class ParamentsScannerServer {
 
@@ -17,22 +19,17 @@ public class ParamentsScannerServer {
 
 
 
-    private ContentValues contentValues;
+    private ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap=new ConcurrentHashMap<>();
+    private ConcurrentSkipListSet<Cursor> contentValuesConcurrentSkipListSet=new ConcurrentSkipListSet<>();
     private  String s5;
 
 
     private     Boolean флагЗапускаФрагментRecyreView=false;
-    private ConcurrentHashMap<String, Bundle> concurrentHashMapGattBundle=new ConcurrentHashMap();
 
 
 
-    public ContentValues getContentValues() {
-        return contentValues;
-    }
 
-    public void setContentValues(ContentValues contentValues) {
-        this.contentValues = contentValues;
-    }
+
 
     public String getCurrentTask() {
         return currentTask;
@@ -75,13 +72,26 @@ public class ParamentsScannerServer {
 
     public void setФлагЗапускаФрагментRecyreView(Boolean флагЗапускаФрагментRecyreView) {
         this.флагЗапускаФрагментRecyreView = флагЗапускаФрагментRecyreView;
+
+
     }
 
-    public ConcurrentHashMap<String, Bundle> getConcurrentHashMapGattBundle() {
-        return concurrentHashMapGattBundle;
+    public ConcurrentHashMap<String, ContentValues> getContentValuesConcurrentHashMap() {
+        return contentValuesConcurrentHashMap;
     }
 
-    public void setConcurrentHashMapGattBundle(ConcurrentHashMap<String, Bundle> concurrentHashMapGattBundle) {
-        this.concurrentHashMapGattBundle = concurrentHashMapGattBundle;
+    public void setContentValuesConcurrentHashMap(ConcurrentHashMap<String, ContentValues> contentValuesConcurrentHashMap) {
+        this.contentValuesConcurrentHashMap = contentValuesConcurrentHashMap;
+    }
+
+
+    public ConcurrentSkipListSet<Cursor> getContentValuesConcurrentSkipListSet() {
+        return contentValuesConcurrentSkipListSet;
+    }
+
+    public void setContentValuesConcurrentSkipListSet(ConcurrentSkipListSet<Cursor> contentValuesConcurrentSkipListSet) {
+        this.contentValuesConcurrentSkipListSet = contentValuesConcurrentSkipListSet;
     }
 }
+
+

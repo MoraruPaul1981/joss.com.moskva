@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -87,7 +88,7 @@ public class ServiceGattServer extends IntentService {
     protected  BluetoothAdapter bluetoothAdapterGATT;
 
     protected Long version = 0l;
-    protected ConcurrentHashMap<String, Bundle> concurrentHashMapDeviceBTE;
+
 
 
     protected List<Address> addressesgetGPS;
@@ -102,6 +103,10 @@ public class ServiceGattServer extends IntentService {
     protected   ContentProviderServer contentProviderServer;
 
     protected      SharedPreferences sharedPreferencesGatt;
+
+
+    protected ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap;
+
     public ServiceGattServer() {
         super("ServiceGattServer");
     }
@@ -374,7 +379,6 @@ public class ServiceGattServer extends IntentService {
     @SuppressLint("MissingPermission")
     private void launchmanagerBLE() {
         try {
-            concurrentHashMapDeviceBTE=new ConcurrentHashMap<>();
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
@@ -409,7 +413,6 @@ public class ServiceGattServer extends IntentService {
             ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
             sendFragmentparamentsScannerServer.setФлагЗапускаФрагментRecyreView(getStatusEnableBlueadapter);
             sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterEnable");
-            sendFragmentparamentsScannerServer.setConcurrentHashMapGattBundle(new ConcurrentHashMap<>());
             //TODO: послымаем Из Службы Значение на Фрагмент
             MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
             //TODO: ответ на экран работает ообрубование или нет
@@ -549,7 +552,6 @@ public class ServiceGattServer extends IntentService {
                     ///TODO: SuccessAddDevice
                     Bundle    bundleAddDeviceSuccess = new Bundle();
                     bundleAddDeviceSuccess.putString("Статус", "SERVERGATTRUNNIGSTARTING");
-                    concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -991,17 +993,18 @@ public class ServiceGattServer extends IntentService {
         try{
         ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
-        sendFragmentparamentsScannerServer.setContentValues(contentValuesВставкаДанныхGaTT);
+        contentValuesConcurrentHashMap.putIfAbsent(new String(),contentValuesВставкаДанныхGaTT);
+        sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
         //TODO: послымаем Из Службы Значение на Фрагмент
         MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
+
         //TODO: ответ на экран работает ообрубование или нет
         EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
 
 
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1099,9 +1102,7 @@ public class ServiceGattServer extends IntentService {
                 Bundle    bundleAddDeviceSuccess = new Bundle();
                 bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
                 bundleAddDeviceSuccess.putString("Дивайс", device.getName());
-                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" +
-                        "Без записи в базу !!!");
-                concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
+                bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" + "Без записи в базу !!!");
 
                 break;
             case BluetoothProfile.STATE_DISCONNECTED:
@@ -1169,34 +1170,7 @@ public class ServiceGattServer extends IntentService {
         }
         return  0;
     }
-    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull ContentValues contentValuesDataOtAnsroid) throws InterruptedException {
 
-        Uri РезульататЗАписиНовогоДивайса = null;
-        try{
-
-            Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-            РезульататЗАписиНовогоДивайса=   contentProviderServer.insert(uri, contentValuesDataOtAnsroid);
-
-            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " РезульататЗАписиНовогоДивайса " +РезульататЗАписиНовогоДивайса);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return Integer.parseInt(РезульататЗАписиНовогоДивайса.toString())  ;
-    }
 
     // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
     public  Integer МетодПоискДАнныхПоБазе(@NonNull String СамЗапрос) {
@@ -1234,7 +1208,39 @@ public class ServiceGattServer extends IntentService {
         }
         return  ВерсияДАнных;
     }
-// TODO: 15.03.2023 синхрониазция КЛАсс
 
+
+
+
+
+// TODO: 15.03.2023 синхрониазция КЛАсс
+// TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
+public  Cursor getallthedataofsuccessfuldevices(@NonNull String СамЗапрос) {
+    Cursor successfuldevices = null;
+    try{
+        Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
+          successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
+        if (successfuldevices.getCount()>0){
+            successfuldevices.moveToFirst();
+        }
+        Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
+    return  successfuldevices;
+}
 
 }
