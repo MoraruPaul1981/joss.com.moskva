@@ -212,7 +212,7 @@ public class FragmentBootServer extends Fragment {
         ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
         Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
         String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
-        ConcurrentHashMap getFlagMapOtServiceBte=  paramentsScannerServer.getConcurrentHashMapGattBundle();
+
 
         if (CurrentTask.contentEquals("bluetootAdapterEnable")) {
 ////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
@@ -225,36 +225,15 @@ public class FragmentBootServer extends Fragment {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
-                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
 
         } else {
-
-            //todo:тут пока виде теста
-            if (CurrentTask.contentEquals("SuccessDeviceBluetoothAnServerGatt")) {
-
-                //TODO: девай усешно записель состывокальс севреросм и мы его Показываем Пользователю  Фрагмент
-                ContentValues     getListSuccessDerviceOtServerGatt= paramentsScannerServer.getContentValues();
-
-              //TODO:   показыаеи UI event
-                ConcurrentHashMap<String,ContentValues> concurrentHashMapSucceesDataOtClient=      forwardSuccessDiveceUIEventAnd(getListSuccessDerviceOtServerGatt);
-
-
-
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
-                        " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
-            }
 
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
-                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
 
         }
 
@@ -262,8 +241,7 @@ public class FragmentBootServer extends Fragment {
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
-                 " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+                " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
 
     } catch (Exception e) {
         e.printStackTrace();

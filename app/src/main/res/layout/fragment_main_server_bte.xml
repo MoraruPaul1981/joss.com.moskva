@@ -101,7 +101,7 @@
             android:indeterminateOnly="true"
             android:indeterminateTint="#A6A3A2"
             android:layout_above="@+id/bottomnavigationview_server_ble"
-            android:scaleX="1"
+
             android:scaleY="2"
             style="?android:attr/progressBarStyleHorizontal"/>
 

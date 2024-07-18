@@ -33,7 +33,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecyreView {
+public class Bl_FragmentRecyreViewServerWithData   {
 
     private FragmentManager fragmentManager;
     private  MyRecycleViewAdapterServer myRecycleViewAdapterServer;
@@ -53,6 +53,7 @@ public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecy
     private Context context;
 
     private Activity activity;
+    private  BlgeneralServer blgeneralServer;
 
     public Bl_FragmentRecyreViewServerWithData(FragmentManager fragmentManager,
                                                RecyclerView recyclerViewServer,
@@ -81,6 +82,9 @@ public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecy
         this.animation = animation;
         this.context = context;
         this.activity = activity;
+        // TODO: 18.07.2024
+        // TODO: 18.07.2024
+        blgeneralServer=new BlgeneralServer(context,version);
     }
 
 
@@ -666,5 +670,8 @@ public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecy
 
     }
 
-    
+
+
+
+
 }

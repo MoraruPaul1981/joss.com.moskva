@@ -262,6 +262,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 getblFragmentRecyreViewServer.     getObserverRecyreView();
                 getblFragmentRecyreViewServer.     reBootrecyclerView();
 
+
+
             }
 
 

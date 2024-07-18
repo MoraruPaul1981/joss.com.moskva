@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 
@@ -33,7 +36,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
+public class Bl_FragmentRecyreViewServer  {
 
     private FragmentManager fragmentManager;
     private  MyRecycleViewAdapterServer myRecycleViewAdapterServer;
@@ -53,6 +56,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
     private Context context;
 
     private Activity activity;
+    private  BlgeneralServer blgeneralServer;
 
     public Bl_FragmentRecyreViewServer(FragmentManager fragmentManager,
                                        RecyclerView recyclerViewServer,
@@ -79,6 +83,8 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         this.animation = animation;
         this.context = context;
         this.activity = activity;
+        // TODO: 18.07.2024
+        blgeneralServer=new BlgeneralServer(context,version);
     }
 
 
@@ -319,6 +325,9 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
         private MaterialCardView card_server_dont_data_oncreateviewholder;
+        private  TextInputLayout textInputLayoutdontdata;
+        private    TextInputEditText textInputEditText;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -349,6 +358,23 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         private void initingComponentsforRecyreView(@NonNull View itemView) {
             try {
                 card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
+                textInputLayoutdontdata= card_server_dont_data_oncreateviewholder.findViewById(R.id.textinputlayout_server_dontdata);
+                textInputEditText= textInputLayoutdontdata.findViewById(R.id.textinputtext_server_dontdata);
+
+                TextView textView=new TextView(context);
+                textView.setText("dgdgdgdgdgd");
+
+                textInputEditText.setHint("hitddd");
+                textInputEditText.setText("etxtgsgsgsgsgs");
+                textInputLayoutdontdata.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
+                    @Override
+                    public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
+                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " itemView  " +itemView);
+                    }
+                });
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -654,6 +680,9 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         }
 
     }
+
+
+
 
 
 }
