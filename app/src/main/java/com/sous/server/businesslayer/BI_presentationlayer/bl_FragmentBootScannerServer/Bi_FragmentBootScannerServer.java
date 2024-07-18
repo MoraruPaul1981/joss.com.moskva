@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.Header;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
@@ -27,12 +29,13 @@ public class Bi_FragmentBootScannerServer {
     protected  FragmentManager fragmentManager;
     protected Long version;
     protected Activity getactivity;
-
-    public Bi_FragmentBootScannerServer(Context context, FragmentManager fragmentManager, Activity getactivity, Long version) {
+    protected  Handler handlerGatt;
+    public Bi_FragmentBootScannerServer(Context context, FragmentManager fragmentManager, Activity getactivity, Long version, Handler handlerGatt) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.version = version;
         this.getactivity = getactivity;
+        this.handlerGatt = handlerGatt;
     }
 
 
@@ -42,13 +45,21 @@ public class Bi_FragmentBootScannerServer {
     @SuppressLint("ResourceType")
     public void МетодЗапускаФрагментаСканирования(@NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentServerbleRecyclerView();
         try {
-            FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
-            fragmentManager.getFragments().remove(0);
-            fragmentTransactionBoot.addToBackStack(null);
-            fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
-            fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
-            fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            fragmentTransactionBoot.show(fragmentServerbleRecyclerView);
+            handlerGatt.postDelayed(()->{
+
+                FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
+                fragmentManager.getFragments().remove(0);
+                fragmentTransactionBoot.addToBackStack(null);
+                fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
+                fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                fragmentTransactionBoot.show(fragmentServerbleRecyclerView);
+
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+            },1500);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

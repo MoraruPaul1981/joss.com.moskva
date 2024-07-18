@@ -131,7 +131,7 @@ public class FragmentBootServer extends Fragment {
 
 
             /*    //TODO:создаем класс для бизнес логики */
-        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
+        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version,handlerGatt);
 
        МетодЗапускаСервиса(  );
 
@@ -272,7 +272,7 @@ public class FragmentBootServer extends Fragment {
         try{
             //TODO: Запускаем Фрагмент
 
-            if (getReslutOTServiceGatt==true ) {
+
 
              //   DrawableCompat.setTint(imageviewbootscanner.getDrawable(), ContextCompat.getColor(getContext(), com.google.android.material.R.color.design_default_color_on_primary));
                 //imageviewbootscanner.setColorFilter(Color.argb(255, 50, 150, 140));
@@ -284,17 +284,6 @@ public class FragmentBootServer extends Fragment {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                         "  getReslutOTServiceGatt " +getReslutOTServiceGatt);
 
-
-            } else {
-
-                Toast.makeText(getContext(),"Bluetooth не доступен !!!" ,Toast.LENGTH_LONG).show();
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  getReslutOTServiceGatt " +getReslutOTServiceGatt);
-
-            }
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
