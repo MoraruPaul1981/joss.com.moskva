@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -325,7 +324,16 @@ public class Bl_FragmentRecyreViewServer  {
     protected class MyViewHolder extends RecyclerView.ViewHolder {
         private MaterialCardView card_server_dont_data_oncreateviewholder;
         private  TextInputLayout textinputlayout_namedevice;
+
+
+        // TODO: 18.07.2024 TextInputEditText все компонеты
         private    TextInputEditText textinputtext_namedevice;
+        private    TextInputEditText textinputtext_macdevice;
+        private    TextInputEditText  textinputtext_completedwork;
+        private    TextInputEditText  textinputtext_iemi;
+        private    TextInputEditText  extinputtext_date_update;
+        private    TextInputEditText textinputtext_city;
+
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -334,6 +342,7 @@ public class Bl_FragmentRecyreViewServer  {
                 //todo init componets
                 if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta!=null) {
                     if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta.size()>0) {
+                        //todo init componets  При наличи данных 
                         initingComponentsforRecyreView(itemView);
                     }
                 }
@@ -341,7 +350,9 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "  itemView " +itemView );
+                        "  itemView " +itemView
+                        + " myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "
+                        + myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta );
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -361,27 +372,63 @@ public class Bl_FragmentRecyreViewServer  {
 
         private void initingComponentsforRecyreView(@NonNull View itemView) {
             try {
-                card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
-                if (card_server_dont_data_oncreateviewholder!=null) {
+
+                // TODO: 18.07.2024 Сами компаненты при неличии
+                    card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
                     textinputlayout_namedevice = card_server_dont_data_oncreateviewholder.findViewById(R.id.id_textinputlayout_namedevice);
-                    textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
+
+                        // TODO: 18.07.2024 TextInputEditText все компонеты
+                        textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
+
+                        textinputtext_macdevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_macdevice);
+
+                        textinputtext_completedwork = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_completedwork);
+
+                        textinputtext_iemi = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_iemi);
+
+                        extinputtext_date_update = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_date_update);
+
+                        textinputtext_city = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_city);
 
 
-                    textinputtext_namedevice.setClickable(false);
-                    textinputtext_namedevice.setFocusable(false);
+                ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta = myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta;
 
 
-                    //     textInputLayoutdontdata.setBoxBackgroundColor(Color.parseColor("#E3E8E6"));
-                    textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
-                        @Override
-                        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
-                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    " itemView  " +itemView);
-                        }
-                    });
-                }
+                Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                        " itemView  " +itemView
+                        +" myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "+myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta);
+
+
+/*
+                textinputtext_namedevice
+                        textinputtext_macdevice*/
+
+                textinputtext_namedevice.setClickable(false);
+                textinputtext_namedevice.setFocusable(false);
+
+
+
+
+
+                textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
+                    @Override
+                    public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
+                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " itemView  " +itemView);
+                    }
+                });
+
+
+
+
+
+
+
+          
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
