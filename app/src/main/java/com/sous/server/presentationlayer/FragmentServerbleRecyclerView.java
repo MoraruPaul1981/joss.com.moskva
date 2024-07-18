@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +40,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.ToDoubleBiFunction;
 
 
 public class FragmentServerbleRecyclerView extends Fragment {
@@ -344,15 +347,48 @@ public class FragmentServerbleRecyclerView extends Fragment {
             ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
             Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
             String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
-            ConcurrentHashMap<String,ContentValues> getFlagMapOtServiceBte=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
-            Cursor getCursor=  paramentsScannerServer.getCursor() ;
+
+            if ( CurrentTask.equalsIgnoreCase("SuccessDeviceBluetoothAnServerGatt")) {
+                ConcurrentHashMap<String,ContentValues> getFlagMapOtServiceBte=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
+                Cursor getCursor=  paramentsScannerServer.getCursor() ;
+                // TODO: 18.07.2024
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                        " CurrentTask  "  +CurrentTask+
+                         "getFlagMapOtServiceBte " +getFlagMapOtServiceBte+ "getCursor " +getCursor );
+
+                
+                
+            }else {
+                // TODO: 18.07.2024  пришел статус что серверне рабоатет 
+                if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
+                    progressbar_server_ble.setIndeterminate(false);
+                    Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth остановлен  !!! ", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
+                    toast.show();
+                    // TODO: 18.07.2024
+                    Log.d(getContext().getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                            " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                            " CurrentTask  "  +CurrentTask);
+                }
+
+            }
+
+
+
 
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                     " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
-                    " getFlagMapOtServiceBte  "  +getFlagMapOtServiceBte);
+                    " CurrentTask  "  +CurrentTask);
 
         } catch (Exception e) {
             e.printStackTrace();
