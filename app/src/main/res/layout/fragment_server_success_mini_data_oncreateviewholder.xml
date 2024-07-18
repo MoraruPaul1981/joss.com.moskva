@@ -58,6 +58,13 @@
 
 
 
+
+
+
+
+
+
+
        <!-- //TODO:   namedevice  -->
 
         <com.google.android.material.textfield.TextInputLayout
@@ -78,7 +85,7 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:hint="namedevice"
                 android:text="namedevice value " />
         </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +101,7 @@
             app:boxBackgroundMode="outline"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-      
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
@@ -121,7 +128,7 @@
             android:layout_below="@+id/id_textinputlayout_macdevice"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-      
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
@@ -148,7 +155,7 @@
             android:layout_below="@+id/id_textinputlayout_completedwork"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-      
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
@@ -174,7 +181,7 @@
             android:layout_below="@+id/id_textinputlayout_iemi"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-      
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
@@ -204,6 +211,7 @@
       
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_city"
@@ -229,7 +237,7 @@
             android:layout_below="@+id/id_textinputlayout_city"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-      
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
@@ -257,6 +265,7 @@
             android:layout_margin="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps1"
@@ -282,6 +291,7 @@
             android:layout_margin="2dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps2"

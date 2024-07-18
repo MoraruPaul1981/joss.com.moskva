@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-        <com.google.android.material.card.MaterialCardView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/id_card_server_dont_data_oncreateviewholder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
-            android:textSize="10sp"
-            android:layout_margin="10dp"
-            android:padding="10dp"
-            app:cardBackgroundColor="#FFFAFA"
-            app:strokeColor="#E3E8E6"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
-            app:cardMaxElevation="5dp"
-            app:strokeWidth="2dp"
-            android:translationZ="5dp"
-            android:animateLayoutChanges="true"
-            tools:context=".presentationlayer.FragmentServerbleRecyclerView">
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_card_server_dont_data_oncreateviewholder"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+    android:textSize="10sp"
+    android:layout_margin="10dp"
+    android:padding="10dp"
+    app:cardBackgroundColor="#FFFAFA"
+    app:strokeColor="#E3E8E6"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="2dp"
+    app:cardMaxElevation="5dp"
+    app:strokeWidth="2dp"
+    android:translationZ="5dp"
+    android:animateLayoutChanges="true"
+    tools:context=".presentationlayer.FragmentServerbleRecyclerView">
 
 
     <RelativeLayout
         android:id="@+id/id_relativeLayout_server_ble"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:padding="1dp"
+
         android:layout_margin="1dp"
         android:orientation="vertical">
 
@@ -58,7 +58,7 @@
 
 
 
-       <!-- //TODO:   namedevice  -->
+        <!-- //TODO:   namedevice  -->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_textinputlayout_namedevice"
@@ -66,9 +66,9 @@
             android:layout_below="@+id/id_tabLayout_server_ble"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
@@ -77,7 +77,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:textSize="12sp"
                 android:hint="namedevice"
                 android:text="namedevice value " />
@@ -94,9 +94,9 @@
             app:boxBackgroundMode="outline"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_macdevice"
@@ -104,7 +104,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:textSize="12sp"
                 android:hint="macdevice"
                 android:text="macdevice value " />
@@ -121,14 +121,14 @@
             android:layout_below="@+id/id_textinputlayout_macdevice"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_completedwork"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -148,14 +148,14 @@
             android:layout_below="@+id/id_textinputlayout_completedwork"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_iemi"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -174,14 +174,14 @@
             android:layout_below="@+id/id_textinputlayout_iemi"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_date_update"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -201,14 +201,14 @@
             android:layout_below="@+id/id_textinputlayout_date_update"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_city"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -229,14 +229,14 @@
             android:layout_below="@+id/id_textinputlayout_city"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
+
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_adress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -255,14 +255,13 @@
             android:layout_below="@+id/id_textinputlayout_adress"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -281,14 +280,13 @@
             android:layout_below="@+id/id_textinputlayout_gps1"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
-            android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -297,13 +295,8 @@
                 android:text="gps2 value " />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
-
-
     </RelativeLayout>
-        </com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
 
 
 
