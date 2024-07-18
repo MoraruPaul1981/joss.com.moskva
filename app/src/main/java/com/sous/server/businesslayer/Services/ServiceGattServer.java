@@ -1253,7 +1253,7 @@ public  Cursor getallthedataofsuccessfuldevices(@NonNull String СамЗапро
         Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
           successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
         if (successfuldevices.getCount()>0){
-            successfuldevices.moveToFirst();
+            successfuldevices.moveToLast();
         }
         Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

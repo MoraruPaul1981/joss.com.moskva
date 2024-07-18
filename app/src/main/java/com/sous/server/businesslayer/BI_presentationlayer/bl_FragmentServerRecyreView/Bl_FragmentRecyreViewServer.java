@@ -42,7 +42,7 @@ public class Bl_FragmentRecyreViewServer  {
     private   MyViewHolder myViewHolder;
     private RecyclerView recyclerViewServer;
     // TODO: 17.07.2024
-    private ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta;
+
     private  Long version;
 
     private MaterialCardView maincardView_server_ble_fragment;
@@ -331,16 +331,13 @@ public class Bl_FragmentRecyreViewServer  {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
-                if(mapReceivedFromBootFragmentGatta!=null    ) {
-                    if (mapReceivedFromBootFragmentGatta.size()>0) {
+                //todo init componets
                         initingComponentsforRecyreView(itemView);
-                    }
 
-                }
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        "  itemView " +itemView + " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
+                        "  itemView " +itemView );
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -361,24 +358,26 @@ public class Bl_FragmentRecyreViewServer  {
         private void initingComponentsforRecyreView(@NonNull View itemView) {
             try {
                 card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
-                textinputlayout_namedevice = card_server_dont_data_oncreateviewholder.findViewById(R.id.id_textinputlayout_namedevice);
-                textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
+                if (card_server_dont_data_oncreateviewholder!=null) {
+                    textinputlayout_namedevice = card_server_dont_data_oncreateviewholder.findViewById(R.id.id_textinputlayout_namedevice);
+                    textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
 
 
-                textinputtext_namedevice.setClickable(false);
-                textinputtext_namedevice.setFocusable(false);
+                    textinputtext_namedevice.setClickable(false);
+                    textinputtext_namedevice.setFocusable(false);
 
 
-           //     textInputLayoutdontdata.setBoxBackgroundColor(Color.parseColor("#E3E8E6"));
-                textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
-                    @Override
-                    public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
-                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                " itemView  " +itemView);
-                    }
-                });
+                    //     textInputLayoutdontdata.setBoxBackgroundColor(Color.parseColor("#E3E8E6"));
+                    textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
+                        @Override
+                        public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                    " itemView  " +itemView);
+                        }
+                    });
+                }
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -406,7 +405,7 @@ public class Bl_FragmentRecyreViewServer  {
 
 
     class MyRecycleViewAdapterServer extends RecyclerView.Adapter<MyViewHolder> {
-        private ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta;
+        public ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta;
 
         public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta) {
             this.getMapReceivedFromBootFragmentGatta = getMapReceivedFromBootFragmentGatta;
@@ -510,13 +509,13 @@ public class Bl_FragmentRecyreViewServer  {
             View view = null;
             try {
                 // TODO: 18.07.2024 первый запуск без данных
-                if(mapReceivedFromBootFragmentGatta==null    ){
+                if(getMapReceivedFromBootFragmentGatta==null    ){
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                     // TODO: 18.07.2024 второй  запуск   данных  есть
 
                 }else {
 
-                    if(  mapReceivedFromBootFragmentGatta.size()>0){
+                    if(getMapReceivedFromBootFragmentGatta.size()>0){
 
                         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                     }else {
@@ -530,7 +529,7 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
-                        " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
+                        " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
                  // view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                   //view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
@@ -542,7 +541,7 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
-                        " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
+                        " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -564,8 +563,8 @@ public class Bl_FragmentRecyreViewServer  {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
-                if(mapReceivedFromBootFragmentGatta!=null    ) {
-                    if (mapReceivedFromBootFragmentGatta.size()>0) {
+                if(getMapReceivedFromBootFragmentGatta!=null    ) {
+                    if (getMapReceivedFromBootFragmentGatta.size()>0) {
                         getCkickfAnRecyclerview(holder);
 
                         МетодАнимации(holder);
@@ -660,11 +659,20 @@ public class Bl_FragmentRecyreViewServer  {
 
         @Override
         public int getItemCount() {
+            Integer getFragmentScannerGatt=0;
             try {
+
+                if (getMapReceivedFromBootFragmentGatta==null) {
+                    getFragmentScannerGatt=1;
+                } else {
+                    getFragmentScannerGatt=getMapReceivedFromBootFragmentGatta.size();
+                }
+
+
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"     getItemId concurrentHashMapReceivedFromBootFragmentGatta "
-                        + getMapReceivedFromBootFragmentGatta);
+                        + getMapReceivedFromBootFragmentGatta + " getFragmentScannerGatt " +getFragmentScannerGatt);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -679,7 +687,7 @@ public class Bl_FragmentRecyreViewServer  {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
-            return getMapReceivedFromBootFragmentGatta.size();
+            return getFragmentScannerGatt;
         }
     }
 
