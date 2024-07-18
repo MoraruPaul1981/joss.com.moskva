@@ -130,6 +130,8 @@ public class ServiceGattServer extends IntentService {
             version = pInfo.getLongVersionCode();
           sharedPreferencesGatt = getSharedPreferences("gatt", Context.MODE_PRIVATE);
 
+            contentValuesConcurrentHashMap=new ConcurrentHashMap<>();
+
           //TODO методы параменторв Службы Gaat
             launchmanagerBLE();//TODO: запускаем Новый Манаджер BTE
 
@@ -1017,7 +1019,7 @@ public class ServiceGattServer extends IntentService {
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
 
             // TODO: 18.07.2024 sending HashMap
-        contentValuesConcurrentHashMap.putIfAbsent(new String(),contentValuesВставкаДанныхGaTT);
+        contentValuesConcurrentHashMap.putIfAbsent(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
         sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
 
             // TODO: 18.07.2024 sending cursor
@@ -1033,7 +1035,8 @@ public class ServiceGattServer extends IntentService {
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap + " successfuldevices " +successfuldevices);
+                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap + " successfuldevices " +successfuldevices+" contentValuesВставкаДанныхGaTT.getAsString(\"macdevice\") "+
+                contentValuesВставкаДанныхGaTT.getAsString("macdevice"));
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
@@ -46,7 +47,7 @@ public class FragmentBootServer extends Fragment {
 
 
     private ImageView imageviewbootscanner;
-    private ProgressBar progressBarFace;
+    private ConstraintLayout id_fragment_boot_scannerserver;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -56,7 +57,7 @@ public class FragmentBootServer extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
 
             imageviewbootscanner = (ImageView) view.findViewById(R.id.id_imageviewbootscanner);
-            progressBarFace = (ProgressBar) view.findViewById(R.id.progressBarFace);
+            id_fragment_boot_scannerserver = (ConstraintLayout) view.findViewById(R.id.id_fragment_boot_scannerserver);
 
             /////todo Пришли переменные
             fragmentManager = (FragmentManager) ((ActivityServerScanner) getActivity()).fragmentManager;
@@ -158,8 +159,10 @@ public class FragmentBootServer extends Fragment {
 
     @Override
     public void onStop() {
-        super.onStop();
         try{
+            EventBus.getDefault().unregister(this);
+
+            super.onStop();
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -232,15 +235,20 @@ public class FragmentBootServer extends Fragment {
 
         } else {
 
-            Snackbar.make(progressBarFace.getRootView(), "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
-                    .setAction("Action",null).show();
+            if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
+                /*   Snackbar.make(id_fragment_boot_scannerserver , "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
+                    .setAction("Action",null).show();*/
+                Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth не работает !!! ", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
+                toast.show();
 
 
-            Log.d(getContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " CurrentTask " +CurrentTask);
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " +CurrentTask);
+            }
 
         }
 
