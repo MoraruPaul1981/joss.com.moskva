@@ -68,7 +68,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             app:boxBackgroundMode="outline"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
@@ -96,7 +96,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_macdevice"
@@ -123,7 +123,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_completedwork"
@@ -150,7 +150,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_iemi"
@@ -176,7 +176,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_date_update"
@@ -203,7 +203,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_city"
@@ -231,7 +231,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_adress"
@@ -257,7 +257,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps1"
@@ -267,8 +267,8 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textSize="12sp"
-                android:hint="adress"
-                android:text="adress value " />
+                android:hint="gps1 "
+                android:text="gps1  value " />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -283,7 +283,7 @@
             android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps2"
