@@ -45,6 +45,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -261,6 +262,11 @@ public class ServiceGattServer extends IntentService {
 
             //TODO:получаем Статус Адаптера Bluetooth true, false  и оптравляем статус в активти
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
+
+            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
+
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
 
@@ -415,7 +421,12 @@ public class ServiceGattServer extends IntentService {
 
             ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
             sendFragmentparamentsScannerServer.setФлагЗапускаФрагментRecyreView(getStatusEnableBlueadapter);
-            sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterEnable");
+
+            if (getStatusEnableBlueadapter) {
+                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterEnable");
+            } else {
+                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterDisabled");
+            }
             //TODO: послымаем Из Службы Значение на Фрагмент
             MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
             //TODO: ответ на экран работает ообрубование или нет

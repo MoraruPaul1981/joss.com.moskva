@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentBootScannerServer.Bi_FragmentBootScannerServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
@@ -44,6 +46,7 @@ public class FragmentBootServer extends Fragment {
 
 
     private ImageView imageviewbootscanner;
+    private ProgressBar progressBarFace;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -53,7 +56,7 @@ public class FragmentBootServer extends Fragment {
             Log.d(this.getClass().getName(), "  onViewCreated  Fragment1_One_Tasks view   " + view);
 
             imageviewbootscanner = (ImageView) view.findViewById(R.id.id_imageviewbootscanner);
-
+            progressBarFace = (ProgressBar) view.findViewById(R.id.progressBarFace);
 
             /////todo Пришли переменные
             fragmentManager = (FragmentManager) ((ActivityServerScanner) getActivity()).fragmentManager;
@@ -225,15 +228,19 @@ public class FragmentBootServer extends Fragment {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
+                    " CurrentTask " +CurrentTask);
 
         } else {
+
+            Snackbar.make(progressBarFace.getRootView(), "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
+                    .setAction("Action",null).show();
+
 
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
+                    " CurrentTask " +CurrentTask);
 
         }
 
