@@ -1019,8 +1019,11 @@ public class ServiceGattServer extends IntentService {
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
 
             // TODO: 18.07.2024 sending HashMap
-        contentValuesConcurrentHashMap.putIfAbsent(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
-        sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
+
+                //contentValuesConcurrentHashMap.putIfAbsent(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
+                contentValuesConcurrentHashMap.put(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
+
+            sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
 
             // TODO: 18.07.2024 sending cursor
         sendFragmentparamentsScannerServer.setCursor(successfuldevices);

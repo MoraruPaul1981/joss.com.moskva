@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.sous.server.R;
@@ -330,7 +329,7 @@ public class Bl_FragmentRecyreViewServer  {
         private    TextInputEditText textinputtext_macdevice;
         private    TextInputEditText  textinputtext_completedwork;
         private    TextInputEditText  textinputtext_iemi;
-        private    TextInputEditText  extinputtext_date_update;
+        private    TextInputEditText textinputtext_date_update;
         private    TextInputEditText textinputtext_city;
 
         private TextInputEditText textinputtext_adress ;
@@ -389,7 +388,7 @@ public class Bl_FragmentRecyreViewServer  {
 
                     textinputtext_iemi = itemView.findViewById(R.id.id_textinputtext_iemi);
 
-                    extinputtext_date_update = itemView.findViewById(R.id.id_textinputtext_date_update);
+                    textinputtext_date_update = itemView.findViewById(R.id.id_textinputtext_date_update);
 
                     textinputtext_city = itemView.findViewById(R.id.id_textinputtext_city);
 
@@ -601,17 +600,40 @@ public class Bl_FragmentRecyreViewServer  {
                 if(getMapReceivedFromBootFragmentGatta!=null    ) {
                     if (getMapReceivedFromBootFragmentGatta.size()>0) {
 
-                        tabLayoutClick(holder);
-
-                        datafillingRecyclerview(holder,getMapReceivedFromBootFragmentGatta);
+                        //todo ЗАполеняем Данными пришедешими с севрера
+                        ContentValues getContentValuesCurrentDivece =       datafillingRecyclerview(holder,getMapReceivedFromBootFragmentGatta);
 
                         settingAnimatios(holder);
+
+                        tabLayoutClick(holder);
+
+                        // TODO: 18.07.2024  Главные Методы ЗАполения
+
+                       gettextinputtext_namedevice(holder,getContentValuesCurrentDivece);
+
+
+                        gettextinputtext_macdevice(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_date_update(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_completedwork(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_iemi(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_city(holder,getContentValuesCurrentDivece);
+
+                       gettextinputtext_adress(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_gps1(holder,getContentValuesCurrentDivece);
+
+                        gettextinputtext_gps2(holder,getContentValuesCurrentDivece);
+
 
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
                                 + "\n" + " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta
-                                + " holder " +holder);
+                                + " holder " +holder+ " getContentValuesCurrentDivece " +getContentValuesCurrentDivece);
 
                     }
                 }
@@ -684,6 +706,293 @@ public class Bl_FragmentRecyreViewServer  {
         }
     }
 
+    private void gettextinputtext_gps2(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_gps2.setText(getContentValuesCurrentDivece.getAsString("gps2"));
+            holder. textinputtext_gps2.setClickable(false);
+            holder.  textinputtext_gps2.setFocusable(false);
+            holder.  textinputtext_gps2.refreshDrawableState();
+            holder.  textinputtext_gps2.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+    private void gettextinputtext_gps1(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_gps1.setText(getContentValuesCurrentDivece.getAsString("gps1"));
+            holder. textinputtext_gps1.setClickable(false);
+            holder.  textinputtext_gps1.setFocusable(false);
+            holder.  textinputtext_gps1.refreshDrawableState();
+            holder.  textinputtext_gps1.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+    private void gettextinputtext_adress(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_adress.setText(getContentValuesCurrentDivece.getAsString("adress"));
+            holder. textinputtext_adress.setClickable(false);
+            holder.  textinputtext_adress.setFocusable(false);
+            holder.  textinputtext_adress.refreshDrawableState();
+            holder.  textinputtext_adress.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+    private void gettextinputtext_city(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_city.setText(getContentValuesCurrentDivece.getAsString("city"));
+            holder. textinputtext_city.setClickable(false);
+            holder.  textinputtext_city.setFocusable(false);
+            holder.  textinputtext_city.refreshDrawableState();
+            holder.  textinputtext_city.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+    private void gettextinputtext_iemi(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_iemi.setText(getContentValuesCurrentDivece.getAsString("iemi"));
+            holder. textinputtext_iemi.setClickable(false);
+            holder.  textinputtext_iemi.setFocusable(false);
+            holder.  textinputtext_iemi.refreshDrawableState();
+            holder.  textinputtext_iemi.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+    private void gettextinputtext_completedwork(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_completedwork.setText(getContentValuesCurrentDivece.getAsString("completedwork"));
+            holder. textinputtext_completedwork.setClickable(false);
+            holder.  textinputtext_completedwork.setFocusable(false);
+            holder.  textinputtext_completedwork.refreshDrawableState();
+            holder.  textinputtext_completedwork.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+
+    }
+
+    private void gettextinputtext_date_update(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder.textinputtext_date_update.setText(getContentValuesCurrentDivece.getAsString("date_update"));
+            holder. textinputtext_date_update.setClickable(false);
+            holder.  textinputtext_date_update.setFocusable(false);
+            holder.  textinputtext_date_update.refreshDrawableState();
+            holder.  textinputtext_date_update.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
+    private void gettextinputtext_macdevice(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+
+        try{
+            holder. textinputtext_macdevice.setText(getContentValuesCurrentDivece.getAsString("macdevice"));
+            holder. textinputtext_macdevice.setClickable(false);
+            holder.  textinputtext_macdevice.setFocusable(false);
+            holder.  textinputtext_macdevice.refreshDrawableState();
+            holder.  textinputtext_macdevice.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
+
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client START
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client START
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client START
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client START
+
+
+    private void gettextinputtext_namedevice( @NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+        try{
+            holder. textinputtext_namedevice.setText(getContentValuesCurrentDivece.getAsString("namedevice"));
+            holder. textinputtext_namedevice.setClickable(false);
+            holder.  textinputtext_namedevice.setFocusable(false);
+            holder.  textinputtext_namedevice.refreshDrawableState();
+            holder.  textinputtext_namedevice.requestLayout();
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client END
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client END
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client END
+    // TODO: 18.07.2024 Методы главные заполения данные GATT client END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //TODO метод делает callback с ответом на экран
@@ -750,7 +1059,7 @@ public class Bl_FragmentRecyreViewServer  {
 
     private void settingAnimatios(@NonNull  MyViewHolder holder) {
         try {
-            holder.card_server_success_data_oncreateviewholder.startAnimation(animation);
+            holder.tabLayout_server_ble.startAnimation(animation);
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -842,33 +1151,20 @@ public class Bl_FragmentRecyreViewServer  {
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-    private void     datafillingRecyclerview(@NonNull MyViewHolder holder,@NonNull  ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta) {
+    private  ContentValues     datafillingRecyclerview(@NonNull MyViewHolder holder,@NonNull  ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta) {
+        ContentValues getContentValuesCurrentDivece = null;
         try {
 
            String getCurrentKeyDivece = getMapReceivedFromBootFragmentGatta.keySet().stream().findAny().get();
 
-            ContentValues getContentValuesCurrentDivece =  (ContentValues) getMapReceivedFromBootFragmentGatta.values().stream().findAny().get();
+             getContentValuesCurrentDivece =  (ContentValues) getMapReceivedFromBootFragmentGatta.values().stream().findAny().get();
 
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                     " itemView  " +holder.itemView
-                    +" myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "+myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta);
-
-
-
-            holder. textinputtext_namedevice.setClickable(false);
-            holder.  textinputtext_namedevice.setFocusable(false);
-
-            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " concurrentHashMapReceivedFromBootFragmentGatta " + getMapReceivedFromBootFragmentGatta);
-
-            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" holder " +holder.itemView);
+                    +" getContentValuesCurrentDivece "+getContentValuesCurrentDivece+"            String getCurrentKeyDivece "+             getCurrentKeyDivece);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -884,6 +1180,7 @@ public class Bl_FragmentRecyreViewServer  {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
+        return     getContentValuesCurrentDivece;
     }
 
 
