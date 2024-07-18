@@ -56,7 +56,6 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
 
     public Bl_FragmentRecyreViewServer(FragmentManager fragmentManager,
                                        RecyclerView recyclerViewServer,
-                                       ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,
                                        Long version,
                                        MaterialCardView maincardView_server_ble_fragment,
                                        RelativeLayout relativeLayout_server_ble,
@@ -70,7 +69,6 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         // TODO: 17.07.2024
         this.fragmentManager = fragmentManager;
         this.recyclerViewServer = recyclerViewServer;
-        this.mapReceivedFromBootFragmentGatta = mapReceivedFromBootFragmentGatta;
         this.version = version;
         this.maincardView_server_ble_fragment = maincardView_server_ble_fragment;
         this.relativeLayout_server_ble = relativeLayout_server_ble;
@@ -84,35 +82,22 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
     }
 
 
-    // TODO: 17.07.2024
-    public void receiveddatafromBootFragmentServer(@NonNull Bundle getArguments) {
-        try{
-            if (getArguments!=null) {
-                Bundle bundleFragmentBoottoServerFragment = getArguments;
-                Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
-                mapReceivedFromBootFragmentGatta = (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
-            }
 
-            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " getArguments " +getArguments);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @SuppressLint("MissingPermission")
     public void getDISCOVERABLE_DURATIONs() {
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
@@ -277,7 +262,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
     }
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-    public void addAdapterServerforRecyreview() {
+    public void addAdapterServerforRecyreview(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
         try {
             myRecycleViewAdapterServer = new MyRecycleViewAdapterServer(mapReceivedFromBootFragmentGatta);
             recyclerViewServer.setAdapter(myRecycleViewAdapterServer);
@@ -494,11 +479,9 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = null;
             try {
-                if (mapReceivedFromBootFragmentGatta!=null &&  mapReceivedFromBootFragmentGatta.size()>0 ) {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview, parent, false);//todo old simple_for_takst_cardview1
-                } else {
+
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview_dont_cunruremap, parent, false);//todo old simple_for_takst_cardview1
-                }
+
 
                 myViewHolder = new MyViewHolder(view);
 

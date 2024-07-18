@@ -77,9 +77,7 @@ public class Bi_FragmentBootScannerServer {
     public void МетодЗапускаФрагментаСканирования(@NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentServerbleRecyclerView();
         try {
             FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
-
             fragmentManager.getFragments().remove(0);
-
             fragmentTransactionBoot.addToBackStack(null);
             fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE

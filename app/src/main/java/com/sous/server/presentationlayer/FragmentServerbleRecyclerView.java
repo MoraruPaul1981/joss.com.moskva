@@ -34,6 +34,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,8 +43,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     private FragmentManager fragmentManager;
 
-    // TODO: 17.07.2024
-    private  ConcurrentHashMap<String,ContentValues> mapReceivedFromBootFragmentGatta=new ConcurrentHashMap<>();
     private  Long version;
 
     private  MaterialCardView  maincardView_server_ble_fragment;
@@ -101,26 +100,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 
-
             
-            
-            if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
-
-                // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-                getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
-                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());
-
-            }else {
-
-                // TODO: 17.07.2024 init ссылка на бизнес логика данного фрагмента server BLE
-                getblFragmentRecyreViewServerWithData=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
-                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());
-            }
-
-
-
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -181,16 +161,10 @@ public class FragmentServerbleRecyclerView extends Fragment {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
             }
-            // TODO: 17.07.2024 get data ot Fragment BOOT
-            getInterfaceServerRecyreView.   receiveddatafromBootFragmentServer(getArguments());
-            getInterfaceServerRecyreView.     getDISCOVERABLE_DURATIONs();
-
-
-            getInterfaceServerRecyreView.     setManagerfromRecyclerView();
-            getInterfaceServerRecyreView.     addAdapterServerforRecyreview();
-            getInterfaceServerRecyreView.     getObserverRecyreView();
-            getInterfaceServerRecyreView.     reBootrecyclerView();
-
+            //todo Есди Данные Пришли ТО мы Их получаем от службы
+            ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta=        receiveddatafromBootFragmentServer(getArguments());
+            // TODO: 18.07.2024  выбор какие даные загружать
+            selectingwhichdatatodownload(mapReceivedFromBootFragmentGatta);
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -212,7 +186,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
         }
 
     }
-
 
 
     @Override
@@ -241,6 +214,87 @@ public class FragmentServerbleRecyclerView extends Fragment {
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+
+
+
+
+
+
+
+
+
+    // TODO: 18.07.2024 выбор какие даные загружать
+
+    private void selectingwhichdatatodownload(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
+        try{
+            if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
+
+                // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные
+                getblFragmentRecyreViewServerWithData=new Bl_FragmentRecyreViewServerWithData( fragmentManager,recyclerview_server_ble, mapReceivedFromBootFragmentGatta,
+                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
+                        progressbar_server_ble,animation,getContext(),getActivity());
+
+                getblFragmentRecyreViewServerWithData.     getDISCOVERABLE_DURATIONs();
+                getblFragmentRecyreViewServerWithData.     setManagerfromRecyclerView();
+                getblFragmentRecyreViewServerWithData.     addAdapterServerforRecyreview(  mapReceivedFromBootFragmentGatta);
+                getblFragmentRecyreViewServerWithData.     getObserverRecyreView();
+                getblFragmentRecyreViewServerWithData.     reBootrecyclerView();
+
+
+            }else {
+
+                // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
+                getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
+                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
+                        progressbar_server_ble,animation,getContext(),getActivity());
+
+                getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
+                getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
+                getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(  mapReceivedFromBootFragmentGatta);
+                getblFragmentRecyreViewServer.     getObserverRecyreView();
+                getblFragmentRecyreViewServer.     reBootrecyclerView();
+
+            }
+
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " mapReceivedFromBootFragmentGatta  " +mapReceivedFromBootFragmentGatta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -286,6 +340,36 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
 
 
+    // TODO: 17.07.2024
+    public  ConcurrentHashMap<String, ContentValues> receiveddatafromBootFragmentServer(@NonNull Bundle getArguments) {
+        ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta = null;
+        try{
+            if (getArguments!=null) {
+                Bundle bundleFragmentBoottoServerFragment = getArguments;
+                Serializable concurrentHashMapSucceesDataOtClient= (Serializable) bundleFragmentBoottoServerFragment.getSerializable("fromFragmentServer");
+                mapReceivedFromBootFragmentGatta = (ConcurrentHashMap) concurrentHashMapSucceesDataOtClient;
+            }
+
+            Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " getArguments " +getArguments+ " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+        return  mapReceivedFromBootFragmentGatta;
+    }
 
 
 

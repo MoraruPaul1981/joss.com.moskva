@@ -277,7 +277,7 @@ public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecy
     }
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-    public void addAdapterServerforRecyreview() {
+    public void addAdapterServerforRecyreview(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
         try {
             myRecycleViewAdapterServer = new MyRecycleViewAdapterServer(mapReceivedFromBootFragmentGatta);
             recyclerViewServer.setAdapter(myRecycleViewAdapterServer);
@@ -492,16 +492,10 @@ public class Bl_FragmentRecyreViewServerWithData implements  InterfaceServerRecy
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = null;
+            View viewWithData = null;
             try {
-                if (mapReceivedFromBootFragmentGatta!=null &&  mapReceivedFromBootFragmentGatta.size()>0 ) {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview, parent, false);//todo old simple_for_takst_cardview1
-                } else {
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview_dont_cunruremap, parent, false);//todo old simple_for_takst_cardview1
-                }
-
-                myViewHolder = new MyViewHolder(view);
-
+                viewWithData = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview, parent, false);//todo old simple_for_takst_cardview1
+                myViewHolder = new MyViewHolder(viewWithData);
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder);
