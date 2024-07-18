@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +31,6 @@ import com.sous.server.businesslayer.Errors.SubClassErrors;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -326,8 +323,8 @@ public class Bl_FragmentRecyreViewServer  {
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
         private MaterialCardView card_server_dont_data_oncreateviewholder;
-        private  TextInputLayout textInputLayoutdontdata;
-        private    TextInputEditText textInputEditText;
+        private  TextInputLayout textinputlayout_namedevice;
+        private    TextInputEditText textinputtext_namedevice;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -359,15 +356,16 @@ public class Bl_FragmentRecyreViewServer  {
         private void initingComponentsforRecyreView(@NonNull View itemView) {
             try {
                 card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
-                textInputLayoutdontdata= card_server_dont_data_oncreateviewholder.findViewById(R.id.textinputlayout_server_dontdata);
-                textInputEditText= textInputLayoutdontdata.findViewById(R.id.textinputtext_server_dontdata);
+                textinputlayout_namedevice = card_server_dont_data_oncreateviewholder.findViewById(R.id.id_textinputlayout_namedevice);
+                textinputtext_namedevice = textinputlayout_namedevice.findViewById(R.id.id_textinputtext_namedevice);
 
-                textInputEditText.setText("REdmi ");
 
-                textInputEditText.setBackgroundColor(Color.parseColor("#E3E8E6"));
+                textinputtext_namedevice.setClickable(false);
+                textinputtext_namedevice.setFocusable(false);
+
 
            //     textInputLayoutdontdata.setBoxBackgroundColor(Color.parseColor("#E3E8E6"));
-                textInputLayoutdontdata.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
+                textinputlayout_namedevice.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
                     @Override
                     public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

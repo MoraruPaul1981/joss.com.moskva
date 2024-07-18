@@ -5,11 +5,11 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/id_card_server_dont_data_oncreateviewholder"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
             android:textSize="10sp"
-            android:layout_margin="5dp"
-            android:padding="2dp"
+            android:layout_margin="10dp"
+            android:padding="10dp"
             app:cardBackgroundColor="#FFFAFA"
             app:strokeColor="#E3E8E6"
             app:cardCornerRadius="10dp"
@@ -58,24 +58,89 @@
 
 
 
+       <!-- //TODO:   namedevice  -->
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textinputlayout_server_dontdata"
+            android:id="@+id/id_textinputlayout_namedevice"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
             android:layout_below="@+id/id_tabLayout_server_ble"
             android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:padding="1dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textinputtext_server_dontdata"
+                android:id="@+id/id_textinputtext_namedevice"
+                android:inputType="textCapSentences|textMultiLine"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
-                android:hint="Имя"/>
+                android:hint="namedevice"
+                android:text="namedevice value " />
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <!-- //TODO:   macdevice  -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_textinputlayout_macdevice"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+
+            android:layout_below="@+id/id_textinputlayout_namedevice"
+
+            android:layout_centerHorizontal="true"
+            android:layout_margin="2dp"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:focusableInTouchMode="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_textinputtext_macdevice"
+                android:inputType="textCapSentences|textMultiLine"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:hint="macdevice"
+                android:text="macdevice value " />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <!-- //TODO:   completedwork  -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_textinputlayout_completedwork"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+
+            android:layout_below="@+id/id_textinputlayout_macdevice"
+
+            android:layout_centerHorizontal="true"
+            android:layout_margin="2dp"
+            android:padding="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:focusableInTouchMode="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_textinputtext_completedwork"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textCapSentences|textMultiLine"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:hint="completedwork"
+                android:text="completedwork value " />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
 
 
