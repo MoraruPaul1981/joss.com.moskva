@@ -30,17 +30,15 @@
         android:orientation="vertical">
 
 
-        <!--<com.google.android.material.tabs.TabLayout
+        <com.google.android.material.tabs.TabLayout
             android:id="@+id/id_tabLayout_server_ble"
-
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-
             android:layout_width="180dp"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:layout_margin="5dp"
             android:elevation="3dp"
-            app:tabMinWidth="150dp"
+            app:tabMinWidth="100dp"
             app:tabIndicatorColor="#E1D9D9"
             app:tabIndicatorHeight="2dp"
             app:tabTextColor="#050505"
@@ -48,30 +46,35 @@
             app:tabMode="fixed"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption"
             android:padding="2dp">
-
-
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tabItem_server_ble"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="название Девайса" />
-
+                android:textSize="12sp"
+                android:text="девайс" />
         </com.google.android.material.tabs.TabLayout>
--->
+
+
+
+
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textinputlayout_server_dontdata"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_below="@+id/id_tabLayout_server_ble"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:padding="1dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:focusableInTouchMode="true">
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textinputtext_server_dontdata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="StaffId"/>
+                android:textSize="12sp"
+                android:hint="Имя"/>
         </com.google.android.material.textfield.TextInputLayout>
 
 

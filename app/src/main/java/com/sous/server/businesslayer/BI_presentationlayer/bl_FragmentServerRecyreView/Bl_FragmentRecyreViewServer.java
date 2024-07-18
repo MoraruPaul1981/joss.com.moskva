@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -361,11 +362,11 @@ public class Bl_FragmentRecyreViewServer  {
                 textInputLayoutdontdata= card_server_dont_data_oncreateviewholder.findViewById(R.id.textinputlayout_server_dontdata);
                 textInputEditText= textInputLayoutdontdata.findViewById(R.id.textinputtext_server_dontdata);
 
-                TextView textView=new TextView(context);
-                textView.setText("dgdgdgdgdgd");
+                textInputEditText.setText("REdmi ");
 
-                textInputEditText.setHint("hitddd");
-                textInputEditText.setText("etxtgsgsgsgsgs");
+                textInputEditText.setBackgroundColor(Color.parseColor("#E3E8E6"));
+
+           //     textInputLayoutdontdata.setBoxBackgroundColor(Color.parseColor("#E3E8E6"));
                 textInputLayoutdontdata.addOnEditTextAttachedListener(new TextInputLayout.OnEditTextAttachedListener() {
                     @Override
                     public void onEditTextAttached(@NonNull TextInputLayout textInputLayout) {
