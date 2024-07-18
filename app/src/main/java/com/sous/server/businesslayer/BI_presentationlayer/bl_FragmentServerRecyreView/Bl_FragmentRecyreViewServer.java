@@ -318,7 +318,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
     }
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        private RecyclerView recyclerview_server_ble;
+        private MaterialCardView card_server_dont_data_oncreateviewholder;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -348,7 +348,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
 
         private void initingComponentsforRecyreView(@NonNull View itemView) {
             try {
-                recyclerview_server_ble = itemView.findViewById(R.id.id_recyclerview_server_ble);
+                card_server_dont_data_oncreateviewholder = itemView.findViewById(R.id.id_card_server_dont_data_oncreateviewholder);
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -480,7 +480,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
             View view = null;
             try {
 
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_serverbte_recyreview_dont_cunruremap, parent, false);//todo old simple_for_takst_cardview1
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
 
 
                 myViewHolder = new MyViewHolder(view);
@@ -536,7 +536,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
 
         private void МетодАнимации(@NonNull  MyViewHolder holder) {
             try {
-                holder.recyclerview_server_ble.startAnimation(animation);
+                holder.card_server_dont_data_oncreateviewholder.startAnimation(animation);
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
@@ -563,7 +563,7 @@ public class Bl_FragmentRecyreViewServer implements  InterfaceServerRecyreView {
         private void getCkickfAnRecyclerview(@NonNull MyViewHolder holder) {
             try {
                 Log.i(this.getClass().getName(), "   holder " + holder);///*/
-                holder.recyclerview_server_ble.setOnClickListener(new View.OnClickListener() {
+                holder.card_server_dont_data_oncreateviewholder.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Log.i(this.getClass().getName(), "   запуск сервера МетодЗапускGattServer " + v);

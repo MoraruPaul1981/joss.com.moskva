@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+        <com.google.android.material.card.MaterialCardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/id_card_server_dont_data_oncreateviewholder"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+            android:textSize="10sp"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            app:cardBackgroundColor="#FFFAFA"
+            app:strokeColor="#E3E8E6"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp"
+            app:cardMaxElevation="5dp"
+            app:strokeWidth="1dp"
+            android:translationZ="5dp"
+            android:animateLayoutChanges="true"
+            tools:context=".presentationlayer.FragmentServerbleRecyclerView">
+
+
+    <RelativeLayout
+        android:id="@+id/id_relativeLayout_server_ble"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:padding="1dp"
+        android:layout_margin="1dp"
+        android:orientation="vertical">
+
+
+        <!--<com.google.android.material.tabs.TabLayout
+            android:id="@+id/id_tabLayout_server_ble"
+
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+
+            android:layout_width="180dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:elevation="3dp"
+            app:tabMinWidth="150dp"
+            app:tabIndicatorColor="#E1D9D9"
+            app:tabIndicatorHeight="2dp"
+            app:tabTextColor="#050505"
+            app:tabSelectedTextColor="#10100F"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:padding="2dp">
+
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabItem_server_ble"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="название Девайса" />
+
+        </com.google.android.material.tabs.TabLayout>
+-->
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="StaffId"/>
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+
+
+
+
+

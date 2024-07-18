@@ -130,7 +130,7 @@ public class mainBinessCodeServiceGatt {
                         ///TODO: SuccessAddDevice
                         Bundle    bundleAddDeviceSuccess = new Bundle();
                         bundleAddDeviceSuccess.putString("Статус", "SERVER#SousAvtoStartingGPS");
-                        concurrentHashMapDeviceBTE.put("SuccessAddDevice",bundleAddDeviceSuccess );
+                        concurrentHashMapDeviceBTE.putIfAbsent("SuccessAddDevice",bundleAddDeviceSuccess );
 
 
                     }

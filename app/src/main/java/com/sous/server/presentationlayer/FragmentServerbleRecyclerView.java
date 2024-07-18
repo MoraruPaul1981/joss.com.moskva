@@ -161,15 +161,19 @@ public class FragmentServerbleRecyclerView extends Fragment {
             if (!EventBus.getDefault().isRegistered(this)) {
                 EventBus.getDefault().register(this);
             }
+
             //todo Есди Данные Пришли ТО мы Их получаем от службы
             ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta=        receiveddatafromBootFragmentServer(getArguments());
+
+
+
             // TODO: 18.07.2024  выбор какие даные загружать
             selectingwhichdatatodownload(mapReceivedFromBootFragmentGatta);
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -225,7 +229,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
     // TODO: 18.07.2024 выбор какие даные загружать
 
-    private void selectingwhichdatatodownload(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
+    private void selectingwhichdatatodownload(@NonNull  ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
         try{
             if(mapReceivedFromBootFragmentGatta!=null && mapReceivedFromBootFragmentGatta.size()>0){
 
@@ -247,6 +251,10 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
+
+                // TODO: 18.07.2024 Когда нет данных то для первой загрузки Эмитируруем Одно Значение cКанратонти MAp
+                  mapReceivedFromBootFragmentGatta=new  ConcurrentHashMap<String, ContentValues>();
+                  mapReceivedFromBootFragmentGatta.putIfAbsent("FirstLaunchScanner",new ContentValues());
 
                 getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
                 getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
