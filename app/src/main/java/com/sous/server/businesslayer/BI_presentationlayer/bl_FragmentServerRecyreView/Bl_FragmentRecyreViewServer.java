@@ -332,7 +332,11 @@ public class Bl_FragmentRecyreViewServer  {
             super(itemView);
             try {
                 //todo init componets
+                if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta!=null) {
+                    if (myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta.size()>0) {
                         initingComponentsforRecyreView(itemView);
+                    }
+                }
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -10,8 +10,8 @@
     android:textSize="10sp"
     android:layout_margin="10dp"
     android:padding="10dp"
-    app:cardBackgroundColor="#FFFAFA"
-    app:strokeColor="#F7FAF9"
+    app:cardBackgroundColor="#FDFEFE"
+    app:strokeColor="#CCD1D1"
     app:cardCornerRadius="5dp"
     app:cardElevation="2dp"
     app:cardMaxElevation="5dp"
@@ -73,6 +73,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_namedevice"
+                android:backgroundTint="#707B7C"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -100,6 +101,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_macdevice"
+                android:backgroundTint="#707B7C"
                 android:inputType="textCapSentences|textMultiLine"
                 android:layout_gravity="center"
                 android:gravity="center"
@@ -127,6 +129,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_completedwork"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -154,6 +157,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_iemi"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -180,6 +184,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_date_update"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -207,6 +212,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_city"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -235,6 +241,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_adress"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -260,6 +267,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps1"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
@@ -285,6 +293,7 @@
             android:focusableInTouchMode="true">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/id_textinputtext_gps2"
+                android:backgroundTint="#707B7C"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:inputType="textCapSentences|textMultiLine"
