@@ -107,6 +107,9 @@ public class ServiceGattServer extends IntentService {
 
     protected ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap;
 
+
+
+
     public ServiceGattServer() {
         super("ServiceGattServer");
     }
@@ -918,12 +921,18 @@ public class ServiceGattServer extends IntentService {
                 // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                 Integer   resultAddDeviceToGattaDtabse= wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
 
+                //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
+                Cursor successfuldevices = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
+
                 Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
-                        "  evice.getName().toString()  "+device.getName().toString());
+                        "  evice.getName().toString()  "+device.getName().toString()+ " successfuldevices " +successfuldevices);
 
+
+                // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
+                
                 if (resultAddDeviceToGattaDtabse >0) {
-                    forwardUIAfterSuccessAddDiveceDatBAseGatt(device, contentValuesВставкаДанных);
+                    forwardUIAfterSuccessAddDiveceDatBAseGatt(successfuldevices, contentValuesВставкаДанных);
                 }
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -956,7 +965,7 @@ public class ServiceGattServer extends IntentService {
     }
 
     @SuppressLint("MissingPermission")
-    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull BluetoothDevice device,
+    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull  Cursor contentValuesConcurrentSkipListSet,
                                                            @NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
         try{
 
@@ -965,7 +974,7 @@ public class ServiceGattServer extends IntentService {
 
 
             //TODO:Event Send To Fragment Boot After Success DataBase and Divece
-            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT);
+            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT, contentValuesConcurrentSkipListSet);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -989,12 +998,20 @@ public class ServiceGattServer extends IntentService {
     }
 
 
-    private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
+    private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT,
+                                                  @NonNull  Cursor  successfuldevices) {
         try{
         ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
+            // TODO: 18.07.2024 sending status
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
+
+            // TODO: 18.07.2024 sending HashMap
         contentValuesConcurrentHashMap.putIfAbsent(new String(),contentValuesВставкаДанныхGaTT);
         sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
+
+            // TODO: 18.07.2024 sending cursor
+        sendFragmentparamentsScannerServer.setCursor(successfuldevices);
+
         //TODO: послымаем Из Службы Значение на Фрагмент
         MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
 
@@ -1004,7 +1021,8 @@ public class ServiceGattServer extends IntentService {
 
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap + " successfuldevices " +successfuldevices);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

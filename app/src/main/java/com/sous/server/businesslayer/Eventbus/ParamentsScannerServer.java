@@ -11,22 +11,17 @@ import java.util.concurrent.ConcurrentSkipListSet;
 public class ParamentsScannerServer {
 
 
-
     private String currentTask;
     private String s2;
     private  String s3;
 
 
 
-
     private ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap=new ConcurrentHashMap<>();
-    private ConcurrentSkipListSet<Cursor> contentValuesConcurrentSkipListSet=new ConcurrentSkipListSet<>();
+    private  Cursor  cursor ;
     private  String s5;
 
-
     private     Boolean флагЗапускаФрагментRecyreView=false;
-
-
 
 
 
@@ -85,12 +80,12 @@ public class ParamentsScannerServer {
     }
 
 
-    public ConcurrentSkipListSet<Cursor> getContentValuesConcurrentSkipListSet() {
-        return contentValuesConcurrentSkipListSet;
+    public Cursor getCursor() {
+        return cursor;
     }
 
-    public void setContentValuesConcurrentSkipListSet(ConcurrentSkipListSet<Cursor> contentValuesConcurrentSkipListSet) {
-        this.contentValuesConcurrentSkipListSet = contentValuesConcurrentSkipListSet;
+    public void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 }
 
