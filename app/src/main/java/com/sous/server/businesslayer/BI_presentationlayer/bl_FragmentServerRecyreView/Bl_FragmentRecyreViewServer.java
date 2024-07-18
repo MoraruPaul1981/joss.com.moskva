@@ -505,8 +505,8 @@ public class Bl_FragmentRecyreViewServer  {
             View view = null;
             try {
 
-                   // view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
-                   //view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
+                   view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_mini_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
 
 

@@ -3,6 +3,7 @@ package com.sous.server.presentationlayer;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.pm.PackageInfo;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -316,9 +317,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
             ParamentsScannerServer paramentsScannerServer=   event.paramentsScannerServer;
             Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
             String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
-            ConcurrentHashMap getFlagMapOtServiceBte=  paramentsScannerServer.getConcurrentHashMapGattBundle();
-
-
+            ConcurrentHashMap<String,ContentValues> getFlagMapOtServiceBte=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
+            Cursor getCursor=  paramentsScannerServer.getCursor() ;
 
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
