@@ -311,6 +311,7 @@ public class ServiceClientBLE extends IntentService {
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
                             if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
                                     || mediatorLiveDataGATT.getValue().equalsIgnoreCase("BluetoothDevice.BOND_NONE")
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("BluetoothDevice.DEVICE_TYPE_UNKNOWN")
                                     || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoERROR")) {
 
 
@@ -661,32 +662,48 @@ try{
                                                             int newState) {
                             try{
                                 switch (newState){
+
                                     case BluetoothProfile.STATE_CONNECTED :
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  " +
                                                 ""+new Date().toLocaleString());
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
+                                            mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_CONNECTED");
                                         });
                                          Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT + " newState " +newState);
                                         break;
+
                                     case BluetoothProfile.STATE_DISCONNECTED :
-                                    case BluetoothGatt.GATT_FAILURE:
-                                    case BluetoothGatt.GATT_CONNECTION_CONGESTED :
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVERВDontEndConnect");
+                                            mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_DISCONNECTED");
                                         });
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
-                                    case 133 :
 
+
+                                    case BluetoothGatt.GATT_FAILURE:
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_FAILURE");
+                                        });
+                                        Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
+                                        break;
+
+
+                                    case BluetoothGatt.GATT_CONNECTION_CONGESTED :
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_CONNECTION_CONGESTED");
+                                        });
+                                        Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
+                                        break;
+
+
+                                    case 133 :
                                         // TODO: 16.07.2024 когда ошивка разрываем сообщение  
                                         МетодВыключениеКлиентаGatt();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                         break;
 
                                     default:{
-
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                     }
                                 }
@@ -886,34 +903,66 @@ try{
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     //gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
                     int bondstate = bluetoothDevice.getBondState();
+
+
                     Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
+                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
+
                     switch (bondstate) {
                         
                         case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
+                            // TODO: 19.07.2024
+                            handler.post(()->{
+                                mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
+                            });
+                            bluetoothDevice.createBond();
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
+                            break;
+
                         case BluetoothDevice.BOND_NONE:
                             
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
                             });
                             bluetoothDevice.createBond();
-                            Log.i(TAG, "BluetoothDevice.BOND_NONE" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                          
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
                             break;
                             
                         case BluetoothDevice.BOND_BONDING:
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_BONDING");
                             });
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                            
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
                             break;
 
                         case BluetoothDevice.BOND_BONDED:
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_BONDING");
                             });
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                    +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
                             break;
                     }
-
+                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress());
                 } catch (Exception e) {
                     e.printStackTrace();
                     Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

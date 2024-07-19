@@ -1020,13 +1020,14 @@ public class FragmentScannerUser extends Fragment {
 
                             // TODO: 24.01.2023  State get ot Gatt Server
                             switch (mediatorLiveDataGATTClient .getValue().toString()) {
-                                case "SERVER#SERVER#SouConnect":
+                                case "BluetoothProfile.STATE_CONNECTED":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Коннект...");
+                                        materialButtonКакоеДействие.setText("Cоединение...");
                                     });
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
+
                                 case "BluetoothDevice.BOND_BONDING":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Сопряжение...");
@@ -1034,6 +1035,7 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
+
                                 case "GATTCLIENTProccessing":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("В процессе...");
@@ -1041,7 +1043,8 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
-                                case "SERVERВDontEndConnect":
+
+                                case "BluetoothGatt.GATT_CONNECTION_CONGESTED":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Конец соединения !!!");//
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
@@ -1052,6 +1055,7 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
+
                                 case "BluetoothDevice.BOND_NONE":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
@@ -1062,6 +1066,48 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
+
+                                case "BluetoothProfile.STATE_DISCONNECTED":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("конец соединения !!!");
+                                        handler.getTarget().postDelayed(() -> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        }, 1500);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
+                                    break;
+
+
+                                case "BluetoothGatt.GATT_FAILURE":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("ошибка  !!!");
+                                        handler.getTarget().postDelayed(() -> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        }, 1500);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
+                                    break;
+
+
+
+
+
+
+
+                                case "BluetoothDevice.DEVICE_TYPE_UNKNOWN":
+                                    handler.getTarget().post(() -> {
+                                        materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
+                                        handler.getTarget().postDelayed(() -> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        }, 1500);
+                                    });
+                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
+                                    break;
+
+
 
                                 case "SERVER#SousAvtoSuccess":
                                     // TODO: 07.02.2023 Успешный статус
