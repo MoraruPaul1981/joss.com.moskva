@@ -1029,7 +1029,7 @@ public class FragmentScannerUser extends Fragment {
                                     break;
                                 case "SERVER#SousAvtoBOND_BONDING":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Сопрящение...");
+                                        materialButtonКакоеДействие.setText("Сопряжение...");
                                     });
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
