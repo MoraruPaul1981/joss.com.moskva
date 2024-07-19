@@ -7,11 +7,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.os.Message;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -53,6 +57,7 @@ public class Bl_FragmentRecyreViewServer  {
 
     private Activity activity;
     private  BlgeneralServer blgeneralServer;
+    private Message messageGattServer;
 
     public Bl_FragmentRecyreViewServer(FragmentManager fragmentManager,
                                        RecyclerView recyclerViewServer,
@@ -65,7 +70,8 @@ public class Bl_FragmentRecyreViewServer  {
                                        ProgressBar progressbar_server_ble,
                                        Animation animation,
                                        Context context,
-                                       Activity activity) {
+                                       Activity activity,
+                                       Message messageGattServer) {
         // TODO: 17.07.2024
         this.fragmentManager = fragmentManager;
         this.recyclerViewServer = recyclerViewServer;
@@ -79,6 +85,7 @@ public class Bl_FragmentRecyreViewServer  {
         this.animation = animation;
         this.context = context;
         this.activity = activity;
+        this.messageGattServer = messageGattServer;
         // TODO: 18.07.2024
         blgeneralServer=new BlgeneralServer(context,version);
     }
@@ -641,6 +648,9 @@ public class Bl_FragmentRecyreViewServer  {
                         gettextinputtext_gps2(holder,getconcurrentHashMapCursor);
 
 
+                        getAnimationtabLayout_server_ble(holder);
+
+
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
@@ -714,6 +724,26 @@ public class Bl_FragmentRecyreViewServer  {
             }
             return getFragmentScannerGatt;
         }
+    }
+
+    private void getAnimationtabLayout_server_ble(@NonNull MyViewHolder holder) {
+        try{
+        Animation animationscroll  = AnimationUtils.loadAnimation(context, R.anim.fadein);
+        holder.tabLayout_server_ble.startAnimation(animationscroll);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
     @SuppressLint("Range")
@@ -1113,6 +1143,7 @@ public class Bl_FragmentRecyreViewServer  {
 
 
     ///todo первый метод #1
+
     private void tabLayoutClick(@NonNull MyViewHolder holder) {
         try {
             holder.tabLayout_server_ble.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -1161,6 +1192,9 @@ public class Bl_FragmentRecyreViewServer  {
 
                 }
             });
+
+
+
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

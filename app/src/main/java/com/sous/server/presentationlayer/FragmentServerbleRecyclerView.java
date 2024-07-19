@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,6 +55,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private  Animation animation;
     private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
 
+    private Message messageGattServer;
+
 
 
     @Override
@@ -65,6 +68,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            messageGattServer = (Message) ((ActivityServerScanner) getActivity()).messageGattServer;
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -263,7 +267,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());
+                        progressbar_server_ble,animation,getContext(),getActivity(),messageGattServer);
 
 
             getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
