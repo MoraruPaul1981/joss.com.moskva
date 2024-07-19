@@ -617,8 +617,6 @@ public class Bl_FragmentRecyreViewServer  {
 
                         //todo ЗАполеняем Данными пришедешими с севрера
 
-                        settingAnimatios(holder);
-
                         tabLayoutClick(holder);
 
                         // TODO: 18.07.2024  Главные Методы ЗАполения
@@ -1089,13 +1087,13 @@ public class Bl_FragmentRecyreViewServer  {
         }
     }
 
-    private void settingAnimatios(@NonNull  MyViewHolder holder) {
+    public void settingAnimatios(@NonNull  RecyclerView recyclerview_server_ble) {
         try {
-            holder.tabLayout_server_ble.startAnimation(animation);
+            recyclerview_server_ble.startAnimation(animation);
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " holder  "+ holder);
+                    " recyclerview_server_ble  "+ recyclerview_server_ble);
             //TODO
         } catch (Exception e) {
             e.printStackTrace();

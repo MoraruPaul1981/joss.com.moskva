@@ -273,6 +273,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
             getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
             getblFragmentRecyreViewServer.     getObserverRecyreView();
             getblFragmentRecyreViewServer.     reBootrecyclerView();
+            getblFragmentRecyreViewServer. settingAnimatios(recyclerview_server_ble);
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
