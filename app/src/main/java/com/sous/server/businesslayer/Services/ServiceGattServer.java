@@ -731,6 +731,13 @@ public class ServiceGattServer extends IntentService {
 
     @NonNull
     private String МетодГенерацииUUID() {
+
+       Long fff1= UUID.randomUUID().timestamp();
+
+        Long fff2=   UUID.randomUUID().getLeastSignificantBits();
+
+        Long fff3=   UUID.randomUUID().getMostSignificantBits();
+
         String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 20);
         uuid = uuid.replaceAll("[a-zA-Z]", "");
         //uuid= CharMatcher.any().replaceFrom("[A-Za-z0-9]", "");
