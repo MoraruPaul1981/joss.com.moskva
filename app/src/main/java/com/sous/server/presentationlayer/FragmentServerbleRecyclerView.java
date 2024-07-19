@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
-import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServerWithCursor;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -36,7 +35,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
