@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,7 +42,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FragmentBootServer extends Fragment {
     private Long version;
     private FragmentManager fragmentManager;
-    private Handler handlerGatt  ;
+    private Message messageGattServer  ;
     private AsyncTaskLoader asyncTaskLoaderGatt;
     private Bi_FragmentBootScannerServer biFragmentBootScannerServer;
 
@@ -62,7 +63,7 @@ public class FragmentBootServer extends Fragment {
             /////todo Пришли переменные
             fragmentManager = (FragmentManager) ((ActivityServerScanner) getActivity()).fragmentManager;
             version = (Long) ((ActivityServerScanner) getActivity()).version;
-            handlerGatt = (Handler) ((ActivityServerScanner) getActivity()).handlerGatt;
+            messageGattServer = (Message) ((ActivityServerScanner) getActivity()).messageGattServer;
             asyncTaskLoaderGatt = (AsyncTaskLoader) ((ActivityServerScanner) getActivity()).asyncTaskLoaderGatt;
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -132,10 +133,19 @@ public class FragmentBootServer extends Fragment {
 
 
             /*    //TODO:создаем класс для бизнес логики */
-        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version,handlerGatt);
+        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
-       МетодЗапускаСервиса(  );
-
+        
+        
+        messageGattServer.getTarget().post(()->{
+            // TODO: 19.07.2024 Запуск Службы 
+            МетодЗапускаСервиса(  );
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        });
+        
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -223,10 +233,17 @@ public class FragmentBootServer extends Fragment {
         if (CurrentTask.contentEquals("bluetootAdapterEnable")) {
 ////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
             forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
-
-            // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
-            forwardSuccessDeviceStrtingFragmentServer();
-
+            
+            messageGattServer.getTarget().postDelayed(()->{
+                // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
+                forwardSuccessDeviceStrtingFragmentServer();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " +CurrentTask);
+            },1500);
+         
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +

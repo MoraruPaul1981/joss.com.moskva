@@ -29,13 +29,12 @@ public class Bi_FragmentBootScannerServer {
     protected  FragmentManager fragmentManager;
     protected Long version;
     protected Activity getactivity;
-    protected  Handler handlerGatt;
-    public Bi_FragmentBootScannerServer(Context context, FragmentManager fragmentManager, Activity getactivity, Long version, Handler handlerGatt) {
+
+    public Bi_FragmentBootScannerServer(Context context, FragmentManager fragmentManager, Activity getactivity, Long version) {
         this.context = context;
         this.fragmentManager = fragmentManager;
         this.version = version;
         this.getactivity = getactivity;
-        this.handlerGatt = handlerGatt;
     }
 
 
@@ -45,8 +44,6 @@ public class Bi_FragmentBootScannerServer {
     @SuppressLint("ResourceType")
     public void МетодЗапускаФрагментаСканирования(@NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentServerbleRecyclerView();
         try {
-            handlerGatt.postDelayed(()->{
-
                 FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
                 fragmentManager.getFragments().remove(0);
                 fragmentTransactionBoot.addToBackStack(null);
@@ -59,7 +56,6 @@ public class Bi_FragmentBootScannerServer {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-            },1500);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

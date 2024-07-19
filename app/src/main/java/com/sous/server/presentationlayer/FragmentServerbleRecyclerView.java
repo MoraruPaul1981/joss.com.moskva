@@ -265,20 +265,25 @@ public class FragmentServerbleRecyclerView extends Fragment {
               /*  // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());*/
+                        progressbar_server_ble,animation,getContext(),getActivity());
+            getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
+            getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
+            getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
+            getblFragmentRecyreViewServer.     getObserverRecyreView();
+            getblFragmentRecyreViewServer.     reBootrecyclerView();
 
-
+*/
                    // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                        getblFragmentRecyreViewServerwithCursor=new Bl_FragmentRecyreViewServerWithCursor( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
 
 
-                getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
-                getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
-                getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
-                getblFragmentRecyreViewServer.     getObserverRecyreView();
-                getblFragmentRecyreViewServer.     reBootrecyclerView();
+            getblFragmentRecyreViewServerwithCursor.     getDISCOVERABLE_DURATIONs();
+            getblFragmentRecyreViewServerwithCursor.     setManagerfromRecyclerView();
+            getblFragmentRecyreViewServerwithCursor.     addAdapterServerforRecyreview(null);
+            getblFragmentRecyreViewServerwithCursor.     getObserverRecyreView();
+            getblFragmentRecyreViewServerwithCursor.     reBootrecyclerView();
 
 
 

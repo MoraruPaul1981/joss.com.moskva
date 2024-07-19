@@ -6,9 +6,11 @@ import android.content.pm.ActivityInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
@@ -25,7 +27,7 @@ public class ActivityServerScanner extends AppCompatActivity {
     protected FragmentManager fragmentManager;
 
     protected Long version;
-    protected Handler handlerGatt  ;
+    protected Message messageGattServer;
     protected AsyncTaskLoader asyncTaskLoaderGatt  ;
     protected  SQLiteDatabase Create_Database_СамаБАзаSQLite;
 
@@ -48,8 +50,6 @@ public class ActivityServerScanner extends AppCompatActivity {
               /////TODO создание Мэнеджера Фрагмент
             fragmentManager = getSupportFragmentManager();
             /////TODO создание Мэнеджера Фрагмент
-            handlerGatt = new Handler(getMainLooper());
-
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " время " + new Date().toLocaleString());
@@ -85,10 +85,15 @@ public class ActivityServerScanner extends AppCompatActivity {
 
         biMainActivityNewServerScanner.     МетодРАзрешенияBlurtooTКлиент();
 
-        biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
-
             /*  //TODO:Иниицилизуем БАз ДАнных */
             Create_Database_СамаБАзаSQLite=    biMainActivityNewServerScanner.   МетодInitDataBase();
+
+            getmessageGattServer();
+
+
+        biMainActivityNewServerScanner.   МетодЗапускBootФрагмента(new FragmentBootServer());//todo Запускам клиента или сервер фрагмент
+
+
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -112,6 +117,44 @@ public class ActivityServerScanner extends AppCompatActivity {
 
 
     }
+
+
+    public void getmessageGattServer() {
+
+        try {
+
+            messageGattServer =new Handler(new Handler.Callback() {
+                @Override
+                public boolean handleMessage(@NonNull Message msg) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " msg " +msg );
+                    return false;
+                }
+            }).obtainMessage();
+            messageGattServer.setAsynchronous(true);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
+
 }
 
 

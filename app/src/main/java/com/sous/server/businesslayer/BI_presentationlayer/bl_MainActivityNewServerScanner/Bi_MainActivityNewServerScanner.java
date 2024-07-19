@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ public class Bi_MainActivityNewServerScanner {
     protected  Long version;
     protected FragmentManager fragmentManager;
     protected Activity getactivity;
+
 
     public Bi_MainActivityNewServerScanner(Context context , FragmentManager fragmentManager, Activity getactivity ) {
         this.context = context;
@@ -70,12 +73,17 @@ public class Bi_MainActivityNewServerScanner {
     @SuppressLint("SuspiciousIndentation")
     public void МетодЗапускBootФрагмента(@NonNull Fragment fragmentBoot) {
         try {
+
             FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
             fragmentTransactionBoot.addToBackStack(null);
             fragmentTransactionBoot.add(R.id.id_frameLayoutmain_boot, fragmentBoot);//.layout.activity_for_fragemtb_history_tasks
             fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
             fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             fragmentTransactionBoot.show(fragmentBoot);
+
+            Log.i(this.getClass().getName(), "  "
+                    + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " время " + new Date().toLocaleString());
 
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
