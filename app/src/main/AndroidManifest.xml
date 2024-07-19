@@ -46,7 +46,7 @@
     <uses-permission android:name="android.intent.action.SENDTO" />
     <uses-permission android:name="android.intent.action.PROVIDERS_CHANGED" />
     <uses-permission android:name="android.intent.action.ACCESS_GPS" />
-
+    <uses-feature android:name="android.hardware.location.gps" />
     <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
 
 
