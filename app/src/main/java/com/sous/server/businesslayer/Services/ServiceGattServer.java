@@ -42,6 +42,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
@@ -55,6 +56,7 @@ import com.sous.server.businesslayer.Locations.GattLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -730,22 +732,39 @@ public class ServiceGattServer extends IntentService {
     /////TODO: код Вытаскиваем из общего метоада
 
     @NonNull
-    private String МетодГенерацииUUID() {
+    private Long МетодГенерацииUUID() {
+        Long getUUID = 0l;
+        try{
 
-       Long fff1= UUID.randomUUID().timestamp();
+        UUID uuid = UUID.randomUUID();
 
-        Long fff2=   UUID.randomUUID().getLeastSignificantBits();
-
-        Long fff3=   UUID.randomUUID().getMostSignificantBits();
-
-        String uuid = UUID.randomUUID().toString().replace("-", "").substring(0, 20);
-        uuid = uuid.replaceAll("[a-zA-Z]", "");
+        //uuid   .toString().replaceAll("-", "").replaceAll("[a-zA-Z]", "").substring(0, 20);
+        ///uuid = uuid.replaceAll("[a-zA-Z]", "");
         //uuid= CharMatcher.any().replaceFrom("[A-Za-z0-9]", "");
+        Long fff2=  uuid.getLeastSignificantBits();
+        Long fff3=  uuid.getMostSignificantBits();
+        BigInteger bigInteger=BigInteger.valueOf(fff3).abs();
+        getUUID= bigInteger.longValue();
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                 " uuid " +uuid );
-        return uuid;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
+        return getUUID;
     }
 
 
@@ -800,8 +819,8 @@ public class ServiceGattServer extends IntentService {
             contentValuesВставкаДанных.put("version", version);
 
 
-            String uuid = МетодГенерацииUUID();
-            contentValuesВставкаДанных.put("uuid", uuid);
+            Long getuuid = МетодГенерацииUUID();
+            contentValuesВставкаДанных.put("uuid", getuuid.toString());
 
 
 
@@ -1268,8 +1287,6 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
             cursorConcurrentHashMapGatt.compute("Cursor",(x,y)->successfuldevices);
         }
         // TODO: 19.07.2024 closing
-        successfuldevices.close();
-
         Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+

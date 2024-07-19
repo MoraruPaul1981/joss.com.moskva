@@ -138,7 +138,7 @@ public class FragmentBootServer extends Fragment {
         
         
         messageGattServer.getTarget().post(()->{
-            // TODO: 19.07.2024 Запуск Службы 
+            // TODO: 19.07.2024 Запуск Службы
             МетодЗапускаСервиса(  );
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

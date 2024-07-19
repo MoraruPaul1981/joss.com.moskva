@@ -448,11 +448,22 @@ public class Bl_FragmentRecyreViewServer  {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull List<Object> payloads) {
             try {
              // TODO: 19.07.2024
-                getconcurrentHashMapCursor.move(position);
+                if (getconcurrentHashMapCursor!=null) {
+                    if (getconcurrentHashMapCursor.getCount()>0) {
+                        getconcurrentHashMapCursor.moveToPrevious();
+
+                    }
+
+                    Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                            " getconcurrentHashMapCursor " + getconcurrentHashMapCursor.getPosition());
+
+                }
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " getconcurrentHashMapCursor " + getconcurrentHashMapCursor);
+                        " position " + position);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1044,11 +1055,13 @@ public class Bl_FragmentRecyreViewServer  {
 
 
     public void rebootRecyreViewApdater(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,
-                                        @NonNull  Cursor concurrentHashMapCursor) {
+                                        @NonNull   ConcurrentHashMap<String,Cursor>  concurrentHashMapCursor) {
         try{
-            if (mapReceivedFromBootFragmentGatta.size()>0) {
+         Cursor curcorServerGatt=   concurrentHashMapCursor  .values().stream().findAny().get();
+
+            if (curcorServerGatt.getCount()>0) {
                 recyclerViewServer.removeAllViewsInLayout();
-                myRecycleViewAdapterServer.getconcurrentHashMapCursor=concurrentHashMapCursor;
+                myRecycleViewAdapterServer.getconcurrentHashMapCursor=curcorServerGatt;
 
             myRecycleViewAdapterServer.notifyDataSetChanged();
             RecyclerView.Adapter recyclerViewadapter=         recyclerViewServer.getAdapter();
@@ -1059,7 +1072,7 @@ public class Bl_FragmentRecyreViewServer  {
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta +" concurrentHashMapCursor " +concurrentHashMapCursor);
+                    " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta +" curcorServerGatt " +curcorServerGatt);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

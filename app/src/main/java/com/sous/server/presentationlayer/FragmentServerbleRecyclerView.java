@@ -55,7 +55,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
     private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
-    private Bl_FragmentRecyreViewServerWithCursor getblFragmentRecyreViewServerwithCursor ;
+
 
 
     @Override
@@ -262,29 +262,17 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private void selectingwhichdatatodownload( ) {
         try{
 
-              /*  // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
+                // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
+
+
             getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
             getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
             getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
             getblFragmentRecyreViewServer.     getObserverRecyreView();
             getblFragmentRecyreViewServer.     reBootrecyclerView();
-
-*/
-                   // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
-                       getblFragmentRecyreViewServerwithCursor=new Bl_FragmentRecyreViewServerWithCursor( fragmentManager,recyclerview_server_ble,
-                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity());
-
-
-            getblFragmentRecyreViewServerwithCursor.     getDISCOVERABLE_DURATIONs();
-            getblFragmentRecyreViewServerwithCursor.     setManagerfromRecyclerView();
-            getblFragmentRecyreViewServerwithCursor.     addAdapterServerforRecyreview(null);
-            getblFragmentRecyreViewServerwithCursor.     getObserverRecyreView();
-            getblFragmentRecyreViewServerwithCursor.     reBootrecyclerView();
-
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -350,11 +338,18 @@ public class FragmentServerbleRecyclerView extends Fragment {
                          "getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta+ "concurrentHashMapCursor " +concurrentHashMapCursor );
 
 
-
-                getblFragmentRecyreViewServer.     rebootRecyreViewApdater(  getMapReceivedFromBootFragmentGatta,     concurrentHashMapCursor.values().stream().findAny().get());
+                getblFragmentRecyreViewServer.     rebootRecyreViewApdater(  getMapReceivedFromBootFragmentGatta,     concurrentHashMapCursor );
                 getblFragmentRecyreViewServer.     getObserverRecyreView();
                 getblFragmentRecyreViewServer.     reBootrecyclerView();
 
+
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
+                        " CurrentTask  "  +CurrentTask);
             }else {
                 // TODO: 18.07.2024  пришел статус что серверне рабоатет 
                 if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
