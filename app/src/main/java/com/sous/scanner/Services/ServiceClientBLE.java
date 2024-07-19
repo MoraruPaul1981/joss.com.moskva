@@ -766,6 +766,8 @@ try{
                                 }else{
                                     mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
                                     Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
+
+
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

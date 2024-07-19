@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Shader;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,15 +15,12 @@ import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,16 +39,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.util.concurrent.AtomicDouble;
 import com.jakewharton.rxbinding4.view.RxView;
 import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
-import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -62,12 +55,7 @@ import java.util.concurrent.TimeUnit;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Unit;
 
 
@@ -856,16 +844,15 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-        private void limitAnConnectionSessionGattaWithServer(@NonNull String finalCallBackStateLiveData ) {
+        private void stopConnectionWithServerAndUIreboot( ) {
             try{
                     // TODO: 17.07.2024
-                // TODO: 17.07.2024
-                if (!finalCallBackStateLiveData.equalsIgnoreCase("SERVER#SousAvtoSuccess")) {
+                handler.getTarget().postDelayed(()->{
                     binderСканнер.getService().МетодВыключениеКлиентаGatt();
                     // TODO: 17.07.2024
                     onStart();
-                }
 
+                },10000);
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
@@ -1054,6 +1041,10 @@ public class FragmentScannerUser extends Fragment {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
                                     });
+                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
+                                    stopConnectionWithServerAndUIreboot ();
+
+
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
@@ -1094,6 +1085,9 @@ public class FragmentScannerUser extends Fragment {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
                                     });
+                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
+                                    stopConnectionWithServerAndUIreboot ();
+
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
@@ -1153,6 +1147,10 @@ public class FragmentScannerUser extends Fragment {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
                                     });
+
+                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
+                                    stopConnectionWithServerAndUIreboot ();
+
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
@@ -1161,10 +1159,6 @@ public class FragmentScannerUser extends Fragment {
 
                             //TODO КОгда от сервер GATT  нет Ответа
                         }else {
-                            //TODO КОгда от сервер GATT  нет Ответа
-                            serverGattDOntVevice(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,mediatorLiveDataGATTClient );
-
-
                             Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                     + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                         }
@@ -1195,38 +1189,7 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-        private void serverGattDOntVevice(@NonNull MaterialButton materialButtonКакоеДействие,
-                                          @NonNull String ДействиеДляСервераGATTОТКлиента,
-                                          @NonNull MutableLiveData<String> mediatorLiveDataGATT) {
 
-            try{
-            mediatorLiveDataGATT.setValue( "BluetoothDevice.BOND_NONE");
-            handler.getTarget().post(() -> {
-                materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
-                handler.getTarget().postDelayed(() -> {
-                    materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                }, 1500);
-            });
-            Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                    + new Date().toLocaleString() + " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue());
-
-            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-        }
 
 
         private void МетодЗапускКлиентаGattЧерезБиндинг(@NonNull String ДействиеДляСервераGATTОТКлиента, @NonNull MutableLiveData<String> mediatorLiveDataGATT) {
