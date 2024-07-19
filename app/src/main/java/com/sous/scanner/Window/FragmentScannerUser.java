@@ -1024,7 +1024,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "BluetoothGatt.GATT_CONNECTION_CONGESTED":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Конец соединения !!!");//
+                                        materialButtonКакоеДействие.setText("Конец сессии !!!");//
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                         handler.getTarget().postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
