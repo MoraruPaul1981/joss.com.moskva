@@ -46,6 +46,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 
@@ -773,7 +774,6 @@ try{
                                 String getIMEI = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                                 linkedHashMapДанныеКлиентаДляGATT.add(  getIMEI+"\n");
                                 linkedHashMapДанныеКлиентаДляGATT.add(  new Date().toLocaleString()+"\n");
-
                                 Log.i(this.getClass().getName(),  " " +Thread.currentThread().getStackTrace()[2].getMethodName()+
                                         " время " +new Date().toLocaleString() +
                                         getIMEI + " getIMEI "+ " linkedHashMapДанныеКлиентаДляGATT " +linkedHashMapДанныеКлиентаДляGATT);
