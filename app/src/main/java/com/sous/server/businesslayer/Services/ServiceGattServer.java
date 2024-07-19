@@ -957,9 +957,28 @@ public class ServiceGattServer extends IntentService {
 
 
 
-                // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
-                Integer   resultAddDeviceToGattaDtabse= wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
+                Boolean   ТакоеВремяУжеЕсть =  getDateStoreOperationsDeviceFronDatabase("SELECT date_update    FROM scannerserversuccess" +
+                        " WHERE  date_update = '"+contentValuesВставкаДанных.getAsString("date_update").trim()
+                        +"' AND macdevice = '"+contentValuesВставкаДанных.getAsString("macdevice").trim() +"'");
 
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "  contentValuesВставкаДанных " +ТакоеВремяУжеЕсть);
+
+
+                Integer   resultAddDeviceToGattaDtabse= 0;
+
+
+                if (ТакоеВремяУжеЕсть==false) {
+                    // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
+                    resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
+                }
+
+
+                // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
+                if (resultAddDeviceToGattaDtabse >0) {
                 //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
 
                 ConcurrentHashMap<String,Cursor> concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
@@ -968,11 +987,10 @@ public class ServiceGattServer extends IntentService {
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
                         "  evice.getName().toString()  "+device.getName().toString()+ " concurrentHashMapCursor " +concurrentHashMapCursor);
 
-
-                // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
-                
-                if (resultAddDeviceToGattaDtabse >0) {
+                    // TODO: 19.07.2024 Посылаем Пользователю сообщение что данные изменились
                     forwardUIAfterSuccessAddDiveceDatBAseGatt(concurrentHashMapCursor, contentValuesВставкаДанных);
+
+
                 }
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -1271,7 +1289,46 @@ public class ServiceGattServer extends IntentService {
 
 
 
+    public   Boolean      getDateStoreOperationsDeviceFronDatabase(@NonNull String СамЗапрос) {
+        Boolean   ТакоеВремяУжеЕсть  = false;
+        try{
+            Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
+            Cursor cursorПолучаемДЛяСевреа = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
+            if (cursorПолучаемДЛяСевреа.getCount()>0){
+                cursorПолучаемДЛяСевреа.moveToFirst();
+               String ВремяДАнных=      cursorПолучаемДЛяСевреа.getString(0);
+                Log.i(this.getClass().getName(), "ВремяДАнных"+ ВремяДАнных) ;
+                ТакоеВремяУжеЕсть=true;
+            }
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " cursorПолучаемДЛяСевреа.getCount() " +cursorПолучаемДЛяСевреа.getCount());
+            // TODO: 19.07.2024 closing
+            cursorПолучаемДЛяСевреа.close();
 
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " ТакоеВремяУжеЕсть " +ТакоеВремяУжеЕсть);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+        }
+        return  ТакоеВремяУжеЕсть;
+    }
 
 // TODO: 15.03.2023 синхрониазция КЛАсс
 // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
