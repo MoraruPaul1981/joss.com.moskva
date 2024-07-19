@@ -1027,7 +1027,7 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
-                                case "SERVER#SousAvtoBOND_BONDING":
+                                case "BluetoothDevice.BOND_BONDING":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Сопряжение...");
                                     });
@@ -1041,9 +1041,9 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
-                                case "SERVER#SERVER#SousAvtoReetBoot":
+                                case "SERVERВDontEndConnect":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Соед. перегружено !!!");//
+                                        materialButtonКакоеДействие.setText("Конец соединения !!!");//
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                         handler.getTarget().postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
@@ -1052,7 +1052,7 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
-                                case "SERVER#SousAvtoDONTDIVICE":
+                                case "BluetoothDevice.BOND_NONE":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
                                         handler.getTarget().postDelayed(() -> {
@@ -1062,16 +1062,7 @@ public class FragmentScannerUser extends Fragment {
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
-                                case "SERVER#SousAvtoDONTBLEManager":
-                                    handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Нет Bluetooth  !!!");
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
-                                    });
-                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
-                                    break;
+
                                 case "SERVER#SousAvtoSuccess":
                                     // TODO: 07.02.2023 Успешный статус
                                     handler.getTarget().post(() -> {
@@ -1172,7 +1163,7 @@ public class FragmentScannerUser extends Fragment {
                                           @NonNull MutableLiveData<String> mediatorLiveDataGATT) {
 
             try{
-            mediatorLiveDataGATT.setValue( "SERVER#SousAvtoDONTDIVICE");
+            mediatorLiveDataGATT.setValue( "BluetoothDevice.BOND_NONE");
             handler.getTarget().post(() -> {
                 materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
                 handler.getTarget().postDelayed(() -> {
