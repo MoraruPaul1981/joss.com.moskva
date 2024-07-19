@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServerWithCursor;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -54,6 +55,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private ProgressBar     progressbar_server_ble;
     private  Animation animation;
     private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
+    private Bl_FragmentRecyreViewServerWithCursor getblFragmentRecyreViewServerwithCursor ;
 
 
     @Override
@@ -260,8 +262,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private void selectingwhichdatatodownload( ) {
         try{
 
-                // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
+              /*  // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
+                        version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
+                        progressbar_server_ble,animation,getContext(),getActivity());*/
+
+
+                   // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
+                       getblFragmentRecyreViewServerwithCursor=new Bl_FragmentRecyreViewServerWithCursor( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
                         progressbar_server_ble,animation,getContext(),getActivity());
 
@@ -326,7 +334,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
 
             if ( CurrentTask.equalsIgnoreCase("SuccessDeviceBluetoothAnServerGatt")) {
                 ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
-                Cursor getCursor=  paramentsScannerServer.getCursor() ;
+                ConcurrentHashMap<String,Cursor> concurrentHashMapCursor=  paramentsScannerServer.getConcurrentHashMapCursor() ;
                 // TODO: 18.07.2024
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
@@ -334,20 +342,14 @@ public class FragmentServerbleRecyclerView extends Fragment {
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                         " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService+
                         " CurrentTask  "  +CurrentTask+
-                         "getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta+ "getCursor " +getCursor );
+                         "getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta+ "concurrentHashMapCursor " +concurrentHashMapCursor );
 
 
 
-                getblFragmentRecyreViewServer.     rebootRecyreViewApdater(  getMapReceivedFromBootFragmentGatta,     getCursor);
-
+                getblFragmentRecyreViewServer.     rebootRecyreViewApdater(  getMapReceivedFromBootFragmentGatta,     concurrentHashMapCursor.values().stream().findAny().get());
                 getblFragmentRecyreViewServer.     getObserverRecyreView();
-
                 getblFragmentRecyreViewServer.     reBootrecyclerView();
 
-
-
-                
-                
             }else {
                 // TODO: 18.07.2024  пришел статус что серверне рабоатет 
                 if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
@@ -365,9 +367,6 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 }
 
             }
-
-
-
 
             Log.d(getContext().getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +

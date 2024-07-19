@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Bl_FragmentRecyreViewServer  {
+public class Bl_FragmentRecyreViewServerWithCursor {
 
     private FragmentManager fragmentManager;
     private  MyRecycleViewAdapterServer myRecycleViewAdapterServer;
@@ -54,18 +54,18 @@ public class Bl_FragmentRecyreViewServer  {
     private Activity activity;
     private  BlgeneralServer blgeneralServer;
 
-    public Bl_FragmentRecyreViewServer(FragmentManager fragmentManager,
-                                       RecyclerView recyclerViewServer,
-                                       Long version,
-                                       MaterialCardView maincardView_server_ble_fragment,
-                                       RelativeLayout relativeLayout_server_ble,
-                                       TabLayout tabLayout_server_ble,
-                                       MaterialCardView card_server_ble_inner,
-                                       RecyclerView recyclerview_server_ble,
-                                       ProgressBar progressbar_server_ble,
-                                       Animation animation,
-                                       Context context,
-                                       Activity activity) {
+    public Bl_FragmentRecyreViewServerWithCursor(FragmentManager fragmentManager,
+                                                 RecyclerView recyclerViewServer,
+                                                 Long version,
+                                                 MaterialCardView maincardView_server_ble_fragment,
+                                                 RelativeLayout relativeLayout_server_ble,
+                                                 TabLayout tabLayout_server_ble,
+                                                 MaterialCardView card_server_ble_inner,
+                                                 RecyclerView recyclerview_server_ble,
+                                                 ProgressBar progressbar_server_ble,
+                                                 Animation animation,
+                                                 Context context,
+                                                 Activity activity) {
         // TODO: 17.07.2024
         this.fragmentManager = fragmentManager;
         this.recyclerViewServer = recyclerViewServer;
@@ -264,15 +264,13 @@ public class Bl_FragmentRecyreViewServer  {
     }
 
     // TODO: 04.03.2022 прозвомжность Заполения RecycleView
-    public void addAdapterServerforRecyreview(@NonNull Cursor concurrentHashMapCursor) {
+    public void addAdapterServerforRecyreview(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta) {
         try {
-            myRecycleViewAdapterServer = new MyRecycleViewAdapterServer(concurrentHashMapCursor);
+            myRecycleViewAdapterServer = new MyRecycleViewAdapterServer(mapReceivedFromBootFragmentGatta);
             recyclerViewServer.setAdapter(myRecycleViewAdapterServer);
-
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                     " concurrentHashMapCursor " +concurrentHashMapCursor);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
@@ -352,7 +350,7 @@ public class Bl_FragmentRecyreViewServer  {
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
                         "  itemView " +itemView
                         + " myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta "
-                        + myRecycleViewAdapterServer.getconcurrentHashMapCursor );
+                        + myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta );
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -434,25 +432,23 @@ public class Bl_FragmentRecyreViewServer  {
 
 
     class MyRecycleViewAdapterServer extends RecyclerView.Adapter<MyViewHolder> {
-        public  Cursor  getconcurrentHashMapCursor;
+        public ConcurrentHashMap<String,ContentValues> getMapReceivedFromBootFragmentGatta;
 
-        public MyRecycleViewAdapterServer(@NotNull  Cursor  mapconcurrentHashMapCursor) {
-            this.getconcurrentHashMapCursor = mapconcurrentHashMapCursor;
+        public MyRecycleViewAdapterServer(@NotNull ConcurrentHashMap<String,ContentValues> mapReceivedFromBootFragmentGatta) {
+            this.getMapReceivedFromBootFragmentGatta = mapReceivedFromBootFragmentGatta;
             //TODO
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " mapconcurrentHashMapCursor " +mapconcurrentHashMapCursor);
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " mapReceivedFromBootFragmentGatta " +mapReceivedFromBootFragmentGatta);
         }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull List<Object> payloads) {
             try {
-             // TODO: 19.07.2024
-                getconcurrentHashMapCursor.move(position);
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                        " getconcurrentHashMapCursor " + getconcurrentHashMapCursor);
+                        " concurrentHashMapReceivedFromBootFragmentGatta " + getMapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -539,14 +535,14 @@ public class Bl_FragmentRecyreViewServer  {
             View view = null;
             try {
                 // TODO: 18.07.2024 первый запуск без данных
-                if(getconcurrentHashMapCursor==null    ){
+                if(getMapReceivedFromBootFragmentGatta==null    ){
                     // TODO: 18.07.2024 Когда Данные НЕТ !!!
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                     // TODO: 18.07.2024 второй  запуск   данных  есть
 
                 }else {
 
-                    if(getconcurrentHashMapCursor.getCount()>0){
+                    if(getMapReceivedFromBootFragmentGatta.size()>0){
                         // TODO: 18.07.2024 Когда Данные есть
                         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                       //  view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_mini_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1*/
@@ -562,7 +558,7 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
-                        " getconcurrentHashMapCursor " +getconcurrentHashMapCursor);
+                        " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
                  // view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_dont_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
                   //view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_server_success_data_oncreateviewholder, parent, false);//todo old simple_for_takst_cardview1
@@ -574,7 +570,7 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " myViewHolder " +myViewHolder+
-                        " getconcurrentHashMapCursor " +getconcurrentHashMapCursor);
+                        " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -601,10 +597,11 @@ public class Bl_FragmentRecyreViewServer  {
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
-                if(getconcurrentHashMapCursor!=null    ) {
-                    if (getconcurrentHashMapCursor.getCount()>0) {
+                if(getMapReceivedFromBootFragmentGatta!=null    ) {
+                    if (getMapReceivedFromBootFragmentGatta.size()>0) {
 
                         //todo ЗАполеняем Данными пришедешими с севрера
+                        ContentValues getContentValuesCurrentDivece =       datafillingRecyclerview(holder,getMapReceivedFromBootFragmentGatta);
 
                         settingAnimatios(holder);
 
@@ -612,31 +609,31 @@ public class Bl_FragmentRecyreViewServer  {
 
                         // TODO: 18.07.2024  Главные Методы ЗАполения
 
-                       gettextinputtext_namedevice(holder,getconcurrentHashMapCursor);
+                       gettextinputtext_namedevice(holder,getContentValuesCurrentDivece);
 
 
-                        gettextinputtext_macdevice(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_macdevice(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_date_update(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_date_update(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_completedwork(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_completedwork(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_iemi(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_iemi(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_city(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_city(holder,getContentValuesCurrentDivece);
 
-                       gettextinputtext_adress(holder,getconcurrentHashMapCursor);
+                       gettextinputtext_adress(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_gps1(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_gps1(holder,getContentValuesCurrentDivece);
 
-                        gettextinputtext_gps2(holder,getconcurrentHashMapCursor);
+                        gettextinputtext_gps2(holder,getContentValuesCurrentDivece);
 
 
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                                + "\n" + " getMapReceivedFromBootFragmentGatta " +getconcurrentHashMapCursor
-                                + " holder " +holder+ " getContentValuesCurrentDivece " +getconcurrentHashMapCursor);
+                                + "\n" + " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta
+                                + " holder " +holder+ " getContentValuesCurrentDivece " +getContentValuesCurrentDivece);
 
                     }
                 }
@@ -644,7 +641,7 @@ public class Bl_FragmentRecyreViewServer  {
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                        + "\n" + " getMapReceivedFromBootFragmentGatta " +getconcurrentHashMapCursor);
+                        + "\n" + " getMapReceivedFromBootFragmentGatta " +getMapReceivedFromBootFragmentGatta);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -679,16 +676,18 @@ public class Bl_FragmentRecyreViewServer  {
         public int getItemCount() {
             Integer getFragmentScannerGatt=0;
             try {
-                if (getconcurrentHashMapCursor==null) {
+
+                if (getMapReceivedFromBootFragmentGatta==null) {
                     getFragmentScannerGatt=1;
                 } else {
-                    getFragmentScannerGatt=getconcurrentHashMapCursor.getCount();
+                    getFragmentScannerGatt=getMapReceivedFromBootFragmentGatta.size();
                 }
+
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"     getItemId getconcurrentHashMapCursor "
-                        + getconcurrentHashMapCursor + " getFragmentScannerGatt " +getFragmentScannerGatt);
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+"     getItemId concurrentHashMapReceivedFromBootFragmentGatta "
+                        + getMapReceivedFromBootFragmentGatta + " getFragmentScannerGatt " +getFragmentScannerGatt);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1027,11 +1026,11 @@ public class Bl_FragmentRecyreViewServer  {
 
 
     public void rebootRecyreViewApdater(@NonNull ConcurrentHashMap<String, ContentValues> mapReceivedFromBootFragmentGatta,
-                                        @NonNull  Cursor concurrentHashMapCursor) {
+                                        @NonNull ConcurrentHashMap<String,Cursor> concurrentHashMapCursor) {
         try{
             if (mapReceivedFromBootFragmentGatta.size()>0) {
                 recyclerViewServer.removeAllViewsInLayout();
-                myRecycleViewAdapterServer.getconcurrentHashMapCursor=concurrentHashMapCursor;
+                myRecycleViewAdapterServer.getMapReceivedFromBootFragmentGatta=mapReceivedFromBootFragmentGatta;
 
             myRecycleViewAdapterServer.notifyDataSetChanged();
             RecyclerView.Adapter recyclerViewadapter=         recyclerViewServer.getAdapter();
@@ -1153,8 +1152,37 @@ public class Bl_FragmentRecyreViewServer  {
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+    private  ContentValues     datafillingRecyclerview(@NonNull MyViewHolder holder,@NonNull  ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta) {
+        ContentValues getContentValuesCurrentDivece = null;
+        try {
+
+           String getCurrentKeyDivece = getMapReceivedFromBootFragmentGatta.keySet().stream().findAny().get();
+
+             getContentValuesCurrentDivece =  (ContentValues) getMapReceivedFromBootFragmentGatta.values().stream().findAny().get();
 
 
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                    " itemView  " +holder.itemView
+                    +" getContentValuesCurrentDivece "+getContentValuesCurrentDivece+"            String getCurrentKeyDivece "+             getCurrentKeyDivece);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+        return     getContentValuesCurrentDivece;
+    }
 
 
 
