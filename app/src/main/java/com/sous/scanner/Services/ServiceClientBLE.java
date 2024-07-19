@@ -305,7 +305,7 @@ public class ServiceClientBLE extends IntentService {
             Flowable flowableЦиклСервера = Flowable.fromIterable(BluetoothСерверов.entrySet())
                     .onBackpressureBuffer(true)
                     .subscribeOn(Schedulers.newThread())
-                    .repeatWhen(repeat -> repeat.delay(3, TimeUnit.SECONDS))
+                    .repeatWhen(repeat -> repeat.delay(5, TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {

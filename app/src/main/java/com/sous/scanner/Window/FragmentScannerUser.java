@@ -62,7 +62,12 @@ import java.util.concurrent.TimeUnit;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Predicate;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Unit;
 
 
@@ -784,10 +789,9 @@ public class FragmentScannerUser extends Fragment {
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                         +new Date().toLocaleString() + " holder " +holder);
                 // TODO: 19.02.2023 Второе Действие
-                final String[] ДействиеДляСервераGATTОКотрольПриход = new String[1];
                 // TODO: 22.02.2023 для второй кнопки
                 RxView.clicks(holder.materialButtonКотрольПриход)
-                        .throttleFirst(1, TimeUnit.SECONDS)
+                        .throttleFirst(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -799,22 +803,22 @@ public class FragmentScannerUser extends Fragment {
                             public void onNext(@io.reactivex.rxjava3.annotations.NonNull Unit unit) {
                                 Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
                                         + " время " +new Date().toLocaleString() );
+                                // TODO: 19.07.2024  Внутри Клика еще один rxjava
 
+                             final  String  ДействиеДляСервераGATTОКотрольПриход ="на работу" ;
 
-                                //TODO лимит на подключение к серверу
-                                limitAnConnectionSessionGattaWithServer( holder.materialButtonКотрольПриход);
+                                final    MutableLiveData<String> mediatorLiveDataGATTПриход = new MediatorLiveData();
 
+                                МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход,ДействиеДляСервераGATTОКотрольПриход ,mediatorLiveDataGATTПриход);
 
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                        " ДействиеДляСервераGATTОКотрольПриход " +ДействиеДляСервераGATTОКотрольПриход );
 
-                             final    MutableLiveData<String> mediatorLiveDataGATTПриход = new MediatorLiveData();
-
-                                    ДействиеДляСервераGATTОКотрольПриход[0] = "на работу";
-
-                                    МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход,ДействиеДляСервераGATTОКотрольПриход[0] ,mediatorLiveDataGATTПриход);
-
-                                    Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                                            + " время " + new Date().toLocaleString());
                             }
+
+
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
 
@@ -845,38 +849,27 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
-        private void limitAnConnectionSessionGattaWithServer(@NonNull MaterialButton materialButtonGattClient) {
+
+
+
+
+
+
+
+        private void limitAnConnectionSessionGattaWithServer(@NonNull String finalCallBackStateLiveData ) {
             try{
-                materialButtonGattClient.getHandler().postDelayed(()->{
                     // TODO: 17.07.2024
-                      if(!finalCallBackStateLiveData.contentEquals("SERVER#SousAvtoSuccess")) {
-                          // TODO: 17.07.2024
-                          binderСканнер.getService().МетодВыключениеКлиентаGatt();
-                          // TODO: 17.07.2024
-                          onStart();
-
-                          //      Toast.makeText(getContext(), "Время сессии закончилась !!! ", Toast.LENGTH_SHORT).show();
-
-
-                          Snackbar snackbar = Snackbar.make(recyclerviewnewscanner.getRootView(), "Время сессии закончилась !!!", Snackbar.LENGTH_LONG);
-                          final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
-                          FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
-                          params.setMargins(20, 0, 20, 50);
-                          params.gravity = Gravity.BOTTOM;
-                          snackBarView.setBackgroundColor(Color.GRAY);
-                          snackBarView.setLayoutParams(params);
-                          snackbar.show();
-                      }
-
-                    Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
+                // TODO: 17.07.2024
+                if (!finalCallBackStateLiveData.equalsIgnoreCase("SERVER#SousAvtoSuccess")) {
+                    binderСканнер.getService().МетодВыключениеКлиентаGatt();
+                    // TODO: 17.07.2024
+                    onStart();
+                }
 
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-            },20000);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -899,10 +892,8 @@ public class FragmentScannerUser extends Fragment {
                 Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
                         +new Date().toLocaleString() + " holder " +holder);
                 // TODO: 19.02.2023 Второе Действие
-                final String[] ДействиеДляСервераGATTКотрольВыход = new String[1];
-
                 RxView.clicks(holder.materialButtonКотрольВыход)
-                        .throttleFirst(1, TimeUnit.SECONDS)
+                        .throttleFirst(5, TimeUnit.SECONDS)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new io.reactivex.rxjava3.core.Observer<Unit>() {
                             @Override
@@ -917,19 +908,19 @@ public class FragmentScannerUser extends Fragment {
                                         + " время " +new Date().toLocaleString() +
                                         " disposable[0] " );
 
-                                //TODO лимит на подключение к серверу
-                                limitAnConnectionSessionGattaWithServer( holder.materialButtonКотрольПриход);
-
-
-
-                                ДействиеДляСервераGATTКотрольВыход[0] = "с работы";
+                            final   String  ДействиеДляСервераGATTКотрольВыход = "с работы";
 
 
                               final   MutableLiveData<String> mediatorLiveDataGATTВыход = new MediatorLiveData();
 
-                                МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход,  ДействиеДляСервераGATTКотрольВыход[0],mediatorLiveDataGATTВыход);
+                                МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход,  ДействиеДляСервераGATTКотрольВыход,mediatorLiveDataGATTВыход);
 
-                                Log.i(this.getClass().getName(), " " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                        " holder.materialButtonКотрольВыход" +holder.materialButtonКотрольВыход
+                                        + " ДействиеДляСервераGATTКотрольВыход " +ДействиеДляСервераGATTКотрольВыход);
+
                                 // TODO: 22.02.2023
                             }
                             @Override
@@ -1069,7 +1060,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "BluetoothProfile.STATE_DISCONNECTED":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("конец соединения !!!");
+                                        materialButtonКакоеДействие.setText("Конец соединения !!!");
                                         handler.getTarget().postDelayed(() -> {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
@@ -1341,7 +1332,7 @@ public class FragmentScannerUser extends Fragment {
     void МетодHandler() {
         handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
             @Override
-            public boolean handleMessage(@NonNull android.os.Message msg) {
+            public boolean handleMessage(@NonNull Message msg) {
                 try {
                     Bundle bundle = msg.getData();
                     Log.d(this.getClass().getName(), "msg " + msg);
