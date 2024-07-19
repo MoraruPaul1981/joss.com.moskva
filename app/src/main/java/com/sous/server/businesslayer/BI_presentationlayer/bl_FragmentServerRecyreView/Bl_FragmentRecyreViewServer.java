@@ -906,10 +906,11 @@ public class Bl_FragmentRecyreViewServer  {
 
     }
 
-    private void gettextinputtext_macdevice(@NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+    @SuppressLint("Range")
+    private void gettextinputtext_macdevice(@NonNull MyViewHolder holder, @NonNull Cursor getconcurrentHashMapCursor) {
 
         try{
-            holder. textinputtext_macdevice.setText(getContentValuesCurrentDivece.getAsString("macdevice"));
+            holder. textinputtext_macdevice.setText(getconcurrentHashMapCursor.getString(getconcurrentHashMapCursor.getColumnIndex("macdevice")));//"macdevice"
             holder. textinputtext_macdevice.setClickable(false);
             holder.  textinputtext_macdevice.setFocusable(false);
             holder.  textinputtext_macdevice.refreshDrawableState();
@@ -918,7 +919,8 @@ public class Bl_FragmentRecyreViewServer  {
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+                    +"   getconcurrentHashMapCursor.getString(getconcurrentHashMapCursor.getColumnIndex(\"macdevice\")) "
+                    + getconcurrentHashMapCursor.getString(getconcurrentHashMapCursor.getColumnIndex("macdevice")));
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -943,9 +945,10 @@ public class Bl_FragmentRecyreViewServer  {
     // TODO: 18.07.2024 Методы главные заполения данные GATT client START
 
 
-    private void gettextinputtext_namedevice( @NonNull MyViewHolder holder,  @NonNull ContentValues getContentValuesCurrentDivece) {
+    @SuppressLint("Range")
+    private void gettextinputtext_namedevice(@NonNull MyViewHolder holder, @NonNull Cursor getconcurrentHashMapCursor) {
         try{
-            holder. textinputtext_namedevice.setText(getContentValuesCurrentDivece.getAsString("namedevice"));
+            holder. textinputtext_namedevice.setText(getconcurrentHashMapCursor.getString(getconcurrentHashMapCursor.getColumnIndex("namedevice")));//todo "namedevice"
             holder. textinputtext_namedevice.setClickable(false);
             holder.  textinputtext_namedevice.setFocusable(false);
             holder.  textinputtext_namedevice.refreshDrawableState();
@@ -954,7 +957,7 @@ public class Bl_FragmentRecyreViewServer  {
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                    +"   getContentValuesCurrentDivece.getAsString(\"namedevice\")" + getContentValuesCurrentDivece.getAsString("namedevice"));
+                    +"   getconcurrentHashMapCursor.getColumnIndex(\"namedevice\")" + getconcurrentHashMapCursor.getColumnIndex("namedevice"));
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
