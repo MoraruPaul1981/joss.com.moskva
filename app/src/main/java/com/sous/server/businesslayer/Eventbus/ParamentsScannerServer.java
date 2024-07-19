@@ -13,17 +13,14 @@ public class ParamentsScannerServer {
 
     private String currentTask;
     private String s2;
-    private  String s3;
+    private String s3;
 
 
+    private ConcurrentHashMap<String, ContentValues> contentValuesConcurrentHashMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Cursor> concurrentHashMapCursor = new ConcurrentHashMap<>();
+    private String s5;
 
-    private ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap=new ConcurrentHashMap<>();
-    private  Cursor  cursor ;
-    private  String s5;
-
-    private     Boolean флагЗапускаФрагментRecyreView=false;
-
-
+    private Boolean флагЗапускаФрагментRecyreView = false;
 
 
     public String getCurrentTask() {
@@ -49,7 +46,6 @@ public class ParamentsScannerServer {
     private void setS3(String s3) {
         this.s3 = s3;
     }
-
 
 
     private String getS5() {
@@ -79,14 +75,13 @@ public class ParamentsScannerServer {
         this.contentValuesConcurrentHashMap = contentValuesConcurrentHashMap;
     }
 
-
-    public Cursor getCursor() {
-        return cursor;
+    public ConcurrentHashMap<String, Cursor> getConcurrentHashMapCursor() {
+        return concurrentHashMapCursor;
     }
 
-    public void setCursor(Cursor cursor) {
-        this.cursor = cursor;
+    public void setConcurrentHashMapCursor(ConcurrentHashMap<String, Cursor> concurrentHashMapCursor) {
+        this.concurrentHashMapCursor = concurrentHashMapCursor;
     }
+
+
 }
-
-

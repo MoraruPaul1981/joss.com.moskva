@@ -935,17 +935,18 @@ public class ServiceGattServer extends IntentService {
                 Integer   resultAddDeviceToGattaDtabse= wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
 
                 //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
-                Cursor successfuldevices = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
+
+                ConcurrentHashMap<String,Cursor> concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
 
                 Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
-                        "  evice.getName().toString()  "+device.getName().toString()+ " successfuldevices " +successfuldevices);
+                        "  evice.getName().toString()  "+device.getName().toString()+ " concurrentHashMapCursor " +concurrentHashMapCursor);
 
 
                 // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
                 
                 if (resultAddDeviceToGattaDtabse >0) {
-                    forwardUIAfterSuccessAddDiveceDatBAseGatt(successfuldevices, contentValuesВставкаДанных);
+                    forwardUIAfterSuccessAddDiveceDatBAseGatt(concurrentHashMapCursor, contentValuesВставкаДанных);
                 }
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -978,7 +979,7 @@ public class ServiceGattServer extends IntentService {
     }
 
     @SuppressLint("MissingPermission")
-    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull  Cursor contentValuesConcurrentSkipListSet,
+    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull ConcurrentHashMap<String,Cursor> concurrentHashMapCursor ,
                                                            @NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
         try{
 
@@ -987,7 +988,7 @@ public class ServiceGattServer extends IntentService {
 
 
             //TODO:Event Send To Fragment Boot After Success DataBase and Divece
-            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT, contentValuesConcurrentSkipListSet);
+            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT, concurrentHashMapCursor);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1012,22 +1013,19 @@ public class ServiceGattServer extends IntentService {
 
 
     private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT,
-                                                  @NonNull  Cursor  successfuldevices) {
+                                                  @NonNull  ConcurrentHashMap<String,Cursor> concurrentHashMapCursor) {
         try{
         ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
             // TODO: 18.07.2024 sending status
         sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
 
-            // TODO: 18.07.2024 sending HashMap
-            
-            //contentValuesConcurrentHashMap.putIfAbsent(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
-                contentValuesConcurrentHashMap.compute(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),(x,y)->contentValuesВставкаДанныхGaTT);
-               // contentValuesConcurrentHashMap.put(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),contentValuesВставкаДанныхGaTT);
 
-            sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
+        // TODO: 18.07.2024 sending HashMap
+        contentValuesConcurrentHashMap.compute(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),(x,y)->contentValuesВставкаДанныхGaTT);
+        sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
 
-            // TODO: 18.07.2024 sending cursor
-        sendFragmentparamentsScannerServer.setCursor(successfuldevices);
+            // TODO: 18.07.2024 sending Cursor
+        sendFragmentparamentsScannerServer.setConcurrentHashMapCursor( concurrentHashMapCursor);
 
         //TODO: послымаем Из Службы Значение на Фрагмент
         MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
@@ -1035,12 +1033,12 @@ public class ServiceGattServer extends IntentService {
         //TODO: ответ на экран работает ообрубование или нет
         EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
 
-
         Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap + " successfuldevices " +successfuldevices+" contentValuesВставкаДанныхGaTT.getAsString(\"macdevice\") "+
-                contentValuesВставкаДанныхGaTT.getAsString("macdevice"));
+                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap +
+                " concurrentHashMapCursor " +concurrentHashMapCursor+" contentValuesВставкаДанныхGaTT.getAsString(\"macdevice\") ");
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1251,17 +1249,24 @@ public class ServiceGattServer extends IntentService {
 
 // TODO: 15.03.2023 синхрониазция КЛАсс
 // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
-public  Cursor getallthedataofsuccessfuldevices(@NonNull String СамЗапрос) {
-    Cursor successfuldevices = null;
+public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@NonNull String СамЗапрос) {
+ //TODO
+    ConcurrentHashMap<String,Cursor> cursorConcurrentHashMapGatt=new ConcurrentHashMap<>();
     try{
         Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-          successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
+        Cursor successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
         if (successfuldevices.getCount()>0){
             successfuldevices.moveToLast();
+            // TODO: 19.07.2024  Запаопление данными Курсора
+            cursorConcurrentHashMapGatt.compute("Cursor",(x,y)->successfuldevices);
         }
+        // TODO: 19.07.2024 closing
+        successfuldevices.close();
+
         Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices);
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+
+                 " cursorConcurrentHashMapGatt " +cursorConcurrentHashMapGatt);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1276,7 +1281,7 @@ public  Cursor getallthedataofsuccessfuldevices(@NonNull String СамЗапро
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
     }
-    return  successfuldevices;
+    return  cursorConcurrentHashMapGatt;
 }
 
 }
