@@ -12,37 +12,35 @@ import com.sous.server.businesslayer.Errors.SubClassErrors;
 import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 
 //этот класс создает базу данных SQLite
 public class CREATE_DATABASEServerScanner extends SQLiteOpenHelper{ ///SQLiteOpenHelper
 
    private   Context context;
-    private static     SQLiteDatabase ССылкаНаСозданнуюБазу;
+
+
+    private static  AtomicReference<SQLiteDatabase> atomicstoredEntities = new AtomicReference<>();
+   // private static     SQLiteDatabase ССылкаНаСозданнуюБазу;
     private static final int DATABASE_VERSION = 2;
     private Long version=0l;
     public static SQLiteDatabase getССылкаНаСозданнуюБазу() {
-     System.out.println(ССылкаНаСозданнуюБазу);
-        return ССылкаНаСозданнуюБазу;
+        System.out.println( "atomicstoredEntities "+atomicstoredEntities.toString());;
+        return atomicstoredEntities.get();
     }
 
     public CREATE_DATABASEServerScanner(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
         super(context, "DatabaseScannerServer.db", null, DATABASE_VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
-            if (ССылкаНаСозданнуюБазу==null  ) {
-                ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
-                Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   "
-                        +ССылкаНаСозданнуюБазу.isOpen());
-            }else{
-                //TODO connection  else is onen false
-                if (!ССылкаНаСозданнуюБазу.isOpen()) {
-                    ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
-                    Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу.isOpen()  "
-                            +ССылкаНаСозданнуюБазу.isOpen());
-                }
+            if (atomicstoredEntities.get()==null) {
+                atomicstoredEntities.set(this.getWritableDatabase());
             }
+                Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   " +atomicstoredEntities);
+
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
         } catch (Exception e) {

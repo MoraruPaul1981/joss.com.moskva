@@ -53,6 +53,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -99,6 +100,8 @@ public class ServiceGattServer extends IntentService {
    protected   ConcurrentHashMap<String,Cursor> concurrentHashMapCursor=new ConcurrentHashMap<>();
 
    protected    Cursor successfuldevices;
+
+    private    AtomicReference<byte[]> atomicReferenceValue = new AtomicReference<>();
 
     public ServiceGattServer() {
         super("ServiceGattServer");
@@ -1073,14 +1076,16 @@ public class ServiceGattServer extends IntentService {
                 BluetoothGattCharacteristic characteristicsДляСерверОтКлиента = services.getCharacteristic(getPublicUUID);
                 if (characteristicsДляСерверОтКлиента != null && value != null) {
                     // TODO: 20.02.2023
+                    atomicReferenceValue.set(value);
                     // TODO: 12.02.2023 ОТВЕТ КЛИЕНТУ
-                    callBackOtPhoneForServerGATT(device, requestId, offset, value, characteristicsДляСерверОтКлиента);
+                    callBackOtPhoneForServerGATT(device, requestId, offset, atomicReferenceValue.get(), characteristicsДляСерверОтКлиента);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() +
                             "\n"+"characteristicsДляСерверОтКлиента" + characteristicsДляСерверОтКлиента +
-                            " characteristicsДляСерверОтКлиента.getUuid() " + characteristicsДляСерверОтКлиента.getUuid() );
+                            " characteristicsДляСерверОтКлиента.getUuid() " + characteristicsДляСерверОтКлиента.getUuid() +
+                            " atomicReferenceValue " +atomicReferenceValue.toString());
 
                 }
             }
