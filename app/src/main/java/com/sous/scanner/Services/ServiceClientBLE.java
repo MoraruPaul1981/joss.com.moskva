@@ -290,7 +290,7 @@ public class ServiceClientBLE extends IntentService {
                 //TODO:
                 Set<BluetoothDevice> deviceClientGattEnable = bluetoothAdapterGATT.getBondedDevices();
 
-                if (deviceClientGattEnable.size() < 0) {
+                if (deviceClientGattEnable.size() > 0) {
                     ///TODO: Когда есть реальные Девайсы BLE
                     loopAllDiveceFotConnecting(getPublicUUID, deviceClientGattEnable);
 

@@ -85,7 +85,7 @@ public class FragmentScannerUser extends Fragment {
     private  LifecycleOwner lifecycleOwner ;
 
     private  String finalCallBackStateLiveData;
-
+    private  Animation   animationinner;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +95,7 @@ public class FragmentScannerUser extends Fragment {
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
             fragmentManager = getActivity().getSupportFragmentManager();
             КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
-
+            Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
             // TODO: 08.02.2023  Биндинг службы
             getListerBuingindServiceFragmentScanner( );
             МетодHandler();
@@ -1066,9 +1066,9 @@ public class FragmentScannerUser extends Fragment {
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         // TODO: 17.07.2024
-                                        Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-                                        animation.setDuration(100l);
-                                        v.startAnimation(animation);
+
+                                        animationinner.setDuration(100l);
+                                        v.startAnimation(animationinner);
                                         
                                         
                                         materialButtonКакоеДействие.setText("Успешно !!!");
