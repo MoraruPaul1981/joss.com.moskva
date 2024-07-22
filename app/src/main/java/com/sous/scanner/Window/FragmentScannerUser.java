@@ -85,7 +85,9 @@ public class FragmentScannerUser extends Fragment {
     private  LifecycleOwner lifecycleOwner ;
 
     private  String finalCallBackStateLiveData;
-    private  Animation   animationinner;
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1066,9 +1068,9 @@ public class FragmentScannerUser extends Fragment {
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         // TODO: 17.07.2024
-
-                                        animationinner.setDuration(100l);
-                                        v.startAnimation(animationinner);
+                                        Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+                                         animation.setDuration(100l);
+                                        v.startAnimation(animation);
                                         
                                         
                                         materialButtonКакоеДействие.setText("Успешно !!!");

@@ -14,6 +14,7 @@ import com.sous.scanner.Errors.SubClassErrors;
 import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 
@@ -21,32 +22,24 @@ import java.util.function.Consumer;
 public class CREATE_DATABASEScanner extends SQLiteOpenHelper{ ///SQLiteOpenHelper
     static final int VERSION =      18;//ПРИ ЛЮБОМ ИЗМЕНЕНИЕ В СТРУКТУРЕ БАЗЫ ДАННЫХ НУЖНО ДОБАВИТЬ ПЛЮС ОДНУ ЦИФРУ К ВЕРСИИ 1=1+1=2 ИТД.1
     private   Context context;
-    private      SQLiteDatabase ССылкаНаСозданнуюБазу;
+    private static AtomicReference<SQLiteDatabase> atomicstoredEntities = new AtomicReference<>();
     private     CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда;
     private     Long version=0l;
 
 
-    public SQLiteDatabase getССылкаНаСозданнуюБазу() {
-        Log.d(this.getClass().getName()," get () БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫТА ССылкаНаСозданнуюБазу.isOpen()  " +ССылкаНаСозданнуюБазу);
-        return ССылкаНаСозданнуюБазу;
+    public  static   SQLiteDatabase getССылкаНаСозданнуюБазу() {
+        System.out.println( "atomicstoredEntities "+atomicstoredEntities.toString());;
+        return atomicstoredEntities.get();
     }
     ///////КОНСТРУКТОР главного класса по созданию базы данных
     public CREATE_DATABASEScanner(@NotNull Context context) {/////КОНСТРУКТОР КЛАССА ПО СОЗДАНИЮ БАЗЫ ДАННЫХ
         super(context, "DatabaseScanner.db", null, VERSION ); // определяем имя базы данных  и ее версию
         try{
             this.context =context;
-            if (ССылкаНаСозданнуюБазу==null  ) {
-                ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
-                Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   "
-                        +ССылкаНаСозданнуюБазу.isOpen());
-            }else{
-                //TODO connection  else is onen false
-                if (!ССылкаНаСозданнуюБазу.isOpen()) {
-                    ССылкаНаСозданнуюБазу = this.getWritableDatabase(); //ссылка на схему базы данных;//ссылка на схему базы данных ГЛАВНАЯ ВСТАВКА НА БАЗУ ДСУ-1
-                    Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу.isOpen()  "
-                            +ССылкаНаСозданнуюБазу.isOpen());
-                }
+            if (atomicstoredEntities.get()==null) {
+                atomicstoredEntities.set(this.getWritableDatabase());
             }
+            Log.d(this.getClass().getName()," БАЗА  ДАННЫХ   ДСУ-1 ОТКРЫВАЕМ  ССылкаНаСозданнуюБазу==null   " +atomicstoredEntities);
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
         } catch (Exception e) {
