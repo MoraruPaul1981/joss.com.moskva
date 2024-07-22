@@ -290,7 +290,7 @@ public class ServiceClientBLE extends IntentService {
                 //TODO:
                 Set<BluetoothDevice> deviceClientGattEnable = bluetoothAdapterGATT.getBondedDevices();
 
-                if (deviceClientGattEnable.size() > 0) {
+                if (deviceClientGattEnable.size() < 0) {
                     ///TODO: Когда есть реальные Девайсы BLE
                     loopAllDiveceFotConnecting(getPublicUUID, deviceClientGattEnable);
 
@@ -823,7 +823,8 @@ public class ServiceClientBLE extends IntentService {
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
                             });
-
+                            bl_BloadcastReceierGatt       blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
 
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -837,6 +838,8 @@ public class ServiceClientBLE extends IntentService {
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
                             });
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
+                                blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
 
                           
