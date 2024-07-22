@@ -483,7 +483,7 @@ public class ServiceGattServer extends IntentService {
 
                 @Override
                 public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
-                    super.onConnectionStateChange(device, status, newState);
+
                     try {
 
                         bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(getApplicationContext(), version);
@@ -494,7 +494,8 @@ public class ServiceGattServer extends IntentService {
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
-
+                        // TODO: 22.07.2024
+                        super.onConnectionStateChange(device, status, newState);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -514,13 +515,16 @@ public class ServiceGattServer extends IntentService {
 
                 @Override
                 public void onServiceAdded(int status, BluetoothGattService service) {
-                    super.onServiceAdded(status, service);
+
                     Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                     v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
 
                     ///TODO: SuccessAddDevice
                     Bundle    bundleAddDeviceSuccess = new Bundle();
                     bundleAddDeviceSuccess.putString("Статус", "SERVERGATTRUNNIGSTARTING");
+
+                    // TODO: 22.07.2024
+                    super.onServiceAdded(status, service);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -534,9 +538,11 @@ public class ServiceGattServer extends IntentService {
                 public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId, BluetoothGattCharacteristic characteristic,
                                                          boolean preparedWrite,
                                                          boolean responseNeeded, int offset, byte[] value) {
-                    super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
                     try {
                         МетодОтвечаемКлиентуGatt(device, requestId, characteristic, offset, value);
+
+                        // TODO: 22.07.2024
+                        super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -566,10 +572,12 @@ public class ServiceGattServer extends IntentService {
 
                 @Override
                 public void onNotificationSent(BluetoothDevice device, int status) {
-                    super.onNotificationSent(device, status);
+
                     try {
                     /*    TODo*/
                         МетодПодтвержедиеЧтоОперацияУведомленияБыла(device, status);
+                        // TODO: 22.07.2024
+                        super.onNotificationSent(device, status);
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
