@@ -823,9 +823,7 @@ public class ServiceClientBLE extends IntentService {
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
                             });
-                            // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                            bl_BloadcastReceierGatt       blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,0000);
+
 
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -840,8 +838,7 @@ public class ServiceClientBLE extends IntentService {
                             });
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                            blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,0000);
+
                           
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

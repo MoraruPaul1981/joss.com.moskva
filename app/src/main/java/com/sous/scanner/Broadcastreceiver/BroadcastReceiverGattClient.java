@@ -27,7 +27,7 @@ public class BroadcastReceiverGattClient extends BroadcastReceiver {
                 bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
                 blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.getPairingANdBondingDeviceИFromBroacast(bluetoothDevice,0000);
+                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
             }
 
 
