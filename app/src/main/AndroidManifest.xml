@@ -46,12 +46,19 @@
     <uses-permission android:name="android.intent.action.SENDTO" />
     <uses-permission android:name="android.intent.action.PROVIDERS_CHANGED" />
     <uses-permission android:name="android.intent.action.ACCESS_GPS" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+        tools:ignore="ProtectedPermissions" />
 
-
-    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
-    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="false" />
@@ -83,18 +90,48 @@
         android:theme="@style/Theme.DSU">
 
 
+
+        <receiver
+            android:name=".businesslayer.BroadcastreceiverServer.BroadcastReceiverGattServer"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BLUETOOTH_PRIVILEGED">
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
+                <action android:name="android.bluetooth.device.action.PAIRING_CANCEL" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".businesslayer.BroadcastreceiverServer.BloadcastReceiverReboot"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+        </receiver>
+
+
+
+
+
+
+
         <activity
             android:name=".presentationlayer.ActivityServerScanner"
             android:exported="true"
             android:grantUriPermissions="true"
+            android:hardwareAccelerated="false"
             android:label="Сервер"
             android:launchMode="standard"
             android:requestLegacyExternalStorage="true"
             android:showOnLockScreen="true"
-            android:hardwareAccelerated="false"
             android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -128,13 +165,12 @@
                 <action android:name="android.intent.action.BLUETOOTH_SCAN" />
                 <action android:name="android.intent.action.BLUETOOTH_ADVERTISE" />
                 <action android:name="android.intent.action.ACCESS_BACKGROUND_LOCATION" />
-
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
+        </activity> <!-- android:permission="android.intent.action.BOOT_COMPLETED" -->
         <provider
             android:name=".businesslayer.ContentProvoders.ContentProviderServer"
             android:authorities="com.sous.server.providerserver"
@@ -143,8 +179,6 @@
             android:grantUriPermissions="true"
             android:readPermission="true"
             android:writePermission="true" />
-
-
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -157,13 +191,14 @@
             android:enabled="true"
             android:exported="false"
             tools:node="merge" />
+
         <service
             android:name=".businesslayer.Services.ServiceGattServer"
+            android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:directBootAware="true"
-            android:showOnLockScreen="true"
-            android:permission="android.permission.BIND_JOB_SERVICE">
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:showOnLockScreen="true">
             <intent-filter>
                 <action android:name="android.intent.action.BLUETOOTH_CONNECT" />
                 <action android:name="android.intent.action.BLUETOOTH" />
@@ -172,7 +207,9 @@
                 <action android:name="android.intent.action.BLUETOOTH_ADVERTISE" />
                 <action android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.permission.WAKE_LOCK" />
                 <action android:name="android.intent.action.SCREEN_OFF" />
                 <action android:name="android.intent.action.SCREEN_ON" />
@@ -199,14 +236,12 @@
                 <action android:name="android.intent.action.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE" />
             </intent-filter>
         </service>
-
-
         <service
             android:name=".businesslayer.Firebases.MyFirebaseMessagingServiceServerScanners"
-            android:exported="false"
             android:directBootAware="true"
+            android:exported="false"
             android:showOnLockScreen="true"
-            android:usesCleartextTraffic="true" >
+            android:usesCleartextTraffic="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
@@ -218,4 +253,5 @@
                 android:value="ENABLE" />
         </service>
     </application>
+
 </manifest>

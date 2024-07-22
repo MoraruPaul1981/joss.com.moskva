@@ -56,6 +56,7 @@ import com.sous.server.businesslayer.Locations.GattLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -282,16 +283,6 @@ public class ServiceGattServer extends IntentService {
             //TODO:  для запущеного сервера Gatt ,дополвнительые параметры натсройки Charact and UUID
             settingGattServerBluetoothGattService();
 
-    //TODO: как LIST СПИСОК  серевр Допололнительно ловим Девайсы Bluetoorhs
-            getListDeviceWithGattAdapter();
-
-
-
-
-            /*      //TODO:Тест Код запуск кода по расписанию
-             *          */
-            //testMetodShedule10Secynd();
-
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -329,64 +320,9 @@ public class ServiceGattServer extends IntentService {
 
     }
 
-    @SuppressLint("MissingPermission")
-    private void getListDeviceWithGattAdapter() {
- try{
-     //TODO получаем адаптер для Список Девайсов Во круг тетефона
-  bluetoothAdapterGATT=  bluetoothManagerServer.getAdapter() ;
-
-     bluetoothAdapterGATT.getBondedDevices().forEach(new Consumer<BluetoothDevice>() {
-         @Override
-         public void accept(BluetoothDevice bluetoothDevice) {
-             Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
-             Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
-
-             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-         }
-     });
 
 
 
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-// TODO: 30.06.2022 сама не постредствено запуск метода
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-
-    }
-
-    private void testMetodShedule10Secynd() {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        scheduler.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                Log.d(getApplicationContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!" + "\n" +
-                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!! " + "\n" +
-                        " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " new Date()  " + new Date().toLocaleString());
-            }
-        }, 0, 10, TimeUnit.SECONDS);
-    }
 
 
     @SuppressLint("MissingPermission")
@@ -537,6 +473,8 @@ public class ServiceGattServer extends IntentService {
                 public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
                     super.onConnectionStateChange(device, status, newState);
                     try {
+
+                      //  analiysStateBorningDevice(device);
 
                         МетодКоннектаДеконнектасКлиентамиGatt(device, status, newState);
 
@@ -1365,4 +1303,57 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
     return  cursorConcurrentHashMapGatt;
 }
 
+
+
+
+    @SuppressLint("MissingPermission")
+    private void analiysStateBorningDevice(@NonNull BluetoothDevice bluetoothDevice) {
+        try {
+            byte[] pinBytes = "0000".getBytes();
+
+
+            bluetoothDevice.setPin(pinBytes);
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " bluetoothDevice.getType() " + bluetoothDevice.getType() +
+                    "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
+                    " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
+
+
+            Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
+            m.invoke(bluetoothDevice, pinBytes);
+
+            Log.d(this.getClass().getName(), "Success to add the PIN.");
+
+            //bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
+
+
+            bluetoothDevice.createBond();
+
+            Log.d(this.getClass().getName(), "\n" + " class " +
+                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " bluetoothDevice.getType() " + bluetoothDevice.getType() +
+                    "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
+                    " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 }
