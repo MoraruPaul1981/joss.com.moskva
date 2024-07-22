@@ -92,7 +92,7 @@ public class ServiceClientBLE extends IntentService {
         super.onCreate();
         // TODO: 07.02.2023 клиент сервер
         try {
-            this.sqLiteDatabase = new CREATE_DATABASEScanner(getApplicationContext()).getССылкаНаСозданнуюБазу();
+             sqLiteDatabase = new CREATE_DATABASEScanner(getApplicationContext()).getССылкаНаСозданнуюБазу();
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
@@ -206,7 +206,6 @@ public class ServiceClientBLE extends IntentService {
                     " УДАЛЕНИЕ СТАТУСА Удаленная !!!!!   Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
             this.context = getApplicationContext();
-            // МетодЗапускаОбщиеКоды(getApplicationContext(),intent);
 // TODO: 30.06.2022 сама не постредствено запуск метода
         } catch (Exception e) {
             e.printStackTrace();
@@ -807,7 +806,6 @@ public class ServiceClientBLE extends IntentService {
                             bluetoothGattCallback,
                             BluetoothDevice.TRANSPORT_AUTO,
                             BluetoothDevice.PHY_OPTION_S8,handler);
-                    Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     //gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
                     int bondstate = bluetoothDevice.getBondState();
@@ -973,77 +971,6 @@ public class ServiceClientBLE extends IntentService {
 
 
 
-    // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
-
-    public String МетодПолучениеНовогоДляСканеарКлюча_OndeSignal(@NonNull String КлючДляFirebaseNotification) {
-        final String[] ВозврящаетсяКлючScannerONESIGNAl = {null};
-        try {
-            // TODO: 23.12.2021 ЧЕТЫРЕ ПОПЫТКИ ПОДКЛЮЧЕНИЕ В СЕВРЕРУONESIGNAL
-            Observable observableПолученияКлючаОтСервераOneSignal=  Observable.interval(5, TimeUnit.SECONDS)
-                    .delay(3,TimeUnit.SECONDS)
-                    .take(3,TimeUnit.MINUTES)
-                    .subscribeOn(Schedulers.single())
-                    .doOnNext(new Consumer<Long>() {
-                        @Override
-                        public void accept(Long aLong) throws Throwable {
-                            // TODO: 01.02.2023 Получение Новго Ключа Для Сканера
-                            ВозврящаетсяКлючScannerONESIGNAl[0] =     МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(КлючДляFirebaseNotification);
-                            Log.d(context.getClass().getName(), "  Observable.interval    ВозврящаетсяКлючScannerONESIGNAl[0] " +   ВозврящаетсяКлючScannerONESIGNAl[0]);
-                        }
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            Log.e(context.getClass().getName(), "  doOnError МетодПолучениеНовгоКлюча_OndeSignal "  +"\n" +throwable.getMessage().toString());
-                        }
-                    })
-                    .takeWhile(new Predicate<Object>() {
-                        @Override
-                        public boolean test(Object o) throws Throwable {
-                            // TODO: 26.12.2021
-                            Log.w(context.getClass().getName(), "   takeWhile ВозврящаетсяКлючScannerONESIGNAl " +
-                                    "" +Thread.currentThread().getName()+ "  ВозврящаетсяКлючScannerONESIGNAl " + ВозврящаетсяКлючScannerONESIGNAl[0]);
-                            if (   ВозврящаетсяКлючScannerONESIGNAl[0] !=null) {
-                                Log.w(context.getClass().getName(), "  ДЛЯ ТЕКУЩЕГО ПОЛЬЗОВАТЕЛЯ (телефона)Ключ ПришелОтСЕРВЕРА SUCEESSSSSS !!!@!  " +
-                                        " takeWhile МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal САМ КЛЮЧ ::::"
-                                        + ВозврящаетсяКлючScannerONESIGNAl[0] +"\n"+
-                                        " Thread.currentThread().getName() " +Thread.currentThread().getName());
-                                return false;
-                            }else {
-                                return true;
-                            }
-                        }
-                    })
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-                            Log.w(context.getClass().getName(), " doOnTerminate  ВозврящаетсяКлючScannerONESIGNAl" + ВозврящаетсяКлючScannerONESIGNAl[0]);
-                            // TODO: 06.01.2022
-                            // TODO: 06.01.2022
-                            Log.w(context.getClass().getName(), "  onComplete МетодПовторногоЗапускаFacebaseCloud_And_OndeSignal"  +"\n"+
-                                    " Thread.currentThread().getName() " +Thread.currentThread().getName());
-                        }
-                    });
-// TODO: 07.01.2022 GREAT OPERATIONS подпииска на данные
-            observableПолученияКлючаОтСервераOneSignal.subscribe();
-            // TODO: 05.01.2022  ДЕЛАЕМ ПОДПИСКУ НА ОСУЩЕСТВЛЛЕНУЮ ДАННЫХ
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки=new ContentValues();
-            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-
-        return ВозврящаетсяКлючScannerONESIGNAl[0];
-    }
 
     private String МетодПолучениеКлючаОтСлужбыONESIGNALAndFirebase(@NonNull String КлючДляFirebaseNotification) {
         String ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal = null;
