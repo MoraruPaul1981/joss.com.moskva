@@ -12,7 +12,6 @@ import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -22,31 +21,23 @@ import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
-import android.location.GnssAntennaInfo;
-import android.location.GnssMeasurementsEvent;
-import android.location.GnssNavigationMessage;
-import android.location.GnssStatus;
-import android.location.GpsStatus;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.ParcelUuid;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
-import com.google.android.material.snackbar.Snackbar;
+import com.sous.server.businesslayer.BroadcastreceiverServer.bl_BloadcastReceierGatt;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -63,12 +54,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -166,6 +151,33 @@ public class ServiceGattServer extends IntentService {
         }
 
     }
+
+
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        try {
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
 
     @SuppressLint({"MissingPermission", "NewApi"})
     private void langingGPSforGATTServer(@NonNull SharedPreferences sharedPreferencesGatt) {
@@ -474,7 +486,8 @@ public class ServiceGattServer extends IntentService {
                     super.onConnectionStateChange(device, status, newState);
                     try {
 
-                      //  analiysStateBorningDevice(device);
+                        bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(getApplicationContext(), version);
+                        blBloadcastReceierGatt.getPairingANdBondingDevice(device,0000);
 
                         МетодКоннектаДеконнектасКлиентамиGatt(device, status, newState);
 
@@ -1112,7 +1125,7 @@ public class ServiceGattServer extends IntentService {
 
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTED:
-                    getBluetoothGattServer.connect(device,false);
+                    getBluetoothGattServer.connect(device,true);
 
                 ///TODO: SucceessAddDevice
                 Bundle    bundleAddDeviceSuccess = new Bundle();

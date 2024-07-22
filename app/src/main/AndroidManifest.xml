@@ -94,8 +94,7 @@
         <receiver
             android:name=".businesslayer.BroadcastreceiverServer.BroadcastReceiverGattServer"
             android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BLUETOOTH_PRIVILEGED">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
                 <action android:name="android.bluetooth.device.action.PAIRING_CANCEL" />
