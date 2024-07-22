@@ -106,21 +106,15 @@
 
 
 
-        <receiver
-            android:name=".Broadcastreceiver.BloadcastReceiverReboot"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-            <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+
 
 
 
         <receiver
             android:name=".Broadcastreceiver.BroadcastReceiverGattClient"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true"
+            android:permission="android.permission.BLUETOOTH_PRIVILEGED">
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
                 <action android:name="android.bluetooth.device.action.PAIRING_CANCEL" />
@@ -232,7 +226,6 @@
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
             android:showOnLockScreen="true" >
             <intent-filter>
                 <action android:name="android.intent.action.BLUETOOTH_CONNECT" />

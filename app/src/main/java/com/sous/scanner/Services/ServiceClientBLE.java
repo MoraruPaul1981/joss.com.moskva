@@ -36,6 +36,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
+import com.sous.scanner.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
@@ -290,144 +291,59 @@ public class ServiceClientBLE extends IntentService {
     @SuppressLint({"MissingPermission"})
     private void МетодЗапускаСканированиеКлиент() {
         try {
-            Log.d(TAG, "МетодЗапускаСканированиеКлиент: Запускаем.... Метод Сканирования Для Android");
+
             mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
-            Log.d(TAG, "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
-                    "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
-                    "\n" + " POOL " + Thread.currentThread().getName() +
-                    "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());//
+
             // TODO: 12.02.2023 адреса разыне колиентов
             getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
 
-            LinkedHashMap<String, UUID> BluetoothСерверов = new LinkedHashMap<>();
-            // TODO: 11.02.2023 СПИСОК СЕРВЕРОВ
-            BluetoothСерверов.put(getPublicUUID.toString(), getPublicUUID);
+                //TODO:
+                Set<BluetoothDevice> deviceClientGattEnable = bluetoothAdapterGATT.getBondedDevices();
 
-            Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
-            // TODO: 26.01.2023 начало сервера GATT
+                if (deviceClientGattEnable.size() > 0) {
+                    ///TODO: Когда есть реальные Девайсы BLE
+                    loopAllDiveceFotConnecting(getPublicUUID, deviceClientGattEnable);
+
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            " deviceClientGattEnable " + deviceClientGattEnable);
+                } else {
 
 
-        Flowable.fromIterable(BluetoothСерверов.entrySet())
-                    .onBackpressureBuffer(true)
-                    .subscribeOn(Schedulers.newThread())
-                    .repeatWhen(repeat -> repeat.delay(5, TimeUnit.SECONDS))
-                    .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
+                    ConcurrentSkipListSet<String> concurrentSkipListSetMunualListServerDevice = new ConcurrentSkipListSet();
+                    concurrentSkipListSetMunualListServerDevice.add("98:2F:F8:19:BC:F7");
+                    concurrentSkipListSetMunualListServerDevice.forEach(new java.util.function.Consumer<String>() {
                         @Override
-                        public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
-                            if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SuccessWorkerGattClientWithServer")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("ErrorWorkerGattClientWithServer")) {
+                        public void accept(String remoteManualServerGatt) {
+                            ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
+                            BluetoothDevice bluetoothDevice = bluetoothAdapterPhoneClient.getRemoteDevice(remoteManualServerGatt);//TODO: HUAWEI MatePad SE
 
-
-                                Log.i(TAG, " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue() + new Date().toLocaleString());
-                                disaibleSessionGattServer();
-
-                                return false;
-                            } else {
-                                Log.i(TAG, " mediatorLiveDataGATT.getValue()  " + mediatorLiveDataGATT.getValue() + new Date().toLocaleString());
-                                return true;
-                            }
-                        }
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            throwable.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    })
-                    .take(30, TimeUnit.SECONDS)
-                    .map(new Function<Map.Entry<String, UUID>, Object>() {
-                        @Override
-                        public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
-                            if (bluetoothAdapterGATT != null && bluetoothAdapterGATT.isEnabled() == true) {
-                                //TODO:
-                                Set<BluetoothDevice> deviceClientGattEnable = bluetoothAdapterGATT.getBondedDevices();
-
-                                if (deviceClientGattEnable.size() > 0) {
-                                    ///TODO: Когда есть реальные Девайсы BLE
-                                    loopAllDiveceFotConnecting(stringUUIDEntry, deviceClientGattEnable);
-
-                                    Log.d(this.getClass().getName(), "\n" + " class " +
-                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                            " deviceClientGattEnable " + deviceClientGattEnable);
-                                } else {
-
-
-                                    ConcurrentSkipListSet<String> concurrentSkipListSetMunualListServerDevice = new ConcurrentSkipListSet();
-                                    concurrentSkipListSetMunualListServerDevice.add("98:2F:F8:19:BC:F7");
-                                    concurrentSkipListSetMunualListServerDevice.forEach(new java.util.function.Consumer<String>() {
-                                        @Override
-                                        public void accept(String remoteManualServerGatt) {
-
-
-                                            ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
-                                            BluetoothDevice bluetoothDevice = bluetoothAdapterPhoneClient.getRemoteDevice(remoteManualServerGatt);//TODO: HUAWEI MatePad SE
-
-
-                                            // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
-                                            analiysStateBorningDevice(bluetoothDevice);
-
-                                            ///TODO: когда ессть сами устройста Manual
-                                            manualDiveceFotConnecting(stringUUIDEntry, bluetoothDevice);
-
-                                            Log.d(this.getClass().getName(), "\n" + " class " +
-                                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
-                                                    " deviceClientGattEnable " + deviceClientGattEnable);
-                                        }
-                                    });
-                                    Log.d(this.getClass().getName(), "\n" + " class " +
-                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
-                                            " deviceClientGattEnable " + deviceClientGattEnable);
-
-                                }
-
-
-                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            }
-                            return stringUUIDEntry;
-                        }
-
-
-                    })
-                    .doOnError(new Consumer<Throwable>() {
-                        @Override
-                        public void accept(Throwable throwable) throws Throwable {
-                            Log.e(this.getClass().getName(), "Ошибка " + throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            ContentValues valuesЗаписываемОшибки = new ContentValues();
-                            valuesЗаписываемОшибки.put("Error", throwable.toString().toLowerCase());
-                            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            final Object ТекущаяВерсияПрограммы = version;
-                            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                        }
-                    })
-                    .doOnComplete(new Action() {
-                        @Override
-                        public void run() throws Throwable {
-
-                            disaibleGattServer();
+                            ///TODO: когда ессть сами устройста Manual
+                            manualDiveceFotConnecting(getPublicUUID, bluetoothDevice);
 
                             Log.d(this.getClass().getName(), "\n" + " class " +
                                     Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
+                                    " deviceClientGattEnable " + deviceClientGattEnable);
                         }
-                    }).blockingSubscribe();
-            Log.i(TAG, " ОтветОтGattServer  " + new Date().toLocaleString());
-            /// mediatorLiveDataGATT
+                    });
+                    Log.d(this.getClass().getName(), "\n" + " class " +
+                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
+                            " deviceClientGattEnable " + deviceClientGattEnable);
+
+                }
+
+
+                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -447,7 +363,7 @@ public class ServiceClientBLE extends IntentService {
 
     //TODO запускаем Когда Адапетр BLE РЕАЛЬНЫЕ
     @SuppressLint("MissingPermission")
-    private void loopAllDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry, Set<BluetoothDevice> deviceClientGatt) {
+    private void loopAllDiveceFotConnecting(UUID stringUUIDEntry, Set<BluetoothDevice> deviceClientGatt) {
         ///TODO: оБработка реальный адресов BLE
         try {
             deviceClientGatt.forEach(new java.util.function.Consumer<BluetoothDevice>() {
@@ -458,15 +374,12 @@ public class ServiceClientBLE extends IntentService {
                     Log.d(this.getClass().getName(), " bluetoothDevice " + bluetoothDevice);
 
 
-                    // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
-                    analiysStateBorningDevice(bluetoothDevice);
-
                     Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
                     Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
 
                     // TODO: 12.02.2023  запускаем задачу в потоке
                     BluetoothGattCallback bluetoothGattCallback =
-                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry );
 
                     // TODO: 26.01.2023  конец сервера GATT
                     МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
@@ -492,35 +405,36 @@ public class ServiceClientBLE extends IntentService {
     }
 
 
+
+
+
+
+
+
+    //TODO запускаем Когда Адапетр BLE ИСКУСТВЕННЫЕ АДРЕС сервера
     @SuppressLint("MissingPermission")
-    private void analiysStateBorningDevice(@NonNull BluetoothDevice bluetoothDevice) {
-        try {
-            byte[] pinBytes = "0000".getBytes();
+    private void manualDiveceFotConnecting( UUID  getPublicUUID, BluetoothDevice deviceClientGatt) {
+        ///TODO: оБработка реальный адресов BLE
+        try{
 
 
-            bluetoothDevice.setPin(pinBytes);
+                Log.d(this.getClass().getName()," bluetoothDevice " +deviceClientGatt  );
 
-           Log.d(this.getClass().getName(), "\n" + " class " +
-                   Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                   " bluetoothDevice.getType() " + bluetoothDevice.getType() +
-                   "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
-                   " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
-
-
-            Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
-            m.invoke(bluetoothDevice, pinBytes);
-
-            Log.d(this.getClass().getName(), "Success to add the PIN.");
-
-            //bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
-
-
-            bluetoothDevice.createBond();
+                Log.d("BT", "bluetoothDevice.getName(): " + deviceClientGatt.getName());
+                Log.d("BT", "bluetoothDevice.getAddress(): " + deviceClientGatt.getAddress());
 
 
 
+
+                // TODO: 12.02.2023  запускаем задачу в потоке
+                BluetoothGattCallback bluetoothGattCallback=
+                        МетодРаботыСТекущийСерверомGATT(deviceClientGatt, getPublicUUID);
+
+                // TODO: 26.01.2023  конец сервера GATT
+                МетодЗапускаGATTКлиента(deviceClientGatt, bluetoothGattCallback);
+
+                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
+                        +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -535,35 +449,6 @@ public class ServiceClientBLE extends IntentService {
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
-    }
-
-
-
-
-
-    //TODO запускаем Когда Адапетр BLE ИСКУСТВЕННЫЕ АДРЕС сервера
-    @SuppressLint("MissingPermission")
-    private void manualDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry,BluetoothDevice deviceClientGatt) {
-        ///TODO: оБработка реальный адресов BLE
-
-
-                Log.d(this.getClass().getName()," bluetoothDevice " +deviceClientGatt  );
-
-                Log.d("BT", "bluetoothDevice.getName(): " + deviceClientGatt.getName());
-                Log.d("BT", "bluetoothDevice.getAddress(): " + deviceClientGatt.getAddress());
-
-
-
-
-                // TODO: 12.02.2023  запускаем задачу в потоке
-                BluetoothGattCallback bluetoothGattCallback=
-                        МетодРаботыСТекущийСерверомGATT(deviceClientGatt, stringUUIDEntry.getValue());
-
-                // TODO: 26.01.2023  конец сервера GATT
-                МетодЗапускаGATTКлиента(deviceClientGatt, bluetoothGattCallback);
-
-                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
-                        +"uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " +bluetoothGattCallback);
 
     }
 
@@ -702,6 +587,7 @@ public class ServiceClientBLE extends IntentService {
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_DISCONNECTED");
                                         });
+                                        disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
@@ -710,6 +596,7 @@ public class ServiceClientBLE extends IntentService {
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_FAILURE");
                                         });
+                                        disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
@@ -718,6 +605,7 @@ public class ServiceClientBLE extends IntentService {
                                         handler.post(()->{
                                             mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_CONNECTION_CONGESTED");
                                         });
+                                        disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
@@ -947,7 +835,8 @@ public class ServiceClientBLE extends IntentService {
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
                             });
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                            analiysStateBorningDevice(bluetoothDevice);
+                            bl_BloadcastReceierGatt       blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,0000);
 
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -961,7 +850,9 @@ public class ServiceClientBLE extends IntentService {
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
                             });
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                            analiysStateBorningDevice(bluetoothDevice);
+                            // TODO: 22.07.2024  Принудительный Запуск Сопрежения
+                            blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                            blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,0000);
                           
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

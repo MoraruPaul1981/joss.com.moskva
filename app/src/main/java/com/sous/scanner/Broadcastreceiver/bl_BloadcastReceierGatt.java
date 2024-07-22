@@ -1,64 +1,73 @@
 package com.sous.scanner.Broadcastreceiver;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
 
 import com.sous.scanner.Errors.SubClassErrors;
 
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 
 public class bl_BloadcastReceierGatt {
 
     private  Context context;
 
-    private  Intent intent;
+
     private  Long version;
 
-    public bl_BloadcastReceierGatt(Context context, Intent intent, Long version) {
+    public bl_BloadcastReceierGatt(Context context,   Long version) {
         this.context = context;
-        this.intent = intent;
+
         this.version = version;
     }
 
 
 
     @SuppressLint({"MissingPermission", "NewApi"})
-    public void getDevice(){
-        BluetoothDevice bluetoothDevice = null;
+    public void getPairingANdBondingDevice(@NonNull  BluetoothDevice bluetoothDevice, int pinBytes ){
+
         try{
 
      /*       bluetoothDevice.setPin("0000".getBytes(StandardCharsets.UTF_8));
             bluetoothDevice.setPairingConfirmation(true);
             bluetoothDevice.createBond();*/
 
-        bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-            byte[] pinBytes = "0000".getBytes();
-
-            bluetoothDevice.setPin(pinBytes);
+            byte[] pin = ByteBuffer.allocate(4).putInt(pinBytes).array();
 
 
 
-                Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
-                m.invoke(bluetoothDevice, pinBytes);
+//To avoid the popup notification:
+            bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
+            bluetoothDevice.getClass().getMethod("cancelPairingUserInput", boolean.class).invoke(bluetoothDevice, true);
+
+//int pinn = 1234;
+
+//Entering pin programmatically:
+            Method ms = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
+//Method ms = device.getClass().getMethod("setPasskey", int.class);
+            ms.invoke(bluetoothDevice, pin);
+
+//Bonding the device:
+            Method mm = bluetoothDevice.getClass().getMethod("createBond", (Class[]) null);
+            mm.invoke(bluetoothDevice, (Object[]) null);
 
                 Log.d(this.getClass().getName(), "Success to add the PIN.");
 
-            bluetoothDevice.createBond();
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                     "PIN  ");
 
+            bluetoothDevice.setPin(pin);
+            bluetoothDevice.createBond();
 
                 //   bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
 
