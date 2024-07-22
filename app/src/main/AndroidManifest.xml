@@ -54,10 +54,11 @@
     <uses-permission android:name="android.permission.READ_APN_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
-    <uses-permission
-        android:name="android.permission.WRITE_SECURE_SETTINGS"
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="com.dsy.dsu.providerdatabase.pemission" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"
+        tools:ignore="ProtectedPermissions" />
 
     <uses-feature
         android:name="android.hardware.telephony.gsm"
@@ -91,6 +92,7 @@
         android:required="false" />
     <uses-feature android:name="android.hardware.usb.host" />
 
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_scanner_new2"
@@ -108,6 +110,9 @@
             android:name=".Broadcastreceiver.BloadcastReceiverReboot"
             android:enabled="true"
             android:exported="true" >
+            <intent-filter>
+            <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
         </receiver>
 
 
@@ -116,6 +121,16 @@
             android:name=".Broadcastreceiver.BroadcastReceiverGattClient"
             android:enabled="true"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
+                <action android:name="android.bluetooth.device.action.PAIRING_CANCEL" />
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="android.bluetooth.device.action.ACTION_STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACTION_BOND_STATE_CHANGED" />
+            </intent-filter>
         </receiver>
 
 

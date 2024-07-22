@@ -11,10 +11,12 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
@@ -35,6 +37,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
+import com.sous.scanner.Broadcastreceiver.BroadcastReceiverGattClient;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
 import com.sous.scanner.Services.ServiceClientBLE;
@@ -104,9 +107,6 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             Log.i(this.getClass().getName(),  "onResume " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-
-
-
 
 
 // TODO: 17.07.2024 Коды запуски БИзнес ЛОгики Активти Сканера
