@@ -10,6 +10,9 @@ import android.util.Log;
 
 import com.sous.scanner.Errors.SubClassErrors;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 public class BroadcastReceiverGattClient extends BroadcastReceiver {
 
     private bl_BloadcastReceierGatt blBloadcastReceierGatt;
@@ -21,15 +24,12 @@ public class BroadcastReceiverGattClient extends BroadcastReceiver {
             // TODO: 22.07.2024  Код Брадкаста ресивера
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
                version = pInfo.getLongVersionCode();
-            if (BluetoothDevice.ACTION_PAIRING_REQUEST == intent.getAction()) {
+            if (intent.getAction().equals("android.bluetooth.device.action.PAIRING_REQUEST")) {
                 blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, intent, version);
                 blBloadcastReceierGatt.getDevice();
 
             }
-            BluetoothDevice device = intent.getParcelableExtra("android.bluetooth.device.extra.DEVICE");
-            device.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(device, true);
-            device.getClass().getMethod("cancelPairingUserInput", boolean.class).invoke(device);
-            
+
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +

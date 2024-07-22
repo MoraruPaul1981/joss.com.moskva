@@ -845,34 +845,6 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-        private void stopConnectionWithServerAndUIreboot( ) {
-            try{
-                    // TODO: 17.07.2024
-                handler.getTarget().postDelayed(()->{
-                    binderСканнер.getService().МетодВыключениеКлиентаGatt();
-                    // TODO: 17.07.2024
-                    onStart();
-
-                },10000);
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-        }
 
 
         private void eventButtonmaterialButtonКотрольВыход(@NonNull MyViewHolder holder) {
@@ -1042,10 +1014,6 @@ public class FragmentScannerUser extends Fragment {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
                                     });
-                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
-                                    stopConnectionWithServerAndUIreboot ();
-
-
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
@@ -1086,8 +1054,6 @@ public class FragmentScannerUser extends Fragment {
                                             materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
                                         }, 1500);
                                     });
-                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
-                                    stopConnectionWithServerAndUIreboot ();
 
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
@@ -1095,7 +1061,7 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-                                case "SERVER#SousAvtoSuccess":
+                                case "SuccessWorkerGattClientWithServer":
                                     // TODO: 07.02.2023 Успешный статус
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
@@ -1129,7 +1095,7 @@ public class FragmentScannerUser extends Fragment {
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
-                                case "SERVER#SousAvtoERROR":
+                                case "ErrorWorkerGattClientWithServer":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Не Успешно !!!");
 
@@ -1149,12 +1115,24 @@ public class FragmentScannerUser extends Fragment {
                                         }, 1500);
                                     });
 
-                                    // TODO: 19.07.2024 stop connerction wuth Client Gatt
-                                    stopConnectionWithServerAndUIreboot ();
 
-                                    Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
+                                    Log.d(this.getClass().getName(), "\n" + " class " +
+                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                            " + mediatorLiveDataGATTClient .getValue() " +  mediatorLiveDataGATTClient .getValue());
+
+
                                     break;
+
+                                default: {
+                                    Log.d(this.getClass().getName(), "\n" + " class " +
+                                            Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                            " + mediatorLiveDataGATTClient .getValue() " +  mediatorLiveDataGATTClient .getValue());
+
+                                }
                             }
 
 

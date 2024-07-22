@@ -251,7 +251,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     Manifest.permission.BLUETOOTH_ADVERTISE,
                     Manifest.permission.BLUETOOTH_ADMIN
             };
-            int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int permission1 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_PRIVILEGED);
             int permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN);
             if (permission1 != PackageManager.PERMISSION_GRANTED) {
                 // We don't have permission so prompt the user

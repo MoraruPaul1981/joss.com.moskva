@@ -40,6 +40,7 @@ import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
 
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,12 +48,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
@@ -92,6 +93,8 @@ public class ServiceClientBLE extends IntentService {
     private UUID getPublicUUID;
     private BluetoothGatt gatt;
 
+
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -101,6 +104,7 @@ public class ServiceClientBLE extends IntentService {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
+
 
             setingEnableApapterBLE();
             getListDeviceForBluApdapter();
@@ -169,13 +173,11 @@ public class ServiceClientBLE extends IntentService {
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
         try {
-            if (rootIntent.getAction().equalsIgnoreCase("КлиентЗакрываетСлужбу")) {
-                Log.d(context.getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-                stopSelf();
-            }
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -303,21 +305,21 @@ public class ServiceClientBLE extends IntentService {
 
             Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + BluetoothСерверов.size());
             // TODO: 26.01.2023 начало сервера GATT
-            Flowable flowableЦиклСервера = Flowable.fromIterable(BluetoothСерверов.entrySet())
+
+
+        Flowable.fromIterable(BluetoothСерверов.entrySet())
                     .onBackpressureBuffer(true)
                     .subscribeOn(Schedulers.newThread())
                     .repeatWhen(repeat -> repeat.delay(5, TimeUnit.SECONDS))
                     .takeWhile(new Predicate<Map.Entry<String, UUID>>() {
                         @Override
                         public boolean test(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
-                            if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoSuccess")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("BluetoothDevice.BOND_NONE")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("BluetoothDevice.DEVICE_TYPE_UNKNOWN")
-                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("SERVER#SousAvtoERROR")) {
+                            if (mediatorLiveDataGATT.getValue().equalsIgnoreCase("SuccessWorkerGattClientWithServer")
+                                    || mediatorLiveDataGATT.getValue().equalsIgnoreCase("ErrorWorkerGattClientWithServer")) {
 
 
                                 Log.i(TAG, " mediatorLiveDataGATT.getValue() " + mediatorLiveDataGATT.getValue() + new Date().toLocaleString());
-                                МетодВыключениеКлиентаGatt();
+                                disaibleSessionGattServer();
 
                                 return false;
                             } else {
@@ -325,7 +327,8 @@ public class ServiceClientBLE extends IntentService {
                                 return true;
                             }
                         }
-                    }).doOnError(new Consumer<Throwable>() {
+                    })
+                    .doOnError(new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Throwable {
                             throwable.printStackTrace();
@@ -333,7 +336,7 @@ public class ServiceClientBLE extends IntentService {
                                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
                     })
-                    .take(15, TimeUnit.SECONDS)
+                    .take(30, TimeUnit.SECONDS)
                     .map(new Function<Map.Entry<String, UUID>, Object>() {
                         @Override
                         public Object apply(Map.Entry<String, UUID> stringUUIDEntry) throws Throwable {
@@ -352,16 +355,31 @@ public class ServiceClientBLE extends IntentService {
                                             " deviceClientGattEnable " + deviceClientGattEnable);
                                 } else {
 
-                                    ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
-                                    BluetoothDevice bluetoothDevice = bluetoothAdapterPhoneClient.getRemoteDevice("98:2F:F8:19:BC:F7");//TODO: HUAWEI MatePad SE
+
+                                    ConcurrentSkipListSet<String> concurrentSkipListSetMunualListServerDevice = new ConcurrentSkipListSet();
+                                    concurrentSkipListSetMunualListServerDevice.add("98:2F:F8:19:BC:F7");
+                                    concurrentSkipListSetMunualListServerDevice.forEach(new java.util.function.Consumer<String>() {
+                                        @Override
+                                        public void accept(String remoteManualServerGatt) {
 
 
-                                    // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
-                                    scanStateBorningDevice(bluetoothDevice);
+                                            ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
+                                            BluetoothDevice bluetoothDevice = bluetoothAdapterPhoneClient.getRemoteDevice(remoteManualServerGatt);//TODO: HUAWEI MatePad SE
 
-                                    ///TODO: когда ессть сами устройста Manual
-                                    manualDiveceFotConnecting(stringUUIDEntry, bluetoothDevice);
 
+                                            // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
+                                            analiysStateBorningDevice(bluetoothDevice);
+
+                                            ///TODO: когда ессть сами устройста Manual
+                                            manualDiveceFotConnecting(stringUUIDEntry, bluetoothDevice);
+
+                                            Log.d(this.getClass().getName(), "\n" + " class " +
+                                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
+                                                    " deviceClientGattEnable " + deviceClientGattEnable);
+                                        }
+                                    });
                                     Log.d(this.getClass().getName(), "\n" + " class " +
                                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -399,10 +417,15 @@ public class ServiceClientBLE extends IntentService {
                     .doOnComplete(new Action() {
                         @Override
                         public void run() throws Throwable {
-                            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT()... uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID);
+
+                            disaibleGattServer();
+
+                            Log.d(this.getClass().getName(), "\n" + " class " +
+                                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
-                    });
-            flowableЦиклСервера.subscribe();
+                    }).blockingSubscribe();
             Log.i(TAG, " ОтветОтGattServer  " + new Date().toLocaleString());
             /// mediatorLiveDataGATT
         } catch (Exception e) {
@@ -426,77 +449,78 @@ public class ServiceClientBLE extends IntentService {
     @SuppressLint("MissingPermission")
     private void loopAllDiveceFotConnecting(Map.Entry<String, UUID> stringUUIDEntry, Set<BluetoothDevice> deviceClientGatt) {
         ///TODO: оБработка реальный адресов BLE
-        try{
-        deviceClientGatt.forEach(new java.util.function.Consumer<BluetoothDevice>() {
+        try {
+            deviceClientGatt.forEach(new java.util.function.Consumer<BluetoothDevice>() {
 
-            @Override
-            public void accept(BluetoothDevice bluetoothDevice) {
+                @Override
+                public void accept(BluetoothDevice bluetoothDevice) {
 
-                Log.d(this.getClass().getName(), " bluetoothDevice " + bluetoothDevice);
+                    Log.d(this.getClass().getName(), " bluetoothDevice " + bluetoothDevice);
 
-                // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
-                scanStateBorningDevice(bluetoothDevice);
 
-                Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
-                Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
+                    // TODO: 16.07.2024 Если НЕ бонгинг не прошел Ну сопрязение то пытаемся его Провести
+                    analiysStateBorningDevice(bluetoothDevice);
 
-                // TODO: 12.02.2023  запускаем задачу в потоке
-                BluetoothGattCallback bluetoothGattCallback =
-                        МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
+                    Log.d("BT", "bluetoothDevice.getName(): " + bluetoothDevice.getName());
+                    Log.d("BT", "bluetoothDevice.getAddress(): " + bluetoothDevice.getAddress());
 
-                // TODO: 26.01.2023  конец сервера GATT
-                МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
+                    // TODO: 12.02.2023  запускаем задачу в потоке
+                    BluetoothGattCallback bluetoothGattCallback =
+                            МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry.getValue());
 
-                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
-                        + "uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " + bluetoothGattCallback);
-            }
-        });
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-    }
+                    // TODO: 26.01.2023  конец сервера GATT
+                    МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
+
+                    Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... "
+                            + "uuidКлючСервераGATTЧтениеЗапись " + getPublicUUID + " bluetoothGattCallback " + bluetoothGattCallback);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
     }
 
 
     @SuppressLint("MissingPermission")
-    private void scanStateBorningDevice(@NonNull BluetoothDevice bluetoothDevice) {
-try{
+    private void analiysStateBorningDevice(@NonNull BluetoothDevice bluetoothDevice) {
+        try {
+            byte[] pinBytes = "0000".getBytes();
 
-       if(bluetoothDevice.getType()==0 || bluetoothDevice.getType()==10){
-           bluetoothDevice.createBond();
 
-           Log.d(this.getClass().getName(), "\n" + " class " +
-                   Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                   " bluetoothDevice.getType() " + bluetoothDevice.getType());
-       }
-       else{
+            bluetoothDevice.setPin(pinBytes);
 
            Log.d(this.getClass().getName(), "\n" + " class " +
                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                   " bluetoothDevice.getType() " + bluetoothDevice.getType());
-       }
+                   " bluetoothDevice.getType() " + bluetoothDevice.getType() +
+                   "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
+                   " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
+
+
+            Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
+            m.invoke(bluetoothDevice, pinBytes);
+
+            Log.d(this.getClass().getName(), "Success to add the PIN.");
+
+            //bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
+
+
+            bluetoothDevice.createBond();
 
 
 
-        Log.d(this.getClass().getName(), "\n" + " class " +
-                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                " bluetoothDevice.getType() " + bluetoothDevice.getType());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -700,7 +724,7 @@ try{
 
                                     case 133 :
                                         // TODO: 16.07.2024 когда ошивка разрываем сообщение  
-                                        МетодВыключениеКлиентаGatt();
+                                        disaibleGattServer();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                         break;
 
@@ -749,10 +773,12 @@ try{
                                             Boolean successОтправка = gatt.writeCharacteristic(characteristics);
 
                                             if (successОтправка) {
-                                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoSuccess");
+                                                mediatorLiveDataGATT.setValue("SuccessWorkerGattClientWithServer");
                                                 gatt.executeReliableWrite();
                                             }else {
+                                                mediatorLiveDataGATT.setValue("ErrorWorkerGattClientWithServer");
                                                 gatt.abortReliableWrite();
+
                                             }
 
                                             Log.i(TAG, "characteristics" + new Date().toLocaleString()+  " characteristics "
@@ -760,7 +786,7 @@ try{
                                                     " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                         }
                                     }else {
-                                        mediatorLiveDataGATT.setValue("SERVER#SousAvtoERROR");
+                                        mediatorLiveDataGATT.setValue("SERVER#ErrorWorkerGattClientWithServer");
                                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
                                     }
@@ -905,12 +931,7 @@ try{
                     Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     //gatt.setPreferredPhy(BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_LE_2M_MASK,BluetoothDevice.PHY_OPTION_S2);
-               /*         bluetoothDevice.setPin("1234".getBytes(StandardCharsets.UTF_8));
-                        //setPairing confirmation if neeeded
-                        bluetoothDevice.setPairingConfirmation(true);*/
-
                     int bondstate = bluetoothDevice.getBondState();
-
 
                     Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -925,7 +946,9 @@ try{
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
                             });
-                            bluetoothDevice.createBond();
+                            // TODO: 22.07.2024  Принудительный Запуск Сопрежения
+                            analiysStateBorningDevice(bluetoothDevice);
+
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
@@ -937,14 +960,16 @@ try{
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
                             });
-                            bluetoothDevice.createBond();
+                            // TODO: 22.07.2024  Принудительный Запуск Сопрежения
+                            analiysStateBorningDevice(bluetoothDevice);
                           
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
                                     +"   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate );
                             break;
-                            
+
+
                         case BluetoothDevice.BOND_BONDING:
                             handler.post(()->{
                                 mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_BONDING");
@@ -1009,7 +1034,7 @@ try{
                 }
 
                 @SuppressLint("MissingPermission")
-                public void МетодВыключениеКлиентаGatt() {
+                public void disaibleSessionGattServer() {
         try{
                         if (gatt!=null) {
                             gatt.disconnect();
@@ -1034,6 +1059,32 @@ try{
     }
                 }
 
+    @SuppressLint("MissingPermission")
+    public void disaibleGattServer() {
+        try{
+            if (gatt!=null) {
+                gatt.disconnect();
+                gatt.close();
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);}
+            Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
+                    new Date().toLocaleString() + getWorkerStateClient
+                    + " gatt "+gatt);
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
     // TODO: 01.02.2023  класс Запуск OneSignala

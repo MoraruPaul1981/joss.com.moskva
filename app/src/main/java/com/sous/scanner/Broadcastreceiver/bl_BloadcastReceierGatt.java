@@ -1,16 +1,19 @@
 package com.sous.scanner.Broadcastreceiver;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
-import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
 
 import com.sous.scanner.Errors.SubClassErrors;
 
-import java.nio.charset.StandardCharsets;
+import java.lang.reflect.Method;
 
 public class bl_BloadcastReceierGatt {
 
@@ -28,34 +31,52 @@ public class bl_BloadcastReceierGatt {
 
 
     @SuppressLint({"MissingPermission", "NewApi"})
-    public BluetoothDevice getDevice(){
+    public void getDevice(){
         BluetoothDevice bluetoothDevice = null;
         try{
+
+     /*       bluetoothDevice.setPin("0000".getBytes(StandardCharsets.UTF_8));
+            bluetoothDevice.setPairingConfirmation(true);
+            bluetoothDevice.createBond();*/
+
         bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            Integer type =intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, BluetoothDevice.ERROR);
+            byte[] pinBytes = "0000".getBytes();
 
-            if (type == BluetoothDevice.PAIRING_VARIANT_PIN) {
+            bluetoothDevice.setPin(pinBytes);
 
-        Toast.makeText(context, "Connected to "+bluetoothDevice.getName(),
-                Toast.LENGTH_SHORT).show();
 
-            int pin=intent.getIntExtra("android.bluetooth.device.extra.PAIRING_KEY", 0);
-//the pin in case you need to accept for an specific pin
-            Log.d("PIN", " " + intent.getIntExtra("android.bluetooth.device.extra.PAIRING_KEY",0));
-            //maybe you look for a name or address
-            Log.d("Bonded", bluetoothDevice.getName());
 
-            bluetoothDevice.setPin("1234".getBytes(StandardCharsets.UTF_8));
-            //setPairing confirmation if neeeded
-            bluetoothDevice.setPairingConfirmation(true);
+                Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
+                m.invoke(bluetoothDevice, pinBytes);
 
-            }
+                Log.d(this.getClass().getName(), "Success to add the PIN.");
+
+            bluetoothDevice.createBond();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "BroadcastActions"+ "Connected to "+bluetoothDevice.getName());
+                    "PIN  ");
+
+
+                //   bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
+
+
+/*
+
+            byte[] pin = (byte[]) BluetoothDevice.class.getMethod("convertPinToBytes", String.class).invoke(BluetoothDevice.class, pinBytes);
+            Method m2 = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
+            m2.invoke(bluetoothDevice, pin);
+          //  bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
+
+*/
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    "  Success to setPairingConfirmation. "+bluetoothDevice.getName());
 
         } catch (Exception e) {
         e.printStackTrace();
@@ -71,7 +92,7 @@ public class bl_BloadcastReceierGatt {
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
-        return  bluetoothDevice;
+
     }
 
 
