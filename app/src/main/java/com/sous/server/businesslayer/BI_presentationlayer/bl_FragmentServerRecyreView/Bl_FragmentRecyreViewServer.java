@@ -711,7 +711,7 @@ public class Bl_FragmentRecyreViewServer  {
                 if (getconcurrentHashMapCursor==null) {
                     getFragmentScannerGatt=1;
                 } else {
-                    getFragmentScannerGatt=getconcurrentHashMapCursor.getCount();
+                    getFragmentScannerGatt=getconcurrentHashMapCursor.getCount()-1;
                 }
 
                 Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

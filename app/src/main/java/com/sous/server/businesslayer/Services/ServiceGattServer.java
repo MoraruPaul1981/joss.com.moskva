@@ -97,9 +97,6 @@ public class ServiceGattServer extends IntentService {
     protected ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap;
 
 
-   protected   ConcurrentHashMap<String,Cursor> concurrentHashMapCursor=new ConcurrentHashMap<>();
-
-   protected    Cursor successfuldevices;
 
     private    AtomicReference<byte[]> atomicReferenceValue = new AtomicReference<>();
 
@@ -107,6 +104,7 @@ public class ServiceGattServer extends IntentService {
         super("ServiceGattServer");
     }
 
+    private    Cursor successfuldevices;
 
 
     @Override
@@ -941,14 +939,11 @@ public class ServiceGattServer extends IntentService {
                 // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
                 if (resultAddDeviceToGattaDtabse >0) {
 
-
+                    getcloseCursorAndHashMap();
                 //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
 
 
-
-                    getcloseCursorAndHashMap();
-
-                concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
+                    ConcurrentHashMap<String,Cursor>        concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
 
                 Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
@@ -1195,28 +1190,6 @@ public class ServiceGattServer extends IntentService {
 
 
 
-    public  Integer МетодЗаписиОтмечаногоСотрудникаВБАзу(@NonNull Context appContext) {
-        Integer РезульататЗАписиНовогоДивайса=0;
-        try{
-          Log.i(appContext.getClass().getName(), "запись сотрудника в базу"+ " " );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return  0;
-    }
-
 
     // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
     public  Integer МетодПоискДАнныхПоБазе(@NonNull String СамЗапрос) {
@@ -1308,7 +1281,7 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
         Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
         successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
         if (successfuldevices.getCount()>0){
-            successfuldevices.moveToLast();
+            successfuldevices.move(successfuldevices.getCount());
             // TODO: 19.07.2024  Запаопление данными Курсора
             cursorConcurrentHashMapGatt.compute("Cursor",(x,y)->successfuldevices);
         }
@@ -1335,72 +1308,16 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
 }
 
     private void getcloseCursorAndHashMap() {
- try{
-        if (concurrentHashMapCursor!=null) {
-            concurrentHashMapCursor.clear();
-        }
-
-        if (successfuldevices!=null) {
-            if (successfuldevices.isClosed()==false) {
-                successfuldevices.close();
-            }
-        }
-        Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+
-                " successfuldevices " +successfuldevices);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-    }
-
-
-    @SuppressLint("MissingPermission")
-    private void analiysStateBorningDevice(@NonNull BluetoothDevice bluetoothDevice) {
         try {
-            byte[] pinBytes = "0000".getBytes();
-
-
-            bluetoothDevice.setPin(pinBytes);
-
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            if (successfuldevices != null) {
+                if (successfuldevices.isClosed() == false) {
+                    successfuldevices.close();
+                }
+            }
+            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " bluetoothDevice.getType() " + bluetoothDevice.getType() +
-                    "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
-                    " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
-
-
-            Method m = bluetoothDevice.getClass().getMethod("setPin", byte[].class);
-            m.invoke(bluetoothDevice, pinBytes);
-
-            Log.d(this.getClass().getName(), "Success to add the PIN.");
-
-            //bluetoothDevice.getClass().getMethod("setPairingConfirmation", boolean.class).invoke(bluetoothDevice, true);
-
-
-            bluetoothDevice.createBond();
-
-            Log.d(this.getClass().getName(), "\n" + " class " +
-                    Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " bluetoothDevice.getType() " + bluetoothDevice.getType() +
-                    "  bluetoothDevice.fetchUuidsWithSdp() " + bluetoothDevice.fetchUuidsWithSdp()+
-                    " bluetoothDevice.getUuids() " +bluetoothDevice.getUuids());
-
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " + successfuldevices +
+                    " successfuldevices " + successfuldevices);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -1413,7 +1330,9 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
         }
+
+
     }
 }
