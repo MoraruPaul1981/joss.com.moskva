@@ -37,7 +37,6 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
-import com.sous.server.businesslayer.BroadcastreceiverServer.bl_BloadcastReceierGatt;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -97,7 +96,9 @@ public class ServiceGattServer extends IntentService {
     protected ConcurrentHashMap<String,ContentValues> contentValuesConcurrentHashMap;
 
 
+   protected   ConcurrentHashMap<String,Cursor> concurrentHashMapCursor=new ConcurrentHashMap<>();
 
+   protected    Cursor successfuldevices;
 
     public ServiceGattServer() {
         super("ServiceGattServer");
@@ -936,9 +937,15 @@ public class ServiceGattServer extends IntentService {
 
                 // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
                 if (resultAddDeviceToGattaDtabse >0) {
+
+
                 //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
 
-                ConcurrentHashMap<String,Cursor> concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
+
+
+                    getcloseCursorAndHashMap();
+
+                concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
 
                 Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
                         " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
@@ -1292,8 +1299,9 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
  //TODO
     ConcurrentHashMap<String,Cursor> cursorConcurrentHashMapGatt=new ConcurrentHashMap<>();
     try{
+
         Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-        Cursor successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
+        successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
         if (successfuldevices.getCount()>0){
             successfuldevices.moveToLast();
             // TODO: 19.07.2024  Запаопление данными Курсора
@@ -1321,7 +1329,36 @@ public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@Non
     return  cursorConcurrentHashMapGatt;
 }
 
+    private void getcloseCursorAndHashMap() {
+ try{
+        if (concurrentHashMapCursor!=null) {
+            concurrentHashMapCursor.clear();
+        }
 
+        if (successfuldevices!=null) {
+            if (successfuldevices.isClosed()==false) {
+                successfuldevices.close();
+            }
+        }
+        Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+
+                " successfuldevices " +successfuldevices);
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
+    }
 
 
     @SuppressLint("MissingPermission")

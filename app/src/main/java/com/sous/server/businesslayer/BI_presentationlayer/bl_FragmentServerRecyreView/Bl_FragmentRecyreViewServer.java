@@ -332,7 +332,9 @@ public class Bl_FragmentRecyreViewServer  {
         private MaterialCardView  card_server_success_data_oncreateviewholder;
 
         private TabLayout  tabLayout_server_ble;
+        private TabLayout  tabLayout_server_ble_parent;
         // TODO: 18.07.2024 TextInputEditText все компонеты
+        private    TextInputEditText   textinputtext_id_currentrow;
         private    TextInputEditText textinputtext_namedevice;
 
         private    TextInputEditText textinputtext_macdevice;
@@ -388,7 +390,11 @@ public class Bl_FragmentRecyreViewServer  {
 
                      tabLayout_server_ble = itemView.findViewById(R.id.id_tabLayout_server_ble);
 
+                   tabLayout_server_ble_parent = itemView.findViewById(R.id.id_tabLayout_server_ble_parent);
+
                     // TODO: 18.07.2024 TextInputEditText все компонеты
+                    textinputtext_id_currentrow = itemView.findViewById(R.id.id_textinputtext_id_currentrow);
+
                     textinputtext_namedevice = itemView.findViewById(R.id.id_textinputtext_namedevice);
 
                     textinputtext_macdevice = itemView.findViewById(R.id.id_textinputtext_macdevice);
@@ -628,6 +634,8 @@ public class Bl_FragmentRecyreViewServer  {
 
                         // TODO: 18.07.2024  Главные Методы ЗАполения
 
+                        gettextinputtext_id_currentrow(holder,getconcurrentHashMapCursor);
+
                        gettextinputtext_namedevice(holder,getconcurrentHashMapCursor);
 
 
@@ -649,6 +657,8 @@ public class Bl_FragmentRecyreViewServer  {
 
 
                         getAnimationtabLayout_server_ble(holder);
+
+                        getAnimationtabLayout_server_bleparent(holder);
 
 
                         Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -730,6 +740,14 @@ public class Bl_FragmentRecyreViewServer  {
         try{
         Animation animationscroll  = AnimationUtils.loadAnimation(context, R.anim.fadein);
         holder.tabLayout_server_ble.startAnimation(animationscroll);
+
+        messageGattServer.getTarget().postDelayed(()->{
+            holder.tabLayout_server_ble.setBackgroundColor(Color.WHITE);
+
+
+        },1500);
+            holder.tabLayout_server_ble.setBackgroundColor(Color.GRAY);
+
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -745,7 +763,25 @@ public class Bl_FragmentRecyreViewServer  {
         new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
-
+    private void getAnimationtabLayout_server_bleparent(@NonNull MyViewHolder holder) {
+        try{
+            Animation animationscroll  = AnimationUtils.loadAnimation(context, R.anim.fadein_server);
+            holder.textinputtext_id_currentrow.startAnimation(animationscroll);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
     @SuppressLint("Range")
     private void gettextinputtext_gps2(@NonNull MyViewHolder holder, @NonNull Cursor getconcurrentHashMapCursor) {
         try{
@@ -997,7 +1033,34 @@ public class Bl_FragmentRecyreViewServer  {
     // TODO: 18.07.2024 Методы главные заполения данные GATT client START
     // TODO: 18.07.2024 Методы главные заполения данные GATT client START
 
+    @SuppressLint("Range")
+    private void gettextinputtext_id_currentrow(@NonNull MyViewHolder holder, @NonNull Cursor getconcurrentHashMapCursor) {
+        try{
+            holder. textinputtext_id_currentrow.setText(getconcurrentHashMapCursor.getString(getconcurrentHashMapCursor.getColumnIndex("current_table")));//todo "namedevice"
+            holder. textinputtext_id_currentrow.setClickable(false);
+            holder.  textinputtext_id_currentrow.setFocusable(false);
+            holder.  textinputtext_id_currentrow.refreshDrawableState();
+            holder.  textinputtext_id_currentrow.requestLayout();
 
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                    +"   getconcurrentHashMapCursor.getColumnIndex(\"namedevice\")" + getconcurrentHashMapCursor.getColumnIndex("namedevice"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
     @SuppressLint("Range")
     private void gettextinputtext_namedevice(@NonNull MyViewHolder holder, @NonNull Cursor getconcurrentHashMapCursor) {
         try{
@@ -1056,6 +1119,8 @@ public class Bl_FragmentRecyreViewServer  {
     public void reBootrecyclerView() {
         try {
             recyclerViewServer.getAdapter().notifyDataSetChanged();
+            recyclerViewServer.setClickable(false);
+            recyclerViewServer.setFocusable(false);
             recyclerViewServer.requestLayout();
             recyclerViewServer.forceLayout();
             recyclerViewServer.refreshDrawableState();
@@ -1119,7 +1184,8 @@ public class Bl_FragmentRecyreViewServer  {
 
     public void settingAnimatios(@NonNull  RecyclerView recyclerview_server_ble) {
         try {
-            recyclerview_server_ble.startAnimation(animation);
+            Animation animationscroll  = AnimationUtils.loadAnimation(context, R.anim.fadein_server);
+            recyclerview_server_ble.startAnimation(animationscroll);
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+

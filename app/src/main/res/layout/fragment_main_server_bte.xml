@@ -20,7 +20,7 @@
     android:orientation="vertical">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/id_tabLayout_server_ble"
+            android:id="@+id/id_tabLayout_server_ble_parent"
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             android:layout_width="180dp"
@@ -67,7 +67,7 @@
             app:strokeWidth="1dp"
             android:translationZ="15dp"
             android:animateLayoutChanges="true"
-            android:layout_below="@+id/id_tabLayout_server_ble"
+            android:layout_below="@+id/id_tabLayout_server_ble_parent"
             android:layout_above="@+id/id_progressbar_server_ble">
 
 

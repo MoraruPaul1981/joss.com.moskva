@@ -55,6 +55,32 @@
         </com.google.android.material.tabs.TabLayout>
 
 
+        <!-- //TODO:   id currentROW  -->
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/id_textinputlayout_id_currentrow"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+            android:layout_below="@+id/id_tabLayout_server_ble"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="2dp"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="outline"
+            android:focusableInTouchMode="true">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/id_textinputtext_id_currentrow"
+                android:backgroundTint="#707B7C"
+                android:inputType="textCapSentences|textMultiLine"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:hint="id"
+                android:text="id value " />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
 
@@ -63,7 +89,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/id_textinputlayout_namedevice"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_below="@+id/id_tabLayout_server_ble"
+            android:layout_below="@+id/id_textinputlayout_id_currentrow"
             android:layout_centerHorizontal="true"
             android:layout_margin="2dp"
 
