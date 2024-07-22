@@ -486,8 +486,6 @@ public class ServiceGattServer extends IntentService {
 
                     try {
 
-                        bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(getApplicationContext(), version);
-                        blBloadcastReceierGatt.getPairingANdBondingDevice(device,0000);
 
                         МетодКоннектаДеконнектасКлиентамиGatt(device, status, newState);
 
@@ -1134,7 +1132,6 @@ public class ServiceGattServer extends IntentService {
         switch (newState) {
             case BluetoothProfile.STATE_CONNECTED:
                     getBluetoothGattServer.connect(device,true);
-
                 ///TODO: SucceessAddDevice
                 Bundle    bundleAddDeviceSuccess = new Bundle();
                 bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
