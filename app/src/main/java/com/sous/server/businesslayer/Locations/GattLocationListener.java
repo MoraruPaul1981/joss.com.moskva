@@ -21,6 +21,11 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 /*---------- Listener class to get coordinates ------------- */
 public class GattLocationListener implements LocationListener {
     private  Context context;
@@ -43,7 +48,18 @@ public class GattLocationListener implements LocationListener {
             atomicReferenceLocal.set(loc);
 
 
-            getingLocationsGps();
+      Disposable disposable= Observable.just(getingLocationsGps())
+              .subscribeOn(Schedulers.single())
+              .observeOn(Schedulers.single())
+              .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
+                  @Override
+                  public void accept(Throwable throwable) throws Throwable {
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " throwable " +throwable.getStackTrace() );
+                  }
+              })
+              .subscribe();
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -69,7 +85,8 @@ public class GattLocationListener implements LocationListener {
 
         }
 
-    private  synchronized  void getingLocationsGps() throws IOException {
+    private  synchronized   List<Address> getingLocationsGps() throws IOException {
+        List<Address> addresses = null;
         try{
         String longitude = "Longitude: " + atomicReferenceLocal.get().getLongitude();
         /*------- To get city name from coordinates -------- */
@@ -77,7 +94,7 @@ public class GattLocationListener implements LocationListener {
         String cityName = null;
         Geocoder gcd = new Geocoder(context, Locale.getDefault());
         Log.i(TAG, "MyLocationListener GPS gcd "+gcd);
-        List<Address> addresses;
+
 
         addresses = gcd.getFromLocation(atomicReferenceLocal.get().getLatitude(),
                 atomicReferenceLocal.get().getLongitude(), 1);
@@ -140,7 +157,7 @@ public class GattLocationListener implements LocationListener {
         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
         new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
     }
-
+return  addresses;
 
 
     }

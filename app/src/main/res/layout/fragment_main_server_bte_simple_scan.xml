@@ -121,11 +121,11 @@
             android:minHeight="55dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="#A6A3A2"
+            android:background="#777473"
             android:scrollbarFadeDuration="150"
             app:itemIconTint="#F2F5F5"
             app:itemTextColor="@color/black"
-            app:menu="@menu/menufornavigator_scanner"
+            app:menu="@menu/menufornavigator_scanner_simple"
             android:layout_margin="5dp"
             android:padding="1dp"
             tools:ignore="MissingConstraints" />
