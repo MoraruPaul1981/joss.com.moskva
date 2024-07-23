@@ -971,9 +971,9 @@ public class FragmentScannerUser extends Fragment {
                             public void onChanged(ConcurrentHashMap<String, String> stringStringConcurrentHashMap) {
 
                                 //todo  get State Ot Gatt Server
-                                String getKeymediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().keySet().stream().findAny().get();
+                                String getKeymediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().keySet().stream().findAny().get().trim();
                                 // TODO: 23.07.2024
-                                String getValuemediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().values().stream().findAny().get();
+                                String getValuemediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().values().stream().findAny().get().trim();
 
                                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1075,7 +1075,6 @@ public class FragmentScannerUser extends Fragment {
                                         snackBarView.setBackgroundColor(Color.GRAY);
                                         snackBarView.setLayoutParams(params);
                                         snackbar.show();
-                                        mediatorLiveDataGATTClient.setValue(new ConcurrentHashMap<>());
                                         break;
 
 
@@ -1084,7 +1083,6 @@ public class FragmentScannerUser extends Fragment {
                                         // TODO: 07.02.2023 Успешный статус
                                         actionSuceessControl(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,v,holder);
                                         // TODO: 23.07.2024
-                                        mediatorLiveDataGATTClient.setValue(new ConcurrentHashMap<>());
                                         Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                                 + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue()+
                                                 " ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
@@ -1116,6 +1114,10 @@ public class FragmentScannerUser extends Fragment {
                                           @NonNull String ДействиеДляСервераGATTОТКлиент,
                                           @NonNull View v,@NonNull MyViewHolder holder) {
             try{
+
+                handler.getTarget().post(() -> {
+                    materialButtonКакоеДействие.setText("Контоль успешный !!!");
+                });
 
                 // TODO: 17.07.2024
                 Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
