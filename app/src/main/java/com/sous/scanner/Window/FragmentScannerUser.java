@@ -15,11 +15,13 @@ import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
@@ -1071,7 +1074,7 @@ public class FragmentScannerUser extends Fragment {
                                         Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
                                          animation.setDuration(100l);
                                         v.startAnimation(animation);
-                                        
+
                                         
                                         materialButtonКакоеДействие.setText("Успешно !!!");
                                         Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
@@ -1103,18 +1106,16 @@ public class FragmentScannerUser extends Fragment {
 
                                         writertoSharedPreferencesStatusOtGattServer(ДействиеДляСервераGATTОТКлиента, new Date().toLocaleString());
 
-                                        // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT",
-                                                "");
-                                        String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
-                                                + "\n" + ПоследнаяДатаСканера);
-                                        holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.RED);
-                                        holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
-                                        holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
+                                        Snackbar snackbar = Snackbar.make(v.getRootView(), "Ошибка контроль не прошел !!!", Snackbar.LENGTH_LONG);
+                                        final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
+                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
+                                        params.setMargins(20, 0, 20, 50);
+                                        params.gravity = Gravity.BOTTOM;
+                                        snackBarView.setBackgroundColor(Color.GRAY);
+                                        snackBarView.setLayoutParams(params);
+                                        snackbar.show();
+
+
                                     });
 
 

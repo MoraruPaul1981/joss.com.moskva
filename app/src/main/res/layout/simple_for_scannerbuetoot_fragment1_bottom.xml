@@ -27,21 +27,45 @@
             android:drawablePadding="5dp"
             android:drawableLeft="@drawable/icon_dsu1_scanner_status_last"
             android:gravity="center_vertical"
-            android:hint="Последний статус"
+            android:hint="ответ контроля"
             android:padding="2dp"
-
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
-
-
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
-
             android:textColor="#7F8080"
             android:textColorHint="#7F8080"
             android:textSize="15sp"
             android:textStyle="bold"
             android:translationZ="50dp" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textViewDefaultNameState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:layout_toLeftOf ="@+id/textView5getstatus"
+            android:gravity="center_vertical"
+            android:hint="Последний Статус:"
+            android:padding="2dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:textColor="#AAACAC"
+            android:textColorHint="#A3AAAA"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:translationZ="50dp" />
+
+
+
+
+
+
+
 
 
 
