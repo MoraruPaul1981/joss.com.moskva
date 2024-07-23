@@ -895,8 +895,8 @@ public class FragmentScannerUser extends Fragment {
                     .onBackpressureBuffer(true)
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .repeatWhen(repeat->repeat.delay(30,TimeUnit.SECONDS))
-                    .take(30,TimeUnit.SECONDS)
+                    .repeatWhen(repeat->repeat.delay(15,TimeUnit.SECONDS))
+                    .take(15,TimeUnit.SECONDS)
                     .takeWhile(new Predicate<Object>() {
                         @Override
                         public boolean test(Object o) throws Throwable {
@@ -1017,8 +1017,8 @@ public class FragmentScannerUser extends Fragment {
                     .onBackpressureBuffer(true)
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .repeatWhen(repeat->repeat.delay(30,TimeUnit.SECONDS))
-                    .take(30,TimeUnit.SECONDS)
+                    .repeatWhen(repeat->repeat.delay(15,TimeUnit.SECONDS))
+                    .take(15,TimeUnit.SECONDS)
                     .takeWhile(new Predicate<Object>() {
                         @Override
                         public boolean test(Object o) throws Throwable {
