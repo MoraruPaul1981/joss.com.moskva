@@ -534,11 +534,15 @@ public class FragmentScannerUser extends Fragment {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
                 // TODO: 08.02.2023 кнопка ПРИХОДА с работы
                 materialButtonКотрольПриход = itemView.findViewById(R.id.bottomcontrolfragmen1);
-                materialButtonКотрольПриход.setText("На Работу");
+                materialButtonКотрольПриход.setText("На Работу333");
                 materialButtonКотрольПриход.setToggleCheckedStateOnClick(true);
+
+
                 // TODO: 08.02.2023 кнопка выхода с работы
                 materialButtonКотрольВыход = itemView.findViewById(R.id.bottomcontrolfragmen2);
                 materialButtonКотрольВыход.setText("С работы");
+
+
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
                 // TODO: 09.02.2023 данные из хранилища
@@ -1004,31 +1008,25 @@ public class FragmentScannerUser extends Fragment {
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Конец сессии !!!");//
                                         Log.i(this.getClass().getName(), "   mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
                                     });
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
+
 
                                 case "BluetoothDevice.BOND_NONE":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
                                     });
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
                                     break;
 
+
+
                                 case "BluetoothProfile.STATE_DISCONNECTED":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Конец соединения !!!");
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
                                     });
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
@@ -1037,10 +1035,7 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "BluetoothGatt.GATT_FAILURE":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("ошибка  !!!");
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
+                                        materialButtonКакоеДействие.setText("Ошибка сессии  !!!");
                                     });
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                             + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
@@ -1055,9 +1050,6 @@ public class FragmentScannerUser extends Fragment {
                                 case "BluetoothDevice.DEVICE_TYPE_UNKNOWN":
                                     handler.getTarget().post(() -> {
                                         materialButtonКакоеДействие.setText("Нет  сопряжение !!!");
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
                                     });
 
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
@@ -1068,43 +1060,24 @@ public class FragmentScannerUser extends Fragment {
 
                                 case "SuccessWorkerGattClientWithServer":
                                     // TODO: 07.02.2023 Успешный статус
-                                    handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        // TODO: 17.07.2024
-                                        Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
-                                         animation.setDuration(100l);
-                                        v.startAnimation(animation);
-
-                                        
-                                        materialButtonКакоеДействие.setText("Успешно !!!");
-                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                        v2.vibrate(VibrationEffect.createOneShot(150, VibrationEffect.DEFAULT_AMPLITUDE));
-
-                                        // TODO: 07.02.2023  записываем смены статуса
-                                        writertoSharedPreferencesStatusOtGattServer(ДействиеДляСервераGATTОТКлиента, new Date().toLocaleString());
-
-                                        // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
-                                        String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                                        holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
-                                                + "\n" + ПоследнаяДатаСканера);
-                                        holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
-                                        holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
-                                        holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
-                                        // TODO: 11.02.2023  
-                                        handler.getTarget().postDelayed(() -> {
-                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
-                                        }, 1500);
-                                    });
+                                    actionSuceessControl(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,v,holder);
+                                    // TODO: 23.07.2024
+                                    mediatorLiveDataGATTClient.setValue("");
                                     Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue());
+                                            + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue()+
+                                            " ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
                                     break;
+
+
+
                                 // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                 case "ErrorWorkerGattClientWithServer":
                                     handler.getTarget().post(() -> {
-                                        materialButtonКакоеДействие.setText("Не Успешно !!!");
 
-                                        writertoSharedPreferencesStatusOtGattServer(ДействиеДляСервераGATTОТКлиента, new Date().toLocaleString());
+
+                                        materialButtonКакоеДействие.setText("Контроль не прошел !!!");
+
+
 
                                         Snackbar snackbar = Snackbar.make(v.getRootView(), "Ошибка контроль не прошел !!!", Snackbar.LENGTH_LONG);
                                         final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
@@ -1114,7 +1087,7 @@ public class FragmentScannerUser extends Fragment {
                                         snackBarView.setBackgroundColor(Color.GRAY);
                                         snackBarView.setLayoutParams(params);
                                         snackbar.show();
-
+                                        mediatorLiveDataGATTClient.setValue("");
 
                                     });
 
@@ -1167,6 +1140,54 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
+        private void actionSuceessControl(@NonNull MaterialButton materialButtonКакоеДействие,
+                                          @NonNull String ДействиеДляСервераGATTОТКлиент,
+                                          @NonNull View v,@NonNull MyViewHolder holder) {
+            try{
+
+                // TODO: 17.07.2024
+                Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+                 animation.setDuration(100l);
+                v.startAnimation(animation);
+                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+
+
+
+                // TODO: 08.02.2023 показыввем клиент смененый статус
+                String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
+                String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
+                holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
+                        + "\n" + ПоследнаяДатаСканера);
+                holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
+                holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
+                holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
+
+
+
+            handler.getTarget().postDelayed(() -> {
+                    materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиент+565656565);
+                }, 3000);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
 
 
 
@@ -1197,27 +1218,7 @@ public class FragmentScannerUser extends Fragment {
 
 
 
-        private void writertoSharedPreferencesStatusOtGattServer(@NonNull String СтатусРаботыGatt, @NonNull String ДатаСменыСтатуса) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("СменаСтатусРАботыКлиентасGATT", СтатусРаботыGatt);
-            editor.putString("СменаДАтаРАботыGATT", ДатаСменыСтатуса);
-            editor.commit();
-            try {
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                ContentValues valuesЗаписываемОшибки = new ContentValues();
-                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                final Object ТекущаяВерсияПрограммы = version;
-                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-            }
-        }
+
 
         @Override
         public long getItemId(int position) {

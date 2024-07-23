@@ -282,7 +282,13 @@ public class ServiceClientBLE extends IntentService {
     private void МетодЗапускаСканированиеКлиент() {
         try {
 
-            mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
+            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                    "SuccessWorkerGattClientWithServer") &&
+                   ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                            "ErrorWorkerGattClientWithServer")) {
+                // TODO: 23.07.2024  
+                mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
+            }
 
             // TODO: 12.02.2023 адреса разыне колиентов
             getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
@@ -567,7 +573,15 @@ public class ServiceClientBLE extends IntentService {
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  " +
                                                 ""+new Date().toLocaleString());
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_CONNECTED");
+                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                    "SuccessWorkerGattClientWithServer") &&
+                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                            "ErrorWorkerGattClientWithServer")) {
+                                                // TODO: 23.07.2024
+
+
+                                                mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_CONNECTED");
+                                            }
                                         });
                                          Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT + " newState " +newState);
@@ -575,7 +589,13 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothProfile.STATE_DISCONNECTED :
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_DISCONNECTED");
+                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                    "SuccessWorkerGattClientWithServer") &&
+                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                            "ErrorWorkerGattClientWithServer")) {
+                                                // TODO: 23.07.2024
+                                                mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_DISCONNECTED");
+                                            }
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -584,7 +604,13 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothGatt.GATT_FAILURE:
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_FAILURE");
+                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                    "SuccessWorkerGattClientWithServer") &&
+                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                            "ErrorWorkerGattClientWithServer")) {
+                                                // TODO: 23.07.2024
+                                                mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_FAILURE");
+                                            }
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -593,7 +619,13 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothGatt.GATT_CONNECTION_CONGESTED :
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_CONNECTION_CONGESTED");
+                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                    "SuccessWorkerGattClientWithServer") &&
+                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                            "ErrorWorkerGattClientWithServer")) {
+                                                // TODO: 23.07.2024
+                                                mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_CONNECTION_CONGESTED");
+                                            }
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -664,12 +696,24 @@ public class ServiceClientBLE extends IntentService {
                                                     " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                         }
                                     }else {
-                                        mediatorLiveDataGATT.setValue("SERVER#ErrorWorkerGattClientWithServer");
+                                        if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                "SuccessWorkerGattClientWithServer") &&
+                                                ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                        "ErrorWorkerGattClientWithServer")) {
+                                            // TODO: 23.07.2024
+                                            mediatorLiveDataGATT.setValue("SERVER#ErrorWorkerGattClientWithServer");
+                                        }
                                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
                                     }
                                 }else{
-                                    mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
+                                    if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                            "SuccessWorkerGattClientWithServer") &&
+                                            ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
+                                                    "ErrorWorkerGattClientWithServer")) {
+                                        // TODO: 23.07.2024
+                                        mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
+                                    }
                                     Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
 
