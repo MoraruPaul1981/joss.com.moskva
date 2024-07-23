@@ -41,7 +41,7 @@ public class Bl_forServiceGattServerScan {
 
     protected ContentProviderServer contentProviderServer;
 
-
+    private    Cursor successfuldevices;
 
 
 
@@ -124,7 +124,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return contentValuesВставкаДанных;
     }
@@ -143,7 +143,7 @@ public class Bl_forServiceGattServerScan {
                 Log.i(this.getClass().getName(), "ВремяДАнных"+ ВремяДАнных) ;
                 ТакоеВремяУжеЕсть=true;
             }
-            Log.d(getApplicationContext().getClass().getName(), "\n"
+            Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
@@ -151,7 +151,7 @@ public class Bl_forServiceGattServerScan {
             // TODO: 19.07.2024 closing
             cursorПолучаемДЛяСевреа.close();
 
-            Log.d(getApplicationContext().getClass().getName(), "\n"
+            Log.d(this.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
@@ -168,7 +168,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return  ТакоеВремяУжеЕсть;
     }
@@ -185,7 +185,7 @@ public class Bl_forServiceGattServerScan {
             Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
             resultAddDeviceToGattaDtabse=   contentProviderServer.insert(uri, contentValuesВставкаДанныхGattServer);
 
-            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse);
 
@@ -207,7 +207,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return Integer.parseInt(resultAddDeviceToGattaDtabse.toString() );
     }
@@ -230,7 +230,7 @@ public class Bl_forServiceGattServerScan {
                 cursorConcurrentHashMapGatt.compute("Cursor",(x,y)->successfuldevices);
             }
             // TODO: 19.07.2024 closing
-            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+
                     " cursorConcurrentHashMapGatt " +cursorConcurrentHashMapGatt);
@@ -246,7 +246,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return  cursorConcurrentHashMapGatt;
     }
@@ -260,7 +260,7 @@ public class Bl_forServiceGattServerScan {
                                                            @NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
         try{
 
-            Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+            Vibrator v2 = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
             v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
 
@@ -284,7 +284,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
     }
 
@@ -329,7 +329,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
 
     }
@@ -355,7 +355,7 @@ public class Bl_forServiceGattServerScan {
                 Log.i(this.getClass().getName(), "ВерсияДАнных"+ ВерсияДАнных) ;
                 ВерсияДАнных++;
             }
-            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
+            Log.w(this.getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
             cursorПолучаемДЛяСевреа.close();
             Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
         } catch (Exception e) {
@@ -370,7 +370,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return  ВерсияДАнных;
     }
@@ -412,7 +412,7 @@ public class Bl_forServiceGattServerScan {
             final Object ТекущаяВерсияПрограммы = version;
             Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
         return getUUID;
     }
