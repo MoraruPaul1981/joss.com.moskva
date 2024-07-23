@@ -52,15 +52,18 @@ import com.sous.scanner.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -548,15 +551,11 @@ public class FragmentScannerUser extends Fragment {
                 materialButtonКотрольВыход = itemView.findViewById(R.id.bottomcontrolfragmen2);
                 materialButtonКотрольВыход.setText("С работы");
 
+                materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
+
 
                 // TODO: 08.02.2023 СТАТУС послдная задача
-                materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
-                // TODO: 09.02.2023 данные из хранилища
-                String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "Последнее действие");
-                ПоследнийСтатусСканера = ПоследнийСтатусСканера.toUpperCase();
-                String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + ": " + ПоследнаяДатаСканера);
-                materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                changeStatusMainEventUIPresent(itemView);
                 // TODO: 17.07.2024
 
                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -577,6 +576,34 @@ public class FragmentScannerUser extends Fragment {
                 valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
+        }
+
+        private void changeStatusMainEventUIPresent(@NonNull View itemView) {
+            try{
+            // TODO: 09.02.2023 данные из хранилища
+            String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "Последнее действие");
+            ПоследнийСтатусСканера = ПоследнийСтатусСканера.toUpperCase();
+            String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
+            materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера + ": " + ПоследнаяДатаСканера);
+            materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
         }
     }
 
@@ -980,18 +1007,8 @@ public class FragmentScannerUser extends Fragment {
                                 // TODO: 23.07.2024
                                 String getValuemediatorLiveDataGATTClient= stringStringConcurrentHashMap.values().stream().findAny().get().trim();
 
-
-
-
-
-
-                              Map<Object, List<String>> listMap = stringStringConcurrentHashMap.values()
-                                        .stream()
-                                      .filter(s->stringStringConcurrentHashMap.containsKey("callBackSeceesDataOtServer") )
-                                        .collect(Collectors.groupingBy(s->s.equalsIgnoreCase("callBackSeceesDataOtServer"), Collectors.toList()));
-
-
-                                String listMap2 =     stringStringConcurrentHashMap.values()
+                                // TODO: 23.07.2024 send Data from Server After Connect Success
+                                String callBackSeceesDataOtServer =     stringStringConcurrentHashMap.values()
                                         .stream()
                                         .filter(s->stringStringConcurrentHashMap.containsKey("callBackSeceesDataOtServer") )
                                         .map(map -> stringStringConcurrentHashMap.get("callBackSeceesDataOtServer")).findAny().orElseGet(new Supplier<String>() {
@@ -1008,7 +1025,8 @@ public class FragmentScannerUser extends Fragment {
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                         " getKeymediatorLiveDataGATTClient    " + getKeymediatorLiveDataGATTClient +
-                                        " getValuemediatorLiveDataGATTClient " + getValuemediatorLiveDataGATTClient);
+                                        " getValuemediatorLiveDataGATTClient " + getValuemediatorLiveDataGATTClient+
+                                        "  callBackSeceesDataOtServer " +callBackSeceesDataOtServer);
 
 // TODO: 23.07.2024 Analys KEY
                                 // TODO: 24.01.2023  State get ot Gatt Server
@@ -1106,7 +1124,7 @@ public class FragmentScannerUser extends Fragment {
 
                                     case "SuccessWorkerGattClientWithServer":
                                         // TODO: 07.02.2023 Успешный статус
-                                        actionSuceessControl(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,v,holder);
+                                        actionSuceessControl(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,v,holder,callBackSeceesDataOtServer);
                                         // TODO: 23.07.2024
                                         Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                                 + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue()+
@@ -1196,7 +1214,8 @@ public class FragmentScannerUser extends Fragment {
 
         private void actionSuceessControl(@NonNull MaterialButton materialButtonКакоеДействие,
                                           @NonNull String ДействиеДляСервераGATTОТКлиент,
-                                          @NonNull View v,@NonNull MyViewHolder holder) {
+                                          @NonNull View v,@NonNull MyViewHolder holder,
+                                          @NonNull String callBackSeceesDataOtServer) {
             try{
 
                 handler.getTarget().post(() -> {
@@ -1212,11 +1231,26 @@ public class FragmentScannerUser extends Fragment {
 
 
 
+
+
+                List<String> myList = new ArrayList<String>(Arrays.asList(callBackSeceesDataOtServer.split(",")));
+
+
+                List<String> getStream= Stream.of(callBackSeceesDataOtServer.replaceAll("^\\[|\\]$", "").split(",")).collect(Collectors.toList());
+
+
+
+
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("СменаСтатусРАботыКлиентасGATT", callBackSeceesDataOtServer);
+                editor.putString("СменаДАтаРАботыGATT", callBackSeceesDataOtServer);
+
+
+                editor.apply();
+
+
                 // TODO: 08.02.2023 показыввем клиент смененый статус
-                String ПоследнийСтатусСканера = preferences.getString("СменаСтатусРАботыКлиентасGATT", "");
-                String ПоследнаяДатаСканера = preferences.getString("СменаДАтаРАботыGATT", "");
-                holder.materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера
-                        + "\n" + ПоследнаяДатаСканера);
+                holder.materialTextViewСтатусПоследнегоДействие.setText(callBackSeceesDataOtServer);
                 holder.materialTextViewСтатусПоследнегоДействие.setTextColor(Color.parseColor("#949796"));
                 holder.materialTextViewСтатусПоследнегоДействие.forceLayout();
                 holder.materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
