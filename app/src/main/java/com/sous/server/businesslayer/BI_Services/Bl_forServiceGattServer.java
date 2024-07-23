@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class mainBinessCodeServiceGatt {
+public class Bl_forServiceGattServer {
 
     private SQLiteDatabase sqLiteDatabase;
     public ServiceGattServer.LocalBinderСерверBLE binder;

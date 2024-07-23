@@ -65,12 +65,12 @@ import java.util.stream.Stream;
  */
 public class ServiceGattServerScan extends Service {
     protected SQLiteDatabase sqLiteDatabase;
-    public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
+    public LocalBinderСерверBLE binderScan = new LocalBinderСерверBLE();
 
 
     protected BluetoothGattServer getBluetoothGattServer;
     protected BluetoothManager bluetoothManagerServer;
-    protected BluetoothAdapter bluetoothAdapter;
+    protected BluetoothAdapter bluetoothAdapterScan;
     protected  BluetoothAdapter bluetoothAdapterGATT;
 
     protected Long version = 0l;
@@ -332,7 +332,7 @@ public class ServiceGattServerScan extends Service {
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         //   return super.onBind(intent);
-        return binder;
+        return binderScan;
 
     }
 
@@ -347,7 +347,7 @@ public class ServiceGattServerScan extends Service {
         try {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
-            bluetoothAdapter = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
+            bluetoothAdapterScan = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
 
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -442,11 +442,11 @@ public class ServiceGattServerScan extends Service {
         Boolean getStatusEnableBlueadapter=false;
         try{
 
-            if (bluetoothAdapter!=null) {
-                if (bluetoothAdapter.isEnabled() ==false) {
-                    bluetoothAdapter.enable();
+            if (bluetoothAdapterScan !=null) {
+                if (bluetoothAdapterScan.isEnabled() ==false) {
+                    bluetoothAdapterScan.enable();
                 }
-                getStatusEnableBlueadapter=bluetoothAdapter.isEnabled();
+                getStatusEnableBlueadapter= bluetoothAdapterScan.isEnabled();
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -480,7 +480,7 @@ public class ServiceGattServerScan extends Service {
         try {
 
             Log.d(this.getClass().getName(), "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
-                    "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
+                    "" + binderScan.isBinderAlive() + " date " + new Date().toString().toString() + "" +
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 26.01.2023 Сервер КОД
@@ -691,158 +691,10 @@ public class ServiceGattServerScan extends Service {
 
 
 
-    /////TODO: код Вытаскиваем из общего метоада
-
-    @NonNull
-    private Long МетодГенерацииUUID() {
-        Long getUUID = 0l;
-        try{
-
-        UUID uuid = UUID.randomUUID();
-
-        //uuid   .toString().replaceAll("-", "").replaceAll("[a-zA-Z]", "").substring(0, 20);
-        ///uuid = uuid.replaceAll("[a-zA-Z]", "");
-        //uuid= CharMatcher.any().replaceFrom("[A-Za-z0-9]", "");
-        Long fff2=  uuid.getLeastSignificantBits();
-        Long fff3=  uuid.getMostSignificantBits();
-        BigInteger bigInteger=BigInteger.valueOf(fff3).abs();
-        getUUID= bigInteger.longValue();
-        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                " uuid " +uuid );
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-        return getUUID;
-    }
-
-
-    // TODO: 14.02.2023 Второй Метод БЕз GPS
-    @SuppressLint("MissingPermission")
-    private ContentValues addToContevaluesNewSucceesDeviceOtGattServer(@NonNull BluetoothDevice device,
-                                                      @NonNull List<String> listПришлиДанныеОтКлиентаЗапрос) {
-        ContentValues   contentValuesВставкаДанных =   new ContentValues();;
-        try {
-            Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                    + new Date().toLocaleString() + " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
-
-
-         List<String> getStream= Stream.of(listПришлиДанныеОтКлиентаЗапрос.get(0).replaceAll("^\\[|\\]$", "").split(",")).collect(Collectors.toList());
-
-
-
-            // TODO: 08.02.2023 Добавляем Данные для Записи в базу через Адаптер ContentValues
-            contentValuesВставкаДанных.put("macdevice", device.getAddress().toString());
-            contentValuesВставкаДанных.put("namedevice", device.getName().toString());
-
-            contentValuesВставкаДанных.put("iemi", getStream.get(0).toString());
-            contentValuesВставкаДанных.put("date_update", getStream.get(1).toString());
-            contentValuesВставкаДанных.put("completedwork", getStream.get(2).toString());
-            contentValuesВставкаДанных.put("operations", getStream.get(2).toString());
-
-
-
-            contentValuesВставкаДанных.put("city",    sharedPreferencesGatt.getString("getLocality",""));
-            contentValuesВставкаДанных.put("gps1", sharedPreferencesGatt.getString("getLongitude",""));
-            contentValuesВставкаДанных.put("gps2", sharedPreferencesGatt.getString("getLatitude",""));
-            contentValuesВставкаДанных.put("adress",  sharedPreferencesGatt.getString("getCountryName","")+" "+
-                    sharedPreferencesGatt.getString("getLocality","")+" "+
-                    sharedPreferencesGatt.getString("getSubAdminArea","")+" "+
-                    sharedPreferencesGatt.getString("getLatitude","")+" "+
-                    sharedPreferencesGatt.getString("getLongitude","")+" "+
-                    sharedPreferencesGatt.getString("getLocale","")+" "+
-                    sharedPreferencesGatt.getString("getThoroughfare","")+" "+
-                    sharedPreferencesGatt.getString("getSubThoroughfare","")+" " );
 
 
 
 
-            // TODO: 10.02.2023 версия данных
-            // TODO: 10.02.2023 версия данных
-            Integer current_table = МетодПоискДАнныхПоБазе("SELECT MAX ( current_table  ) AS MAX_R  FROM scannerserversuccess");
-            contentValuesВставкаДанных.put("current_table", current_table);
-
-
-
-            Integer version = МетодПоискДАнныхПоБазе("SELECT MAX ( version  ) AS MAX_R  FROM scannerserversuccess");
-            contentValuesВставкаДанных.put("version", version);
-
-
-            Long getuuid = МетодГенерацииUUID();
-            contentValuesВставкаДанных.put("uuid", getuuid.toString());
-
-
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        " contentValuesВставкаДанных " +contentValuesВставкаДанных );
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return contentValuesВставкаДанных;
-    }
-
-    // TODO: 14.02.2023 Второй Метод БЕз GPS
-    @SuppressLint("MissingPermission")
-    private Integer wtireNewSucceesDeviceOtGattServer(@NonNull   ContentValues   contentValuesВставкаДанныхGattServer) {
-        Uri    resultAddDeviceToGattaDtabse = null;
-        try {
-                Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-                resultAddDeviceToGattaDtabse=   contentProviderServer.insert(uri, contentValuesВставкаДанныхGattServer);
-
-                Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse);
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse+ " contentValuesВставкаДанныхGattServer " +contentValuesВставкаДанныхGattServer );
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return Integer.parseInt(resultAddDeviceToGattaDtabse.toString() );
-    }
 
 
 
@@ -909,59 +761,7 @@ public class ServiceGattServerScan extends Service {
 
 
 
-//TODO:ЗАписываем Новый Успешный Девайс в Базу от Gatt server
-               ContentValues    contentValuesВставкаДанных = addToContevaluesNewSucceesDeviceOtGattServer(device, listПришлиДанныеОтКлиентаЗапрос);
 
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  contentValuesВставкаДанных " +contentValuesВставкаДанных);
-
-
-
-                Boolean   ТакоеВремяУжеЕсть =  getDateStoreOperationsDeviceFronDatabase("SELECT date_update    FROM scannerserversuccess" +
-                        " WHERE  date_update = '"+contentValuesВставкаДанных.getAsString("date_update").trim()
-                        +"' AND macdevice = '"+contentValuesВставкаДанных.getAsString("macdevice").trim() +"'");
-
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  contentValuesВставкаДанных " +ТакоеВремяУжеЕсть);
-
-
-                Integer   resultAddDeviceToGattaDtabse= 0;
-
-
-                if (ТакоеВремяУжеЕсть==false) {
-                    // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
-                    resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
-                }
-
-
-                // TODO: 18.07.2024 ЕСЛИ Успещно прошла Операция передаем данные на Фрагмент Scanner
-                if (resultAddDeviceToGattaDtabse >0) {
-
-                    getcloseCursorAndHashMap();
-                //todo ДОполнительный механизм данные упокаываем в Канкаренте СЕТ с Курсором
-
-
-                    ConcurrentHashMap<String,Cursor>        concurrentHashMapCursor = getallthedataofsuccessfuldevices("SELECT *    FROM scannerserversuccess");
-
-                Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
-                        " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
-                        "  evice.getName().toString()  "+device.getName().toString()+ " concurrentHashMapCursor " +concurrentHashMapCursor);
-
-                    // TODO: 19.07.2024 Посылаем Пользователю сообщение что данные изменились
-                    forwardUIAfterSuccessAddDiveceDatBAseGatt(concurrentHashMapCursor, contentValuesВставкаДанных);
-
-
-                }
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  ДанныеСодранныеОтКлиента " +ДанныеСодранныеОтКлиента);
 
 
 
@@ -987,83 +787,9 @@ public class ServiceGattServerScan extends Service {
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private void forwardUIAfterSuccessAddDiveceDatBAseGatt(@NonNull ConcurrentHashMap<String,Cursor> concurrentHashMapCursor ,
-                                                           @NonNull   ContentValues    contentValuesВставкаДанныхGaTT) {
-        try{
-
-            Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-            v2.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
 
 
-            //TODO:Event Send To Fragment Boot After Success DataBase and Divece
-            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT, concurrentHashMapCursor);
 
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    " contentValuesВставкаДанныхGaTT " + contentValuesВставкаДанныхGaTT);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-    }
-
-
-    private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT,
-                                                  @NonNull  ConcurrentHashMap<String,Cursor> concurrentHashMapCursor) {
-        try{
-        ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
-            // TODO: 18.07.2024 sending status
-        sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
-
-
-        // TODO: 18.07.2024 sending HashMap
-        contentValuesConcurrentHashMap.compute(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),(x,y)->contentValuesВставкаДанныхGaTT);
-        sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
-
-            // TODO: 18.07.2024 sending Cursor
-        sendFragmentparamentsScannerServer.setConcurrentHashMapCursor( concurrentHashMapCursor);
-
-        //TODO: послымаем Из Службы Значение на Фрагмент
-        MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
-
-        //TODO: ответ на экран работает ообрубование или нет
-        EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
-
-        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                 " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap +
-                " concurrentHashMapCursor " +concurrentHashMapCursor+" contentValuesВставкаДанныхGaTT.getAsString(\"macdevice\") ");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-
-    }
 
 
     // TODO: 21.02.2023 Ответ Клиенту GATT send
@@ -1194,121 +920,12 @@ public class ServiceGattServerScan extends Service {
 
 
 
-    // TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
-    public  Integer МетодПоискДАнныхПоБазе(@NonNull String СамЗапрос) {
-        Integer   ВерсияДАнных = 0;
-        try{
-            Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
 
 
 
-            Cursor cursorПолучаемДЛяСевреа = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
-
-
-            cursorПолучаемДЛяСевреа.moveToFirst();
-             if (cursorПолучаемДЛяСевреа.getCount()>0){
-                 ВерсияДАнных=      cursorПолучаемДЛяСевреа.getInt(0);
-                 Log.i(this.getClass().getName(), "ВерсияДАнных"+ ВерсияДАнных) ;
-                 ВерсияДАнных++;
-             }
-            Log.w(getApplicationContext().getClass().getName(), " РЕЗУЛЬТАТ insertData  cursorПолучаемДЛяСевреа  " +  cursorПолучаемДЛяСевреа.toString() );
-            cursorПолучаемДЛяСевреа.close();
-            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return  ВерсияДАнных;
-    }
 
 
 
-    public   Boolean      getDateStoreOperationsDeviceFronDatabase(@NonNull String СамЗапрос) {
-        Boolean   ТакоеВремяУжеЕсть  = false;
-        try{
-            Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-            Cursor cursorПолучаемДЛяСевреа = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
-            if (cursorПолучаемДЛяСевреа.getCount()>0){
-                cursorПолучаемДЛяСевреа.moveToFirst();
-               String ВремяДАнных=      cursorПолучаемДЛяСевреа.getString(0);
-                Log.i(this.getClass().getName(), "ВремяДАнных"+ ВремяДАнных) ;
-                ТакоеВремяУжеЕсть=true;
-            }
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " cursorПолучаемДЛяСевреа.getCount() " +cursorПолучаемДЛяСевреа.getCount());
-            // TODO: 19.07.2024 closing
-            cursorПолучаемДЛяСевреа.close();
-
-            Log.d(getApplicationContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " ТакоеВремяУжеЕсть " +ТакоеВремяУжеЕсть);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-        return  ТакоеВремяУжеЕсть;
-    }
-
-// TODO: 15.03.2023 синхрониазция КЛАсс
-// TODO: 10.02.2023 МЕТОД ВЫБОР ДАННЫХ
-public   ConcurrentHashMap<String,Cursor>  getallthedataofsuccessfuldevices(@NonNull String СамЗапрос) {
- //TODO
-    ConcurrentHashMap<String,Cursor> cursorConcurrentHashMapGatt=new ConcurrentHashMap<>();
-    try{
-
-        Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
-        successfuldevices = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
-        if (successfuldevices.getCount()>0){
-            successfuldevices.move(successfuldevices.getCount());
-            // TODO: 19.07.2024  Запаопление данными Курсора
-            cursorConcurrentHashMapGatt.compute("Cursor",(x,y)->successfuldevices);
-        }
-        // TODO: 19.07.2024 closing
-        Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " successfuldevices  " +successfuldevices+
-                 " cursorConcurrentHashMapGatt " +cursorConcurrentHashMapGatt);
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        ContentValues valuesЗаписываемОшибки = new ContentValues();
-        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-        final Object ТекущаяВерсияПрограммы = version;
-        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-    }
-    return  cursorConcurrentHashMapGatt;
-}
 
     private void getcloseCursorAndHashMap() {
         try {
