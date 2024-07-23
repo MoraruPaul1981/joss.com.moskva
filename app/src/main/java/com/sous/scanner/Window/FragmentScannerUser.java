@@ -54,8 +54,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -971,9 +976,33 @@ public class FragmentScannerUser extends Fragment {
                             public void onChanged(ConcurrentHashMap<String, String> stringStringConcurrentHashMap) {
 
                                 //todo  get State Ot Gatt Server
-                                String getKeymediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().keySet().stream().findAny().get().trim();
+                                String getKeymediatorLiveDataGATTClient= stringStringConcurrentHashMap.keySet().stream().findAny().get().trim();
                                 // TODO: 23.07.2024
-                                String getValuemediatorLiveDataGATTClient= mediatorLiveDataGATTClient.getValue().values().stream().findAny().get().trim();
+                                String getValuemediatorLiveDataGATTClient= stringStringConcurrentHashMap.values().stream().findAny().get().trim();
+
+
+
+
+
+
+                              Map<Object, List<String>> listMap = stringStringConcurrentHashMap.values()
+                                        .stream()
+                                      .filter(s->stringStringConcurrentHashMap.containsKey("callBackSeceesDataOtServer") )
+                                        .collect(Collectors.groupingBy(s->s.equalsIgnoreCase("callBackSeceesDataOtServer"), Collectors.toList()));
+
+
+                                String listMap2 =     stringStringConcurrentHashMap.values()
+                                        .stream()
+                                        .filter(s->stringStringConcurrentHashMap.containsKey("callBackSeceesDataOtServer") )
+                                        .map(map -> stringStringConcurrentHashMap.get("callBackSeceesDataOtServer")).findAny().orElseGet(new Supplier<String>() {
+                                         @Override
+                                         public String get() {
+                                             return "";
+                                         }
+                                     });
+
+
+
 
                                 Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -1027,13 +1056,13 @@ public class FragmentScannerUser extends Fragment {
                                         break;
 
 
-                                    case "BluetoothProfile.STATE_DISCONNECTED":
+                                 /*   case "BluetoothProfile.STATE_DISCONNECTED":
                                         handler.getTarget().post(() -> {
                                             materialButtonКакоеДействие.setText("Конец соединения !!!");
                                         });
                                         Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
                                                 + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient.getValue());
-                                        break;
+                                        break;*/
 
 
                                     case "BluetoothGatt.GATT_FAILURE":
@@ -1066,15 +1095,11 @@ public class FragmentScannerUser extends Fragment {
 
                                     // TODO: 11.02.2023 ДРУГИЕ ОТВЕТЫ
                                     case "ErrorWorkerGattClientWithServer":
-                                        materialButtonКакоеДействие.setText("Контроль не прошел !!!");
-                                        Snackbar snackbar = Snackbar.make(v.getRootView(), "Ошибка контроль не прошел !!!", Snackbar.LENGTH_LONG);
-                                        final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
-                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
-                                        params.setMargins(20, 0, 20, 50);
-                                        params.gravity = Gravity.BOTTOM;
-                                        snackBarView.setBackgroundColor(Color.GRAY);
-                                        snackBarView.setLayoutParams(params);
-                                        snackbar.show();
+                                        actionErrorControl(materialButtonКакоеДействие,ДействиеДляСервераGATTОТКлиента,v,holder);
+                                        // TODO: 23.07.2024
+                                        Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                                                + new Date().toLocaleString() + " mediatorLiveDataGATTClient .getValue() " + mediatorLiveDataGATTClient .getValue()+
+                                                " ДействиеДляСервераGATTОТКлиента " +ДействиеДляСервераGATTОТКлиента);
                                         break;
 
 
@@ -1110,6 +1135,65 @@ public class FragmentScannerUser extends Fragment {
             }
         }
 
+        private void actionErrorControl(@NonNull MaterialButton materialButtonКакоеДействие,
+                                        @NonNull String ДействиеДляСервераGATTОТКлиент,
+                                        @NonNull View v,@NonNull MyViewHolder holder) {
+            try{
+            handler.getTarget().post(() -> {
+                        materialButtonКакоеДействие.setText("Контроль не прошел !!!");
+                    });
+                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+
+                holder.materialTextViewСтатусПоследнегоДействие.setError("Контроль не прошел !!!");
+
+                                  /*      Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+
+                                        Snackbar snackbar = Snackbar.make(v.getRootView(), "Ошибка контроль не прошел !!!", Snackbar.LENGTH_LONG);
+                                        final FrameLayout snackBarView = (FrameLayout) snackbar.getView();
+                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) snackBarView.getChildAt(0).getLayoutParams();
+                                        params.setMargins(20, 0, 20, 50);
+                                        params.gravity = Gravity.BOTTOM;
+                                        snackBarView.setBackgroundColor(Color.GRAY);
+                                        snackBarView.setLayoutParams(params);
+                                        snackbar.show();*/
+
+            handler.getTarget().postDelayed(() -> {
+                materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиент);
+                holder.materialTextViewСтатусПоследнегоДействие.setError(null);
+            }, 4000);
+            Log.i(this.getClass().getName(), "onStart() " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время " + new Date().toLocaleString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void actionSuceessControl(@NonNull MaterialButton materialButtonКакоеДействие,
                                           @NonNull String ДействиеДляСервераGATTОТКлиент,
                                           @NonNull View v,@NonNull MyViewHolder holder) {
@@ -1140,8 +1224,8 @@ public class FragmentScannerUser extends Fragment {
 
 
             handler.getTarget().postDelayed(() -> {
-                    materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиент+565656565);
-                }, 3000);
+                    materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиент);
+                }, 4000);
 
 
         } catch (Exception e) {

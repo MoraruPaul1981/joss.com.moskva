@@ -579,11 +579,11 @@ public class ServiceClientBLE extends IntentService {
                                         break;
 
                                     case BluetoothProfile.STATE_DISCONNECTED :
-                                        handler.post(()->{
+                                       /* handler.post(()->{
                                             ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
                                             concurrentHashMap  .put("BluetoothProfile.STATE_DISCONNECTED","3");
                                             mediatorLiveDataGATT.setValue(concurrentHashMap);
-                                        });
+                                        });*/
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
@@ -664,6 +664,10 @@ public class ServiceClientBLE extends IntentService {
                                             if (successОтправка) {
                                                 ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
                                                 concurrentHashMap  .put("5","SuccessWorkerGattClientWithServer");
+                                                concurrentHashMap  .put("callBackSeceesDataOtServer",linkedHashMapДанныеКлиентаДляGATT.toString());
+
+
+
                                                 mediatorLiveDataGATT.setValue(concurrentHashMap);
                                                 gatt.executeReliableWrite();
                                             }else {
