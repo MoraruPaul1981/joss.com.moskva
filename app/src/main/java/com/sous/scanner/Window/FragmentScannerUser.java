@@ -45,6 +45,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
+import com.sous.scanner.Services.BL_forService.Bl_froSetviceBLE;
 import com.sous.scanner.Services.ServiceClientBLE;
 import com.sous.scanner.Errors.SubClassErrors;
 import com.sous.scanner.R;
@@ -67,7 +68,12 @@ import java.util.stream.Stream;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Predicate;
 import kotlin.Unit;
 
 
@@ -814,25 +820,30 @@ public class FragmentScannerUser extends Fragment {
                                         + " время " +new Date().toLocaleString() );
                                 // TODO: 19.07.2024  Внутри Клика еще один rxjava
 
-                             final  String  ДействиеДляСервераGATTОКотрольПриход ="на работу" ;
 
-                                final    MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATTПриход = new MediatorLiveData();
-
-                                МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход,ДействиеДляСервераGATTОКотрольПриход ,mediatorLiveDataGATTПриход);
-
-                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                        " ДействиеДляСервераGATTОКотрольПриход " +ДействиеДляСервераGATTОКотрольПриход );
+                                innerClickButtonControlPrichoda(holder);
+                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + " время " +new Date().toLocaleString() );
 
                             }
 
 
+
+
                             @Override
                             public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-
-                                Log.i(this.getClass().getName(),  "  RxView.clicks " +Thread.currentThread().getStackTrace()[2].getMethodName()
-                                        + " время " +new Date().toLocaleString() );
+                                e.printStackTrace();
+                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                                final Object ТекущаяВерсияПрограммы = version;
+                                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                             }
 
                             @Override
@@ -860,7 +871,51 @@ public class FragmentScannerUser extends Fragment {
 
 
 
+        private void innerClickButtonControlPrichoda(@NonNull MyViewHolder holder) {
+            Flowable.fromAction(new Action() {
+                        @Override
+                        public void run() throws Throwable {
 
+                            final  String  ДействиеДляСервераGATTОКотрольПриход ="на работу" ;
+
+                            final    MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATTПриход = new MediatorLiveData();
+
+                            МетодЗапускаGattСервера(holder.materialButtonКотрольПриход, holder, holder.materialButtonКотрольПриход,ДействиеДляСервераGATTОКотрольПриход ,mediatorLiveDataGATTПриход);
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    })
+                    .onBackpressureBuffer(true)
+                    .repeatWhen(repeat->repeat.delay(10,TimeUnit.SECONDS))
+                    .take(30,TimeUnit.SECONDS)
+                    .takeWhile(new Predicate<Object>() {
+                        @Override
+                        public boolean test(Object o) throws Throwable {
+                            return false;
+                        }
+                    }).doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    }).doOnError(new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Throwable {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    }).blockingSubscribe();
+        }
 
 
 
@@ -888,18 +943,16 @@ public class FragmentScannerUser extends Fragment {
                                         + " время " +new Date().toLocaleString() +
                                         " disposable[0] " );
 
-                            final   String  ДействиеДляСервераGATTКотрольВыход = "с работы";
 
 
-                              final MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATTВыход = new MediatorLiveData();
+                                innerClickButtonControlYchoda(holder);
 
-                                МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход,  ДействиеДляСервераGATTКотрольВыход,mediatorLiveDataGATTВыход);
+
 
                                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                        " holder.materialButtonКотрольВыход" +holder.materialButtonКотрольВыход
-                                        + " ДействиеДляСервераGATTКотрольВыход " +ДействиеДляСервераGATTКотрольВыход);
+                                        " holder.materialButtonКотрольВыход" +holder.materialButtonКотрольВыход);
 
                                 // TODO: 22.02.2023
                             }
@@ -933,6 +986,70 @@ public class FragmentScannerUser extends Fragment {
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
         }
+
+
+
+        private void innerClickButtonControlYchoda(@NonNull MyViewHolder holder) {
+            Flowable.fromAction(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+
+                            final   String  ДействиеДляСервераGATTКотрольВыход = "с работы";
+
+
+                            final MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATTВыход = new MediatorLiveData();
+
+                            МетодЗапускаGattСервера(holder.materialButtonКотрольВыход, holder, holder.materialButtonКотрольВыход,  ДействиеДляСервераGATTКотрольВыход,mediatorLiveDataGATTВыход);
+
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
+                        }
+                    })
+                    .onBackpressureBuffer(true)
+                    .repeatWhen(repeat->repeat.delay(10,TimeUnit.SECONDS))
+                    .take(30,TimeUnit.SECONDS)
+                    .takeWhile(new Predicate<Object>() {
+                        @Override
+                        public boolean test(Object o) throws Throwable {
+                            return false;
+                        }
+                    }).doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+// TODO: 23.07.2024 close server
+                            binderСканнер.getService().getCloserClientGattFroFragment();
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    }).doOnError(new Consumer<Throwable>() {
+                        @Override
+                        public void accept(Throwable throwable) throws Throwable {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    }).blockingSubscribe();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         private void МетодЗапускаGattСервера(@NonNull View v, @NonNull MyViewHolder holder,

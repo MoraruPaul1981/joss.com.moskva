@@ -37,6 +37,7 @@ import com.sous.scanner.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.Database.CREATE_DATABASEScanner;
 import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.Services.BL_forService.Bl_froSetviceBLE;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -584,7 +585,7 @@ public class ServiceClientBLE extends IntentService {
                                             concurrentHashMap  .put("BluetoothProfile.STATE_DISCONNECTED","3");
                                             mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });*/
-                                        disaibleGattServer();
+                                       new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
@@ -595,7 +596,7 @@ public class ServiceClientBLE extends IntentService {
                                             concurrentHashMap  .put("BluetoothGatt.GATT_FAILURE","4");
                                             mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
-                                        disaibleGattServer();
+                                        new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
@@ -606,14 +607,14 @@ public class ServiceClientBLE extends IntentService {
                                             concurrentHashMap  .put("BluetoothGatt.GATT_CONNECTION_CONGESTED","5");
                                             mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
-                                        disaibleGattServer();
+                                        new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                         break;
 
 
                                     case 133 :
                                         // TODO: 16.07.2024 когда ошивка разрываем сообщение  
-                                        disaibleGattServer();
+                                        new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                         break;
 
@@ -977,32 +978,7 @@ public class ServiceClientBLE extends IntentService {
     }
                 }
 
-    @SuppressLint("MissingPermission")
-    public void disaibleGattServer() {
-        try{
-            if (gatt!=null) {
-                gatt.disconnect();
-                gatt.close();
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() + " gatt " +gatt);}
-            Log.i(TAG, "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                    new Date().toLocaleString() + getWorkerStateClient
-                    + " gatt "+gatt);
-            //TODO
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-        }
-    }
+
 
 
     // TODO: 01.02.2023  класс Запуск OneSignala
@@ -1061,6 +1037,17 @@ public class ServiceClientBLE extends IntentService {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
         return ПоулчаемДляТекущегоПользователяIDОтСЕРВРЕРАOneSignal;
+    }
+
+
+    public void getCloserClientGattFroFragment(){
+
+        new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
+        Log.d(this.getClass().getName(), "  ПОСЛЕ КЛЮЧ ДЛЯ  OneSignal........  56bbe169-ea09-43de-a28c-9623058e43a2 "+"\n"+
+                "   OneSignal.getTriggerValueForKey(\"GT_PLAYER_ID\"); " + OneSignal.getTriggerValueForKey("GT_PLAYER_ID")+
+                "     OneSignal.getTriggers() " +   OneSignal.getTriggers()+"\n"+
+                "    gatt " + gatt);
+
     }
 
 }
