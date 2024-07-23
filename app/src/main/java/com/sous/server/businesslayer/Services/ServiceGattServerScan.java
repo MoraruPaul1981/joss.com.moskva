@@ -83,9 +83,6 @@ public class ServiceGattServerScan extends Service {
           sharedPreferencesScan = getSharedPreferences("scan", Context.MODE_PRIVATE);
 
 
-            blForServiceGattServerScan=new Bl_forServiceGattServerScan();
-
-
           //TODO методы параменторв Службы Gaat
             initComponBLEScan();//TODO: запускаем Новый Манаджер BTE
 
@@ -116,32 +113,26 @@ public class ServiceGattServerScan extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         try {
-
             //TODO:получаем Статус Адаптера Bluetooth true, false  и оптравляем статус в активти
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
+// TODO: 23.07.2024  Ответ UI фрагмент пользователю на Scan для запуска
+            callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
+
+
+
+            // TODO: 23.07.2024  запускем бизнес логику
+
+            blForServiceGattServerScan=new Bl_forServiceGattServerScan(locationManager,sharedPreferencesScan,bluetoothManagerServer,bluetoothAdapterScan,scannerSimple);
+
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
 
-            callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
-
-
-
             //TODO :  главный метод службы запускаем Scan
+                 blForServiceGattServerScan.startingScanBLE();
 
-
-
-            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-            Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
 
 
@@ -150,6 +141,11 @@ public class ServiceGattServerScan extends Service {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                     "  getStatusEnableBlueadapter " + getStatusEnableBlueadapter);
+
+
+
+
+
 
 
 // TODO: 30.06.2022 сама не постредствено запуск метода
@@ -167,8 +163,6 @@ public class ServiceGattServerScan extends Service {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
-
-
         return START_STICKY;
       //  return super.onStartCommand(intent, flags, startId);
     }

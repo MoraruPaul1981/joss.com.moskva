@@ -132,10 +132,14 @@ public class FragmentBootServer extends Fragment {
             /*    //TODO:создаем класс для бизнес логики */
         biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
-        
+
         
         messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
+
+            biFragmentBootScannerServer.    startingServiceStoping();
+
+
             biFragmentBootScannerServer.startingServiceScaning() ;
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,13 +54,107 @@ public class Bl_forServiceGattServerScan {
 
     private BluetoothLeScanner scannerSimple;
 
+    public Bl_forServiceGattServerScan(LocationManager locationManager,
+                                       SharedPreferences sharedPreferencesScan,
+                                       BluetoothManager bluetoothManagerServer,
+                                       BluetoothAdapter bluetoothAdapterScan,
+                                       BluetoothLeScanner scannerSimple) {
+        this.locationManager = locationManager;
+        this.sharedPreferencesScan = sharedPreferencesScan;
+        this.bluetoothManagerServer = bluetoothManagerServer;
+        this.bluetoothAdapterScan = bluetoothAdapterScan;
+        this.scannerSimple = scannerSimple;
+    }
+
+
+    //TODO :  главный метод службы запускаем Scan
+
+   @SuppressLint("MissingPermission")
+   public void  startingScanBLE(){
+  try{
+
+      ScanSettings scanSettings = new ScanSettings.Builder()
+              .setScanMode(ScanSettings.SCAN_MODE_BALANCED)
+              .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
+              .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
+              .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
+              .setReportDelay(5000l)
+              .build();
+
+
+      scannerSimple.startScan(null,scanSettings,new ScanCallback() {
+          @Override
+          public void onScanResult(int callbackType, ScanResult result) {
+              super.onScanResult(callbackType, result);
+              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " result " +result );
+          }
+
+          @Override
+          public void onBatchScanResults(List<ScanResult> results) {
+              super.onBatchScanResults(results);
+              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " results " +results );
+
+              results.forEach(new Consumer<ScanResult>() {
+                  @Override
+                  public void accept(ScanResult scanResult) {
+                      // TODO: 23.07.2024
+
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                              + "\n" + " scanResult.getDevice() .getName()  " +scanResult.getDevice() .getName()
+                              + "\n" + " scanResult.getDevice().getName() " +scanResult.getDevice().getName());
+
+
+                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                              + "\n" + " scanResult.getDevice()  " +scanResult.getDevice()+"\n");
+
+
+
+                  }
+              });
+
+          }
+
+          @Override
+          public void onScanFailed(int errorCode) {
+              super.onScanFailed(errorCode);
+              Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                      " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                      " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "errorCode "+errorCode );
+          }
+      });
 
 
 
 
+        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
 
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+    }
 
+    }
 
 
 

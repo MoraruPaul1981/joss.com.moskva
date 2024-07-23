@@ -1,5 +1,6 @@
 package com.sous.server.businesslayer.Locations;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -49,18 +50,7 @@ public class GattLocationListener implements LocationListener {
             atomicReferenceLocal.set(loc);
 
 
-      Disposable disposable= Observable.just(getingLocationsGps())
-              .subscribeOn(Schedulers.single())
-              .observeOn(AndroidSchedulers.mainThread())
-              .doOnError(new io.reactivex.rxjava3.functions.Consumer<Throwable>() {
-                  @Override
-                  public void accept(Throwable throwable) throws Throwable {
-                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " throwable " +throwable.getStackTrace() );
-                  }
-              })
-              .subscribe();
+            getingLocationsGps();
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -86,21 +76,30 @@ public class GattLocationListener implements LocationListener {
 
         }
 
+    @SuppressLint("NewApi")
     private  synchronized   List<Address> getingLocationsGps() throws IOException {
         List<Address> addresses = null;
         try{
-        String longitude = "Longitude: " + atomicReferenceLocal.get().getLongitude();
+
+       Location getlocation=     atomicReferenceLocal.get();
+
+            while (!getlocation.isComplete());
+
+        String longitude = "Longitude: " + getlocation.getLongitude();
         /*------- To get city name from coordinates -------- */
         Log.i(TAG, "MyLocationListener GPS longitude "+longitude);
         String cityName = null;
-        Geocoder gcd = new Geocoder(context, Locale.getDefault());
+        Geocoder gcd = new Geocoder(context, new Locale("ru","RU"));
         Log.i(TAG, "MyLocationListener GPS gcd "+gcd);
 
 
-        addresses = gcd.getFromLocation(atomicReferenceLocal.get().getLatitude(),
-                atomicReferenceLocal.get().getLongitude(), 1);
+            try {
+                addresses = gcd.getFromLocation(getlocation.getLatitude(), getlocation.getLongitude(), 1);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
-        Log.i(TAG, "MyLocationListener GPS addresses "+addresses);
+            Log.i(TAG, "MyLocationListener GPS addresses "+addresses);
 
         if (addresses!=null) {
             if (addresses.size() > 0) {
