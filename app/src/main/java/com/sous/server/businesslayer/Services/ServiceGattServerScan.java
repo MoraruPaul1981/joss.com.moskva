@@ -63,7 +63,7 @@ import java.util.stream.Stream;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class ServiceGattServerSimpleScan extends Service {
+public class ServiceGattServerScan extends Service {
     protected SQLiteDatabase sqLiteDatabase;
     public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
 
@@ -317,9 +317,9 @@ public class ServiceGattServerSimpleScan extends Service {
     }
 
     public class LocalBinderСерверBLE extends Binder {
-        public ServiceGattServerSimpleScan getService() {
+        public ServiceGattServerScan getService() {
             // Return this instance of LocalService so clients can call public methods
-            return ServiceGattServerSimpleScan.this;
+            return ServiceGattServerScan.this;
         }
 
     }

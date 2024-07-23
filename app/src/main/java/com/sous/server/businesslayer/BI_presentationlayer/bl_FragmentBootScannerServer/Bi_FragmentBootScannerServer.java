@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,14 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.Header;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
-
-import java.io.Serializable;
-import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
+import com.sous.server.businesslayer.Services.ServiceGattServerScan;
 
 public class Bi_FragmentBootScannerServer {
 
@@ -81,7 +75,7 @@ public class Bi_FragmentBootScannerServer {
 
 
 
-    public void МетодЗапускаСлужбыСканированияСервер() {  ///new FragmentServerbleRecyclerView();
+    public void startingServiceControl() {  ///new FragmentServerbleRecyclerView();
         try {
 
             Intent startGATTServiceGattServer = new Intent(context, ServiceGattServer.class);
@@ -110,7 +104,35 @@ public class Bi_FragmentBootScannerServer {
         }
 
     }
+    public void startingServiceScaning() {  ///new FragmentServerbleRecyclerView();
+        try {
 
+            Intent ServiceGattServerScan = new Intent(context, ServiceGattServerScan.class);
+            ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            context.startForegroundService(ServiceGattServerScan);
+
+            Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+
+    }
 
 
 }
