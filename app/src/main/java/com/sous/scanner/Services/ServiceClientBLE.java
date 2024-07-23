@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
 
@@ -79,7 +80,7 @@ public class ServiceClientBLE extends IntentService {
         super("ServiceClientBLE");
     }
 
-    private MutableLiveData<String> mediatorLiveDataGATT;
+    private MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATT;
     private Long version = 0l;
     private String getWorkerStateClient;
     private UUID getPublicUUID;
@@ -242,7 +243,7 @@ public class ServiceClientBLE extends IntentService {
 
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
     public void МетодКлиентЗапускСканера(@NonNull Handler handler, @NonNull Activity activity,
-                                         @NonNull MutableLiveData<String> mediatorLiveDatagatt,
+                                         @NonNull MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDatagatt,
                                          @NonNull String ДействиеДляСервераGATTОТКлиента) {
         this.context = activity;
         this.activity = activity;
@@ -282,13 +283,9 @@ public class ServiceClientBLE extends IntentService {
     private void МетодЗапускаСканированиеКлиент() {
         try {
 
-            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                    "SuccessWorkerGattClientWithServer") &&
-                   ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                            "ErrorWorkerGattClientWithServer")) {
-                // TODO: 23.07.2024  
-                mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
-            }
+            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+            concurrentHashMap  .put("GATTCLIENTProccessing","1");
+            mediatorLiveDataGATT.setValue(concurrentHashMap);
 
             // TODO: 12.02.2023 адреса разыне колиентов
             getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
@@ -573,15 +570,9 @@ public class ServiceClientBLE extends IntentService {
                                         Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  " +
                                                 ""+new Date().toLocaleString());
                                         handler.post(()->{
-                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                    "SuccessWorkerGattClientWithServer") &&
-                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                            "ErrorWorkerGattClientWithServer")) {
-                                                // TODO: 23.07.2024
-
-
-                                                mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_CONNECTED");
-                                            }
+                                            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                            concurrentHashMap  .put("BluetoothProfile.STATE_CONNECTED","2");
+                                            mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
                                          Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
                                         Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT + " newState " +newState);
@@ -589,13 +580,9 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothProfile.STATE_DISCONNECTED :
                                         handler.post(()->{
-                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                    "SuccessWorkerGattClientWithServer") &&
-                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                            "ErrorWorkerGattClientWithServer")) {
-                                                // TODO: 23.07.2024
-                                                mediatorLiveDataGATT.setValue("BluetoothProfile.STATE_DISCONNECTED");
-                                            }
+                                            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                            concurrentHashMap  .put("BluetoothProfile.STATE_DISCONNECTED","3");
+                                            mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -604,13 +591,9 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothGatt.GATT_FAILURE:
                                         handler.post(()->{
-                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                    "SuccessWorkerGattClientWithServer") &&
-                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                            "ErrorWorkerGattClientWithServer")) {
-                                                // TODO: 23.07.2024
-                                                mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_FAILURE");
-                                            }
+                                            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                            concurrentHashMap  .put("BluetoothGatt.GATT_FAILURE","4");
+                                            mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -619,13 +602,9 @@ public class ServiceClientBLE extends IntentService {
 
                                     case BluetoothGatt.GATT_CONNECTION_CONGESTED :
                                         handler.post(()->{
-                                            if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                    "SuccessWorkerGattClientWithServer") &&
-                                                    ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                            "ErrorWorkerGattClientWithServer")) {
-                                                // TODO: 23.07.2024
-                                                mediatorLiveDataGATT.setValue("BluetoothGatt.GATT_CONNECTION_CONGESTED");
-                                            }
+                                            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                            concurrentHashMap  .put("BluetoothGatt.GATT_CONNECTION_CONGESTED","5");
+                                            mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });
                                         disaibleGattServer();
                                         Log.d(TAG, "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
@@ -683,10 +662,14 @@ public class ServiceClientBLE extends IntentService {
                                             Boolean successОтправка = gatt.writeCharacteristic(characteristics);
 
                                             if (successОтправка) {
-                                                mediatorLiveDataGATT.setValue("SuccessWorkerGattClientWithServer");
+                                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                                concurrentHashMap  .put("5","SuccessWorkerGattClientWithServer");
+                                                mediatorLiveDataGATT.setValue(concurrentHashMap);
                                                 gatt.executeReliableWrite();
                                             }else {
-                                                mediatorLiveDataGATT.setValue("ErrorWorkerGattClientWithServer");
+                                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                                concurrentHashMap  .put("6","ErrorWorkerGattClientWithServer");
+                                                mediatorLiveDataGATT.setValue(concurrentHashMap);
                                                 gatt.abortReliableWrite();
 
                                             }
@@ -696,24 +679,16 @@ public class ServiceClientBLE extends IntentService {
                                                     " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                         }
                                     }else {
-                                        if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                "SuccessWorkerGattClientWithServer") &&
-                                                ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                        "ErrorWorkerGattClientWithServer")) {
-                                            // TODO: 23.07.2024
-                                            mediatorLiveDataGATT.setValue("SERVER#ErrorWorkerGattClientWithServer");
-                                        }
+                                        ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                        concurrentHashMap  .put("7","ErrorWorkerGattClientWithServer");
+                                        mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
                                     }
                                 }else{
-                                    if (!mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                            "SuccessWorkerGattClientWithServer") &&
-                                            ! mediatorLiveDataGATT.getValue().equalsIgnoreCase(
-                                                    "ErrorWorkerGattClientWithServer")) {
-                                        // TODO: 23.07.2024
-                                        mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
-                                    }
+                                    ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                    concurrentHashMap  .put("BluetoothDevice.BOND_NONE","8");
+                                    mediatorLiveDataGATT.setValue(concurrentHashMap);
                                     Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
 
@@ -784,7 +759,11 @@ public class ServiceClientBLE extends IntentService {
                                                 + " время " +new Date().toLocaleString()+ " ОтветОтСервераОбратно "+ОтветОтСервераОбратно );
                                         // TODO: 30.01.2023  ПОСЫЛАЕМ ОТВЕТ ОТ СЕРВЕРА СТАТУСА
                                         handler.post(()->{
-                                            mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
+
+                                            ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                            concurrentHashMap  .put(ОтветОтСервераОбратно,ОтветОтСервераОбратно);
+                                            mediatorLiveDataGATT.setValue(concurrentHashMap);
+
                                         });
                                         // TODO: 20.02.2023 закрыаем сесию ссервром
 
@@ -865,7 +844,9 @@ public class ServiceClientBLE extends IntentService {
                         case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
                             // TODO: 19.07.2024
                             handler.post(()->{
-                                mediatorLiveDataGATT.setValue("BluetoothDevice.DEVICE_TYPE_UNKNOWN");
+                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                concurrentHashMap  .put("BluetoothDevice.DEVICE_TYPE_UNKNOWN","9");
+                                mediatorLiveDataGATT.setValue(concurrentHashMap);
                             });
                             bl_BloadcastReceierGatt       blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
                             blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
@@ -879,7 +860,10 @@ public class ServiceClientBLE extends IntentService {
                         case BluetoothDevice.BOND_NONE:
                             
                             handler.post(()->{
-                                mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_NONE");
+                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                concurrentHashMap  .put("BluetoothDevice.BOND_NONE","10");
+                                mediatorLiveDataGATT.setValue(concurrentHashMap);
+
                             });
                             // TODO: 22.07.2024  Принудительный Запуск Сопрежения
                                 blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
@@ -896,7 +880,10 @@ public class ServiceClientBLE extends IntentService {
 
                         case BluetoothDevice.BOND_BONDING:
                             handler.post(()->{
-                                mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_BONDING");
+                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                concurrentHashMap  .put("BluetoothDevice.BOND_BONDING","12");
+                                mediatorLiveDataGATT.setValue(concurrentHashMap);
+
                             });
                             
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -907,7 +894,10 @@ public class ServiceClientBLE extends IntentService {
 
                         case BluetoothDevice.BOND_BONDED:
                             handler.post(()->{
-                                mediatorLiveDataGATT.setValue("BluetoothDevice.BOND_BONDING");
+                                ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
+                                concurrentHashMap  .put("BluetoothDevice.BOND_BONDING","13");
+                                mediatorLiveDataGATT.setValue(concurrentHashMap);
+
                             });
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
