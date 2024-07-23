@@ -893,7 +893,9 @@ public class FragmentScannerUser extends Fragment {
                         }
                     })
                     .onBackpressureBuffer(true)
-                    .repeatWhen(repeat->repeat.delay(10,TimeUnit.SECONDS))
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .repeatWhen(repeat->repeat.delay(30,TimeUnit.SECONDS))
                     .take(30,TimeUnit.SECONDS)
                     .takeWhile(new Predicate<Object>() {
                         @Override
@@ -903,6 +905,9 @@ public class FragmentScannerUser extends Fragment {
                     }).doOnComplete(new Action() {
                         @Override
                         public void run() throws Throwable {
+                            // TODO: 23.07.2024 close server
+                            binderСканнер.getService().getCloserClientGattFroFragment();
+
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
@@ -914,7 +919,7 @@ public class FragmentScannerUser extends Fragment {
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
-                    }).blockingSubscribe();
+                    }).subscribe();
         }
 
 
@@ -1010,7 +1015,9 @@ public class FragmentScannerUser extends Fragment {
                         }
                     })
                     .onBackpressureBuffer(true)
-                    .repeatWhen(repeat->repeat.delay(10,TimeUnit.SECONDS))
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .repeatWhen(repeat->repeat.delay(30,TimeUnit.SECONDS))
                     .take(30,TimeUnit.SECONDS)
                     .takeWhile(new Predicate<Object>() {
                         @Override
@@ -1034,7 +1041,7 @@ public class FragmentScannerUser extends Fragment {
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
-                    }).blockingSubscribe();
+                    }).subscribe();
         }
 
 
