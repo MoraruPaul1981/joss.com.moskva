@@ -28,7 +28,7 @@
         android:id="@+id/history"
         android:contentDescription="История"
         android:icon="@drawable/icon_history_scanner"
-        android:title="История"
+        android:title="Контроль"
         android:actionMenuTextColor="@color/black"
         android:tooltipText="История" />
 
