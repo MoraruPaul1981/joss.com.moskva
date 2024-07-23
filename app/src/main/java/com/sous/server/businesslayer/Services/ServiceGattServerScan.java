@@ -4,31 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattServer;
-import android.bluetooth.BluetoothGattServerCallback;
-import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.ProviderInfo;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.LocationManager;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.os.ParcelUuid;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -44,14 +33,9 @@ import com.sous.server.businesslayer.Locations.GattLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 /**
@@ -63,35 +47,24 @@ import java.util.stream.Stream;
  * helper methods.
  */
 public class ServiceGattServerScan extends Service {
-    protected SQLiteDatabase sqLiteDatabase;
+
+    // TODO: 23.07.2024 Varibele
     public LocalBinderСерверBLE binderScan = new LocalBinderСерверBLE();
 
 
-    protected BluetoothGattServer getBluetoothGattServer;
-    protected BluetoothManager bluetoothManagerServer;
-    protected BluetoothAdapter bluetoothAdapterScan;
-    protected  BluetoothAdapter bluetoothAdapterGATT;
-
-    protected Long version = 0l;
-
-
-
-    protected List<Address> addressesgetGPS;
-    protected UUID getPublicUUID;
-
 
     //TODO: Local
-    protected FusedLocationProviderClient fusedLocationClientGoogle;
-
     protected LocationManager locationManager;
-
     protected   ContentProviderServer contentProviderServer;
-
     protected      SharedPreferences sharedPreferencesScan;
+    protected BluetoothManager bluetoothManagerServer;
+    protected BluetoothAdapter bluetoothAdapterScan;
+    protected Long version = 0l;
 
-
+    protected   BluetoothLeScanner  scannerSimple;
 
     private Bl_forServiceGattServerScan blForServiceGattServerScan;
+
 
 
     @Override
@@ -107,18 +80,18 @@ public class ServiceGattServerScan extends Service {
             version = pInfo.getLongVersionCode();
 
 
-          sharedPreferencesScan = getSharedPreferences("gatt", Context.MODE_PRIVATE);
+          sharedPreferencesScan = getSharedPreferences("scan", Context.MODE_PRIVATE);
 
 
             blForServiceGattServerScan=new Bl_forServiceGattServerScan();
 
 
           //TODO методы параменторв Службы Gaat
-            launchmanagerBLE();//TODO: запускаем Новый Манаджер BTE
+            initComponBLEScan();//TODO: запускаем Новый Манаджер BTE
 
             getContentProvider();
 
-            langingGPSforGATTServer(sharedPreferencesScan);
+            langingGPSforScaningServer(sharedPreferencesScan);
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -232,8 +205,48 @@ public class ServiceGattServerScan extends Service {
 
 
 
+
+    public class LocalBinderСерверBLE extends Binder {
+        public ServiceGattServerScan getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return ServiceGattServerScan.this;
+        }
+
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d(getApplicationContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+        //   return super.onBind(intent);
+        return binderScan;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: 23.07.2024    litle Code
     @SuppressLint({"MissingPermission", "NewApi"})
-    private void langingGPSforGATTServer(@NonNull SharedPreferences sharedPreferencesGatt) {
+    private void langingGPSforScaningServer(@NonNull SharedPreferences sharedPreferencesGatt) {
         try{
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
@@ -304,26 +317,6 @@ public class ServiceGattServerScan extends Service {
     }
     }
 
-    public class LocalBinderСерверBLE extends Binder {
-        public ServiceGattServerScan getService() {
-            // Return this instance of LocalService so clients can call public methods
-            return ServiceGattServerScan.this;
-        }
-
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d(getApplicationContext().getClass().getName(), "\n"
-                + " время: " + new Date() + "\n+" +
-                " Класс в процессе... " + this.getClass().getName() + "\n" +
-                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
-        //   return super.onBind(intent);
-        return binderScan;
-
-    }
-
 
 
 
@@ -331,12 +324,12 @@ public class ServiceGattServerScan extends Service {
 
 
     @SuppressLint("MissingPermission")
-    private void launchmanagerBLE() {
+    private void initComponBLEScan() {
         try {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapterScan = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
-
+            scannerSimple = ( BluetoothLeScanner) bluetoothAdapterScan.getBluetoothLeScanner();
 
             Log.d(getApplicationContext().getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -356,6 +349,16 @@ public class ServiceGattServerScan extends Service {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
     }
+
+
+
+
+
+
+
+
+
+
 
 
 

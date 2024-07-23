@@ -1,11 +1,15 @@
 package com.sous.server.businesslayer.BI_Services;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -38,11 +42,45 @@ public class Bl_forServiceGattServerScan {
     private    Cursor successfuldevices;
 
 
+    //TODO: Local
+    private LocationManager locationManager;
+    private      SharedPreferences sharedPreferencesScan;
+    private BluetoothManager bluetoothManagerServer;
+    private BluetoothAdapter bluetoothAdapterScan;
+
+    private BluetoothLeScanner scannerSimple;
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // TODO: 23.07.2024 СКОПИРОВАНЫЕ КОД ИЗ СЛУЖБЫ СКАНИрОВАНИЯ  , В будущем он весь будет использован
 
     // TODO: 14.02.2023 Второй Метод БЕз GPS
     @SuppressLint("MissingPermission")
