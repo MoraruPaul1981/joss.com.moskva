@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="Контроль Bluetooth" />
+                    android:text="Скан Bluetooth" />
 
         </com.google.android.material.tabs.TabLayout>
 
