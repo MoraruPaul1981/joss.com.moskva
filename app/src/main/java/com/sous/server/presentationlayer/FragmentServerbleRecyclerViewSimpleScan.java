@@ -129,9 +129,9 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = null;
+        View viewimpleScan = null;
         try {
-            view = inflater.inflate(R.layout.fragment_main_server_bte, container, false);
+            viewimpleScan = inflater.inflate(R.layout.fragment_main_server_bte_simple_scan, container, false);
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -150,7 +150,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
-        return view;
+        return viewimpleScan;
     }
 
 
