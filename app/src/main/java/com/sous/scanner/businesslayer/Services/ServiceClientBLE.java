@@ -37,7 +37,7 @@ import com.sous.scanner.businesslayer.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.datalayer.Database.local.CREATE_DATABASEScanner;
 import com.sous.scanner.businesslayer.Firebase.MyFirebaseMessagingServiceScanner;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
-import com.sous.scanner.businesslayer.Services.BL_forService.Bl_froSetviceBLE;
+import com.sous.scanner.businesslayer.bl_forServices.Bl_froSetviceBLE;
 
 import java.util.Date;
 import java.util.HashMap;

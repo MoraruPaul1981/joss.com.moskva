@@ -105,9 +105,12 @@ public class FragmentScannerUser extends Fragment {
             fragmentManager = getActivity().getSupportFragmentManager();
             КлючДляFibaseOneSingnal = "56bbe169-ea09-43de-a28c-9623058e43a2";
             Animation   animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+
             // TODO: 08.02.2023  Биндинг службы
             getListerBuingindServiceFragmentScanner( );
+
             МетодHandler();
+
             settingGtLifeCyrcyleMutable();
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

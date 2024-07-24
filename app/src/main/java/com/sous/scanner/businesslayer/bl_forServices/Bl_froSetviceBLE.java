@@ -1,4 +1,4 @@
-package com.sous.scanner.businesslayer.Services.BL_forService;
+package com.sous.scanner.businesslayer.bl_forServices;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGatt;
