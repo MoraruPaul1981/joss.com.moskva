@@ -6,10 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
@@ -24,11 +22,10 @@ import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
-import com.sous.server.businesslayer.BroadcastreceiverServer.SimpleScanBroadcastReceiver;
+import com.sous.server.businesslayer.BroadcastreceiverServer.BroadcastReceiverGattServer;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -361,34 +358,12 @@ public class Bl_forServiceGattServerScan {
     public void  startinggeregisterReceiver(){
         try{
 
-            IntentFilter filter = new IntentFilter();
-
-            filter.addAction(BluetoothDevice.ACTION_FOUND);
-            filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-            filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-
-
-            context. registerReceiver(mReceiver, filter);
-
-
-
-
-
-
-
-
-
-            IntentFilter filter2 = new IntentFilter();
-
-            filter.addAction(BluetoothDevice.ACTION_FOUND);
-            filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-            filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-
-            context. registerReceiver(new SimpleScanBroadcastReceiver(), filter2);
-
-
+            IntentFilter filterScan = new IntentFilter();
+            filterScan.addAction(BluetoothDevice.ACTION_FOUND);
+            filterScan.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            filterScan.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+            context. registerReceiver(new BroadcastReceiverGattServer(), filterScan);
 
             bluetoothAdapterScan.startDiscovery();
 

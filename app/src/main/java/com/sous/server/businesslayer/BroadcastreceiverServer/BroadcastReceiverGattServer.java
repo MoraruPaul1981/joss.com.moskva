@@ -1,5 +1,6 @@
 package com.sous.server.businesslayer.BroadcastreceiverServer;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -16,6 +17,7 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
     private bl_BloadcastReceierGatt blBloadcastReceierGatt;
     Long version;
+    @SuppressLint("MissingPermission")
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO: This method is called when the BroadcastReceiver is receiving
@@ -26,10 +28,37 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
             version = pInfo.getLongVersionCode();
             if (intent.getAction().equals("android.bluetooth.device.action.PAIRING_REQUEST") ||
                     intent.getAction().equals("android.bluetooth.device.action.PAIRING_CANCEL") ) {
+                // TODO: 24.07.2024
                 bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()+"\n"+
+                        " intent.getAction() " +intent.getAction());
+
                 blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
+                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice);
+
+            }else {
+                // TODO: 24.07.2024
+                bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+
+                if (bluetoothDevice.getName()!=null) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()
+                            +"\n"+ " intent.getAction() " +intent.getAction());
+                }
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()
+                        +"\n"+ " intent.getAction() " +intent.getAction());
+
             }
 
 

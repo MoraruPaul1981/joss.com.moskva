@@ -33,34 +33,16 @@ public class bl_BloadcastReceierGatt {
 
 
     @SuppressLint({"MissingPermission", "NewApi"})
-    public void getPairingANdBondingDevice(@NonNull  BluetoothDevice bluetoothDevice, int pinBytes ){
+    public void getPairingANdBondingDevice(@NonNull  BluetoothDevice bluetoothDevice  ){
 
         try{
-
-            switch (bluetoothDevice.getBondState()){
-                case BluetoothDevice.BOND_NONE  :
-                case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                    // TODO: 22.07.2024
                     unpairDevice(bluetoothDevice);
                     pairDevice(bluetoothDevice);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                             "  Success to setPairingConfirmation. "+bluetoothDevice.getName());
-                    break;
 
-                default:{
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                            "  Success to setPairingConfirmation. "+bluetoothDevice.getName());
-                }
-
-            }
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "  Success to setPairingConfirmation. "+bluetoothDevice.getName());
 
         } catch (Exception e) {
             e.printStackTrace();

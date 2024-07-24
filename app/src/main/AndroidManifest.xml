@@ -92,11 +92,6 @@
         android:theme="@style/Theme.DSU">
 
 
-        <receiver
-            android:name=".businesslayer.BroadcastreceiverServer.SimpleScanBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-        </receiver>
 
 
 
@@ -108,17 +103,13 @@
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.PAIRING_REQUEST" />
                 <action android:name="android.bluetooth.device.action.PAIRING_CANCEL" />
+
+                <action android:name="android.bluetooth.device.action.ACTION_FOUND" />
+                <action android:name="android.bluetooth.device.action.ACTION_BOND_STATE_CHANGED" />
+                <action android:name="android.bluetooth.device.action.ACTION_ACL_CONNECTED" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".businesslayer.BroadcastreceiverServer.BloadcastReceiverReboot"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+
 
         <activity
             android:name=".presentationlayer.ActivityServerScanner"
