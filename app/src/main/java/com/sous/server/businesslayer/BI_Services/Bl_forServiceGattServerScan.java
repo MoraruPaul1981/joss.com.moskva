@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
@@ -207,6 +208,15 @@ public class Bl_forServiceGattServerScan {
                     }
                 });
             }
+
+            bluetoothAdapterScan.startDiscovery();
+
+            ArrayAdapter mAdapter = new ArrayAdapter<String>(context,android.R.layout.simple_list_item_1);
+
+
+
+
+
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

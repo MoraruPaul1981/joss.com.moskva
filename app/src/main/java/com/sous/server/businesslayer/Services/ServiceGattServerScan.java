@@ -134,7 +134,7 @@ public class ServiceGattServerScan extends Service {
                //  blForServiceGattServerScan.startingScanBLE();
 
             //TODO :  главный метод службы дополнительный Scan Bluetooth
-           blForServiceGattServerScan.startingSimpleScan();
+          /// blForServiceGattServerScan.startingSimpleScan();
 
                //  blForServiceGattServerScan.startingRemoteScan();
 
