@@ -328,7 +328,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
             Boolean getFladEnableApadaterBTEOtService= paramentsScannerServer.getФлагЗапускаФрагментRecyreView();
             String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
 
-            if ( CurrentTask.equalsIgnoreCase("SuccessDeviceBluetoothAnServerGatt")) {
+            if ( CurrentTask.equalsIgnoreCase("SuccessDeviceBluetoothAnServerScan")) {
                 ConcurrentHashMap<String, ContentValues> getMapReceivedFromBootFragmentGatta=  paramentsScannerServer.getContentValuesConcurrentHashMap() ;
                 ConcurrentHashMap<String,Cursor> concurrentHashMapCursor=  paramentsScannerServer.getConcurrentHashMapCursor() ;
                 // TODO: 18.07.2024
@@ -355,7 +355,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
                         " CurrentTask  "  +CurrentTask);
             }else {
                 // TODO: 18.07.2024  пришел статус что серверне рабоатет 
-                if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
+                if (CurrentTask.contentEquals("bluetootAdapterDisabledScan")) {
                     progressbar_server_ble.setIndeterminate(false);
                     Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth остановлен  !!! ", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);

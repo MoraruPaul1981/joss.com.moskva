@@ -383,9 +383,9 @@ public class ServiceGattServerScan extends Service {
             sendFragmentparamentsScannerServer.setФлагЗапускаФрагментRecyreView(getStatusEnableBlueadapter);
 
             if (getStatusEnableBlueadapter) {
-                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterEnable");
+                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterEnableScan");
             } else {
-                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterDisabled");
+                sendFragmentparamentsScannerServer.setCurrentTask("bluetootAdapterDisabledScan");
             }
             //TODO: послымаем Из Службы Значение на Фрагмент
             MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);

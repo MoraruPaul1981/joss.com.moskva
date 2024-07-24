@@ -134,7 +134,7 @@ public class FragmentBootServer extends Fragment {
 
 
         
-        messageGattServer.getTarget().post(()->{
+   /*     messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
 
             biFragmentBootScannerServer.startingServiceGattServer();
@@ -143,7 +143,7 @@ public class FragmentBootServer extends Fragment {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-        });
+        });*/
 
 
 
@@ -248,51 +248,35 @@ public class FragmentBootServer extends Fragment {
         String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
 
 
-        if (CurrentTask.contentEquals("bluetootAdapterEnable")) {
-////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
-            forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
+            // TODO: 24.07.2024 GATT реакция на событие от Службы GATT
+            reactionFromEventBusFromServiceGatt(CurrentTask, getFladEnableApadaterBTEOtService);
             
-            messageGattServer.getTarget().postDelayed(()->{
-                // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
-                forwardSuccessDeviceStrtingFragmentServer();
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " CurrentTask " +CurrentTask);
-            },1500);
-         
             Log.d(getContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " CurrentTask " +CurrentTask);
-
-        } else {
-
-            if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
-                /*   Snackbar.make(id_fragment_boot_scannerserver , "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
-                    .setAction("Action",null).show();*/
-                Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth не работает !!! ", Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
-                toast.show();
-
-                Log.d(getContext().getClass().getName(), "\n"
-                        + " время: " + new Date() + "\n+" +
-                        " Класс в процессе... " + this.getClass().getName() + "\n" +
-                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                        " CurrentTask " +CurrentTask);
-            }
-
-        }
-
-        Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                 " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
 
-    } catch (Exception e) {
+
+
+            // TODO: 24.07.2024 GATT реакция на событие от Службы Scan
+            reactionFromEventBusFromServiceScan(CurrentTask, getFladEnableApadaterBTEOtService);
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
+
+
+
+
+
+
+
+
+
+        } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                 + Thread.currentThread().getStackTrace()[2].getLineNumber());
@@ -307,6 +291,91 @@ public class FragmentBootServer extends Fragment {
         new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
+
+    private void reactionFromEventBusFromServiceGatt(String CurrentTask, Boolean getFladEnableApadaterBTEOtService) {
+        if (CurrentTask.contentEquals("bluetootAdapterEnableGatt")) {
+////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
+            forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
+            
+            messageGattServer.getTarget().postDelayed(()->{
+                // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
+                forwardSuccessDeviceStrtingFragmentServer();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " + CurrentTask);
+            },1500);
+         
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " CurrentTask " + CurrentTask);
+
+        } else {
+
+            if (CurrentTask.contentEquals("bluetootAdapterDisabledGatt")) {
+                /*   Snackbar.make(id_fragment_boot_scannerserver , "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
+                    .setAction("Action",null).show();*/
+                Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth не работает !!! ", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
+                toast.show();
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " + CurrentTask);
+            }
+
+        }
+    }
+
+    private void reactionFromEventBusFromServiceScan(String CurrentTask, Boolean getFladEnableApadaterBTEOtService) {
+        if (CurrentTask.contentEquals("bluetootAdapterEnableScan")) {
+////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
+            forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);
+
+            messageGattServer.getTarget().postDelayed(()->{
+                // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
+                forwardSuccessDeviceStrtingFragmentServer();
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " + CurrentTask);
+            },1500);
+
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                    " CurrentTask " + CurrentTask);
+
+        } else {
+
+            if (CurrentTask.contentEquals("bluetootAdapterDisabledScan")) {
+                /*   Snackbar.make(id_fragment_boot_scannerserver , "Сервер или Bluetooth не работает !!! ",Snackbar.ANIMATION_MODE_SLIDE)
+                    .setAction("Action",null).show();*/
+                Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth не работает !!! ", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
+                toast.show();
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " CurrentTask " + CurrentTask);
+            }
+
+        }
+    }
+
+
+
+
+
 
 
     @SuppressLint("ResourceType")

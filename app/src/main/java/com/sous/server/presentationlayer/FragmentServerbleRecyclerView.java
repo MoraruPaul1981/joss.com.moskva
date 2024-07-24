@@ -355,7 +355,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
                         " CurrentTask  "  +CurrentTask);
             }else {
                 // TODO: 18.07.2024  пришел статус что серверне рабоатет 
-                if (CurrentTask.contentEquals("bluetootAdapterDisabled")) {
+                if (CurrentTask.contentEquals("bluetootAdapterDisabledGatt")) {
                     progressbar_server_ble.setIndeterminate(false);
                     Toast toast = Toast.makeText(getContext(),"Сервер или Bluetooth остановлен  !!! ", Toast.LENGTH_LONG);
                     toast.setGravity(Gravity.CENTER, toast.getXOffset() / 2, toast.getYOffset() / 2);
