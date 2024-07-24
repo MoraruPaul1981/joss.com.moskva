@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.util.Log;
 
 import com.sous.server.businesslayer.Errors.SubClassErrors;
+import com.sous.server.businesslayer.bl_BloadcastReceiver.bl_BloadcastReceierGatt;
 
 
 public class BroadcastReceiverGattServer extends BroadcastReceiver {

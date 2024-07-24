@@ -1,4 +1,4 @@
-package com.sous.server.businesslayer.BroadcastreceiverServer;
+package com.sous.server.businesslayer.bl_BloadcastReceiver;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
@@ -37,26 +37,12 @@ public class bl_BloadcastReceierGatt {
 
         try{
 
-     /*       bluetoothDevice.setPin("0000".getBytes(StandardCharsets.UTF_8));
-            bluetoothDevice.setPairingConfirmation(true);
-            bluetoothDevice.createBond();*/
-
-            byte[] pin = ByteBuffer.allocate(4).putInt(pinBytes).array();
-
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                    "PIN  ");
-
             switch (bluetoothDevice.getBondState()){
                 case BluetoothDevice.BOND_NONE  :
                 case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
                     // TODO: 22.07.2024
-
-                    bluetoothDevice.setPin(pin);
-                    bluetoothDevice.createBond();
-
+                    unpairDevice(bluetoothDevice);
+                    pairDevice(bluetoothDevice);
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
@@ -94,6 +80,24 @@ public class bl_BloadcastReceierGatt {
     }
 
 
+      public void pairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("createBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+      public void unpairDevice(BluetoothDevice device) {
+        try {
+            Method method = device.getClass().getMethod("removeBond", (Class[]) null);
+            method.invoke(device, (Object[]) null);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

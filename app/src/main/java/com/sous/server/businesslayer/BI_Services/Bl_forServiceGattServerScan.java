@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.ContentValues;
@@ -24,6 +25,7 @@ import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
+import com.sous.server.businesslayer.bl_BloadcastReceiver.bl_BloadcastReceierGatt;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -78,7 +80,7 @@ public class Bl_forServiceGattServerScan {
               .setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES)
               .setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE)
               .setNumOfMatches(ScanSettings.MATCH_NUM_ONE_ADVERTISEMENT)
-              .setReportDelay(5000l)
+              .setReportDelay(10000l)
               .build();
 
 
@@ -103,18 +105,25 @@ public class Bl_forServiceGattServerScan {
                   public void accept(ScanResult scanResult) {
                       // TODO: 23.07.2024
 
+                 BluetoothDevice scanResultDevice= scanResult.getDevice();
+
                       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                               " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                               " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                              + "\n" + " scanResult.getDevice() .getName()  " +scanResult.getDevice() .getName()
+                              + "\n" + " scanResult.getDevice() .getAddress() " +scanResult.getDevice() .getAddress()
                               + "\n" + " scanResult.getDevice().getName() " +scanResult.getDevice().getName());
 
 
-                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                              " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
-                              + "\n" + " scanResult.getDevice()  " +scanResult.getDevice()+"\n");
-
+                      if (scanResult.getDevice().getName()!=null) {
+                          Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                  " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                  " line " + Thread.currentThread().getStackTrace()[2].getLineNumber()
+                                  + "\n" + " scanResult.getDevice()  " +scanResult.getDevice()+"\n");
+                      }else {
+                          bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                          blBloadcastReceierGatt.unpairDevice(scanResultDevice);
+                          blBloadcastReceierGatt.pairDevice(scanResultDevice);
+                      }
 
 
                   }
