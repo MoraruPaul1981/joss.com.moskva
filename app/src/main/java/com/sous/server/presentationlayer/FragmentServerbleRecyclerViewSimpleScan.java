@@ -1,21 +1,9 @@
 package com.sous.server.presentationlayer;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
@@ -31,7 +19,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,10 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.R;
-import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerbleRecyclerViewSimpleScan.Bl_FragmentRecyreViewServerSimpleScan;
-import com.sous.server.businesslayer.BroadcastreceiverServer.RSSIbroadcastReceiver;
-import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
@@ -59,28 +43,19 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
 
     private FragmentManager fragmentManager;
 
-    private Long version;
+    private  Long version;
 
-    private MaterialCardView maincardView_server_ble_fragment;
-    private RelativeLayout relativeLayout_server_ble;
-    private TabLayout tabLayout_server_ble;
-    private MaterialCardView card_server_ble_inner;
-    private RecyclerView recyclerview_server_ble;
-    private ProgressBar progressbar_server_ble;
-    private Animation animation;
+    private  MaterialCardView  maincardView_server_ble_fragment;
+    private  RelativeLayout  relativeLayout_server_ble;
+    private TabLayout   tabLayout_server_ble;
+    private MaterialCardView     card_server_ble_inner;
+    private RecyclerView     recyclerview_server_ble;
+    private ProgressBar     progressbar_server_ble;
+    private  Animation animation;
     private Bl_FragmentRecyreViewServerSimpleScan getblFragmentRecyreViewServerScan;
 
     private Message messageGattServer;
 
-
-    protected LocationManager locationManager;
-    protected ContentProviderServer contentProviderServer;
-    protected SharedPreferences sharedPreferencesScan;
-    protected BluetoothManager bluetoothManagerServer;
-    protected BluetoothAdapter bluetoothAdapterScan;
-
-
-    protected BluetoothLeScanner scannerSimple;
 
 
     @Override
@@ -88,39 +63,11 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
         super.onCreate(savedInstanceState);
         try {
             fragmentManager = getActivity().getSupportFragmentManager();
-            animation = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
+            animation  = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_row_vibrator2);
 
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             messageGattServer = (Message) ((ActivityServerScanner) getActivity()).messageGattServer;
-
-
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            bluetoothManagerServer = (BluetoothManager) getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-            bluetoothAdapterScan = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
-            scannerSimple = (BluetoothLeScanner) bluetoothAdapterScan.getBluetoothLeScanner();
-
-
-            IntentFilter filter = new IntentFilter();
-
-            filter.addAction(BluetoothDevice.ACTION_FOUND);
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-
-            getActivity().registerReceiver(mReceiver, filter);
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            bluetoothAdapterScan.startDiscovery();
-
-
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -143,53 +90,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
 
     }
 
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
 
-            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                //discovery starts, we can show progress dialog or perform other tasks
-                //bluetooth device found
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                //discovery finishes, dismis progress dialog
-                //bluetooth device found
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                //bluetooth device found
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-
-                Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-
-
-            }
-        }
-    };
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

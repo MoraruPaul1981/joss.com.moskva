@@ -123,7 +123,8 @@ public class ServiceGattServerScan extends Service {
 
             // TODO: 23.07.2024  запускем бизнес логику
 
-            blForServiceGattServerScan=new Bl_forServiceGattServerScan(locationManager,sharedPreferencesScan,bluetoothManagerServer,bluetoothAdapterScan,scannerSimple);
+            blForServiceGattServerScan=new Bl_forServiceGattServerScan(locationManager,sharedPreferencesScan,
+                    bluetoothManagerServer,bluetoothAdapterScan,scannerSimple,getApplicationContext());
 
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -136,9 +137,9 @@ public class ServiceGattServerScan extends Service {
             //TODO :  главный метод службы дополнительный Scan Bluetooth
           /// blForServiceGattServerScan.startingSimpleScan();
 
-               //  blForServiceGattServerScan.startingRemoteScan();
+         ///    blForServiceGattServerScan.startingRemoteScan();
 
-
+            blForServiceGattServerScan.   startinggeregisterReceiver();
 
 
 
