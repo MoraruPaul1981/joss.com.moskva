@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -29,19 +30,29 @@ public class Bl_forServiceScan {
     private BluetoothAdapter bluetoothAdapterGATT;
 
 
+    @NonNull Message handlerScan;
+    @NonNull LocationManager locationManager;
+    @NonNull BluetoothManager bluetoothManagerServer;
+    @NonNull  BluetoothAdapter bluetoothAdapterPhoneClient;
+    @NonNull  Long version;
+
+    public Bl_forServiceScan(@NonNull Message handlerScan,
+                             @NonNull LocationManager locationManager,
+                             @NonNull BluetoothManager bluetoothManagerServer,
+                             @NonNull BluetoothAdapter bluetoothAdapterPhoneClient,
+                             @NonNull Long version) {
+        this.handlerScan = handlerScan;
+        this.locationManager = locationManager;
+        this.bluetoothManagerServer = bluetoothManagerServer;
+        this.bluetoothAdapterPhoneClient = bluetoothAdapterPhoneClient;
+        this.version = version;
+    }
 
 
-
-
-  public   void startintgServiceScan(@NonNull Intent intent,
+    public   void startintgServiceScan(@NonNull Intent intent,
                                      @NonNull Context context ,
                                      @NonNull int flags,
-                                     @NonNull  int startId,
-                                     @NonNull Handler handler,
-                                     @NonNull LocationManager locationManager ,
-                                     @NonNull BluetoothManager bluetoothManagerServer,
-                                     @NonNull  BluetoothAdapter bluetoothAdapterPhoneClient,
-                                     @NonNull  Long version){
+                                     @NonNull  int startId){
 
 
         Flowable.fromAction(new Action() {

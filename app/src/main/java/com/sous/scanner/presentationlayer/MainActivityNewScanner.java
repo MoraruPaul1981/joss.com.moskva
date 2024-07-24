@@ -36,7 +36,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
-import com.sous.scanner.businesslayer.Services.ServiceSimpleScan;
+import com.sous.scanner.businesslayer.Services.ServiceClientSimpleScan;
 import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
 
 import java.util.Date;
@@ -44,7 +44,7 @@ import java.util.concurrent.Executors;
 
 
 public class MainActivityNewScanner extends AppCompatActivity  {
-   public Message handlerScanner;
+   public Message handlerScannerGatt;
     private NavigationBarView bottomNavigationView;
     @SuppressLint("RestrictedApi")
     private BottomNavigationItemView bottomNavigationItemViewВыход;
@@ -177,7 +177,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
 
     public void МетодHandles() {
-       handlerScanner =new Handler(Looper.getMainLooper(), new Handler.Callback() {
+       handlerScannerGatt =new Handler(Looper.getMainLooper(), new Handler.Callback() {
            @Override
            public boolean handleMessage(@NonNull Message msg) {
                return true;
@@ -368,9 +368,9 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     // TODO: 29.11.2022 служба сканирования
     private void startingServiceSimpleScan() {
         try {
-            handlerScanner.getTarget().post(()->{
+            handlerScannerGatt.getTarget().post(()->{
 
-            Intent intentClientServiceSimpleScan = new Intent(getApplicationContext(), ServiceSimpleScan.class);
+            Intent intentClientServiceSimpleScan = new Intent(getApplicationContext(), ServiceClientSimpleScan.class);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);

@@ -211,7 +211,7 @@
 
 
         <service
-            android:name=".businesslayer.Services.ServiceSimpleScan"
+            android:name=".businesslayer.Services.ServiceClientSimpleScan"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location"

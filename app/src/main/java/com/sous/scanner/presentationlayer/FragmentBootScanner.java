@@ -51,7 +51,7 @@ public class FragmentBootScanner extends Fragment {
 
                 textViewZnak= (ImageView) relativeLayout_fragment_boot.findViewById(R.id.textViewZnak);
                progressBarСканера= ( ProgressBar ) relativeLayout_fragment_boot.findViewById(R.id.progressBarFace);
-                handlerScanner = (Message) ((MainActivityNewScanner) getActivity()).handlerScanner;
+                handlerScanner = (Message) ((MainActivityNewScanner) getActivity()).handlerScannerGatt;
                 tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
 
 

@@ -1,5 +1,6 @@
 package com.sous.scanner.businesslayer.Services;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -10,23 +11,29 @@ import android.content.pm.PackageInfo;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.businesslayer.bl_forServices.Bl_forServiceScan;
 
-public class ServiceSimpleScan extends Service {
+import java.util.Date;
 
-    protected Handler handlerScan;
+public class ServiceClientSimpleScan extends Service {
+
+    public Message handlerScan;
     protected LocationManager locationManager;
     protected BluetoothManager bluetoothManagerServer;
     protected BluetoothAdapter bluetoothAdapterPhoneClient;
     protected Long version = 0l;
 
 
+   private  Bl_forServiceScan blForServiceScan;
 
-
-    public ServiceSimpleScan() {
+    public ServiceClientSimpleScan() {
     }
 
     @Override
@@ -39,8 +46,17 @@ public class ServiceSimpleScan extends Service {
 
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            // TODO: 24.07.2024 starting   settings
 
+            setingEnableApapterScan();
 
+            МетодHandles();
+// TODO: 24.07.2024 Reference an class Buncess logica Servir Scan  
+            blForServiceScan=       new Bl_forServiceScan( handlerScan,
+                    locationManager,
+                    bluetoothManagerServer,
+                    bluetoothAdapterPhoneClient,
+                    version);
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -67,16 +83,11 @@ public class ServiceSimpleScan extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         try{
 // TODO: 24.07.2024 Scan
-
-            new Bl_forServiceScan().startintgServiceScan(intent,
+            
+            blForServiceScan .startintgServiceScan(intent,
                     getApplicationContext(),
                     flags,
-                    startId,
-                    handlerScan,
-                    locationManager,
-                    bluetoothManagerServer,
-                    bluetoothAdapterPhoneClient,
-                    version);
+                    startId);
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -121,4 +132,55 @@ public class ServiceSimpleScan extends Service {
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
     }
+
+
+
+    @SuppressLint("MissingPermission")
+    private void setingEnableApapterScan() {
+        try{
+            if (bluetoothAdapterPhoneClient !=null) {
+                if (bluetoothAdapterPhoneClient.isEnabled()==false){
+                    bluetoothAdapterPhoneClient.enable();
+                }
+
+
+
+
+
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                        " bluetoothAdapter  "+ bluetoothAdapterPhoneClient);
+            }
+
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString()+
+                    " bluetoothAdapter " + bluetoothAdapterPhoneClient);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки=new ContentValues();
+            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+    public void МетодHandles() {
+        handlerScan =new Handler(Looper.getMainLooper(), new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                return true;
+            }
+        }).obtainMessage();
+        Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
+    }
+
+
+    // TODO: 24.07.2024 class
 }
