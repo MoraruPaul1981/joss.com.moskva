@@ -359,43 +359,6 @@ public class Bl_forServiceGattServerScan {
 
 
 
-    @SuppressLint("MissingPermission")
-    public void  startinggeregisterReceiver(){
-        try{
-
-            IntentFilter filterScan = new IntentFilter();
-            filterScan.addAction(BluetoothDevice.ACTION_FOUND);
-            filterScan.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-            filterScan.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-            filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-            context. registerReceiver(new BroadcastReceiverGattServer(), filterScan);
-
-            //bluetoothAdapterScan.startDiscovery();
-
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-
-    }
-
 
 
 
@@ -406,44 +369,96 @@ public class Bl_forServiceGattServerScan {
     @SuppressLint("MissingPermission")
     public void  startingBluetoothSocket(){
         try{
-            BluetoothDevice bluetoothBluetoothSocket=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4"); //REDMI
-            bluetoothBluetoothSocket.fetchUuidsWithSdp();
+            BluetoothDevice bluetoothBluetoothSocket=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4"); //REDMI 9С
+            final BluetoothSocket[] socket = {null};
+
+            class beet extends Thread{
+
+                void ggg(@NonNull  BluetoothDevice bluetoothBluetoothSocket){
+                    try {
 
            /* Method m = bluetoothBluetoothSocket.getClass().getMethod("createRfcommSocket",new Class[] { int.class });
             BluetoothSocket  socket = (BluetoothSocket)m.invoke(bluetoothBluetoothSocket, Integer.valueOf(1));*/
 
-           // BluetoothSocket   socket = bluetoothBluetoothSocket.createRfcommSocketToServiceRecord(UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
-            BluetoothSocket   socket = bluetoothBluetoothSocket.createL2capChannel(1000);
 
-            socket.connect();
-            Log.d("EF-BTBee", ">>Client connectted");
-
-
-
-            Log.d("EF-BTBee", ">>Client connectted");
-
-            InputStream inputStream = socket.getInputStream();
-            OutputStream outputStream = socket.getOutputStream();
-            outputStream.write(new byte[] { (byte) 0xa0, 0, 7, 16, 0, 4, 0 });
-
-
-            new Thread() {
-                public void run() {
-                    while(true)
-                    {
                         try {
-                            Log.d("EF-BTBee", ">>Send data thread!");
-                            OutputStream outputStream = socket.getOutputStream();
-                            outputStream.write(new byte[] { (byte) 0xa2, 0, 7, 16, 0, 4, 0 });
+                            socket[0] = bluetoothBluetoothSocket.createRfcommSocketToServiceRecord(UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
+                        //    BluetoothSocket   socket2 = bluetoothBluetoothSocket.createL2capChannel(1000);
                         } catch (IOException e) {
-                            Log.e("EF-BTBee", "", e);
+                            throw new RuntimeException(e);
                         }
-                    }
+
+                        start();
+              /*      socket.connect();
+                    socket2.connect();*/
+                    Log.d("EF-BTBee", ">>Client connectted");
+
+
+
+         /*           Log.d("EF-BTBee", ">>Client connectted");
+
+                    InputStream inputStream = socket[0].getInputStream();
+                    OutputStream outputStream = socket[0].getOutputStream();
+                    outputStream.write(new byte[] { (byte) 0xa0, 0, 7, 16, 0, 4, 0 });
+*/
+
+     /*               new Thread() {
+                        public void run() {
+                            while(true)
+                            {
+                                try {
+                                    Log.d("EF-BTBee", ">>Send data thread!");
+                                    OutputStream outputStream = socket.getOutputStream();
+                                    outputStream.write(new byte[] { (byte) 0xa2, 0, 7, 16, 0, 4, 0 });
+                                } catch (IOException e) {
+                                    Log.e("EF-BTBee", "", e);
+                                }
+                            }
+                        };
+                    }.start();*/
+
+
+
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    ContentValues valuesЗаписываемОшибки = new ContentValues();
+                    valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                    valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                    valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                    valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                    final Object ТекущаяВерсияПрограммы = version;
+                    Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                    valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                    new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+                }
+
                 };
-            }.start();
+
+                @Override
+                public void run() {
+                    super.run();
+
+                    try {
+                        bluetoothAdapterScan.cancelDiscovery();
+                        socket[0].connect();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
 
 
+            }
 
+// TODO: 24.07.2024 end
+            new beet().ggg(bluetoothBluetoothSocket);
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

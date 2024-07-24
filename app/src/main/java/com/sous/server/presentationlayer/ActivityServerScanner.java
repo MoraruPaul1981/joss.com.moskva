@@ -2,7 +2,9 @@ package com.sous.server.presentationlayer;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.loader.content.AsyncTaskLoader;
 
 import com.sous.server.businesslayer.BI_presentationlayer.bl_MainActivityNewServerScanner.Bi_MainActivityNewServerScanner;
+import com.sous.server.businesslayer.BroadcastreceiverServer.BroadcastReceiverGattServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 
@@ -80,6 +83,9 @@ public class ActivityServerScanner extends AppCompatActivity {
             weresolvetherightstobluetooth();
             // TODO: 24.07.2024
             checkPermissions();
+
+           startinggeregisterReceiver();
+
             /////TODO создание Мэнеджера Фрагмент
             Log.i(this.getClass().getName(), "  "
                     + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -251,6 +257,65 @@ public class ActivityServerScanner extends AppCompatActivity {
             );
         }
     }
+
+
+
+
+
+    @SuppressLint("MissingPermission")
+    public void  startinggeregisterReceiver(){
+        try{
+
+            IntentFilter filterScan = new IntentFilter();
+            filterScan.addAction(BluetoothDevice.ACTION_FOUND);
+            filterScan.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            filterScan.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+            registerReceiver(new BroadcastReceiverGattServer(), filterScan);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+           // new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // TODO: 24.07.2024
 }

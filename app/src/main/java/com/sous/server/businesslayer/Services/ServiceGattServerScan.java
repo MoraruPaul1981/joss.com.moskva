@@ -111,6 +111,7 @@ public class ServiceGattServerScan extends Service {
 
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         try {
@@ -122,6 +123,9 @@ public class ServiceGattServerScan extends Service {
 
 
             // TODO: 23.07.2024  запускем бизнес логику
+
+
+
 
             blForServiceGattServerScan=new Bl_forServiceGattServerScan(locationManager,sharedPreferencesScan,
                     bluetoothManagerServer,bluetoothAdapterScan,scannerSimple,getApplicationContext());
@@ -139,7 +143,6 @@ public class ServiceGattServerScan extends Service {
 
 
 
-            blForServiceGattServerScan.   startinggeregisterReceiver();
 
            blForServiceGattServerScan.startingBluetoothSocket();
 
