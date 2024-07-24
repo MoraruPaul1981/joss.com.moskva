@@ -37,8 +37,8 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
                         "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()+"\n"+
                         " intent.getAction() " +intent.getAction());
 
-                blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice);
+            /*    blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice);*/
 
             }else {
                 // TODO: 24.07.2024
