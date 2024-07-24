@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
@@ -34,6 +35,10 @@ import com.sous.server.businesslayer.bl_BloadcastReceiver.bl_BloadcastReceierGat
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -324,7 +329,7 @@ public class Bl_forServiceGattServerScan {
     public void  startinggetrssi(){
         try{
 
-            BluetoothDevice bluetoothDeviceremote=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4");
+            BluetoothDevice bluetoothDeviceremote=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4"); //REDMI
             bluetoothDeviceremote.fetchUuidsWithSdp();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -365,7 +370,7 @@ public class Bl_forServiceGattServerScan {
             filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
             context. registerReceiver(new BroadcastReceiverGattServer(), filterScan);
 
-            bluetoothAdapterScan.startDiscovery();
+            //bluetoothAdapterScan.startDiscovery();
 
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -398,42 +403,77 @@ public class Bl_forServiceGattServerScan {
 
 
 
+    @SuppressLint("MissingPermission")
+    public void  startingBluetoothSocket(){
+        try{
+            BluetoothDevice bluetoothBluetoothSocket=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4"); //REDMI
+            bluetoothBluetoothSocket.fetchUuidsWithSdp();
+
+           /* Method m = bluetoothBluetoothSocket.getClass().getMethod("createRfcommSocket",new Class[] { int.class });
+            BluetoothSocket  socket = (BluetoothSocket)m.invoke(bluetoothBluetoothSocket, Integer.valueOf(1));*/
+
+           // BluetoothSocket   socket = bluetoothBluetoothSocket.createRfcommSocketToServiceRecord(UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
+            BluetoothSocket   socket = bluetoothBluetoothSocket.createL2capChannel(1000);
+
+            socket.connect();
+            Log.d("EF-BTBee", ">>Client connectted");
+
+
+
+            Log.d("EF-BTBee", ">>Client connectted");
+
+            InputStream inputStream = socket.getInputStream();
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write(new byte[] { (byte) 0xa0, 0, 7, 16, 0, 4, 0 });
+
+
+            new Thread() {
+                public void run() {
+                    while(true)
+                    {
+                        try {
+                            Log.d("EF-BTBee", ">>Send data thread!");
+                            OutputStream outputStream = socket.getOutputStream();
+                            outputStream.write(new byte[] { (byte) 0xa2, 0, 7, 16, 0, 4, 0 });
+                        } catch (IOException e) {
+                            Log.e("EF-BTBee", "", e);
+                        }
+                    }
+                };
+            }.start();
 
 
 
 
 
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-
-
-
-
-
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @SuppressLint("MissingPermission")
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-          if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                //bluetooth device found
-                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-
-
-                if (device.getName()!=null) {
-                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
-                }
-
-                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
-    };
+
+    }
+
+
+
+
+
+
+
+
 
 
 
