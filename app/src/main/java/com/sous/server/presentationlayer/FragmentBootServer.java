@@ -137,16 +137,27 @@ public class FragmentBootServer extends Fragment {
         messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
 
-            biFragmentBootScannerServer.    startingServiceStoping();
-
-
-            biFragmentBootScannerServer.startingServiceScaning() ;
+            biFragmentBootScannerServer.startingServiceGattServer();
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
         });
+
+
+
+            messageGattServer.getTarget().post(()->{
+                // TODO: 19.07.2024 Запуск Службы
+
+                biFragmentBootScannerServer.startingServiceScaning() ;
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+
+            });
+
 
 
 

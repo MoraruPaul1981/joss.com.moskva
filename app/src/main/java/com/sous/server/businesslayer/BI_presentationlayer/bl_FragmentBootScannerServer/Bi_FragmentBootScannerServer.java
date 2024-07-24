@@ -134,11 +134,15 @@ public class Bi_FragmentBootScannerServer {
 
     }
 
-    public void startingServiceStoping() {  ///new FragmentServerbleRecyclerView();
+    public void startingServiceGattServer() {  ///new FragmentServerbleRecyclerView();
         try {
             // TODO: 23.07.2024 stoping
-            Intent ServiceGattServer = new Intent(context, ServiceGattServer.class);
-            context.stopService(ServiceGattServer);
+            // TODO: 23.07.2024 starting
+            Intent intentServiceGattServer = new Intent(context, ServiceGattServer.class);
+            intentServiceGattServer.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intentServiceGattServer.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intentServiceGattServer.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            context.startForegroundService(intentServiceGattServer);
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
