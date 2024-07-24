@@ -51,12 +51,13 @@ public class ServiceClientSimpleScan extends Service {
             setingEnableApapterScan();
 
             МетодHandles();
-// TODO: 24.07.2024 Reference an class Buncess logica Servir Scan  
+// TODO: 24.07.2024 Reference an class Buncess logica Servir Scan
             blForServiceScan=       new Bl_forServiceScan( handlerScan,
                     locationManager,
                     bluetoothManagerServer,
                     bluetoothAdapterPhoneClient,
-                    version);
+                    version,
+                    getApplicationContext());
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -84,10 +85,7 @@ public class ServiceClientSimpleScan extends Service {
         try{
 // TODO: 24.07.2024 Scan
             
-            blForServiceScan .startintgServiceScan(intent,
-                    getApplicationContext(),
-                    flags,
-                    startId);
+            blForServiceScan .startintgServiceScan(intent, flags, startId);
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
