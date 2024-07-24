@@ -376,7 +376,7 @@ public class Bl_forServiceGattServerScan {
 
 
 
-            bluetoothAdapterScan.startDiscovery();
+
 
 
             IntentFilter filter2 = new IntentFilter();
@@ -387,6 +387,11 @@ public class Bl_forServiceGattServerScan {
             filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
 
             context. registerReceiver(new SimpleScanBroadcastReceiver(), filter2);
+
+
+
+            bluetoothAdapterScan.startDiscovery();
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -435,16 +440,12 @@ public class Bl_forServiceGattServerScan {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
-            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                //discovery starts, we can show progress dialog or perform other tasks
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                //discovery finishes, dismis progress dialog
-            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+          if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //bluetooth device found
                 BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 
-                if (device.getName().toString()!=null) {
+                if (device.getName()!=null) {
                     Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);

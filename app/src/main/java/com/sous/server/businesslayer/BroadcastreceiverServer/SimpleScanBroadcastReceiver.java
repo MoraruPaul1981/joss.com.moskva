@@ -19,20 +19,21 @@ Long version;
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
         try{
-            BluetoothDevice bluetoothDevice = null;
-            if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
-                
-                 bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+          if (BluetoothDevice.ACTION_FOUND.equals(intent.getAction())) {
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+              device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             }
             if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(intent.getAction())) {
-
-                bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             }
             if (BluetoothDevice.ACTION_PAIRING_REQUEST.equals(intent.getAction())) {
-
-                bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             }
 
@@ -40,6 +41,7 @@ Long version;
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             version = pInfo.getLongVersionCode();
 
+/*
             switch (bluetoothDevice.getBondState()){
                 case BluetoothDevice.BOND_NONE  :
                 case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
@@ -59,6 +61,7 @@ Long version;
                 }
 
             }
+*/
 
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

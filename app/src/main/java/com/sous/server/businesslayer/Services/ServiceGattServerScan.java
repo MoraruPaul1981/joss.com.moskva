@@ -141,7 +141,7 @@ public class ServiceGattServerScan extends Service {
 
             blForServiceGattServerScan.   startinggeregisterReceiver();
 
-            blForServiceGattServerScan.startingRemoteScan();
+            //blForServiceGattServerScan.startingRemoteScan();
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
