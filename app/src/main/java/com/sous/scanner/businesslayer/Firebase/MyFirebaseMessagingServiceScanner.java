@@ -1,4 +1,4 @@
-package com.sous.scanner.Firebase;
+package com.sous.scanner.businesslayer.Firebase;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 
 import java.util.Map;

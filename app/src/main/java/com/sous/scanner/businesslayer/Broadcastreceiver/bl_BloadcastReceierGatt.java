@@ -1,4 +1,4 @@
-package com.sous.scanner.Broadcastreceiver;
+package com.sous.scanner.businesslayer.Broadcastreceiver;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
@@ -8,9 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
 public class bl_BloadcastReceierGatt {

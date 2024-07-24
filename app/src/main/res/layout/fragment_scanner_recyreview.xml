@@ -9,7 +9,7 @@
         android:padding="1dp"
         android:layout_margin="1dp"
         android:translationZ="1dp"
-        tools:context=".Window.MainActivityNewScanner">
+        tools:context=".presentationlayer.MainActivityNewScanner">
 
 
 

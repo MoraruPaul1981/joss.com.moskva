@@ -1,4 +1,4 @@
-package com.sous.scanner.Broadcastreceiver;
+package com.sous.scanner.businesslayer.Broadcastreceiver;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.util.Log;
 
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 public class BroadcastReceiverGattClient extends BroadcastReceiver {
 

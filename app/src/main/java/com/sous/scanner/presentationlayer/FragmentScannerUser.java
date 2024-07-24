@@ -1,11 +1,10 @@
-package com.sous.scanner.Window;
+package com.sous.scanner.presentationlayer;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,13 +14,11 @@ import android.os.Message;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -41,27 +38,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
-import com.sous.scanner.Services.BL_forService.Bl_froSetviceBLE;
-import com.sous.scanner.Services.ServiceClientBLE;
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -69,7 +59,6 @@ import java.util.stream.Stream;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;

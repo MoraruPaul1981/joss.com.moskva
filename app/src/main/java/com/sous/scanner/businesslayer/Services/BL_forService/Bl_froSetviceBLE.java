@@ -1,4 +1,4 @@
-package com.sous.scanner.Services.BL_forService;
+package com.sous.scanner.businesslayer.Services.BL_forService;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothGatt;
@@ -8,7 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 import java.util.Date;
 

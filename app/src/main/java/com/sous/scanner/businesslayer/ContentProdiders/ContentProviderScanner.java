@@ -1,4 +1,4 @@
-package com.sous.scanner.ContentProdiders;
+package com.sous.scanner.businesslayer.ContentProdiders;
 
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.loader.content.AsyncTaskLoader;
 
-import com.sous.scanner.Database.CREATE_DATABASEScanner;
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.datalayer.Database.local.CREATE_DATABASEScanner;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;

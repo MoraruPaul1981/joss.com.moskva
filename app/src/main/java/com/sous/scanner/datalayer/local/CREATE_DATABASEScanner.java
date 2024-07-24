@@ -1,4 +1,4 @@
-package com.sous.scanner.Database;
+package com.sous.scanner.datalayer.Database.local;
 
 
 import android.content.ContentValues;
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 import org.jetbrains.annotations.NotNull;
 import java.util.Date;

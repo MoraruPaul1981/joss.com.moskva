@@ -1,13 +1,9 @@
-package com.sous.scanner.Window;
+package com.sous.scanner.presentationlayer;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.pm.PackageInfo;
-import android.os.Binder;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,13 +21,10 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
-import com.sous.scanner.Services.ServiceClientBLE;
-
-import java.util.Date;
+import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
 
 
 public class FragmentBootScanner extends Fragment {

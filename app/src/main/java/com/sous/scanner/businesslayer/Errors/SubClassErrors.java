@@ -1,4 +1,4 @@
-package com.sous.scanner.Errors;
+package com.sous.scanner.businesslayer.Errors;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;

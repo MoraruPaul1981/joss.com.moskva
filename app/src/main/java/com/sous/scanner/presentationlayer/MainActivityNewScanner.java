@@ -1,4 +1,4 @@
-package com.sous.scanner.Window;
+package com.sous.scanner.presentationlayer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
@@ -11,12 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
@@ -29,7 +27,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
@@ -37,12 +34,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
-import com.sous.scanner.Broadcastreceiver.BroadcastReceiverGattClient;
-import com.sous.scanner.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
-import com.sous.scanner.Services.ServiceClientBLE;
-
-import org.jetbrains.annotations.NotNull;
+import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
 
 import java.util.Date;
 import java.util.concurrent.Executors;

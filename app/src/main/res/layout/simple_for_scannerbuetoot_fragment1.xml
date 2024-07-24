@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
     android:background="#F5FFFA"
-    tools:context=".Window.MainActivityNewScanner">
+    tools:context=".presentationlayer.MainActivityNewScanner">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardviewmatireacommitpay"

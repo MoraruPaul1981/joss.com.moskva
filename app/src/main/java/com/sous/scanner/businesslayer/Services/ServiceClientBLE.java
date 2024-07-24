@@ -1,4 +1,4 @@
-package com.sous.scanner.Services;
+package com.sous.scanner.businesslayer.Services;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -33,11 +33,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.onesignal.OneSignal;
-import com.sous.scanner.Broadcastreceiver.bl_BloadcastReceierGatt;
-import com.sous.scanner.Database.CREATE_DATABASEScanner;
-import com.sous.scanner.Firebase.MyFirebaseMessagingServiceScanner;
-import com.sous.scanner.Errors.SubClassErrors;
-import com.sous.scanner.Services.BL_forService.Bl_froSetviceBLE;
+import com.sous.scanner.businesslayer.Broadcastreceiver.bl_BloadcastReceierGatt;
+import com.sous.scanner.datalayer.Database.local.CREATE_DATABASEScanner;
+import com.sous.scanner.businesslayer.Firebase.MyFirebaseMessagingServiceScanner;
+import com.sous.scanner.businesslayer.Errors.SubClassErrors;
+import com.sous.scanner.businesslayer.Services.BL_forService.Bl_froSetviceBLE;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -46,13 +46,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 /**
@@ -853,7 +846,7 @@ public class ServiceClientBLE extends IntentService {
                                 concurrentHashMap  .put("BluetoothDevice.DEVICE_TYPE_UNKNOWN","9");
                                 mediatorLiveDataGATT.setValue(concurrentHashMap);
                             });
-                            bl_BloadcastReceierGatt       blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                            bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
                             blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
 
                             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
