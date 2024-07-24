@@ -47,7 +47,6 @@ import com.sous.server.businesslayer.Locations.GattLocationListener;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -69,7 +68,7 @@ import java.util.stream.Stream;
  */
 public class ServiceGattServer extends Service {
     protected SQLiteDatabase sqLiteDatabase;
-    public LocalBinderСерверBLE binder = new LocalBinderСерверBLE();
+    public LocalBinderСерверBLE binderGatt = new LocalBinderСерверBLE();
 
 
     protected BluetoothGattServer getBluetoothGattServer;
@@ -82,7 +81,7 @@ public class ServiceGattServer extends Service {
 
 
     protected List<Address> addressesgetGPS;
-    protected UUID getPublicUUID;
+    protected UUID getPublicUUIDGatt;
 
 
     //TODO: Local
@@ -336,7 +335,7 @@ public class ServiceGattServer extends Service {
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         //   return super.onBind(intent);
-        return binder;
+        return binderGatt;
 
     }
 
@@ -484,7 +483,7 @@ public class ServiceGattServer extends Service {
         try {
 
             Log.d(this.getClass().getName(), "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
-                    "" + binder.isBinderAlive() + " date " + new Date().toString().toString() + "" +
+                    "" + binderGatt.isBinderAlive() + " date " + new Date().toString().toString() + "" +
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 26.01.2023 Сервер КОД
@@ -638,10 +637,10 @@ public class ServiceGattServer extends Service {
         try{
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             // TODO: 12.02.2023 Адреса серверов для Клиентна
-            getPublicUUID = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
-            BluetoothGattService service = new BluetoothGattService(getPublicUUID, BluetoothGattService.SERVICE_TYPE_PRIMARY);
+            getPublicUUIDGatt = ParcelUuid.fromString("10000000-0000-1000-8000-00805f9b34fb").getUuid();
+            BluetoothGattService service = new BluetoothGattService(getPublicUUIDGatt, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
-            BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(getPublicUUID,
+            BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(getPublicUUIDGatt,
                     BluetoothGattCharacteristic.PROPERTY_READ |
                             BluetoothGattCharacteristic.PROPERTY_WRITE |
                             BluetoothGattCharacteristic.PROPERTY_EXTENDED_PROPS |
@@ -655,7 +654,7 @@ public class ServiceGattServer extends Service {
                             BluetoothGattCharacteristic.PERMISSION_WRITE_ENCRYPTED);
 
             //TODO: Desctpior
-            characteristic.addDescriptor(new BluetoothGattDescriptor(getPublicUUID,
+            characteristic.addDescriptor(new BluetoothGattDescriptor(getPublicUUIDGatt,
                     BluetoothGattCharacteristic.PERMISSION_READ |
                             BluetoothGattCharacteristic.PERMISSION_WRITE |
                             BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED |
@@ -1075,7 +1074,7 @@ public class ServiceGattServer extends Service {
         try {
             BluetoothGattService services = characteristic.getService();
             if (services != null) {
-                BluetoothGattCharacteristic characteristicsДляСерверОтКлиента = services.getCharacteristic(getPublicUUID);
+                BluetoothGattCharacteristic characteristicsДляСерверОтКлиента = services.getCharacteristic(getPublicUUIDGatt);
                 if (characteristicsДляСерверОтКлиента != null && value != null) {
                     // TODO: 20.02.2023
                     atomicReferenceValue.set(value);
