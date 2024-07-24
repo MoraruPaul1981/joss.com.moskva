@@ -1,7 +1,9 @@
 package com.sous.server.presentationlayer;
 
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.ContentValues;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerbleRecyclerViewSimpleScan.Bl_FragmentRecyreViewServerSimpleScan;
+import com.sous.server.businesslayer.BroadcastreceiverServer.RSSIbroadcastReceiver;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
@@ -69,6 +72,13 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             messageGattServer = (Message) ((ActivityServerScanner) getActivity()).messageGattServer;
+
+
+
+
+            RSSIbroadcastReceiver rssIbroadcastReceiver=new RSSIbroadcastReceiver();
+
+          getActivity().registerReceiver(rssIbroadcastReceiver.receiverrssi,new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

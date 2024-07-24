@@ -130,8 +130,13 @@ public class ServiceGattServerScan extends Service {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
 
-            //TODO :  главный метод службы запускаем Scan
-                 blForServiceGattServerScan.startingScanBLE();
+       //TODO :  главный метод службы запускаем Scan BLE
+               //  blForServiceGattServerScan.startingScanBLE();
+
+            //TODO :  главный метод службы дополнительный Scan Bluetooth
+           blForServiceGattServerScan.startingSimpleScan();
+
+               //  blForServiceGattServerScan.startingRemoteScan();
 
 
 
