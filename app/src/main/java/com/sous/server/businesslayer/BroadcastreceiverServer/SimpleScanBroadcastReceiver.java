@@ -30,7 +30,11 @@ Long version;
                 bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
             }
+            if (BluetoothDevice.ACTION_PAIRING_REQUEST.equals(intent.getAction())) {
 
+                bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+            }
 
             // TODO: 22.07.2024  Код Брадкаста ресивера
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);

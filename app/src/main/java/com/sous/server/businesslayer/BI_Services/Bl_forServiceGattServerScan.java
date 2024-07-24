@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothSocket;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanRecord;
@@ -27,6 +28,7 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 
+import com.sous.server.businesslayer.BroadcastreceiverServer.SimpleScanBroadcastReceiver;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -53,6 +55,8 @@ public class Bl_forServiceGattServerScan {
     private  Long version;
     private ContentProviderServer contentProviderServer;
     private    Cursor successfuldevices;
+    public static final boolean PAIRING_VARIANT_PASSKEY_CONFIRMATION =true;
+    public static final byte[] PAIRING_VARIANT_PIN = new byte[0];
 
 
     //TODO: Local
@@ -251,8 +255,40 @@ public class Bl_forServiceGattServerScan {
     public void  startingRemoteScan(){
         try{
 
-       BluetoothDevice bluetoothDeviceremote=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4");
+       //BluetoothDevice bluetoothDeviceremote=     bluetoothAdapterScan.getRemoteDevice("FC:19:99:79:D6:D4");
+       BluetoothDevice bluetoothDeviceremote=     bluetoothAdapterScan.getRemoteDevice("48:59:A4:5B:C1:F5");
             bluetoothDeviceremote.fetchUuidsWithSdp();
+
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                    " bluetoothDeviceremote.getBondState() " +bluetoothDeviceremote.getBondState());
+
+            //bluetoothDeviceremote.setPairingConfirmation(PAIRING_VARIANT_PASSKEY_CONFIRMATION);
+            bluetoothDeviceremote.setPin(PAIRING_VARIANT_PIN);
+            bluetoothDeviceremote.createBond();
+
+
+            switch (bluetoothDeviceremote.getBondState()) {
+                case BluetoothDevice.BOND_BONDING:
+                    Log.d("BlueToothTestActivity", "it is pairing");
+                    break;
+                case BluetoothDevice.BOND_BONDED:
+                    Log.d("BlueToothTestActivity", "finish");
+
+                    break;
+                case BluetoothDevice.BOND_NONE:
+                    Log.d("BlueToothTestActivity", "cancel");
+                    break;
+                case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
+                    Log.d("BlueToothTestActivity", "cancel");
+                    break;
+                default:
+                    Log.d("BlueToothTestActivity", "cancel");
+                    break;
+            }
+
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -328,12 +364,29 @@ public class Bl_forServiceGattServerScan {
             IntentFilter filter = new IntentFilter();
 
             filter.addAction(BluetoothDevice.ACTION_FOUND);
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-            filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
 
-          context. registerReceiver(mReceiver, filter);
+
+            context. registerReceiver(mReceiver, filter);
+
+
+
+
+
+
             bluetoothAdapterScan.startDiscovery();
 
+
+            IntentFilter filter2 = new IntentFilter();
+
+            filter.addAction(BluetoothDevice.ACTION_FOUND);
+            filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+
+            context. registerReceiver(new SimpleScanBroadcastReceiver(), filter2);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -378,6 +431,7 @@ public class Bl_forServiceGattServerScan {
 
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @SuppressLint("MissingPermission")
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
 
@@ -390,9 +444,11 @@ public class Bl_forServiceGattServerScan {
                 BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
 
-                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
+                if (device.getName().toString()!=null) {
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " device " +device);
+                }
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
