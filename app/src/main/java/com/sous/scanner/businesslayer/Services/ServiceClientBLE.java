@@ -57,7 +57,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
  * helper methods.
  */
 public class ServiceClientBLE extends IntentService {
-    private SQLiteDatabase sqLiteDatabase;
+
 
     public LocalBinderСканнер binder = new LocalBinderСканнер();
     private Context context;
@@ -70,9 +70,6 @@ public class ServiceClientBLE extends IntentService {
     private BluetoothAdapter bluetoothAdapterGATT;
     protected LocationManager locationManager;
 
-    public ServiceClientBLE() {
-        super("ServiceClientBLE");
-    }
 
     private MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataGATT;
     private Long version = 0l;
@@ -81,13 +78,21 @@ public class ServiceClientBLE extends IntentService {
     private BluetoothGatt gatt;
 
 
+
+
+    public ServiceClientBLE() {
+        super("ServiceClientBLE");
+    }
+
+
+
     @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
         // TODO: 07.02.2023 клиент сервер
         try {
-             sqLiteDatabase = new CREATE_DATABASEScanner(getApplicationContext()).getССылкаНаСозданнуюБазу();
+
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
