@@ -313,6 +313,13 @@ public class Bl_forServiceScan {
 
 
                             }
+
+                            // TODO: 25.07.2024   Успех ТОже выключаем Сервр
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                            disaibleGattScanServer(gattScan);
+
                         }else{
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

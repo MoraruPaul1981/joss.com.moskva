@@ -23,6 +23,7 @@ import com.sous.scanner.businesslayer.bl_forServices.Bl_forServiceScan;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
 
@@ -105,6 +106,8 @@ public class ServiceClientSimpleScan extends Service {
                         }
                     })
                     .onBackpressureBuffer(true)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
                     .repeatWhen(repeat->repeat.delay(1, TimeUnit.MINUTES))
 
                     .doOnComplete(new Action() {
