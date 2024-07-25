@@ -38,7 +38,7 @@ import io.reactivex.rxjava3.functions.Predicate;
 public class Bl_forServiceScan {
 
     // TODO: 24.07.2024  varibles Service Scan
-    private String getWorkerStateClient;
+    private String getWorkerStateClient="Простое сканирование";
     private BluetoothGatt gattScan;
     private Message handlerScan;
     private LocationManager locationManager;
@@ -199,7 +199,7 @@ public class Bl_forServiceScan {
                                             concurrentHashMap  .put("BluetoothProfile.STATE_DISCONNECTED","3");
                                             mediatorLiveDataGATT.setValue(concurrentHashMap);
                                         });*/
-                                new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
+                              //  new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                 Log.d(this.getClass().getName(), "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                 break;
 
@@ -210,7 +210,7 @@ public class Bl_forServiceScan {
                                     concurrentHashMap  .put("BluetoothGatt.GATT_FAILURE","4");
                                     mediatorLiveDataScan.setValue(concurrentHashMap);
                                 });
-                                new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
+                              //  new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                 Log.d(this.getClass().getName(), "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                 break;
 
@@ -221,14 +221,14 @@ public class Bl_forServiceScan {
                                     concurrentHashMap  .put("BluetoothGatt.GATT_CONNECTION_CONGESTED","5");
                                     mediatorLiveDataScan.setValue(concurrentHashMap);
                                 });
-                                new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
+                              //  new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                 Log.d(this.getClass().getName(), "Trying to \"SERVERВDontEndConnect\" "  + " newState " +newState);
                                 break;
 
 
                             case 133 :
                                 // TODO: 16.07.2024 когда ошивка разрываем сообщение
-                                new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
+                              //  new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                 Log.d(this.getClass().getName(), "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                 break;
 
@@ -457,8 +457,8 @@ public class Bl_forServiceScan {
                         concurrentHashMap  .put("BluetoothDevice.DEVICE_TYPE_UNKNOWN","9");
                         mediatorLiveDataScan.setValue(concurrentHashMap);
                     });
-                    bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
+                 /*   bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);*/
 
                     Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -475,8 +475,8 @@ public class Bl_forServiceScan {
 
                     });
                     // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                    blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
+                 /*   blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);*/
                     // TODO: 22.07.2024  Принудительный Запуск Сопрежения
 
 
