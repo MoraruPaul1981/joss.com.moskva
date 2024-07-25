@@ -21,7 +21,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.sous.scanner.businesslayer.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 import java.util.Date;
@@ -30,12 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.functions.Action;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.functions.Predicate;
 
 public class Bl_forServiceScan {
 
@@ -124,7 +117,7 @@ public class Bl_forServiceScan {
                     BluetoothGattCallback bluetoothGattCallbackScan  = МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );
 
                     // TODO: 26.01.2023  конец сервера GATT
-                    МетодЗапускаGATTКлиента(bluetoothDeviceScan, bluetoothGattCallbackScan);
+                    МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
 
 
 
@@ -460,8 +453,8 @@ public class Bl_forServiceScan {
 
     // TODO: 24.07.2024
     @SuppressLint("MissingPermission")
-    private void МетодЗапускаGATTКлиента(@NonNull BluetoothDevice bluetoothDevice,
-                                         BluetoothGattCallback bluetoothGattCallback) {
+    private void МетодЗапускаGATTКлиентаScan(@NonNull BluetoothDevice bluetoothDevice,
+                                             BluetoothGattCallback bluetoothGattCallback) {
         try{
             gattScan =      bluetoothDevice.connectGatt(context, false,
                     bluetoothGattCallback,
