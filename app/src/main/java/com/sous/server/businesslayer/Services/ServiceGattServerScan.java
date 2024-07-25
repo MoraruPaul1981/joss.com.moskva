@@ -651,6 +651,7 @@ public class ServiceGattServerScan extends Service {
                     BluetoothGattCharacteristic.PERMISSION_READ |
                             BluetoothGattCharacteristic.PERMISSION_WRITE |
                             BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE_SIGNED |
                             BluetoothGattCharacteristic.PERMISSION_WRITE_ENCRYPTED);
 
             //TODO: Desctpior
@@ -658,6 +659,7 @@ public class ServiceGattServerScan extends Service {
                     BluetoothGattCharacteristic.PERMISSION_READ |
                             BluetoothGattCharacteristic.PERMISSION_WRITE |
                             BluetoothGattCharacteristic.PERMISSION_READ_ENCRYPTED |
+                            BluetoothGattCharacteristic.PERMISSION_WRITE_SIGNED |
                             BluetoothGattCharacteristic.PERMISSION_WRITE_ENCRYPTED));
             service.addCharacteristic(characteristic);
             // TODO: 12.02.2023 добавлев в сервер
@@ -1140,6 +1142,7 @@ public class ServiceGattServerScan extends Service {
     private synchronized void МетодКоннектаДеконнектасКлиентамиGatt(BluetoothDevice device, int status, int newState) {
         try{
             Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+            v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
             // TODO: 27.02.2023 Переопреляем Адамтер Bluetooth
 
             switch (newState) {
@@ -1166,7 +1169,25 @@ public class ServiceGattServerScan extends Service {
                             "\n"+ "newState " + newState +  "status "+ status);
                     break;
 
+                case BluetoothGatt.GATT:
+                    Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                            "\n"+ "newState " + newState +  "status "+ status);
+                    break;
+                case BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION:
+                    Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                            "\n"+ "newState " + newState +  "status "+ status);
+                    break;
+                case BluetoothGatt.GATT_FAILURE:
+                    Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                            "\n"+ "newState " + newState +  "status "+ status);
+                    break;
 
+                // TODO: 25.07.2024
+                default:{
+                    Log.i(this.getClass().getName(), " onConnectionStateChange BluetoothProfile.STATE_DISCONNECTED "+  device.getAddress()+
+                            "\n"+ "newState " + newState +  "status "+ status);
+
+                }
 
             }
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
