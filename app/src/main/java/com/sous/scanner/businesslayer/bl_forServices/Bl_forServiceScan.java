@@ -308,7 +308,7 @@ public class Bl_forServiceScan {
                                 mediatorLiveDataScan.setValue(concurrentHashMap);
                                 Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
-                                disaibleGattScanServer(gattScan);
+
 
 
 
@@ -318,7 +318,7 @@ public class Bl_forServiceScan {
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-                            disaibleGattScanServer(gattScan);
+
 
                         }else{
 
@@ -331,11 +331,16 @@ public class Bl_forServiceScan {
                             mediatorLiveDataScan.setValue(concurrentHashMap);
                             Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
-
-                            disaibleGattScanServer(gattScan);
-
-
                         }
+
+                        // TODO: 25.07.2024  закрываем соедтнение
+                        disaibleGattScanServer(gattScan);
+
+                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -583,13 +588,17 @@ public class Bl_forServiceScan {
     public void disaibleGattScanServer(@NonNull BluetoothGatt gatt  ) {
         try{
             if (gatt!=null) {
-                gatt.disconnect();
-                gatt.close();
-                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
-                        +new Date().toLocaleString() + " gatt " +gatt);}
-            Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
-                    new Date().toLocaleString() + gatt
-                    + " gatt "+gatt);
+
+                handlerScan.getTarget().postDelayed(() -> {
+
+                    gatt.disconnect();
+                    gatt.close();
+                            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                                    +new Date().toLocaleString() + " gatt " +gatt);
+                }, 5000);
+            }
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString() + " gatt " +gatt);
             //TODO
         } catch (Exception e) {
             e.printStackTrace();
