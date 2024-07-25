@@ -12,6 +12,8 @@ import android.util.Log;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.bl_BloadcastReceiver.bl_BloadcastReceierGatt;
 
+import java.util.Date;
+
 
 public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
@@ -50,7 +52,7 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                             "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()
-                            +"\n"+ " intent.getAction() " +intent.getAction());
+                            +"\n"+ " intent.getAction() " +intent.getAction() + "  +   new Date().toLocaleString() " +   new Date().toLocaleString());
                 }
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

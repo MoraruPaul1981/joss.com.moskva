@@ -81,7 +81,7 @@ public class ServiceGattServerScan extends Service {
 
 
     protected List<Address> addressesgetGPS;
-    protected UUID getPublicUUIDScan;
+    protected UUID  getPublicUUIDScan = ParcelUuid.fromString("70000007-0000-1000-8000-00805f9b34fb").getUuid();
 
 
     //TODO: Local
@@ -499,7 +499,8 @@ public class ServiceGattServerScan extends Service {
 
                         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"  );
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                                 " onConnectionStateChange " +    new Date().toLocaleString());
                         // TODO: 22.07.2024
                         super.onConnectionStateChange(device, status, newState);
 
@@ -637,7 +638,6 @@ public class ServiceGattServerScan extends Service {
         try{
             ///TODO  служебный xiaomi "BC:61:93:E6:F2:EB", МОЙ XIAOMI FC:19:99:79:D6:D4  //////      "BC:61:93:E6:E2:63","FF:19:99:79:D6:D4"
             // TODO: 12.02.2023 Адреса серверов для Клиентна
-            getPublicUUIDScan = ParcelUuid.fromString("70000007-0000-1000-8000-00805f9b34fb").getUuid();
             BluetoothGattService service = new BluetoothGattService(getPublicUUIDScan, BluetoothGattService.SERVICE_TYPE_PRIMARY);
             // TODO: 12.02.2023 первый сервер
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(getPublicUUIDScan,

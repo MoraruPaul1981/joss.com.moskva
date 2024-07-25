@@ -112,6 +112,7 @@ public class FragmentBootServer extends Fragment {
 
 
 
+    @SuppressLint("SuspiciousIndentation")
     @Override
     public void onStart() {
         super.onStart();
@@ -133,8 +134,13 @@ public class FragmentBootServer extends Fragment {
         biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
 
-        
-   /*     messageGattServer.getTarget().post(()->{
+
+
+
+
+
+/*
+        messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
 
             biFragmentBootScannerServer.startingServiceGattServer();
@@ -143,7 +149,10 @@ public class FragmentBootServer extends Fragment {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-        });*/
+        });
+*/
+
+
 
 
 
