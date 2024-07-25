@@ -11,11 +11,8 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
-import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.LocationManager;
@@ -26,7 +23,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.sous.server.businesslayer.BroadcastreceiverServer.BroadcastReceiverGattServer;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -36,9 +32,6 @@ import com.sous.server.businesslayer.bl_BloadcastReceiver.bl_BloadcastReceierGat
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -741,7 +734,7 @@ public class Bl_forServiceGattServerScan {
 
 
             //TODO:Event Send To Fragment Boot After Success DataBase and Divece
-            sendStatusSucessEventBusDevece(contentValuesВставкаДанныхGaTT, concurrentHashMapCursor);
+           // sendStatusSucessEventBusDeviceScan(contentValuesВставкаДанныхGaTT, concurrentHashMapCursor);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -766,49 +759,7 @@ public class Bl_forServiceGattServerScan {
 
 
     // TODO: 23.07.2024
-    private   void sendStatusSucessEventBusDevece(@NonNull   ContentValues    contentValuesВставкаДанныхGaTT,
-                                                  @NonNull  ConcurrentHashMap<String,Cursor> concurrentHashMapCursor) {
-        try{
-            ParamentsScannerServer sendFragmentparamentsScannerServer=new ParamentsScannerServer();
-            // TODO: 18.07.2024 sending status
-            sendFragmentparamentsScannerServer.setCurrentTask("SuccessDeviceBluetoothAnServerGatt");
 
-
-            // TODO: 18.07.2024 sending HashMap
-            contentValuesConcurrentHashMap.compute(contentValuesВставкаДанныхGaTT.getAsString("macdevice").toString(),(x,y)->contentValuesВставкаДанныхGaTT);
-            sendFragmentparamentsScannerServer.setContentValuesConcurrentHashMap(contentValuesConcurrentHashMap);
-
-            // TODO: 18.07.2024 sending Cursor
-            sendFragmentparamentsScannerServer.setConcurrentHashMapCursor( concurrentHashMapCursor);
-
-            //TODO: послымаем Из Службы Значение на Фрагмент
-            MessageScannerServer sendmessageScannerStartRecyreViewFragment= new MessageScannerServer( sendFragmentparamentsScannerServer);
-
-            //TODO: ответ на экран работает ообрубование или нет
-            EventBus.getDefault().post(sendmessageScannerStartRecyreViewFragment);
-
-            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                    " contentValuesConcurrentHashMap " +contentValuesConcurrentHashMap +
-                    " concurrentHashMapCursor " +concurrentHashMapCursor+" contentValuesВставкаДанныхGaTT.getAsString(\"macdevice\") ");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            ContentValues valuesЗаписываемОшибки = new ContentValues();
-            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
-            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-            final Object ТекущаяВерсияПрограммы = version;
-            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
-        }
-
-    }
 
 // TODO: 23.07.2024
 
