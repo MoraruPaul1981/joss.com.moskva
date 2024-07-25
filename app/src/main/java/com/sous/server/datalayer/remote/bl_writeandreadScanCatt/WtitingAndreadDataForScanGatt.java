@@ -192,27 +192,13 @@ public class WtitingAndreadDataForScanGatt {
             contentValuesВставкаДанных.put("namedevice", device.getName().toString());
 
 
+            // TODO: 25.07.2024  Создаем Новую Даты
 
+            Date dateScanNew=Calendar.getInstance().getTime();
+            DateFormat dateFormat=new java.text.SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS", new Locale("ru","RU"));
+            String dateNowscan=dateFormat.format(dateScanNew);
+            Date  date_update =dateFormat.parse(dateNowscan);
 
-
-            Calendar cal = Calendar.getInstance();
-
-                DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-              Date  date = (Date)formatter.parse(cal.getTime().toString());
-                cal=Calendar.getInstance();
-                cal.setTime(date);
-
-            LocalDateTime getdateTime = LocalDateTime.now();
-
-            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            LocalDateTime dateTime = LocalDateTime.parse(new Date().toLocaleString(),formatter2);
-
-            String strDatewithTime = "2015-08-04T10:11:30";
-            LocalDateTime aLDT = LocalDateTime.parse(strDatewithTime);
-
-
-
-            java.util.Date date_update = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS").parse(dateTime.toString());
 
             contentValuesВставкаДанных.put("date_update", date_update.toString());
 
