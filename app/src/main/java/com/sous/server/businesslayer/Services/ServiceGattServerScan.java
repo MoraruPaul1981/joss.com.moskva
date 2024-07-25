@@ -103,7 +103,7 @@ public class ServiceGattServerScan extends Service {
 
 
 
-    private    Cursor successfuldevices;
+    protected     Cursor successfuldevices;
 
 
     @Override
@@ -501,6 +501,18 @@ public class ServiceGattServerScan extends Service {
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
                                  " onConnectionStateChange " +    new Date().toLocaleString());
+
+
+                               // TODO: 25.07.2024  запускаем запись в базу
+                    WtitingAndreadDataForScanGatt wtitingAndreadDataForScanGatt=new WtitingAndreadDataForScanGatt(getApplicationContext(),
+                            version,
+                            contentProviderServer,
+                            sharedPreferencesGatt,
+                            successfuldevices);
+                    wtitingAndreadDataForScanGatt.writeDatabaseScanGatt(device,successfuldevices,newState) ;
+
+
+
                         // TODO: 22.07.2024
                         super.onConnectionStateChange(device, status, newState);
 
@@ -917,7 +929,7 @@ public class ServiceGattServerScan extends Service {
 
     // TODO: 21.02.2023 метод превоночального коннекта с устройством
     @SuppressLint("MissingPermission")
-    private synchronized void МетодКоннектаДеконнектасКлиентамиGattScan(BluetoothDevice device, int status, int newState) {
+    private  void МетодКоннектаДеконнектасКлиентамиGattScan(BluetoothDevice device, int status, int newState) {
         try{
             Vibrator v2 = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
             v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
@@ -931,13 +943,6 @@ public class ServiceGattServerScan extends Service {
                     bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
                     bundleAddDeviceSuccess.putString("Дивайс", device.getName());
                     bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" + "Без записи в базу !!!");
-
-                    // TODO: 25.07.2024  запускаем запись в базу
-                    WtitingAndreadDataForScanGatt wtitingAndreadDataForScanGatt=new WtitingAndreadDataForScanGatt(getApplicationContext(),
-                            version,
-                            contentProviderServer,
-                            sharedPreferencesGatt);
-                    wtitingAndreadDataForScanGatt.writeDatabaseScanGatt(device,successfuldevices,newState);
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

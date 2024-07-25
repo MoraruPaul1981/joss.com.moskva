@@ -139,6 +139,7 @@ public class FragmentBootServer extends Fragment {
 
 
 
+
 /*
         messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
@@ -150,6 +151,7 @@ public class FragmentBootServer extends Fragment {
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
         });
+
 */
 
 
@@ -257,33 +259,45 @@ public class FragmentBootServer extends Fragment {
         String CurrentTask= paramentsScannerServer.getCurrentTask().trim();
 
 
-            // TODO: 24.07.2024 GATT реакция на событие от Службы GATT
-            reactionFromEventBusFromServiceGatt(CurrentTask, getFladEnableApadaterBTEOtService);
-            
+// TODO: 25.07.2024 вибираем какой фрагмент загружать
+        switch (CurrentTask.trim()) {
+
+            case "bluetootAdapterEnableGatt" :
+            case "bluetootAdapterDisabledGatt"  :
+
+// TODO: 24.07.2024 GATT реакция на событие от Службы GATT
+                reactionFromEventBusFromServiceGatt(CurrentTask, getFladEnableApadaterBTEOtService);
+
+                
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
+                break;
+
+            case "bluetootAdapterEnableScan"  :
+            case "bluetootAdapterDisabledScan":
+
+                // TODO: 24.07.2024 GATT реакция на событие от Службы Scan
+                reactionFromEventBusFromServiceScan(CurrentTask, getFladEnableApadaterBTEOtService);
+
+
+                Log.d(getContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
+                        " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
+                break;
+        }
+        
             Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
                 " Класс в процессе... " + this.getClass().getName() + "\n" +
                 " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                 " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
 
-
-
-            // TODO: 24.07.2024 GATT реакция на событие от Службы Scan
-            reactionFromEventBusFromServiceScan(CurrentTask, getFladEnableApadaterBTEOtService);
-
-            Log.d(getContext().getClass().getName(), "\n"
-                    + " время: " + new Date() + "\n+" +
-                    " Класс в процессе... " + this.getClass().getName() + "\n" +
-                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " getFladEnableApadaterBTEOtService " +getFladEnableApadaterBTEOtService);
-
-
-
-
-
-
-
-
+        
 
         } catch (Exception e) {
         e.printStackTrace();
@@ -302,6 +316,7 @@ public class FragmentBootServer extends Fragment {
     }
 
     private void reactionFromEventBusFromServiceGatt(String CurrentTask, Boolean getFladEnableApadaterBTEOtService) {
+
         if (CurrentTask.contentEquals("bluetootAdapterEnableGatt")) {
 ////TODO: В зависимтсто какой результат прищели из службы то сообщаем пользоватю об этом , лии сразу переходим на новой  фрагмент RecyreView
             forwardOtServiceGattEventBus(getFladEnableApadaterBTEOtService);

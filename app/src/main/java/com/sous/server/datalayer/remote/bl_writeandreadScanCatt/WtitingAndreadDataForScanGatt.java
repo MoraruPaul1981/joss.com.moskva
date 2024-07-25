@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,11 +50,13 @@ public class WtitingAndreadDataForScanGatt {
 
     public WtitingAndreadDataForScanGatt(Context context, Long version,
                                          ContentProviderServer contentProviderServer,
-                                         SharedPreferences sharedPreferencesGatt) {
+                                         SharedPreferences sharedPreferencesGatt,
+                                         Cursor successfuldevices) {
         this.context = context;
         this.version = version;
         this.contentProviderServer = contentProviderServer;
         this.sharedPreferencesGatt = sharedPreferencesGatt;
+        this.successfuldevices = successfuldevices;
     }
 
 
@@ -86,7 +89,7 @@ public class WtitingAndreadDataForScanGatt {
 
 
 // TODO: 25.07.2024  результат дата старше полу часа или нет
-          long getHOURS=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("date_update").trim());
+          long getMinute=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("date_update").trim());
 
 
 
@@ -94,13 +97,13 @@ public class WtitingAndreadDataForScanGatt {
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  getcurrentDatefromthedatabase " +getcurrentDatefromthedatabase);
+                        "  getcurrentDatefromthedatabase " +getcurrentDatefromthedatabase+"\n" + "getMinute  " +getMinute);
 
 
                 Integer   resultAddDeviceToGattaDtabse= 0;
 
 
-                if (getHOURS>1) {
+                if (getMinute>30 || getMinute==0) {
                     // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                     resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
                 }
@@ -195,15 +198,14 @@ public class WtitingAndreadDataForScanGatt {
 
 
             // TODO: 25.07.2024  Создаем Новую Даты
+                LocalDateTime futureDate = LocalDateTime.now();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                  String date_update=   dtf.format(futureDate);
 
-            Date dateScanNew=Calendar.getInstance().getTime();
-            DateFormat dateFormat=new java.text.SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS", new Locale("ru","RU"));
-            String dateNowscan=dateFormat.format(dateScanNew);
-            Date  date_update =dateFormat.parse(dateNowscan);
-
+            // TODO: 25.07.2024 set date
             contentValuesВставкаДанных.put("date_update", date_update.toString());
 
-            contentValuesВставкаДанных.put("completedwork", "простое сканирвоание...");
+            contentValuesВставкаДанных.put("completedwork", "простое сканирование...");
             contentValuesВставкаДанных.put("operations", newState.toString());
 
 
@@ -592,30 +594,38 @@ public class WtitingAndreadDataForScanGatt {
 
 
     long findoutthedateDifference(@NonNull String getcurrentDatefromthedatabase,@NonNull String getLiveDatefromthedatabase) {
-        long HOURS=0;
+        long getMinute=0;
        try {
+           Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " getcurrentDatefromthedatabase " +getcurrentDatefromthedatabase
+                   + "\n"+ " getLiveDatefromthedatabase " +getLiveDatefromthedatabase);
 
-           DateFormat dateFormat=new java.text.SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS", new Locale("ru","RU"));
+           // TODO: 25.07.2024 обрабоатываем даты
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-           Date dateFromDataBAse = null;
+           LocalDateTime   LiveDate = null;
            try {
-               dateFromDataBAse = dateFormat.parse(getLiveDatefromthedatabase);
-           } catch (ParseException e) {
+               LiveDate = LocalDateTime.parse(getLiveDatefromthedatabase, formatter);
+           } catch (Exception e) {
                throw new RuntimeException(e);
            }
-           Date dateLiveGenetaror = null;
+           LocalDateTime   databaseDate = null;
            try {
-               dateLiveGenetaror = dateFormat.parse(getLiveDatefromthedatabase);
-           } catch (ParseException e) {
+               databaseDate = LocalDateTime.parse(getcurrentDatefromthedatabase, formatter);
+           } catch (Exception e) {
                throw new RuntimeException(e);
            }
-           long diff = Math.abs(dateLiveGenetaror.getTime() - dateFromDataBAse.getTime());
-           HOURS = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+           Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " LiveDate " +LiveDate+"\n" + "databaseDate " +databaseDate);
 
+           long diff = Math.abs(LiveDate.getMinute() - databaseDate.getMinute());
+           getMinute = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
 
            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " HOURS " +HOURS);
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " getMinute " +getMinute);
 
        } catch (Exception e) {
            e.printStackTrace();
@@ -631,7 +641,7 @@ public class WtitingAndreadDataForScanGatt {
            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
        }
-       return HOURS;
+       return getMinute;
 
    }
 
