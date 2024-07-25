@@ -19,8 +19,14 @@ import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -68,7 +74,7 @@ public class WtitingAndreadDataForScanGatt {
 
                 // TODO: 25.07.2024
 
-                String   getcurrentDatefromthedatabase =  getDateStoreOperationsDeviceFronDatabase("SELECT  date_update  MAX ( date_update )   FROM scannerserversuccess" +
+                String   getcurrentDatefromthedatabase =  getDateStoreOperationsDeviceFronDatabase("SELECT    MAX ( date_update )   FROM scannerserversuccess" +
                         " WHERE   macdevice = '"+contentValuesВставкаДанных.getAsString("macdevice").trim() +"'");
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -78,7 +84,7 @@ public class WtitingAndreadDataForScanGatt {
 
 
 // TODO: 25.07.2024  результат дата старше полу часа или нет
-          Boolean ЕслиВремяТекущееДольшеПОлучаса=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("macdevice").trim());
+          Boolean ЕслиВремяТекущееДольшеПОлучаса=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("date_update").trim());
 
 
 
@@ -186,7 +192,30 @@ public class WtitingAndreadDataForScanGatt {
             contentValuesВставкаДанных.put("namedevice", device.getName().toString());
 
 
-            contentValuesВставкаДанных.put("date_update", new  Date().toLocaleString());
+
+
+
+            Calendar cal = Calendar.getInstance();
+
+                DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+              Date  date = (Date)formatter.parse(cal.getTime().toString());
+                cal=Calendar.getInstance();
+                cal.setTime(date);
+
+            LocalDateTime getdateTime = LocalDateTime.now();
+
+            DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime dateTime = LocalDateTime.parse(new Date().toLocaleString(),formatter2);
+
+            String strDatewithTime = "2015-08-04T10:11:30";
+            LocalDateTime aLDT = LocalDateTime.parse(strDatewithTime);
+
+
+
+            java.util.Date date_update = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS").parse(dateTime.toString());
+
+            contentValuesВставкаДанных.put("date_update", date_update.toString());
+
             contentValuesВставкаДанных.put("completedwork", "простое сканирвоание...");
             contentValuesВставкаДанных.put("operations", newState.toString());
 
@@ -579,7 +608,7 @@ public class WtitingAndreadDataForScanGatt {
        Boolean ЕслиВремяТекущееДольшеПОлучаса = false;
        try {
 
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ",  new Locale("ru","RU"));//"dd/MM/yyyy HH:mm:ss.SSS", Locale.ENGLISH
 
            Date dateFromDataBAse = sdf.parse(getcurrentDatefromthedatabase);
 
