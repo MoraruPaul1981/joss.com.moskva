@@ -21,6 +21,10 @@ import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.businesslayer.bl_forServices.Bl_forServiceScan;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.functions.Action;
 
 public class ServiceClientSimpleScan extends Service {
 
@@ -85,7 +89,34 @@ public class ServiceClientSimpleScan extends Service {
         try{
 // TODO: 24.07.2024 Scan
             
-            blForServiceScan .startintgServiceScan(intent, flags, startId);
+            //blForServiceScan .startintgServiceScan(intent, flags, startId);
+
+
+
+            Flowable.fromAction(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            // TODO: 25.07.2024
+                          blForServiceScan .startintgServiceScan(intent, flags, startId);
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   +"    Flowable.fromAction(new Action() { " +   new Date().toLocaleString());
+                        }
+                    })
+                    .onBackpressureBuffer(true)
+                    .repeatWhen(repeat->repeat.delay(1, TimeUnit.MINUTES))
+
+                    .doOnComplete(new Action() {
+                        @Override
+                        public void run() throws Throwable {
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                        }
+                    }).subscribe();
+
+
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

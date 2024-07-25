@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Flowable;
@@ -48,6 +50,7 @@ public class Bl_forServiceScan {
     private     @NonNull Context context;
     private MutableLiveData<ConcurrentHashMap<String,String>> mediatorLiveDataScan=new MutableLiveData<>();
     private UUID getPublicUUIDScan = ParcelUuid.fromString("70000007-0000-1000-8000-00805f9b34fb").getUuid();
+    private      ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 
     public Bl_forServiceScan(@NonNull Message handlerScan,
@@ -68,46 +71,33 @@ public class Bl_forServiceScan {
     public   void startintgServiceScan(@NonNull Intent intent,
                                      @NonNull int flags,
                                      @NonNull  int startId){
+        try{
 
-
-        Flowable.just(МетодЗапускаСканированиеКлиентСкан())
-                .onBackpressureBuffer(true)
-                .repeatWhen(repeat->repeat.delay(1, TimeUnit.MINUTES))
-                .takeWhile(new Predicate<Object>() {
-                    @Override
-                    public boolean test(Object o) throws Throwable {
-                        return false;
-                    }
-                }).doOnError(new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Throwable {
-                        throwable.printStackTrace();
-                        Log.e(this.getClass().getName(), "Ошибка " +throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        ContentValues valuesЗаписываемОшибки = new ContentValues();
-                        valuesЗаписываемОшибки.put("Error", throwable.toString().toLowerCase());
-                        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
-                        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
-                        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        final Object ТекущаяВерсияПрограммы = version;
-                        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                    }
-                })
-                .doOnComplete(new Action() {
-                    @Override
-                    public void run() throws Throwable {
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-                    }
-                }).subscribe();
+            МетодЗапускаСканированиеКлиентСкан();
 
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" new Date().toLocaleString() " + new Date().toLocaleString());
+        Log.d(this.getClass().getName(), "\n" + " class " +
+                Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n");
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
     }
 
 // TODO: 24.07.2024 end
@@ -258,6 +248,12 @@ public class Bl_forServiceScan {
                     try{
                         if (status == BluetoothGatt.GATT_SUCCESS) {
                             BluetoothGattService services = gatt.getService(UuidГлавныйКлючСерверGATT);
+
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "services "+services);
+
                             if (services!=null) {
                                 Boolean КоннектССевромGATT = gatt.connect();
 
@@ -297,18 +293,39 @@ public class Bl_forServiceScan {
                                             +characteristics+ " successОтправка " +successОтправка+
                                             " ДействиеДляСервераGATTОТКлиента "+ getWorkerStateClient);
                                 }
+
+
+                                // TODO: 25.07.2024  СОСТЫКОВКА С СЕРВРОМ НЕТ
                             }else {
+
+                                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "services "+services);
+
+
                                 ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
                                 concurrentHashMap  .put("7","ErrorWorkerGattClientWithServer");
                                 mediatorLiveDataScan.setValue(concurrentHashMap);
                                 Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
 
+                                disaibleGattScanServer(gattScan);
+
+
+
                             }
                         }else{
+
+                            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
                             ConcurrentHashMap<String,String> concurrentHashMap=      new ConcurrentHashMap<String,String>();
                             concurrentHashMap  .put("BluetoothDevice.BOND_NONE","8");
                             mediatorLiveDataScan.setValue(concurrentHashMap);
                             Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing " + new Date().toLocaleString());
+
+
+                            disaibleGattScanServer(gattScan);
 
 
                         }
@@ -555,7 +572,33 @@ public class Bl_forServiceScan {
             new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
-
+    @SuppressLint("MissingPermission")
+    public void disaibleGattScanServer(@NonNull BluetoothGatt gatt  ) {
+        try{
+            if (gatt!=null) {
+                gatt.disconnect();
+                gatt.close();
+                Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                        +new Date().toLocaleString() + " gatt " +gatt);}
+            Log.i(this.getClass().getName(), "GATT CLIENT Proccessing from GATT server.SERVER#SousAvtoEXIT " +
+                    new Date().toLocaleString() + gatt
+                    + " gatt "+gatt);
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
 
