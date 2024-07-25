@@ -19,6 +19,7 @@ import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -49,17 +50,15 @@ public class WtitingAndreadDataForScanGatt {
 
 
     // TODO: 25.07.2024 метод Записи  в базу
-    void writeDatabaseScanGatt(@NonNull  BluetoothDevice device,@NonNull Cursor successfuldevices){
+    public void writeDatabaseScanGatt(@NonNull BluetoothDevice device, @NonNull Cursor successfuldevices,@NonNull Integer newState){
         Completable.complete().blockingSubscribe(new CompletableObserver() {
             @SuppressLint("MissingPermission")
             @Override
             public void onSubscribe(@NonNull Disposable d) {
 
                 // TODO: 25.07.2024 Код Записи в базу данных ScanGatt
-                ConcurrentSkipListSet<String> listПришлиДанныеОТКлиентаScanПишемВбазу=new ConcurrentSkipListSet<>();
-
                 //TODO:ЗАписываем Новый Успешный Девайс в Базу от Gatt server
-                ContentValues contentValuesВставкаДанных = addToContevaluesNewSucceesDeviceOtGattServer(device, listПришлиДанныеОТКлиентаScanПишемВбазу);
+                ContentValues contentValuesВставкаДанных = addToContevaluesNewSucceesDeviceOtGattServer(device,newState );
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -67,22 +66,33 @@ public class WtitingAndreadDataForScanGatt {
                         "  contentValuesВставкаДанных " +contentValuesВставкаДанных);
 
 
+                // TODO: 25.07.2024
 
-                Boolean   ТакоеВремяУжеЕсть =  getDateStoreOperationsDeviceFronDatabase("SELECT date_update    FROM scannerserversuccess" +
-                        " WHERE  date_update = '"+contentValuesВставкаДанных.getAsString("date_update").trim()
-                        +"' AND macdevice = '"+contentValuesВставкаДанных.getAsString("macdevice").trim() +"'");
+                String   getcurrentDatefromthedatabase =  getDateStoreOperationsDeviceFronDatabase("SELECT  date_update  MAX ( date_update )   FROM scannerserversuccess" +
+                        " WHERE   macdevice = '"+contentValuesВставкаДанных.getAsString("macdevice").trim() +"'");
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "  getcurrentDatefromthedatabase " +getcurrentDatefromthedatabase);
+
+
+// TODO: 25.07.2024  результат дата старше полу часа или нет
+          Boolean ЕслиВремяТекущееДольшеПОлучаса=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("macdevice").trim());
+
+
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                        "  contentValuesВставкаДанных " +ТакоеВремяУжеЕсть);
+                        "  getcurrentDatefromthedatabase " +getcurrentDatefromthedatabase);
 
 
                 Integer   resultAddDeviceToGattaDtabse= 0;
 
 
-                if (ТакоеВремяУжеЕсть==false) {
+                if (ЕслиВремяТекущееДольшеПОлучаса==false) {
                     // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                     resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
                 }
@@ -164,13 +174,11 @@ public class WtitingAndreadDataForScanGatt {
 
     // TODO: 14.02.2023 Второй Метод БЕз GPS
     @SuppressLint("MissingPermission")
-    private ContentValues addToContevaluesNewSucceesDeviceOtGattServer(@NonNull BluetoothDevice device,
-                                                                       @NonNull ConcurrentSkipListSet<String> listПришлиДанныеОтКлиентаЗапрос) {
+    private ContentValues addToContevaluesNewSucceesDeviceOtGattServer(@NonNull BluetoothDevice device,@NonNull Integer newState) {
         ContentValues   contentValuesВставкаДанных =   new ContentValues();;
         try {
             Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
-                    + new Date().toLocaleString() + " listПришлиДанныеОтКлиентаЗапрос " + listПришлиДанныеОтКлиентаЗапрос);
-
+                    + new Date().toLocaleString() + " device " +device );
 
 
             // TODO: 08.02.2023 Добавляем Данные для Записи в базу через Адаптер ContentValues
@@ -180,7 +188,7 @@ public class WtitingAndreadDataForScanGatt {
 
             contentValuesВставкаДанных.put("date_update", new  Date().toLocaleString());
             contentValuesВставкаДанных.put("completedwork", "простое сканирвоание...");
-            contentValuesВставкаДанных.put("operations", "простое сканирвоание...");
+            contentValuesВставкаДанных.put("operations", newState.toString());
 
 
 
@@ -242,16 +250,15 @@ public class WtitingAndreadDataForScanGatt {
     // TODO: 25.07.2024
 
 
-    public   Boolean      getDateStoreOperationsDeviceFronDatabase(@androidx.annotation.NonNull String СамЗапрос) {
-        Boolean   ТакоеВремяУжеЕсть  = false;
+    public   String      getDateStoreOperationsDeviceFronDatabase(@androidx.annotation.NonNull String СамЗапрос) {
+        String ВремяДАнных=new String();
         try{
             Uri uri = Uri.parse("content://com.sous.server.providerserver/scannerserversuccess" );
             Cursor cursorПолучаемДЛяСевреа = contentProviderServer.query(uri, null, СамЗапрос, null,null,null);
             if (cursorПолучаемДЛяСевреа.getCount()>0){
                 cursorПолучаемДЛяСевреа.moveToFirst();
-                String ВремяДАнных=      cursorПолучаемДЛяСевреа.getString(0);
+                  ВремяДАнных=      cursorПолучаемДЛяСевреа.getString(0);
                 Log.i(this.getClass().getName(), "ВремяДАнных"+ ВремяДАнных) ;
-                ТакоеВремяУжеЕсть=true;
             }
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
@@ -265,7 +272,7 @@ public class WtitingAndreadDataForScanGatt {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
-                    " ТакоеВремяУжеЕсть " +ТакоеВремяУжеЕсть);
+                    " ВремяДАнных " +ВремяДАнных);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -280,7 +287,7 @@ public class WtitingAndreadDataForScanGatt {
             valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
             new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
         }
-        return  ТакоеВремяУжеЕсть;
+        return  ВремяДАнных;
     }
 
 
@@ -568,8 +575,38 @@ public class WtitingAndreadDataForScanGatt {
     }
 
 
+   Boolean findoutthedateDifference(@NonNull String getcurrentDatefromthedatabase,@NonNull String getLiveDatefromthedatabase) {
+       Boolean ЕслиВремяТекущееДольшеПОлучаса = false;
+       try {
+
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+           Date dateFromDataBAse = sdf.parse(getcurrentDatefromthedatabase);
+
+           Date dateLiveGenetaror = sdf.parse(getLiveDatefromthedatabase);
 
 
+           Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                   " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+       } catch (Exception e) {
+           e.printStackTrace();
+           Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                   + Thread.currentThread().getStackTrace()[2].getLineNumber());
+           ContentValues valuesЗаписываемОшибки = new ContentValues();
+           valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+           valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+           valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+           valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+           final Object ТекущаяВерсияПрограммы = version;
+           Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+           valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+           new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
+       }
+       return ЕслиВремяТекущееДольшеПОлучаса;
+
+   }
 
 // TODO: 25.07.2024 end class 
 

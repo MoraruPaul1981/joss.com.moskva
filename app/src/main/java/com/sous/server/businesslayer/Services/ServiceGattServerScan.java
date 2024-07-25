@@ -43,6 +43,7 @@ import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
 import com.sous.server.businesslayer.Locations.GattLocationListener;
+import com.sous.server.datalayer.remote.bl_writeandreadScanCatt.WtitingAndreadDataForScanGatt;
 
 
 import org.greenrobot.eventbus.EventBus;
@@ -926,10 +927,23 @@ public class ServiceGattServerScan extends Service {
                 case BluetoothProfile.STATE_CONNECTED:
                     getBluetoothGattServer.connect(device,true);
                     ///TODO: SucceessAddDevice
-                1    Bundle    bundleAddDeviceSuccess = new Bundle();
+                  Bundle    bundleAddDeviceSuccess = new Bundle();
                     bundleAddDeviceSuccess.putString("Статус","SERVERGATTConnectiong");
                     bundleAddDeviceSuccess.putString("Дивайс", device.getName());
                     bundleAddDeviceSuccess.putString("ОтветКлиентуВсатвкаВБАзу", "Пинг прошел ," + "\n" + "Без записи в базу !!!");
+
+                    // TODO: 25.07.2024  запускаем запись в базу
+                    WtitingAndreadDataForScanGatt wtitingAndreadDataForScanGatt=new WtitingAndreadDataForScanGatt(getApplicationContext(),
+                            version,
+                            contentProviderServer,
+                            sharedPreferencesGatt);
+                    wtitingAndreadDataForScanGatt.writeDatabaseScanGatt(device,successfuldevices,newState);
+
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                            "  device.getAddress() " +device.getAddress()+ " device.getName() "+device.getName());
+
 
                     break;
                 case BluetoothProfile.STATE_DISCONNECTED:
