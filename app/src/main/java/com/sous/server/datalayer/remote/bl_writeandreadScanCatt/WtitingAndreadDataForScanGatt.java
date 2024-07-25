@@ -20,6 +20,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.math.BigInteger;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
@@ -84,7 +86,7 @@ public class WtitingAndreadDataForScanGatt {
 
 
 // TODO: 25.07.2024  результат дата старше полу часа или нет
-          Boolean ЕслиВремяТекущееДольшеПОлучаса=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("date_update").trim());
+          long getHOURS=      findoutthedateDifference(getcurrentDatefromthedatabase,contentValuesВставкаДанных.getAsString("date_update").trim());
 
 
 
@@ -98,7 +100,7 @@ public class WtitingAndreadDataForScanGatt {
                 Integer   resultAddDeviceToGattaDtabse= 0;
 
 
-                if (ЕслиВремяТекущееДольшеПОлучаса==false) {
+                if (getHOURS>1) {
                     // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                     resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
                 }
@@ -198,7 +200,6 @@ public class WtitingAndreadDataForScanGatt {
             DateFormat dateFormat=new java.text.SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS", new Locale("ru","RU"));
             String dateNowscan=dateFormat.format(dateScanNew);
             Date  date_update =dateFormat.parse(dateNowscan);
-
 
             contentValuesВставкаДанных.put("date_update", date_update.toString());
 
@@ -590,20 +591,31 @@ public class WtitingAndreadDataForScanGatt {
     }
 
 
-   Boolean findoutthedateDifference(@NonNull String getcurrentDatefromthedatabase,@NonNull String getLiveDatefromthedatabase) {
-       Boolean ЕслиВремяТекущееДольшеПОлучаса = false;
+    long findoutthedateDifference(@NonNull String getcurrentDatefromthedatabase,@NonNull String getLiveDatefromthedatabase) {
+        long HOURS=0;
        try {
 
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd ",  new Locale("ru","RU"));//"dd/MM/yyyy HH:mm:ss.SSS", Locale.ENGLISH
+           DateFormat dateFormat=new java.text.SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SS", new Locale("ru","RU"));
 
-           Date dateFromDataBAse = sdf.parse(getcurrentDatefromthedatabase);
-
-           Date dateLiveGenetaror = sdf.parse(getLiveDatefromthedatabase);
+           Date dateFromDataBAse = null;
+           try {
+               dateFromDataBAse = dateFormat.parse(getLiveDatefromthedatabase);
+           } catch (ParseException e) {
+               throw new RuntimeException(e);
+           }
+           Date dateLiveGenetaror = null;
+           try {
+               dateLiveGenetaror = dateFormat.parse(getLiveDatefromthedatabase);
+           } catch (ParseException e) {
+               throw new RuntimeException(e);
+           }
+           long diff = Math.abs(dateLiveGenetaror.getTime() - dateFromDataBAse.getTime());
+           HOURS = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
 
 
            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                   " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " HOURS " +HOURS);
 
        } catch (Exception e) {
            e.printStackTrace();
@@ -619,7 +631,7 @@ public class WtitingAndreadDataForScanGatt {
            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
            new SubClassErrors(context).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
        }
-       return ЕслиВремяТекущееДольшеПОлучаса;
+       return HOURS;
 
    }
 
