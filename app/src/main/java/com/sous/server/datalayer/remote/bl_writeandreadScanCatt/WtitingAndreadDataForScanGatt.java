@@ -620,8 +620,8 @@ public class WtitingAndreadDataForScanGatt {
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " LiveDate " +LiveDate+"\n" + "databaseDate " +databaseDate);
 
-           long diff = Math.abs(LiveDate.getMinute() - databaseDate.getMinute());
-           getMinute = TimeUnit.HOURS.convert(diff, TimeUnit.MILLISECONDS);
+           getMinute = Math.abs(LiveDate.getMinute() - databaseDate.getMinute());
+          // getMinute = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS);
 
            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
