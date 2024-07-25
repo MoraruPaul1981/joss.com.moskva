@@ -133,14 +133,32 @@ public class FragmentBootServer extends Fragment {
             /*    //TODO:создаем класс для бизнес логики */
         biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
+// TODO: 25.07.2024 запускам службы двух серверных
+            startingServicesAnServerGaTTAndScan();
 
 
+            Log.d(getContext().getClass().getName(), "\n"
+                + " время: " + new Date() + "\n+" +
+                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки = new ContentValues();
+        valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+    }
 
-
-
-
-
-/*
+    private void startingServicesAnServerGaTTAndScan() {
+        try{
         messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
 
@@ -152,28 +170,17 @@ public class FragmentBootServer extends Fragment {
 
         });
 
-*/
 
+        messageGattServer.getTarget().post(()->{
+            // TODO: 19.07.2024 Запуск Службы
 
+            biFragmentBootScannerServer.startingServiceScaning() ;
 
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
 
-
-            messageGattServer.getTarget().post(()->{
-                // TODO: 19.07.2024 Запуск Службы
-
-                biFragmentBootScannerServer.startingServiceScaning() ;
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-            });
-
-
-
-
-
-
+        });
 
         Log.d(getContext().getClass().getName(), "\n"
                 + " время: " + new Date() + "\n+" +
@@ -194,6 +201,10 @@ public class FragmentBootServer extends Fragment {
         new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
+
+
+
+
 
 
     @Override
@@ -323,7 +334,7 @@ public class FragmentBootServer extends Fragment {
             
             messageGattServer.getTarget().postDelayed(()->{
                 // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
-                forwardSuccessDeviceStrtingFragmentServer();
+                forwardSuccessDeviceStrtingFragmentServerScan();
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -363,7 +374,7 @@ public class FragmentBootServer extends Fragment {
 
             messageGattServer.getTarget().postDelayed(()->{
                 // TODO: 17.07.2024  переходим после успещглй коннекта Обмена между Клиентмо и Сервером BLE  данными
-                forwardSuccessDeviceStrtingFragmentServer();
+                forwardSuccessDeviceStrtingFragmentServerScan();
                 Log.d(getContext().getClass().getName(), "\n"
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
@@ -518,13 +529,13 @@ public class FragmentBootServer extends Fragment {
 
 
 
-    private void forwardSuccessDeviceStrtingFragmentServer( ) {
+    private void forwardSuccessDeviceStrtingFragmentServerScan( ) {
         try{
             //TODO: Запускаем Фрагмент
             //TODO: Запускаем Фрагмент Server Fragment
 
-                                     //biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new FragmentServerbleRecyclerView())   ;Control
-                                     biFragmentBootScannerServer.МетодЗапускаФрагментаСканирования(  new FragmentServerbleRecyclerViewSimpleScan())   ; /// Scan
+                                     //biFragmentBootScannerServer.МетодЗапускаФрагментаGattServer(  new FragmentServerbleRecyclerView())   ;Control
+                                     biFragmentBootScannerServer.МетодЗапускаФрагментаGattServer(  new FragmentServerbleRecyclerView())   ; /// Scan
 
                                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
