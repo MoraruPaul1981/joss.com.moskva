@@ -16,6 +16,8 @@ import android.bluetooth.BluetoothGattServerCallback;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -54,6 +56,8 @@ import com.sous.server.datalayer.remote.bl_writeandreadScanCatt.WtitingAndreadDa
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
@@ -180,20 +184,25 @@ public class ServiceServerScan extends Service {
             //TODO:получаем Статус Адаптера Bluetooth true, false  и оптравляем статус в активти
             Boolean getStatusEnableBlueadapter = enableBluetoothAdapter();
 
+
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
 
-            callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
+            // TODO: 26.07.2024 starting Fragment Scan
 
+            callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
 
             //TODO :  главный метод службы запускаем Gatt Server
 
-            mainstartingServerGatt();
+            mainstartingServerScan();
 
             //TODO:  для запущеного сервера Gatt ,дополвнительые параметры натсройки Charact and UUID
             settingGattServerBluetoothGattService();
+
+
+
 
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -499,7 +508,7 @@ public class ServiceServerScan extends Service {
 
     // TODO: Запускаем Сервер GATT
     @SuppressLint("MissingPermission")
-    public  void mainstartingServerGatt() {
+    public  void mainstartingServerScan() {
         try {
 
             Log.d(this.getClass().getName(), "1МетодЗапускаСканиваронияДляАндройд: Запускаем.... Метод Сканирования Для Android binder.isBinderAlive()  " + "\n+" +
@@ -507,6 +516,17 @@ public class ServiceServerScan extends Service {
                     "\n" + " POOL " + Thread.currentThread().getName() +
                     "\n" + " ALL POOLS  " + Thread.getAllStackTraces().entrySet().size());
             // TODO: 26.01.2023 Сервер КОД
+
+            BluetoothServerSocket mServerSocket = null;
+            try {
+                mServerSocket = bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord("a",UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
+                int psm = mServerSocket.getPsm();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            BluetoothSocket socket = mServerSocket.accept(2000000000);
+            socket.connect();
             getBluetoothGattServer = bluetoothManagerServer.openGattServer(getApplicationContext(), new BluetoothGattServerCallback() {
 
                 @Override
@@ -517,20 +537,19 @@ public class ServiceServerScan extends Service {
 // TODO: 25.07.2024 реакция на события Конеата и Деконтакта Устройств 
                         МетодКоннектаДеконнектасКлиентамиGattScan(device, status, newState);
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                 " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
-                                 " onConnectionStateChange " +    new Date().toLocaleString());
+                                " onConnectionStateChange " + new Date().toLocaleString());
 
 
-                               // TODO: 25.07.2024  запускаем запись в базу
-                    WtitingAndreadDataForScanGatt wtitingAndreadDataForScanGatt=new WtitingAndreadDataForScanGatt(getApplicationContext(),
-                            version,
-                            contentProviderServer,
-                            sharedPreferencesGatt,
-                            successfuldevices);
-                    wtitingAndreadDataForScanGatt.writeDatabaseScanGatt(device,successfuldevices,newState) ;
-
+                        // TODO: 25.07.2024  запускаем запись в базу
+                        WtitingAndreadDataForScanGatt wtitingAndreadDataForScanGatt = new WtitingAndreadDataForScanGatt(getApplicationContext(),
+                                version,
+                                contentProviderServer,
+                                sharedPreferencesGatt,
+                                successfuldevices);
+                        wtitingAndreadDataForScanGatt.writeDatabaseScanGatt(device, successfuldevices, newState);
 
 
                         // TODO: 22.07.2024
@@ -548,7 +567,7 @@ public class ServiceServerScan extends Service {
                         final Object ТекущаяВерсияПрограммы = version;
                         Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
                     }
                 }
 
@@ -559,15 +578,15 @@ public class ServiceServerScan extends Service {
                     v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
 
                     ///TODO: SuccessAddDevice
-                    Bundle    bundleAddDeviceSuccess = new Bundle();
+                    Bundle bundleAddDeviceSuccess = new Bundle();
                     bundleAddDeviceSuccess.putString("Статус", "SERVERGATTRUNNIGSTARTING");
 
                     // TODO: 22.07.2024
                     super.onServiceAdded(status, service);
 
-                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
 
                 }
@@ -583,9 +602,9 @@ public class ServiceServerScan extends Service {
                         // TODO: 22.07.2024
                         super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite, responseNeeded, offset, value);
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -598,15 +617,9 @@ public class ServiceServerScan extends Service {
                         final Object ТекущаяВерсияПрограммы = version;
                         Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
                     }
                 }
-
-
-
-
-
-
 
 
                 @Override
@@ -618,9 +631,9 @@ public class ServiceServerScan extends Service {
                         // TODO: 22.07.2024
                         super.onNotificationSent(device, status);
 
-                        Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
                     } catch (Exception e) {
                         e.printStackTrace();
                         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -633,7 +646,7 @@ public class ServiceServerScan extends Service {
                         final Object ТекущаяВерсияПрограммы = version;
                         Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
                         valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
-                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки,contentProviderServer);
+                        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибокИзServerGatt(valuesЗаписываемОшибки, contentProviderServer);
                     }
                 }
 

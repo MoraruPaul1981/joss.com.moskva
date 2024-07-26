@@ -279,10 +279,7 @@ public class ActivityServerScanner extends AppCompatActivity {
             filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
 
             filterScan.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-            filterScan.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
-            filterScan.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
-            filterScan.addAction(BluetoothDevice.ACTION_UUID);
-            filterScan.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
+
 
 
 

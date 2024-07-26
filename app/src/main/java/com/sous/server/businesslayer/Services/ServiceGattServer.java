@@ -186,6 +186,8 @@ public class ServiceGattServer extends Service {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getStatusEnableBlueadapter " +getStatusEnableBlueadapter);
 
+
+            // TODO: 26.07.2024 starting Fragment GATT
             callBackFromServiceToRecyreViewFragment(getStatusEnableBlueadapter);
 
 

@@ -38,8 +38,8 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
                         "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice.getName()+"\n"+
                         " intent.getAction() " +intent.getAction());
 
-            /*    blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice);*/
+           /*     bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                blBloadcastReceierGatt.pairDevice(bluetoothDevice);*/
 
             }else {
                 // TODO: 24.07.2024
@@ -47,6 +47,11 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
 
                 if (bluetoothDevice.getName()!=null) {
+
+                  bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                blBloadcastReceierGatt.unpairDevice(bluetoothDevice);
+
+
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
