@@ -1,9 +1,11 @@
 package com.sous.scanner.businesslayer.Services;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +18,8 @@ import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.businesslayer.bl_forServices.Bl_forServiceScan;
@@ -26,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 
 public class ServiceClientSimpleScan extends Service {
 
@@ -56,6 +61,7 @@ public class ServiceClientSimpleScan extends Service {
             setingEnableApapterScan();
 
             МетодHandles();
+
 // TODO: 24.07.2024 Reference an class Buncess logica Servir Scan
             blForServiceScan=       new Bl_forServiceScan( handlerScan,
                     locationManager,
@@ -89,25 +95,24 @@ public class ServiceClientSimpleScan extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         try{
 // TODO: 24.07.2024 Scan
-            
-            //blForServiceScan .startintgServiceScan(intent, flags, startId);
 
 
 
-            Flowable.fromAction(new Action() {
+
+          Flowable.fromAction(new Action() {
                         @Override
                         public void run() throws Throwable {
                             // TODO: 25.07.2024
-                          blForServiceScan .startintgServiceScan(intent, flags, startId);
+                          blForServiceScan . МетодЗапускаСканированиеКлиентСкан();
 
                             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   +"    Flowable.fromAction(new Action() { " +   new Date().toLocaleString());
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"   +"    Flowable.fromAction(new Action() { "
+                                    +   new Date().toLocaleString());
                         }
                     })
                     .onBackpressureBuffer(true)
                     .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
                     .repeatWhen(repeat->repeat.delay(1, TimeUnit.MINUTES))
 
                     .doOnComplete(new Action() {
@@ -117,7 +122,24 @@ public class ServiceClientSimpleScan extends Service {
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
                         }
-                    }).subscribe();
+                    }).doOnError(new Consumer<Throwable>() {
+                      @Override
+                      public void accept(Throwable throwable) throws Throwable {
+                          throwable.printStackTrace();
+                          Log.e(this.getClass().getName(), "Ошибка " +throwable + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                  + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                          ContentValues valuesЗаписываемОшибки = new ContentValues();
+                          valuesЗаписываемОшибки.put("Error", throwable.toString().toLowerCase());
+                          valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                          valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                          valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                          final Object ТекущаяВерсияПрограммы = version;
+                          Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                          valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                          new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                      }
+                  })
+                  .subscribe();
 
 
 
@@ -212,6 +234,7 @@ public class ServiceClientSimpleScan extends Service {
         }).obtainMessage();
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     }
+
 
 
     // TODO: 24.07.2024 class
