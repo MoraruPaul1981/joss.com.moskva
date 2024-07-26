@@ -2,6 +2,9 @@ package com.sous.server.businesslayer.Services;
 
 import android.annotation.SuppressLint;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -25,6 +28,7 @@ import android.location.Address;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.ParcelUuid;
@@ -34,10 +38,13 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 
+import com.sous.server.R;
 import com.sous.server.businesslayer.ContentProvoders.ContentProviderServer;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -114,6 +121,24 @@ public class ServiceGattServerScan extends Service {
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+
+
+            //For creating the Foreground Service
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? getNotificationChannel(notificationManager) : "";
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
+            Notification notification = notificationBuilder.setOngoing(true)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    // .setPriority(PRIORITY_MIN)
+                    .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                    .build();
+
+            startForeground(111, notification);
+
+
+
 
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
@@ -1006,15 +1031,17 @@ public class ServiceGattServerScan extends Service {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private String getNotificationChannel(NotificationManager notificationManager){
+        String channelId = "channelid";
+        String channelName = getResources().getString(R.string.app_name);
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+        channel.setImportance(NotificationManager.IMPORTANCE_NONE);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        notificationManager.createNotificationChannel(channel);
+        return channelId;
+    }
 
-
-
-
-
-
-
-
-
-
+// TODO: 26.07.2024  END class
 
 }
