@@ -26,6 +26,8 @@ import com.sous.scanner.businesslayer.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Date;
 import java.util.UUID;
@@ -89,17 +91,22 @@ public class Bl_forServiceScan {
                     // TODO: 26.07.2024
                     int connectionState = bluetoothManagerServer.getConnectionState(bluetoothDeviceScan, BluetoothProfile.GATT);
 
- ;
+                    bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                blBloadcastReceierGatt.unpairDevice(bluetoothDeviceScan);
+
                         BluetoothDevice bd = bluetoothAdapterPhoneClient.getRemoteDevice(bluetoothDeviceScan.getAddress());
                     BluetoothSocket bluetoothSocket = null;
                     try {
-                        bluetoothSocket = bd.createInsecureL2capChannel(132);
+                        bluetoothSocket = bd.createInsecureRfcommSocketToServiceRecord( UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
 
-
                     try {
+                   OutputStream outstr = bluetoothSocket.getOutputStream();
+                 InputStream instr = bluetoothSocket.getInputStream();
+
+
                         bluetoothSocket.connect( );
                     } catch (IOException e) {
                         throw new RuntimeException(e);
