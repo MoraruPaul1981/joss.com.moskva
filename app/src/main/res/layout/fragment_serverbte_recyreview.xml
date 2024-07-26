@@ -16,7 +16,7 @@
     app:cardMaxElevation="100dp"
     app:strokeWidth="1dp"
     android:translationZ="15dp"
-    tools:context=".presentationlayer.FragmentServerbleRecyclerView">
+    tools:context=".presentationlayer.FragmentGattRecyclerView">
 
 
     <RelativeLayout

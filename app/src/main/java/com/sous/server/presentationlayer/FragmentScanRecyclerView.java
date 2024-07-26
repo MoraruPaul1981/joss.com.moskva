@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.R;
@@ -39,7 +40,7 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
+public class FragmentScanRecyclerView extends Fragment {
 
     private FragmentManager fragmentManager;
 
@@ -55,6 +56,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
     private Bl_FragmentRecyreViewServerSimpleScan getblFragmentRecyreViewServerScan;
 
     private Message messageGattServer;
+    private BottomNavigationView bottomnavigationview_server_scan ;
 
 
 
@@ -131,7 +133,7 @@ public class FragmentServerbleRecyclerViewSimpleScan extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View viewimpleScan = null;
         try {
-            viewimpleScan = inflater.inflate(R.layout.fragment_main_server_bte_simple_scan, container, false);
+            viewimpleScan = inflater.inflate(R.layout.fragment_main_server_scan, container, false);
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,7 +37,7 @@ public class Bi_FragmentBootScannerServer {
 
 
     @SuppressLint("ResourceType")
-    public void МетодЗапускаФрагментаGattServer(@NonNull Fragment fragmentServerbleRecyclerViewGatt ) {  ///new FragmentServerbleRecyclerView();
+    public void МетодЗапускаФрагментаGattServer(@NonNull Fragment fragmentServerbleRecyclerViewGatt ) {  ///new FragmentGattRecyclerView();
         try {
                 FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
                 fragmentManager.getFragments().remove(0);
@@ -75,14 +76,14 @@ public class Bi_FragmentBootScannerServer {
 
 
 
-    public void startingServiceScaning() {  ///new FragmentServerbleRecyclerView();
+    public void startingServiceScaning() {
         try {
             // TODO: 23.07.2024 starting
             Intent ServiceGattServerScan = new Intent(context, ServiceGattServerScan.class);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            context.startForegroundService(ServiceGattServerScan);
+            ContextCompat.startForegroundService(context,(ServiceGattServerScan));
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -105,7 +106,7 @@ public class Bi_FragmentBootScannerServer {
 
     }
 
-    public void startingServiceGattServer() {  ///new FragmentServerbleRecyclerView();
+    public void startingServiceGattServer() {
         try {
             // TODO: 23.07.2024 stoping
             // TODO: 23.07.2024 starting
@@ -113,7 +114,7 @@ public class Bi_FragmentBootScannerServer {
             intentServiceGattServer.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intentServiceGattServer.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intentServiceGattServer.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            context.startForegroundService(intentServiceGattServer);
+            ContextCompat.startForegroundService(context,intentServiceGattServer);
 
             Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
@@ -40,7 +41,7 @@ import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class FragmentServerbleRecyclerView extends Fragment {
+public class FragmentGattRecyclerView extends Fragment {
 
     private FragmentManager fragmentManager;
 
@@ -56,6 +57,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     private Bl_FragmentRecyreViewServer getblFragmentRecyreViewServer;
 
     private Message messageGattServer;
+    private BottomNavigationView bottomNavigationViewGatt;
 
 
 
@@ -102,7 +104,8 @@ public class FragmentServerbleRecyclerView extends Fragment {
               card_server_ble_inner = (MaterialCardView) relativeLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
              recyclerview_server_ble = (RecyclerView) relativeLayout_server_ble.findViewById(R.id.id_recyclerview_server_ble);
              progressbar_server_ble = (ProgressBar) relativeLayout_server_ble.findViewById(R.id.id_progressbar_server_ble);
-            //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
+            bottomNavigationViewGatt = (BottomNavigationView) relativeLayout_server_ble.findViewById(R.id.id_bottomnavigationview_server_gatt);
+
 
 
             
@@ -131,7 +134,7 @@ public class FragmentServerbleRecyclerView extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = null;
         try {
-            view = inflater.inflate(R.layout.fragment_main_server_bte, container, false);
+            view = inflater.inflate(R.layout.fragment_main_server_gatt, container, false);
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -267,15 +270,17 @@ public class FragmentServerbleRecyclerView extends Fragment {
                 // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
                 getblFragmentRecyreViewServer=new Bl_FragmentRecyreViewServer( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity(),messageGattServer);
+                        progressbar_server_ble,animation,getContext(),getActivity(),messageGattServer,bottomNavigationViewGatt );
 
 
             getblFragmentRecyreViewServer.     getDISCOVERABLE_DURATIONs();
             getblFragmentRecyreViewServer.     setManagerfromRecyclerView();
             getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
             getblFragmentRecyreViewServer.     getObserverRecyreView();
-            getblFragmentRecyreViewServer.     reBootrecyclerView();
             getblFragmentRecyreViewServer. settingAnimatios(recyclerview_server_ble);
+            getblFragmentRecyreViewServer. startingbottomNavigationViewGatt();//todo  NavigationViewGatt с тремя кнопками Выход .Скан .Контроль
+            getblFragmentRecyreViewServer.     reBootrecyclerView();
+
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

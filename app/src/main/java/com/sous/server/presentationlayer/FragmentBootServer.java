@@ -129,12 +129,8 @@ public class FragmentBootServer extends Fragment {
 
 
 
-
-            /*    //TODO:создаем класс для бизнес логики */
-        biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
-
 // TODO: 25.07.2024 запускам службы двух серверных
-            startingServicesAnServerGaTTAndScan();
+            startingServicesOnlyScan() ;
 
 
             Log.d(getContext().getClass().getName(), "\n"
@@ -157,19 +153,10 @@ public class FragmentBootServer extends Fragment {
     }
     }
 
-    private void startingServicesAnServerGaTTAndScan() {
+    private void startingServicesOnlyScan() {
         try{
-        messageGattServer.getTarget().post(()->{
-            // TODO: 19.07.2024 Запуск Службы
-
-            biFragmentBootScannerServer.startingServiceGattServer();
-
-            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" );
-
-        });
-
+            /*    //TODO:создаем класс для бизнес логики */
+            biFragmentBootScannerServer = new Bi_FragmentBootScannerServer(getContext(), fragmentManager, getActivity(),version);
 
         messageGattServer.getTarget().post(()->{
             // TODO: 19.07.2024 Запуск Службы
@@ -533,9 +520,7 @@ public class FragmentBootServer extends Fragment {
         try{
             //TODO: Запускаем Фрагмент
             //TODO: Запускаем Фрагмент Server Fragment
-
-                                     //biFragmentBootScannerServer.МетодЗапускаФрагментаGattServer(  new FragmentServerbleRecyclerView())   ;Control
-                                     biFragmentBootScannerServer.МетодЗапускаФрагментаGattServer(  new FragmentServerbleRecyclerView())   ; /// Scan
+                                     biFragmentBootScannerServer.МетодЗапускаФрагментаGattServer(  new FragmentGattRecyclerView())   ; /// Scan
 
                                      Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                              " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
