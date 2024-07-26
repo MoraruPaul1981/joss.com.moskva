@@ -57,6 +57,11 @@ public class ServiceClientSimpleScan extends Service {
         super.onCreate();
         try{
             //For creating the Foreground Service
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
             //For creating the Foreground Service
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? getNotificationChannel(notificationManager) : "";
@@ -122,10 +127,7 @@ public class ServiceClientSimpleScan extends Service {
         try{
 // TODO: 24.07.2024 Scan
 
-
-
-
-/*          Flowable.fromAction(new Action() {
+          Flowable.fromAction(new Action() {
                         @Override
                         public void run() throws Throwable {
                             // TODO: 25.07.2024
@@ -165,7 +167,7 @@ public class ServiceClientSimpleScan extends Service {
                           new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                       }
                   })
-                  .subscribe();*/
+                  .subscribe();
 
 
 
