@@ -28,6 +28,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.R;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerbleRecyclerViewSimpleScan.Bl_FragmentRecyreViewServerSimpleScan;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_navigationView.GetNavigationViews;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
 import com.sous.server.businesslayer.Eventbus.ParamentsScannerServer;
@@ -104,7 +105,7 @@ public class FragmentScanRecyclerView extends Fragment {
               card_server_ble_inner = (MaterialCardView) relativeLayout_server_ble.findViewById(R.id.id_card_server_ble_inner);
              recyclerview_server_ble = (RecyclerView) relativeLayout_server_ble.findViewById(R.id.id_recyclerview_server_ble);
              progressbar_server_ble = (ProgressBar) relativeLayout_server_ble.findViewById(R.id.id_progressbar_server_ble);
-            //tabLayoutScanner = (TabLayout) ((MainActivityNewScanner) getActivity()).tabLayout;
+            bottomnavigationview_server_scan = (BottomNavigationView) relativeLayout_server_ble.findViewById(R.id.id_bottomnavigationview_server_scan);
 
 
             
@@ -269,15 +270,23 @@ public class FragmentScanRecyclerView extends Fragment {
                 // TODO: 17.07.2024 запуск БИзнес логики Fragment Scanner, Когда Есть Данные НЕТ НЕТ !!!
             getblFragmentRecyreViewServerScan=new Bl_FragmentRecyreViewServerSimpleScan( fragmentManager,recyclerview_server_ble,
                         version,maincardView_server_ble_fragment,relativeLayout_server_ble,tabLayout_server_ble,card_server_ble_inner,recyclerview_server_ble,
-                        progressbar_server_ble,animation,getContext(),getActivity(),messageGattServer);
+                        progressbar_server_ble,animation,getContext(),getActivity(),messageGattServer,bottomnavigationview_server_scan);
 
 
             getblFragmentRecyreViewServerScan.     getDISCOVERABLE_DURATIONs();
             getblFragmentRecyreViewServerScan.     setManagerfromRecyclerView();
             getblFragmentRecyreViewServerScan.     addAdapterServerforRecyreview(null);
             getblFragmentRecyreViewServerScan.     getObserverRecyreView();
-            getblFragmentRecyreViewServerScan.     reBootrecyclerView();
             getblFragmentRecyreViewServerScan. settingAnimatios(recyclerview_server_ble);
+
+            //todo  NavigationViewGatt с тремя кнопками Выход .Скан .Контроль
+            GetNavigationViews getNavigationViews=new GetNavigationViews(getContext(),
+                    messageGattServer,bottomnavigationview_server_scan,
+                    version,getActivity(),fragmentManager);
+            getNavigationViews.startingbottomNavigationVeiw();
+            // TODO: 26.07.2024 reboot reCyreView
+            getblFragmentRecyreViewServerScan.     reBootrecyclerView();
+           
 
 
             Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

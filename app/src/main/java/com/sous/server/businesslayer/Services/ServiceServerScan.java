@@ -26,7 +26,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,15 +54,11 @@ import com.sous.server.datalayer.remote.bl_writeandreadScanCatt.WtitingAndreadDa
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 /**
@@ -74,7 +69,7 @@ import java.util.stream.Stream;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class ServiceGattServerScan extends Service {
+public class ServiceServerScan extends Service {
     protected SQLiteDatabase sqLiteDatabase;
     public LocalBinderСерверBLE binderScan = new LocalBinderСерверBLE();
 
@@ -345,9 +340,9 @@ public class ServiceGattServerScan extends Service {
     }
 
     public class LocalBinderСерверBLE extends Binder {
-        public ServiceGattServerScan getService() {
+        public ServiceServerScan getService() {
             // Return this instance of LocalService so clients can call public methods
-            return ServiceGattServerScan.this;
+            return ServiceServerScan.this;
         }
 
     }

@@ -230,7 +230,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".businesslayer.Services.ServiceGattServerScan"
+            android:name=".businesslayer.Services.ServiceServerScan"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"

@@ -27,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.server.businesslayer.BI_presentationlayer.bl_FragmentServerRecyreView.Bl_FragmentRecyreViewServer;
+import com.sous.server.businesslayer.BI_presentationlayer.bl_navigationView.GetNavigationViews;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Eventbus.MessageScannerServer;
@@ -278,7 +279,15 @@ public class FragmentGattRecyclerView extends Fragment {
             getblFragmentRecyreViewServer.     addAdapterServerforRecyreview(null);
             getblFragmentRecyreViewServer.     getObserverRecyreView();
             getblFragmentRecyreViewServer. settingAnimatios(recyclerview_server_ble);
-            getblFragmentRecyreViewServer. startingbottomNavigationViewGatt();//todo  NavigationViewGatt с тремя кнопками Выход .Скан .Контроль
+
+
+            //todo  NavigationViewGatt с тремя кнопками Выход .Скан .Контроль
+            GetNavigationViews getNavigationViews=new GetNavigationViews(getContext(),messageGattServer,
+                    bottomNavigationViewGatt,version,getActivity(),fragmentManager);
+            getNavigationViews.startingbottomNavigationVeiw();
+
+
+          // TODO: 26.07.2024 перезагрузка Recyreview
             getblFragmentRecyreViewServer.     reBootrecyclerView();
 
 

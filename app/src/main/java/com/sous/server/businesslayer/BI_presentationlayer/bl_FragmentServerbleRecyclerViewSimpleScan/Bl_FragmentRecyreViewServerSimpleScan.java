@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -58,6 +59,7 @@ public class Bl_FragmentRecyreViewServerSimpleScan {
     private Activity activity;
     private BlgeneralServerSimpleScan blgeneralServer;
     private Message messageGattServer;
+    private    BottomNavigationView bottomnavigationview_server_scan;
 
     public Bl_FragmentRecyreViewServerSimpleScan(FragmentManager fragmentManager,
                                                  RecyclerView recyclerViewServer,
@@ -71,7 +73,8 @@ public class Bl_FragmentRecyreViewServerSimpleScan {
                                                  Animation animation,
                                                  Context context,
                                                  Activity activity,
-                                                 Message messageGattServer) {
+                                                 Message messageGattServer,
+                                                 BottomNavigationView bottomnavigationview_server_scan) {
         // TODO: 17.07.2024
         this.fragmentManager = fragmentManager;
         this.recyclerViewServer = recyclerViewServer;
@@ -86,6 +89,7 @@ public class Bl_FragmentRecyreViewServerSimpleScan {
         this.context = context;
         this.activity = activity;
         this.messageGattServer = messageGattServer;
+        this.bottomnavigationview_server_scan = bottomnavigationview_server_scan;
         // TODO: 18.07.2024
         blgeneralServer=new BlgeneralServerSimpleScan(context,version);
     }

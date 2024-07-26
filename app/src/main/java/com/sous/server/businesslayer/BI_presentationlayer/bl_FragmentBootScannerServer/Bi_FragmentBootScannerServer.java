@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.sous.server.R;
 import com.sous.server.businesslayer.Errors.SubClassErrors;
 import com.sous.server.businesslayer.Services.ServiceGattServer;
-import com.sous.server.businesslayer.Services.ServiceGattServerScan;
+import com.sous.server.businesslayer.Services.ServiceServerScan;
 
 public class Bi_FragmentBootScannerServer {
 
@@ -37,15 +37,15 @@ public class Bi_FragmentBootScannerServer {
 
 
     @SuppressLint("ResourceType")
-    public void МетодЗапускаФрагментаGattServer(@NonNull Fragment fragmentServerbleRecyclerViewGatt ) {  ///new FragmentGattRecyclerView();
+    public void МетодЗапускаФрагментаServer(@NonNull Fragment fragmentServerbleRecyclerView ) {  ///new FragmentGattRecyclerView();
         try {
                 FragmentTransaction    fragmentTransactionBoot = fragmentManager.beginTransaction();
                 fragmentManager.getFragments().remove(0);
                 fragmentTransactionBoot.addToBackStack(null);
-                fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerViewGatt);//.layout.activity_for_fragemtb_history_tasks
+                fragmentTransactionBoot.replace(R.id.id_frameLayoutmain_boot, fragmentServerbleRecyclerView);//.layout.activity_for_fragemtb_history_tasks
                 fragmentTransactionBoot.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();//FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
                 fragmentTransactionBoot.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                fragmentTransactionBoot.show(fragmentServerbleRecyclerViewGatt);
+                fragmentTransactionBoot.show(fragmentServerbleRecyclerView);
 
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
@@ -79,7 +79,7 @@ public class Bi_FragmentBootScannerServer {
     public void startingServiceScaning() {
         try {
             // TODO: 23.07.2024 starting
-            Intent ServiceGattServerScan = new Intent(context, ServiceGattServerScan.class);
+            Intent ServiceGattServerScan = new Intent(context, ServiceServerScan.class);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             ServiceGattServerScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
