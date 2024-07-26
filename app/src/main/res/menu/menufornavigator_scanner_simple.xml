@@ -25,7 +25,7 @@
 
 
     <item
-        android:id="@+id/history"
+        android:id="@+id/control"
         android:contentDescription="История"
         android:icon="@drawable/icon_history_scanner"
         android:title="Контроль"

@@ -103,7 +103,7 @@ public class WtitingAndreadDataForScanGatt {
                 Integer   resultAddDeviceToGattaDtabse= 0;
 
 
-                if (getMinute>30 || getMinute==0) {
+                if (getMinute>1 || getMinute==0) {
                     // TODO: 09.02.2023  запись в базу дивайса Отметка сотрдунка
                     resultAddDeviceToGattaDtabse = wtireNewSucceesDeviceOtGattServer(contentValuesВставкаДанных);
                 }
