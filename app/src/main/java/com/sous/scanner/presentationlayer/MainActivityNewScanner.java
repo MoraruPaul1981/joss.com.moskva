@@ -377,6 +377,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
             // TODO: 24.07.2024
                 ContextCompat.startForegroundService(this,intentClientServiceSimpleScan);
+                // TODO: 26.07.2024
 
                 Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -2,6 +2,9 @@ package com.sous.scanner.businesslayer.Services;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
@@ -11,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -19,8 +23,10 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.sous.scanner.R;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.businesslayer.bl_forServices.Bl_forServiceScan;
 
@@ -50,6 +56,22 @@ public class ServiceClientSimpleScan extends Service {
     public void onCreate() {
         super.onCreate();
         try{
+            //For creating the Foreground Service
+            //For creating the Foreground Service
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? getNotificationChannel(notificationManager) : "";
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
+            Notification notification = notificationBuilder.setOngoing(true)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    // .setPriority(PRIORITY_MIN)
+                    .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                    .build();
+
+            startForeground(110, notification);
+
+
+
+
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             bluetoothManagerServer = (BluetoothManager) getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
             bluetoothAdapterPhoneClient = (BluetoothAdapter) bluetoothManagerServer.getAdapter();
@@ -69,6 +91,10 @@ public class ServiceClientSimpleScan extends Service {
                     bluetoothAdapterPhoneClient,
                     version,
                     getApplicationContext());
+
+
+
+
 
             Log.d(getApplicationContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -99,7 +125,7 @@ public class ServiceClientSimpleScan extends Service {
 
 
 
-          Flowable.fromAction(new Action() {
+/*          Flowable.fromAction(new Action() {
                         @Override
                         public void run() throws Throwable {
                             // TODO: 25.07.2024
@@ -139,7 +165,7 @@ public class ServiceClientSimpleScan extends Service {
                           new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
                       }
                   })
-                  .subscribe();
+                  .subscribe();*/
 
 
 
@@ -235,7 +261,17 @@ public class ServiceClientSimpleScan extends Service {
         Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время " +new Date().toLocaleString() );
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    private String getNotificationChannel(NotificationManager notificationManager){
+        String channelId = "channelid";
+        String channelName = getResources().getString(R.string.app_name);
+        NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+        channel.setImportance(NotificationManager.IMPORTANCE_NONE);
+        channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        notificationManager.createNotificationChannel(channel);
+        return channelId;
+    }
 
     // TODO: 24.07.2024 class
 }
+
