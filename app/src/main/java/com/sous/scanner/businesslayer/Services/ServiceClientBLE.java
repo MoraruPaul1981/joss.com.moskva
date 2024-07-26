@@ -373,6 +373,10 @@ public class ServiceClientBLE extends IntentService {
                     BluetoothGattCallback bluetoothGattCallback =
                             МетодРаботыСТекущийСерверомGATT(bluetoothDevice, stringUUIDEntry );
 
+
+                    // TODO: 26.07.2024  close bEFORE gATT cLIENT
+                    disaibleBeforeGattServer(gatt);
+
                     // TODO: 26.01.2023  конец сервера GATT
                     МетодЗапускаGATTКлиента(bluetoothDevice, bluetoothGattCallback);
 
@@ -421,6 +425,10 @@ public class ServiceClientBLE extends IntentService {
                 // TODO: 12.02.2023  запускаем задачу в потоке
                 BluetoothGattCallback bluetoothGattCallback=
                         МетодРаботыСТекущийСерверомGATT(deviceClientGatt, getPublicUUID);
+
+
+            // TODO: 26.07.2024  close bEFORE gATT cLIENT
+            disaibleBeforeGattServer(gatt);
 
                 // TODO: 26.01.2023  конец сервера GATT
                 МетодЗапускаGATTКлиента(deviceClientGatt, bluetoothGattCallback);
@@ -1024,5 +1032,38 @@ public class ServiceClientBLE extends IntentService {
                 "    gatt " + gatt);
 
     }
+    @SuppressLint("MissingPermission")
+    public void disaibleBeforeGattServer(@NonNull BluetoothGatt gatt  ) {
+        try{
+            if (gatt!=null) {
+                gatt.disconnect();
+                gatt.close();
+                Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                        + new Date().toLocaleString() + " gatt " + gatt);
+            }
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString() + " gatt " +gatt);
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
+
+
+
+
+
+
 
 }
