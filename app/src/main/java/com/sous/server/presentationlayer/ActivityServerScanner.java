@@ -80,11 +80,17 @@ public class ActivityServerScanner extends AppCompatActivity {
               /////TODO создание Мэнеджера Фрагмент
             fragmentManager = getSupportFragmentManager();
 
-            weresolvetherightstobluetooth();
+
+
+
             // TODO: 24.07.2024
             checkPermissions();
 
-           startinggeregisterReceiver();
+
+            weresolvetherightstobluetooth();
+
+            startinggeregisterReceiver();
+
 
             /////TODO создание Мэнеджера Фрагмент
             Log.i(this.getClass().getName(), "  "
@@ -271,6 +277,15 @@ public class ActivityServerScanner extends AppCompatActivity {
             filterScan.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
             filterScan.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
             filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+
+            filterScan.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            filterScan.addAction(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
+            filterScan.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
+            filterScan.addAction(BluetoothDevice.ACTION_UUID);
+            filterScan.addAction(BluetoothDevice.ACTION_NAME_CHANGED);
+
+
+
             registerReceiver(new BroadcastReceiverGattServer(), filterScan);
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
