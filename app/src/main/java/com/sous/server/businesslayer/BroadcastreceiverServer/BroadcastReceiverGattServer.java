@@ -17,7 +17,6 @@ import java.util.Date;
 
 public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
-    private bl_BloadcastReceierGatt blBloadcastReceierGatt;
     Long version;
     @SuppressLint("MissingPermission")
     @Override

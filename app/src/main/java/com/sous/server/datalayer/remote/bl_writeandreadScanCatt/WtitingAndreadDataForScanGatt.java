@@ -121,7 +121,8 @@ public class WtitingAndreadDataForScanGatt {
 
                     Log.i(this.getClass().getName(), " resultAddDeviceToGattaDtabse " + resultAddDeviceToGattaDtabse +
                             " contentValuesВставкаДанных " + contentValuesВставкаДанных + " device.getAddress().toString() " +device.getAddress().toString()+
-                            "  evice.getName().toString()  "+device.getName().toString()+ " concurrentHashMapCursor " +concurrentHashMapCursor);
+                            "  evice.getName().toString()  "+device.getName().toString()+ " concurrentHashMapCursor " +concurrentHashMapCursor+
+                            " SUCCESS SUCCESS SUCCESS !!!! resultAddDeviceToGattaDtabse " +resultAddDeviceToGattaDtabse);
 
                     // TODO: 19.07.2024 Посылаем Пользователю сообщение что данные изменились
                     forwardUIAfterSuccessAddDiveceDatBAseScan(concurrentHashMapCursor, contentValuesВставкаДанных);
