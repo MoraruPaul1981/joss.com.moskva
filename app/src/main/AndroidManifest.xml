@@ -211,7 +211,7 @@
 
 
         <service
-            android:name=".businesslayer.Services.ServiceClientSimpleScan"
+            android:name=".businesslayer.Services.ServiceClientsScan"
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location"
@@ -260,7 +260,7 @@
 
 
         <service
-            android:name=".businesslayer.Services.ServiceClientBLE"
+            android:name=".businesslayer.Services.ServiceClientGatt"
             android:directBootAware="true"
             android:enabled="true"
             android:exported="true"

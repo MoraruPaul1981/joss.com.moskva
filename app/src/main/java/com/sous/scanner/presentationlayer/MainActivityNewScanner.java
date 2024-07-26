@@ -37,8 +37,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
-import com.sous.scanner.businesslayer.Services.ServiceClientSimpleScan;
-import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
+import com.sous.scanner.businesslayer.Services.ServiceClientsScan;
+import com.sous.scanner.businesslayer.Services.ServiceClientGatt;
 
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -59,7 +59,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
     protected TabLayout  tabLayout ;
 
     private     Long version=0l;
-    protected ServiceClientBLE.LocalBinderСканнер binderСканнер;
+    protected ServiceClientGatt.LocalBinderСканнер binderСканнер;
 
 
     @SuppressLint({"RestrictedApi", "MissingInflatedId"})
@@ -145,7 +145,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
 
     }
 
-    private void sendthereceivedServicelinktotheFragment(@NonNull ServiceClientBLE.LocalBinderСканнер binderСканнер) {
+    private void sendthereceivedServicelinktotheFragment(@NonNull ServiceClientGatt.LocalBinderСканнер binderСканнер) {
         try{
         Bundle result = new Bundle();
         result.putBinder("bundleKey", binderСканнер);
@@ -300,7 +300,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     try {
-                        binderСканнер = (ServiceClientBLE.LocalBinderСканнер) service;
+                        binderСканнер = (ServiceClientGatt.LocalBinderСканнер) service;
                         if (binderСканнер.isBinderAlive()) {
                             Log.i(getApplicationContext().getClass().getName(), "    onServiceConnected  binderСогласованияbinderМатериалы.isBinderAlive()"
                                     + binderСканнер.isBinderAlive());
@@ -342,7 +342,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
                     }
                 }
             };
-            Intent intentБиндингсСлужбойСканирования = new Intent(getApplicationContext(), ServiceClientBLE.class);
+            Intent intentБиндингсСлужбойСканирования = new Intent(getApplicationContext(), ServiceClientGatt.class);
             intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intentБиндингсСлужбойСканирования.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
@@ -371,7 +371,7 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         try {
             handlerScannerGatt.getTarget().post(()->{
 
-            Intent intentClientServiceSimpleScan = new Intent(getApplicationContext(), ServiceClientSimpleScan.class);
+            Intent intentClientServiceSimpleScan = new Intent(getApplicationContext(), ServiceClientsScan.class);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intentClientServiceSimpleScan.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);

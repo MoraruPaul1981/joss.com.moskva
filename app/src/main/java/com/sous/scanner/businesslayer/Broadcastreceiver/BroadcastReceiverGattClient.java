@@ -26,14 +26,15 @@ public class BroadcastReceiverGattClient extends BroadcastReceiver {
                     intent.getAction().equals("android.bluetooth.device.action.PAIRING_CANCEL") ) {
                 bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-                blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);
+            /*    blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                blBloadcastReceierGatt.unpairDevice(bluetoothDevice);*/
+
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +
+                        "Bintent.getAction() "+intent.getAction() + " bluetoothDevice " +bluetoothDevice);
+
             }
-
-
-
-
-
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

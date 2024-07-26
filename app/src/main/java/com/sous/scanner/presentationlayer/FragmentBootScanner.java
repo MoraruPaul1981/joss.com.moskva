@@ -24,7 +24,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
-import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
+import com.sous.scanner.businesslayer.Services.ServiceClientGatt;
 
 
 public class FragmentBootScanner extends Fragment {
@@ -38,7 +38,7 @@ public class FragmentBootScanner extends Fragment {
     private Message handlerScanner;
     private  TabLayout tabLayoutScanner;
 
-    private ServiceClientBLE.LocalBinderСканнер binderСканнер;
+    private ServiceClientGatt.LocalBinderСканнер binderСканнер;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -209,7 +209,7 @@ public class FragmentBootScanner extends Fragment {
                 @Override
                 public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                     // We use a String here, but any type that can be put in a Bundle is supported.
-                    binderСканнер= (ServiceClientBLE.LocalBinderСканнер) bundle.getBinder("bundleKey");
+                    binderСканнер= (ServiceClientGatt.LocalBinderСканнер) bundle.getBinder("bundleKey");
                     // Do something with the result.
                     Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

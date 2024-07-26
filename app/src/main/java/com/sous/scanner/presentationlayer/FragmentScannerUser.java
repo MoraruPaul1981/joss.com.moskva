@@ -41,7 +41,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.jakewharton.rxbinding4.view.RxView;
-import com.sous.scanner.businesslayer.Services.ServiceClientBLE;
+import com.sous.scanner.businesslayer.Services.ServiceClientGatt;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 import com.sous.scanner.R;
 
@@ -83,7 +83,7 @@ public class FragmentScannerUser extends Fragment {
     private SharedPreferences preferences;
 
 
-    private ServiceClientBLE.LocalBinderСканнер binderСканнер;
+    private ServiceClientGatt.LocalBinderСканнер binderСканнер;
 
 
     private  TabLayout tabLayoutScanner;
@@ -539,15 +539,15 @@ public class FragmentScannerUser extends Fragment {
         private void МетодИнициализацииСканера(@NonNull View itemView) {
             try {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
-                // TODO: 08.02.2023 кнопка ПРИХОДА с работы
+                // TODO: 08.02.2023 кнопка на работы
                 materialButtonКотрольПриход = itemView.findViewById(R.id.bottomcontrolfragmen1);
-                materialButtonКотрольПриход.setText("На Работу333");
+                materialButtonКотрольПриход.setText("на работу");
                 materialButtonКотрольПриход.setToggleCheckedStateOnClick(true);
 
 
                 // TODO: 08.02.2023 кнопка выхода с работы
                 materialButtonКотрольВыход = itemView.findViewById(R.id.bottomcontrolfragmen2);
-                materialButtonКотрольВыход.setText("С работы");
+                materialButtonКотрольВыход.setText("с работы");
 
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
 
@@ -1508,7 +1508,7 @@ public class FragmentScannerUser extends Fragment {
                 @Override
                 public void onFragmentResult(@NonNull String requestKey, @NonNull Bundle bundle) {
                     // We use a String here, but any type that can be put in a Bundle is supported.
-                    binderСканнер= (ServiceClientBLE.LocalBinderСканнер) bundle.getBinder("bundleKey");
+                    binderСканнер= (ServiceClientGatt.LocalBinderСканнер) bundle.getBinder("bundleKey");
                     // Do something with the result.
                     Log.d(getContext().getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

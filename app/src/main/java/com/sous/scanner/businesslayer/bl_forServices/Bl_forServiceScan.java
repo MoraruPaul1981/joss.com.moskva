@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
+import android.bluetooth.BluetoothSocket;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +22,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.sous.scanner.businesslayer.Broadcastreceiver.bl_BloadcastReceierGatt;
 import com.sous.scanner.businesslayer.Errors.SubClassErrors;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -82,16 +86,38 @@ public class Bl_forServiceScan {
                 public void accept(String remoteManualServerGatt) {
                     ///TODO:Довавляем Зарание созданные Адреса Сервера Gatt
                     BluetoothDevice bluetoothDeviceScan = bluetoothAdapterPhoneClient.getRemoteDevice(remoteManualServerGatt);//TODO: HUAWEI MatePad SE
+                    // TODO: 26.07.2024
+                    int connectionState = bluetoothManagerServer.getConnectionState(bluetoothDeviceScan, BluetoothProfile.GATT);
+
+ ;
+                        BluetoothDevice bd = bluetoothAdapterPhoneClient.getRemoteDevice(bluetoothDeviceScan.getAddress());
+                    BluetoothSocket bluetoothSocket = null;
+                    try {
+                        bluetoothSocket = bd.createInsecureL2capChannel(132);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                    try {
+                        bluetoothSocket.connect( );
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+
+/*
 
                     // TODO: 12.02.2023  init CallBack Gatt Client for Scan
-                    BluetoothGattCallback bluetoothGattCallbackScan  = МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );
+                    BluetoothGattCallback bluetoothGattCallbackScan  =
+                            МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );*/
 
 
-                    // TODO: 26.01.2023  close  GATT
-                    disaibleBeforeGattScanServer(gattScan);
+
 
                     // TODO: 26.01.2023 staring  GATT
-                    МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
+                   // МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
 
 
 
@@ -99,7 +125,7 @@ public class Bl_forServiceScan {
                             Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                             " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + "\n" +
-                            " bluetoothDeviceScan " + bluetoothDeviceScan +  " getPublicUUIDScan "+ getPublicUUIDScan);
+                            " bluetoothDeviceScan " + bluetoothDeviceScan +  " getPublicUUIDScan "+ getPublicUUIDScan+ " connectionState " +connectionState);
                 }
             });
             Log.d(this.getClass().getName(), "\n" + " class " +
