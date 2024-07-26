@@ -86,7 +86,11 @@ public class Bl_forServiceScan {
                     // TODO: 12.02.2023  init CallBack Gatt Client for Scan
                     BluetoothGattCallback bluetoothGattCallbackScan  = МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );
 
-                    // TODO: 26.01.2023  конец сервера GATT
+
+                    // TODO: 26.01.2023  close  GATT
+                    disaibleBeforeGattScanServer(gattScan);
+
+                    // TODO: 26.01.2023 staring  GATT
                     МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
 
 
@@ -132,6 +136,7 @@ public class Bl_forServiceScan {
                 public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                     int newState) {
                     try{
+                        // TODO: 26.07.2024
                         switch (newState){
 
                             case BluetoothProfile.STATE_CONNECTED :
@@ -181,6 +186,8 @@ public class Bl_forServiceScan {
 
                             case 133 :
                                 // TODO: 16.07.2024 когда ошивка разрываем сообщение
+                                disaibleGattScanServer(gatt);
+
                               //  new Bl_froSetviceBLE(version,context). disaibleGattServer(gatt);
                                 Log.d(this.getClass().getName(), "Trying to ДанныеОТGATTССевромGATT "  + " newState " +newState);
                                 break;
@@ -579,7 +586,33 @@ public class Bl_forServiceScan {
         }
     }
 
-
+    @SuppressLint("MissingPermission")
+    public void disaibleBeforeGattScanServer(@NonNull BluetoothGatt gatt  ) {
+        try{
+            if (gatt!=null) {
+                gatt.disconnect();
+                gatt.close();
+                Log.i(this.getClass().getName(), "  " + Thread.currentThread().getStackTrace()[2].getMethodName() + " время "
+                        + new Date().toLocaleString() + " gatt " + gatt);
+            }
+            Log.i(this.getClass().getName(),  "  " +Thread.currentThread().getStackTrace()[2].getMethodName()+ " время "
+                    +new Date().toLocaleString() + " gatt " +gatt);
+            //TODO
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(context).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
 
     // TODO: 24.07.2024  end class
