@@ -525,6 +525,10 @@ public class ServiceServerScan extends Service {
             public void onServiceConnected(int profile, BluetoothProfile proxy) {
 
                 List<BluetoothDevice> list=       proxy.getDevicesMatchingConnectionStates(states);
+                List<BluetoothDevice> conn=   proxy.getConnectedDevices();
+                if (conn.size()>0) {
+                    proxy.getConnectionState(conn.get(0));
+                }
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                         " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " profile  " +profile+
