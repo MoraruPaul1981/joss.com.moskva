@@ -48,9 +48,8 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
                 if (bluetoothDevice.getName()!=null) {
 
-          /*        bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                  bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
                 blBloadcastReceierGatt.unpairDevice(bluetoothDevice);
-*/
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
