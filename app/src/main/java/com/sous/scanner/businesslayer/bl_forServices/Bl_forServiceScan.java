@@ -457,23 +457,11 @@ public class Bl_forServiceScan {
 
                 switch (bondstate) {
 
-                    case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                        // TODO: 19.07.2024
-                        handlerScan.getTarget().post(() -> {
-                            ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<String, String>();
-                            concurrentHashMap.put("BluetoothDevice.DEVICE_TYPE_UNKNOWN", "9");
-                            mediatorLiveDataScan.setValue(concurrentHashMap);
-                        });
-                 /*   bl_BloadcastReceierGatt blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);*/
 
-                        Log.d(context.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                                + "   bluetoothDevice.getAddress()" + bluetoothDevice.getAddress() + " bondstate " + bondstate);
-                        break;
+
 
                     case BluetoothDevice.BOND_NONE:
+                    case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
 
                         handlerScan.getTarget().post(() -> {
                             ConcurrentHashMap<String, String> concurrentHashMap = new ConcurrentHashMap<String, String>();
@@ -482,8 +470,9 @@ public class Bl_forServiceScan {
 
                         });
                         // TODO: 22.07.2024  Принудительный Запуск Сопрежения
-                 /*   blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                    blBloadcastReceierGatt.getPairingANdBondingDevice(bluetoothDevice,777777);*/
+                        bl_BloadcastReceierGatt    blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
+                       blBloadcastReceierGatt.unpairDevice(bluetoothDevice);
+                       blBloadcastReceierGatt.pairDevice(bluetoothDevice);
                         // TODO: 22.07.2024  Принудительный Запуск Сопрежения
 
 

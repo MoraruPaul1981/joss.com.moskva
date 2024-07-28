@@ -415,13 +415,13 @@ public class MainActivityNewScanner extends AppCompatActivity  {
         try{
 
             IntentFilter filterScan = new IntentFilter();
+            filterScan.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
             filterScan.addAction(BluetoothDevice.ACTION_FOUND);
             filterScan.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
             filterScan.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
             filterScan.addAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-
             filterScan.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-
+        
 
 
 

@@ -2,6 +2,7 @@ package com.sous.scanner.businesslayer.Broadcastreceiver;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -46,8 +47,15 @@ public class BroadcastReceiverGattClient extends BroadcastReceiver {
 
                 if (bluetoothDeviceClient.getName()!=null) {
 
-                    bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                    blBloadcastReceierGatt.unpairDevice(bluetoothDeviceClient);
+
+                     String BLE_PIN= String.valueOf(000001);
+                    BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    bluetoothDevice.setPin(BLE_PIN.getBytes());
+                    intent.putExtra(BluetoothDevice.EXTRA_PAIRING_KEY, 000001);
+                    intent.putExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.BOND_BONDING);
+                    intent.putExtra(BluetoothDevice.EXTRA_RSSI, 0012);
+                    intent.putExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, BluetoothDevice.PAIRING_VARIANT_PIN);
+                    intent.putExtra(BluetoothDevice.EXTRA_UUID, "8888882222");
 
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
