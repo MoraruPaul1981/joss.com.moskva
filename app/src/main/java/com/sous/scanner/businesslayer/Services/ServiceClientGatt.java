@@ -39,6 +39,7 @@ import com.sous.scanner.businesslayer.bl_forServices.Bl_froSetviceBLE;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -98,6 +99,8 @@ public class ServiceClientGatt extends IntentService {
 
             setingEnableApapterBLE();
             getListDeviceForBluApdapter();
+            // TODO: 28.07.2024 int Lister
+            getListerBluetoothDevice();
 
             TAG = getClass().getName().toString();
             PackageInfo pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
@@ -516,7 +519,71 @@ public class ServiceClientGatt extends IntentService {
         new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
     }
     }
+    void getListerBluetoothDevice(){
 
+        try{
+
+            int[] states = new int[]{BluetoothProfile.STATE_CONNECTED,
+                    BluetoothProfile.STATE_CONNECTING,
+                    BluetoothProfile.STATE_DISCONNECTED,
+                    BluetoothProfile.STATE_DISCONNECTING};
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+            final BluetoothProfile.ServiceListener listener = new BluetoothProfile.ServiceListener() {
+                @Override
+                public void onServiceConnected(int profile, BluetoothProfile proxy) {
+
+                    List<BluetoothDevice> list=       proxy.getDevicesMatchingConnectionStates(states);
+                 List<BluetoothDevice> conn=   proxy.getConnectedDevices();
+                    if (conn.size()>0) {
+                        proxy.getConnectionState(conn.get(0));
+                    }
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " profile  " +profile+
+                            "  BluetoothProfile.ServiceListener  LIST !!  " +list);
+
+                }
+
+                @Override
+                public void onServiceDisconnected(int profile) {
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ " profile  " +profile);
+                }
+            };
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.A2DP);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.GATT);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener, BluetoothProfile.GATT_SERVER);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.HEADSET);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.HEALTH);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.SAP);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.HEARING_AID);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.HID_DEVICE);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.LE_AUDIO);
+            bluetoothAdapterPhoneClient.getProfileProxy(getApplicationContext(),listener,BluetoothProfile.HAP_CLIENT);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            ContentValues valuesЗаписываемОшибки = new ContentValues();
+            valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+            valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+            valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+            valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+            final Object ТекущаяВерсияПрограммы = version;
+            Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+            valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+        }
+    }
 
     @SuppressLint("MissingPermission")
     private void getListDeviceForBluApdapter() {

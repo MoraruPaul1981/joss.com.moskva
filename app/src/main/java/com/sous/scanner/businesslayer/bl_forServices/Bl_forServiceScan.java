@@ -91,40 +91,13 @@ public class Bl_forServiceScan {
                     // TODO: 26.07.2024
                     int connectionState = bluetoothManagerServer.getConnectionState(bluetoothDeviceScan, BluetoothProfile.GATT);
 
-                    bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.unpairDevice(bluetoothDeviceScan);
-
-                        BluetoothDevice bd = bluetoothAdapterPhoneClient.getRemoteDevice(bluetoothDeviceScan.getAddress());
-                    BluetoothSocket bluetoothSocket = null;
-                    try {
-                        bluetoothSocket = bd.createInsecureRfcommSocketToServiceRecord( UUID.fromString("a60f35f0-b93a-11de-8a39-08002009c666"));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    try {
-                   OutputStream outstr = bluetoothSocket.getOutputStream();
-                 InputStream instr = bluetoothSocket.getInputStream();
-
-
-                        bluetoothSocket.connect( );
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-
-
-
-/*
 
                     // TODO: 12.02.2023  init CallBack Gatt Client for Scan
                     BluetoothGattCallback bluetoothGattCallbackScan  =
-                            МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );*/
-
-
-
+                            МетодРаботыСТекущийСерверомGATTДляScan(bluetoothDeviceScan, getPublicUUIDScan );
 
                     // TODO: 26.01.2023 staring  GATT
-                   // МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
+               МетодЗапускаGATTКлиентаScan(bluetoothDeviceScan, bluetoothGattCallbackScan);
 
 
 
