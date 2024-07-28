@@ -47,9 +47,21 @@ public class BroadcastReceiverGattServer extends BroadcastReceiver {
 
 
                 if (bluetoothDevice.getName()!=null) {
-
+/*
                   bl_BloadcastReceierGatt  blBloadcastReceierGatt = new bl_BloadcastReceierGatt(context, version);
-                blBloadcastReceierGatt.unpairDevice(bluetoothDevice);
+                blBloadcastReceierGatt.unpairDevice(bluetoothDevice);*/
+
+                 String   mType = String.valueOf(intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_KEY, BluetoothDevice.ERROR));
+                    String   mPasskey = String.valueOf(intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR));
+                    String   mPasskey2 = String.valueOf(intent.getIntExtra(BluetoothDevice.EXTRA_UUID, BluetoothDevice.ERROR));
+                    String   mPasskey3 = String.valueOf(intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_KEY, BluetoothDevice.ERROR));
+                    String   mPasskey4 = String.valueOf(intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, BluetoothDevice.ERROR));
+
+                    String BLE_PIN= String.valueOf(000001);
+                     bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    bluetoothDevice.setPin(BLE_PIN.getBytes());
+
+
 
                     Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
