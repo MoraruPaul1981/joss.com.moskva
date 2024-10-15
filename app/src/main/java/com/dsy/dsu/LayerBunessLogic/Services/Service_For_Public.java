@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 
 
 
-import com.dsy.dsu.LayerBunessLogic.Class_GRUD_SQL_Operations;
+ 
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Class_Generation_UUID;
 import com.dsy.dsu.LayerBunessLogic.Class_Generation_Weekend_For_Tabels;

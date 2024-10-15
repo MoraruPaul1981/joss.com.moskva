@@ -22,16 +22,13 @@ import java.util.concurrent.TimeoutException;
 import javax.crypto.NoSuchPaddingException;
 
 
-public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
+public class Class_Connections_Server  {
     private Context context1;
-    private  Class_GRUD_SQL_Operations class_grud_sql_operations=null;
+
     private SharedPreferences preferences;
     private AsyncTaskLoader<Boolean> asyncTaskLoader;
     public Class_Connections_Server(Context context) {
-        super(context);
         context1 =context;
-        class_grud_sql_operations=new Class_GRUD_SQL_Operations(context1);
-        //preferences = PreferenceManager.getDefaultSharedPreferences(context);
         preferences =context.getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
     }
     ///////// TODO ПРОВЕРЯЕТ ЕСЛИ ПОДКЛЧБЕНИ В ИНТРЕНТУ
@@ -50,7 +47,8 @@ public class Class_Connections_Server  extends  Class_GRUD_SQL_Operations {
                                         "  РезультатПингакСервераРаботаетЛиОНРеально " +РезультатПингакСервераРаботаетЛиОНРеально);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            if (! e.toString().equalsIgnoreCase("java.util.concurrent.TimeoutException: The source did not signal an event for 5 seconds and has been terminated.")) {
+                            if (! e.toString().equalsIgnoreCase("java.util.concurrent.TimeoutException: The source did not signal" +
+                                    " an event for 5 seconds and has been terminated.")) {
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 new Class_Generation_Errors(КонтекстКоторыйДляСинхронизации).МетодЗаписиВЖурналНовойОшибки(e.toString(),

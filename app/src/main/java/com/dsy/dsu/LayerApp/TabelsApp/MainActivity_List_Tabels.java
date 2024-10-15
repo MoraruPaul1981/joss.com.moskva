@@ -49,11 +49,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 
  
-import com.dsy.dsu.LayerBunessLogic.Class_GRUD_SQL_Operations;
+ 
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Class_MODEL_synchronized;
 import com.dsy.dsu.LayerBunessLogic.DATE.SubClassCursorLoader;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
+import com.dsy.dsu.LayerBunessLogic.GrudOpersions.GetAllCursor;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.LayerBunessLogic.Services.Service_For_Public;
@@ -112,7 +113,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
     private  FloatingActionButton КруглаяКнопкаСамТабель;
     private  Activity activity;
     private   Integer   ПубличноеIDПолученныйИзСервлетаДляUUID=0;
-    private Class_GRUD_SQL_Operations class_grud_sql_operationsДляАктивтиТабель ;
+
     private   PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков ;
     private Long MainParentUUIDFromTabel =0l;
     private SharedPreferences sharedPreferencesХранилище;
@@ -147,8 +148,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             context =this;
             getSupportActionBar().hide(); ///скрывать тул бар
             subClassCursorLoader=      new SubClassCursorLoader();
-
-            class_grud_sql_operationsДляАктивтиТабель      = new Class_GRUD_SQL_Operations(getApplicationContext());
             sqLiteDatabase  = EntryPoints.get(getApplicationContext(), HiltInterfacesqlite.class).getHiltSqlite();
             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
@@ -406,17 +405,18 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
 
     private Cursor МетодПолучениеДанныхДляИхУдаления(@NonNull Context context ,@NonNull Long СамоЗначениеUUID) {
-        Cursor cursor=null;
+        Cursor cursorDelete=null;
         try{
-            Bundle bundle=new Bundle();
-            bundle.putString("СамЗапрос","  SELECT uuid FROM  data_tabels  WHERE uuid_tabel=?     AND status_send!=?");
-            bundle.putStringArray("УсловияВыборки" ,new String[]{String.valueOf(СамоЗначениеUUID),"Удаленная"});
-            bundle.putString("Таблица","data_tabels");
-            Intent intent=new Intent("ДляУдаление");
-            intent.putExtras(bundle);
-            Service_For_Public  service_for_public=new Service_For_Public();
-        cursor=  service_for_public.МетодПолучениеДанныхЧерезCursorLoader(context,intent);
-            Log.d(this.getClass().getName(), " cursor " + cursor);
+            // TODO: 15.10.2024 GET DATA ALL NEW
+            GetAllCursor getAllCursor=new GetAllCursor(context);
+            String sql=  " SELECT uuid FROM  data_tabels  WHERE uuid_tabel=?     AND status_send!=?  ";
+            String[] getWhrere=  new String[]{String.valueOf(СамоЗначениеUUID),"Удаленная" };
+            cursorDelete   =getAllCursor.getCursor(sql,"data_tabels",  getWhrere);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getAllCursor " +getAllCursor+
+                    "cursorDelete " + cursorDelete);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -425,7 +425,7 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
                 this.getClass().getName(),
                 Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-        return cursor;
+        return cursorDelete;
     }
 
     private void методМассивДляВыбораВСпинерДата() {
@@ -1068,50 +1068,6 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     //////TODO вычисляем максимальную дату для СПИНЕРА ДЛЯ ВАДАПТЕРА AAARYADAPTER
 
-    SQLiteCursor МетодКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера() throws ExecutionException, InterruptedException {
-         SQLiteCursor  Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера = null;
-                try{
-                    // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                    String ТаблицаНазваниеОбработки="tabel";
-                    class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
-                    class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ТаблицаНазваниеОбработки);
-                    class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНабор.put("СтолбцыОбработки","month_tabels,year_tabels");
-                    class_grud_sql_operationsДляАктивтиТабель.
-                            concurrentHashMapНабор.put("ФорматПосика"," status_send!=?");
-                    class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеПоиска1","Удаленная");
-                    class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеСортировки","current_table ");//DESC
-                    ////
-                    PUBLIC_CONTENT         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT (getApplicationContext());
-                    Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера= (SQLiteCursor) class_grud_sql_operationsДляАктивтиТабель.
-                            new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель.
-                                    concurrentHashMapНабор,
-                            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabase);
-                    Log.d(this.getClass().getName(), "GetData " +Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                            + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    // TODO: 01.09.2021 метод вызова
-                    new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                            this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
-                            Thread.currentThread().getStackTrace()[2].getLineNumber());
-                }
-        return Курсор_КоторыйЗагружаетГотовыеТабеляМаксимальнаяДатаДляСпинера;
-    }
-     void МетодКогдаДанныхСамихТабелйНет( ) {
-        try{
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new   Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    }
 
 
 
@@ -1817,28 +1773,24 @@ try{
         try{
             Long СамUUIDТабеляКакLONG= Long.valueOf(СамUUIDТабеля);
             Boolean ФлагВыясняемПроведенныйТабельИлиНет = false;
-            SQLiteCursor Курсор_ИщемПроведенЛиТАбельИлиНЕт = null;
-            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            class_grud_sql_operationsДляАктивтиТабель= new Class_GRUD_SQL_Operations(getApplicationContext());
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","data_tabels");
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("СтолбцыОбработки","*");
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("ФорматПосика","uuid_tabel=?");
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеПоиска1",СамUUIDТабеляКакLONG.toString());
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеЛимита",1);
-            class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
-            // TODO: 12.10.2021  Ссылка Менеджер Потоков
-            PUBLIC_CONTENT  Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            Курсор_ИщемПроведенЛиТАбельИлиНЕт= (SQLiteCursor) class_grud_sql_operationsДляАктивтиТабель.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsДляАктивтиТабель.concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData " +Курсор_ИщемПроведенЛиТАбельИлиНЕт );
+            Cursor Курсор_ИщемПроведенЛиТАбельИлиНЕт = null;
+
+            GetAllCursor getAllCursor=new GetAllCursor(context);
+
+               String sql=  " SELECT * FROM data_tabels WHERE uuid_tabel=? ORDER BY date_update DESC   ";
+               String[] getWhrere=  new String[]{СамUUIDТабеляКакLONG.toString()};
+            Курсор_ИщемПроведенЛиТАбельИлиНЕт   =getAllCursor.getCursor(sql,"data_tabels",  getWhrere);
+
             /////////
             if(Курсор_ИщемПроведенЛиТАбельИлиНЕт.getCount()>0){
-                Курсор_ИщемПроведенЛиТАбельИлиНЕт.moveToFirst();
+
+
                 Log.d(this.getClass().getName(), " Курсор_ИщемПУбличныйIDКогдаегоНетВстатике " + Курсор_ИщемПроведенЛиТАбельИлиНЕт.getCount());
+
                 int ИндексКурсор_ИщемПУбличныйIDКогдаегоНетВстатике= Курсор_ИщемПроведенЛиТАбельИлиНЕт.getColumnIndex("status_carried_out");
+
                 ФлагВыясняемПроведенныйТабельИлиНет =Boolean.parseBoolean( Курсор_ИщемПроведенЛиТАбельИлиНЕт.getString(ИндексКурсор_ИщемПУбличныйIDКогдаегоНетВстатике));
+
                 Log.d(this.getClass().getName(), " ИндексКурсор_ИщемПУбличныйIDКогдаегоНетВстатике " + ИндексКурсор_ИщемПУбличныйIDКогдаегоНетВстатике+
                         "  ФлагВыясняемПроведенныйТабельИлиНет " +ФлагВыясняемПроведенныйТабельИлиНет);
             }

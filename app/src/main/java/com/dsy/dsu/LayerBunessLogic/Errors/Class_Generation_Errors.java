@@ -44,7 +44,7 @@ public class Class_Generation_Errors {
         this.context = context;
         sqLiteDatabase  = EntryPoints.get(context, HiltInterfacesqlite.class).getHiltSqlite();
     }
-    //функция получающая время операции ДАННАЯ ФУНКЦИЯ ВРЕМЯ ПРИМЕНЯЕТЬСЯ ВО ВСЕЙ ПРОГРАММЕ
+
     // TODO: 05.07.2021
 
     //// второй метод с современный

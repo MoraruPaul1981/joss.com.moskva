@@ -42,16 +42,18 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
  
-import com.dsy.dsu.LayerBunessLogic.Class_GRUD_SQL_Operations;
+ 
 
 import com.dsy.dsu.LayerBunessLogic.DATE.Class_Generation_Data;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Class_Generation_UUID;
 import com.dsy.dsu.LayerBunessLogic.Class_Generations_PUBLIC_CURRENT_ID;
 
+import com.dsy.dsu.LayerBunessLogic.GrudOpersions.GetAllCursor;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.SubClassUpVersionDATA;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
+import com.dsy.dsu.LayerBunessLogic.GrudOpersions.GetVersionUp;
 import com.dsy.dsu.R;
 import com.dsy.dsu.LayerBunessLogic.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
@@ -84,7 +86,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
     private Bundle BungleДанныеДляViewCardBungleID;
     private Bundle BungleДанныеДляViewCardДляпередачиCallsBaskПримечание;
     private SQLiteCursor Курсор_ГлавныйКурсорДляЗадач;
-    private SQLiteCursor Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе = null;
+    private Cursor Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе = null;
     private Class_Generations_PUBLIC_CURRENT_ID class_generations_public_current_id;
     private Integer ПубличныйIDДляЗаданияКомуПисать;
     private FragmentManager fragmentManagerДляЗадачи;
@@ -656,57 +658,22 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
         // TODO: 23.03.2022  метод получения сколько созданных
 
         // TODO: 14.03.2022
-        protected SQLiteCursor МетодПолученимТОлькоКоличествоЗадач(Integer ПубличноеIDПолученныйИзСервлетаДляUUID) throws ExecutionException, InterruptedException {
+        protected  Cursor МетодПолученимТОлькоКоличествоЗадач(Integer ПубличноеIDПолученныйИзСервлетаДляUUID) throws ExecutionException, InterruptedException {
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
             Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе = null;
             // TODO: 02.03.2022
             try {
-                ///
-                Class_GRUD_SQL_Operations class_grud_sql_operationsIDпользоввателяДляСлужб = new Class_GRUD_SQL_Operations(getContext());
-                ///
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "view_tasks");//old для другой уведомления data_chat
-                ///////
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("СтолбцыОбработки", "*");
-                //
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("ФорматПосика", "   user_update=? AND status_write<>? " +
-                        " AND message IS NOT NULL  ");
-                // TODO: 02.03.2022
-                ///"_id > ?   AND _id< ?"
-              /*  class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("ФорматПосика","status_write=?  AND id_user=? " +
-                        " AND message IS NOT NULL  ");
-                ///"_id > ?   AND _id< ?"
-*/
-/*
-                //////
-                class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеПоиска1",1);//todo 0*/
-                //
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска1", ПубличноеIDПолученныйИзСервлетаДляUUID);
+                // TODO: 15.10.2024 GET DATA ALL NEW
+                GetAllCursor getAllCursor=new GetAllCursor(context);
+                String sql=  " SELECT * FROM view_tasks  WHERE    user_update=? AND status_write<>? AND message IS NOT NULL  ORDER BY status_write, date_update DESC   ";
+                String[] getWhrere=  new String[]{ПубличноеIDПолученныйИзСервлетаДляUUID.toString(),"5"};
+                Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе   =getAllCursor.getCursor(sql,"view_tasks",  getWhrere);
 
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеПоиска2", 5);
-                // TODO: 02.03.2022
-
-                class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор.put("УсловиеСортировки", " status_write, date_update DESC ");//todo "date_update DESC, status_write DESC"
-                ////
-                // class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                ////
-                //class_grud_sql_operationsIDпользоввателяДляСлужб. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                ///
-                Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе = null;
-                // TODO: 03.03.2022  глаВНЫЙ КУРСОР ДЛЯ ЗАДАЧ
-                Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе = (SQLiteCursor) class_grud_sql_operationsIDпользоввателяДляСлужб.
-                        new GetData(getContext()).getdata(class_grud_sql_operationsIDпользоввателяДляСлужб.concurrentHashMapНабор,
-                        new PUBLIC_CONTENT(getContext()).МенеджерПотоков, sqLiteDatabase);
-                // TODO: 02.03.2022
-                if (Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе.getCount() > 0) {
-                    // TODO: 03.03.2022
-                    Log.d(this.getClass().getName(), "Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе " + Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе);
-                    // TODO: 03.03.2022
-                    Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе.moveToFirst();
-                }
-
+                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getAllCursor " +getAllCursor+
+                        "Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе " + Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе);
                 // TODO: 14.03.2022
-                Log.d(this.getClass().getName(), "Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе " + Курсор_ДляПолученияДАнныхТОлькоДляЗадачВработе);
             } catch (Exception e) {
                 e.printStackTrace();
                 ///метод запись ошибок в таблицу
@@ -2241,10 +2208,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
 
                             if (Результат_ВставкиДанныхПриСозданииНовойЗадачи[0] > 0) {
 
-                                Integer РезультатПослеВставкиДанныхУвеличиваемВерсиюДанных =
-                                        МетодПослеУспешнойЗаписиЗначенияВТаблицуПоднимаемВерсиюДанных(classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи,
-                                                sqLiteDatabase,
-                                                РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая, ТаблицаОбработки);
+                                Integer РезультатПослеВставкиДанныхУвеличиваемВерсиюДанных = afterTheSuccessOftheUpVersion(contentValuesДляСозданияНовойЗадачиДляДвухТаблиц, ТаблицаОбработки);
                                 // TODO: 21.03.2022
                                 // TODO: 21.03.2022
                                 Log.d(this.getClass().getName(),
@@ -2315,63 +2279,7 @@ public class Fragment3_Now_Create_Tasks extends Fragment {
             }
 
 
-            private Integer МетодПослеУспешнойЗаписиЗначенияВТаблицуПоднимаемВерсиюДанных
-                    (Class_GRUD_SQL_Operations classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи,
-                     SQLiteDatabase sqLiteDatabaseДляНовгоЗадания,
-                     Long РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника, String таблицаОбработкиПослеУспешнойВсатвкиНовойЗадачи) throws ExecutionException, InterruptedException {
 
-                // TODO: 21.03.2022
-                Integer Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы = 0;
-
-
-                // TODO: 21.03.2022
-                try {
-                    Log.d(getContext().getClass().getName(), "таблицаОбработкиПослеУспешнойВсатвкиНовойЗадачи "
-                            + таблицаОбработкиПослеУспешнойВсатвкиНовойЗадачи);
-
-
-                    classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                            concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",
-                            таблицаОбработкиПослеУспешнойВсатвкиНовойЗадачи);
-                    ///
-                    classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                            concurrentHashMapНабор.put("ФлагТипИзменениеВерсииДанныхЛокальнаяСервернаяИлиОба",
-                            "Локальное");///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                    ///
-                    ///
-                    classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                            concurrentHashMapНабор.put(" " +
-                                    "ПередоваемоеЗначенияДляТаблицы_MODIFITATION_Client_КотороеНадоЗаписать",
-                            РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудника);///  "ЛокальныйСерверныйОба"    ПОСЛЕ КАК ПРИШЛИ ВНЕШНИЕ ДАННЫЕ
-                    ///
-
-
-                    ///TODO РЕЗУЛЬТА изменения версии данных
-                    Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы =
-                            (Integer) classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                                    new ChangesVesionData(getContext()).
-                                    changesvesiondata(classGrudSqlOperationsДляОперацииСозданеиНовойЗадачи.
-                                                    concurrentHashMapНабор,
-                                            new PUBLIC_CONTENT(getContext()).МенеджерПотоков
-                                            , sqLiteDatabaseДляНовгоЗадания);
-//
-                    Log.d(getContext().getClass().getName(), "Результат_ПриписиИзменнийВерсииДанныхВФонеПриСменеОрганизации "
-                            + Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы);
-
-                    // TODO: 21.03.2022
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ///метод запись ошибок в таблицу
-                    Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                            " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                            Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                    //   mNotificationManagerДляЧАТА.cancel(1);///.cancelAll();
-                }
-
-                // TODO: 21.03.2022
-                return Результат_ПриписиИзменнийВерсииДанныхВФонеПослеОбработкиТекущийТаблицы;
-            }
 
         }
 

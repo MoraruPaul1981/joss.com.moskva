@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.dsy.dsu.LayerBunessLogic.Class_GRUD_SQL_Operations;
+ 
 import com.dsy.dsu.LayerBunessLogic.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.LayerBunessLogic.SubClassUpVersionDATA;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
