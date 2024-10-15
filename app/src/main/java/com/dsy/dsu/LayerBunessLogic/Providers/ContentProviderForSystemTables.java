@@ -26,10 +26,12 @@ import com.dsy.dsu.LayerApp.SettingsApp.bl_SettingandSucceesLogin.SettingAndLogi
 import com.dsy.dsu.LayerApp.SettingsApp.bl_SettingandSucceesLogin.SettingAndLoginBinesslogicSuccessLogin;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
+import com.dsy.dsu.LayerBunessLogic.SubClassCreatingMainAllTables;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -44,12 +46,29 @@ public class ContentProviderForSystemTables extends ContentProvider  {
 
     private Handler handler;
     private     ContentResolvers contentResolvers;
+    private  Integer ТекущаяСтрокаПриДОбавлениииURL=0;
     public ContentProviderForSystemTables() throws InterruptedException {
         try{
-            uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(1);
 
-            uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerforsystemtables","successlogin",0);
-            uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerforsystemtables","settings_tabels",1);
+
+            CopyOnWriteArrayList<String> ИменаТаблицыОтАндройда=
+                    new SubClassCreatingMainAllTables(getContext()).
+                            методCreatingMainTabels(getContext());
+            Log.d(this.getClass().getName(), " ИменаТаблицыОтАндройда "+ИменаТаблицыОтАндройда );
+            uriMatcherДЛяПровайдераКонтентБазаДанных=new UriMatcher(ИменаТаблицыОтАндройда.size());
+            ИменаТаблицыОтАндройда.forEach(new Consumer<String>() {
+                @Override
+                public void accept(String ЭлементТаблица) {
+                    uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerdatabasecurrentoperations",ЭлементТаблица.toString(),ТекущаяСтрокаПриДОбавлениииURL);
+                    Log.d(this.getClass().getName(), " ЭлементТаблица "+ЭлементТаблица + " ТекущаяСтрокаПриДОбавлениииURL " +ТекущаяСтрокаПриДОбавлениииURL);
+                    ТекущаяСтрокаПриДОбавлениииURL++;
+                }
+            });
+
+            uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerforsystemtables","successlogin",ТекущаяСтрокаПриДОбавлениииURL);
+            ТекущаяСтрокаПриДОбавлениииURL++;
+            uriMatcherДЛяПровайдераКонтентБазаДанных.addURI("com.dsy.dsu.providerforsystemtables","settings_tabels",ТекущаяСтрокаПриДОбавлениииURL);
+            ТекущаяСтрокаПриДОбавлениииURL++;
 
 
             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +

@@ -1,6 +1,7 @@
 package com.dsy.dsu.LayerBunessLogic;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
+import com.dsy.dsu.LayerBunessLogic.bl_getUserAndPassword.GetSuccessLogin;
 
 import dagger.hilt.EntryPoints;
 
@@ -37,18 +39,10 @@ public class Class_Find_Setting_User_Network {
 
      РежимСетиВыбранныйПользователем = new Class_Type_Connenction_Tel(context).МетодОпределяемКакойТипПодключениеWIFIилиMobile();
 
-     Class_GRUD_SQL_Operations operationNewrorUsesing = new Class_GRUD_SQL_Operations(context);
+            GetSuccessLogin getSuccessLogin   =  new GetSuccessLogin(context);
+            Cursor getCursorNetworkUser= getSuccessLogin.gettingSuccessLogin();
 
-     operationNewrorUsesing.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
-     ///////
-     operationNewrorUsesing.concurrentHashMapНабор.put("СтолбцыОбработки", "mode_connection");
 
-            PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(context);
-
-     SQLiteCursor getCursorNetworkUser = (SQLiteCursor) operationNewrorUsesing.
-             new GetData(context).getdata(operationNewrorUsesing.
-                     concurrentHashMapНабор,
-             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabase);
 
      String setingNwtorkUser = new String();
 

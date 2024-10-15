@@ -36,27 +36,17 @@ public class Class_Type_Connenction_Tel    {
                 Log.d(Class_MODEL_synchronized.class.getName()," КакойТипПодключения"+ КакойТипПодключения);
             }else{
                 // TODO: 29.09.2021
-
                 NetworkInfo mMOBILE = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
 
                 if (mMOBILE.isConnected()) {
                     // Do whatever
-
                     КакойТипПодключения="Mobile";
-
                     Log.d(Class_MODEL_synchronized.class.getName()," КакойТипПодключения"+ КакойТипПодключения);
                 }
 
             }
-
-
-            ////////
-
-            ///todo публикум название таблицы или цифру его
         } catch (Exception e) {
-            //  Block of code to handle errors
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
                     + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(contextДляОпределенияКакойТИмПодключения).МетодЗаписиВЖурналНовойОшибки(e.toString(),

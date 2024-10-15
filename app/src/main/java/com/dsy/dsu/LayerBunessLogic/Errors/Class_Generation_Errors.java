@@ -1,5 +1,6 @@
 package com.dsy.dsu.LayerBunessLogic.Errors;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
@@ -10,7 +11,7 @@ import androidx.multidex.BuildConfig;
 
 
  
-import com.dsy.dsu.LayerBunessLogic.Class_GRUD_SQL_Operations;
+
 import com.dsy.dsu.LayerBunessLogic.Class_Generation_UUID;
 import com.dsy.dsu.LayerBunessLogic.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.LayerBunessLogic.DATE.Class_Generation_Data;
@@ -33,7 +34,6 @@ import dagger.hilt.EntryPoints;
 public class Class_Generation_Errors {
 
     private Context context;
-    private Class_GRUD_SQL_Operations classGrudSqlOperationsОшибки;
 
     private String fileName = "Sous-Avtodor-ERROR.txt";
 
@@ -62,35 +62,42 @@ public class Class_Generation_Errors {
                         new Class_Generation_UUID(context).МетодГенерацииUUID();
                 Integer ПубличныйIDДляАсих = new Class_Generations_PUBLIC_CURRENT_ID(context).
                         getPublicIDAllApp(context);
-                classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);
-                classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
-                classGrudSqlOperationsОшибки = new Class_GRUD_SQL_Operations(context);
-                classGrudSqlOperationsОшибки.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "ErrorDSU1");
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Error", ТекстОшибки.toLowerCase());
-                Log.d(this.getClass().getName(), " ТекстОшибки.toLowerCase()  " + ТекстОшибки.toLowerCase());
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Klass", КлассГнерацииОшибки.toUpperCase());
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("Metod", МетодаОшибки.toUpperCase());
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("LineError", ЛинияОшибки);
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("user_update", ПубличныйIDДляАсих);
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("UUID", UUID);
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("current_table", ВерсияДанных);
+
+                ContentValues contentValuesError=new ContentValues();
+                GetWriteErrors  getWriteErrors=new GetWriteErrors(context);
+                // TODO: 15.10.2024
+                contentValuesError.put("Error", ТекстОшибки.toLowerCase());
+                contentValuesError.put("Klass", КлассГнерацииОшибки.toUpperCase());
+                contentValuesError.put("Metod", МетодаОшибки.toUpperCase());
+                contentValuesError.put("LineError", ЛинияОшибки);
+
+
+                contentValuesError.put("user_update", ПубличныйIDДляАсих);
+                contentValuesError.put("UUID", UUID);
+                contentValuesError.put("current_table", ВерсияДанных);
+
+
                 final Object ТекущаяВерсияПрограммы = BuildConfig.VERSION_CODE;
                 Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("whose_error", ЛокальнаяВерсияПОСравнение);
+
+                contentValuesError.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 String СгенерированованныйДатаДляВставки = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций.put("date_update", СгенерированованныйДатаДляВставки);
+                contentValuesError.put("date_update", СгенерированованныйДатаДляВставки));
 
                 ///TODO Записываем ошибки только определного сорта
                 if (!ТекстОшибки.trim().matches("(.*)UnknownHostException(.*)")
                         && !ТекстОшибки.trim().matches("(.*)SocketTimeoutException(.*)")
                         && !ТекстОшибки.trim().matches("(.*)ConnectException(.*)")) {
 
-                    // TODO: 21.12.2022  главная  файл ErrorDSU1
-                   метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1( );
+                    // TODO: 15.10.2024
+                    Integer getwiteNeError=  getWriteErrors.writeErrors(contentValuesError);
 
                     // TODO: 20.12.2022  дополнительный механизм записи ошибкок
                     методЗаписиОшибкиВФайлErrorDSU1txt(ТекстОшибки, КлассГнерацииОшибки, МетодаОшибки, ЛинияОшибки);
-
+                    // TODO: 17.04.2023
+                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+" getwiteNeError " +getwiteNeError);
 
                 }
                 Log.d(this.getClass().getName(), "PезультатВставкиНовойОшибки " + PезультатВставкиНовойОшибки);
@@ -103,7 +110,6 @@ public class Class_Generation_Errors {
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
             // TODO: 09.07.2023 clear
-            classGrudSqlOperationsОшибки.concurrentHashMapНабор.clear();
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
@@ -132,24 +138,7 @@ public class Class_Generation_Errors {
     }
     }
 
-    private void метометодЗаписьОшибкиОбынуюТаблицуErrorDSU1( )
-            throws ExecutionException, InterruptedException {
-        Long PезультатВставкиНовойОшибки=0l;
-        try{
-     Long   pезультатВставкиНовойОшибки = (Long) classGrudSqlOperationsОшибки.
-                new InsertData(context).insertdata(classGrudSqlOperationsОшибки.concurrentHashMapНабор,
-                classGrudSqlOperationsОшибки.contentValuesДляSQLBuilder_Для_GRUD_Операций,
-                new PUBLIC_CONTENT(context).МенеджерПотоков,
-                sqLiteDatabase);
-        Log.d(this.getClass().getName(), " date " + new Date().toGMTString().toString() + " PезультатВставкиНовойОшибки " + pезультатВставкиНовойОшибки);
-    } catch (Exception e) {
-        e.printStackTrace();
-        System.err.println("  Ошибка в самом классе записи ошибок нет КОНТЕКСТА Class_Generation_Errors");
-        Log.e(context.getClass().getName(), "Ошибка в самом классе создание ОШИБКИ (записи новой ошибки) ERROR  inse ERROR" + e
-                + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-    }
+
 
 
     // TODO: 20.12.2022  дополнительный клас Заппси ОШИБКИВ ФАЙЛ
