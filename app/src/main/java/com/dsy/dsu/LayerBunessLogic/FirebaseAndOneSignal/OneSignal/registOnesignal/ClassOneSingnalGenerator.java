@@ -159,7 +159,7 @@ public class ClassOneSingnalGenerator {
                     " СтарыйКлючОтOneSignal " +СтарыйКлючОтOneSignal + " НовыйКлючОтOneSingnal " +НовыйКлючОтOneSingnal);
 
         // TODO: 05.01.2022
-         НовыйКлючОтOneSingnal =     МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(КлючДляFirebaseNotification,СтарыйКлючОтOneSignal);
+         НовыйКлючОтOneSingnal =     gettinganeOneSignalkeyinseveralattempts(КлючДляFirebaseNotification,СтарыйКлючОтOneSignal);
             // TODO: 12.04.2024
 
         Log.d(this.getClass().getName(), "\n"
@@ -234,8 +234,8 @@ public class ClassOneSingnalGenerator {
 
      // TODO: 24.12.2021  МетодПолучение Статуса Ключа От Сервера OneSignal
 
-    private String МетодПолучениеКлючаОтСервераONESIGNALЕслиОЕстьКОнечноВНЕСКОЛЬКОПОпыток(@NonNull String PublicKeyOneSignal,
-                                                                                          @NonNull String СтарыйКлючОтOneSignal) {
+    private String gettinganeOneSignalkeyinseveralattempts(@NonNull String PublicKeyOneSignal,
+                                                           @NonNull String СтарыйКлючОтOneSignal) {
         String  НовыйКлючОтOneSingnal = null;
         try{
             // todo OneSignal Initialization

@@ -51,36 +51,21 @@ public class GetOkhhtpBuilderSSLWithCert implements InGetOkhhtpBuilder {
             builder.retryOnConnectionFailure(false);
 
             CertificatePinner certificatePinner = new CertificatePinner.Builder()
-                    .add("192.168.3.4", "sha256/39222d49a7fc3f97cbb4ff0df74ddfabe6ab3cec21ee0aa6783a0dd366d7c148")
+                    .add("192.168.3.4", "sha256/341a7062a34c0740f00d73f3e921a8d68305c90dd1f43ef41546c2684f60ca1")
                     .build();
             builder.certificatePinner(certificatePinner);
 
-   /*         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            InputStream cert =context.getResources().openRawResource(R.raw.cer19216834cer);
-            Certificate ca = cf.generateCertificate(cert);
-            cert.close();
-          //KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            String keyStoreType = KeyStore.getDefaultType();
-            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            keyStore.load(null, "mypassword".toCharArray());
-            keyStore.setCertificateEntry("192.168.3.4", ca);*/
 
 
-
-         /*   KeyStore keyStore = KeyStore.getInstance("BKS");
-            InputStream instream = context.getResources().openRawResource(R.raw.bks19216834bks);
+             KeyStore keyStore = KeyStore.getInstance("BKS");
+            InputStream instream = context.getResources().openRawResource(R.raw.bksbasedsu1ru);
             keyStore.load(instream, "mypassword".toCharArray());
-
-
-            // TrustManager decides which certificate authorities to use.
             TrustManagerFactory tmf = TrustManagerFactory
                     .getInstance(TrustManagerFactory.getDefaultAlgorithm());
             tmf.init(keyStore);
-
-
             SSLContext sslContext = SSLContext.getInstance("TLS");//TLSv1.3
-
-            sslContext.init(null, tmf.getTrustManagers(),  new SecureRandom());*/
+            sslContext.init(null, tmf.getTrustManagers(),  new SecureRandom());
+            builder.setSocketFactory$okhttp(sslContext.getSocketFactory());
 
             Log.i(this.getClass().getName(),  " Атоманически установкаОбновление ПО "+
                     Thread.currentThread().getStackTrace()[2].getMethodName()+

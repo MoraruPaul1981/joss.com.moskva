@@ -16,6 +16,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.dsy.dsu.LayerBunessLogic.Hilt.OkhhtpBuilder.getOkhhtps.GetOkhhtpBuilderSSLWithCert;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.bl_getUserAndPassword.GetSuccessLogin;
 
@@ -436,8 +437,8 @@ import okio.BufferedSink;
            /// OkHttpClient.Builder builderokhtttp = new OkHttpClient.Builder();
 
 
-           InGetOkhhtpBuilder inGetOkhhtpBuilder=new GetOkhhtpBuilderSSL(context);
-           // InGetOkhhtpBuilder inGetOkhhtpBuilder=new GetOkhhtpBuilderSSLWithCert(context);
+          //InGetOkhhtpBuilder inGetOkhhtpBuilder=new GetOkhhtpBuilderSSL(context);
+           InGetOkhhtpBuilder inGetOkhhtpBuilder=new GetOkhhtpBuilderSSLWithCert(context);
             OkHttpClient.Builder builderokhtttp=    inGetOkhhtpBuilder.getOkhhtpBuilder();
 
             // TODO: 15.12.2023 end test
