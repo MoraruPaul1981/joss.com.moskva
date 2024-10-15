@@ -58,10 +58,7 @@ public class Class_Generation_Errors {
             if (context != null) {
                 Long ВерсияДанных = new SubClassUpVersionDATA(context).upVersionCurentTable("errordsu1"
                         , context );
-                Long UUID = (Long)
-                        new Class_Generation_UUID(context).МетодГенерацииUUID();
-                Integer ПубличныйIDДляАсих = new Class_Generations_PUBLIC_CURRENT_ID(context).
-                        getPublicIDAllApp(context);
+
 
                 ContentValues contentValuesError=new ContentValues();
                 GetWriteErrors  getWriteErrors=new GetWriteErrors(context);
@@ -72,7 +69,14 @@ public class Class_Generation_Errors {
                 contentValuesError.put("LineError", ЛинияОшибки);
 
 
+
+                Integer ПубличныйIDДляАсих = new Class_Generations_PUBLIC_CURRENT_ID(context).
+                        getPublicIDAllApp(context);
                 contentValuesError.put("user_update", ПубличныйIDДляАсих);
+
+
+                Long UUID = (Long)
+                        new Class_Generation_UUID(context).МетодГенерацииUUID();
                 contentValuesError.put("UUID", UUID);
                 contentValuesError.put("current_table", ВерсияДанных);
 
