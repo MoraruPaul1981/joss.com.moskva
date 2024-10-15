@@ -82,7 +82,7 @@ public class Class_Generation_Errors {
 
                 contentValuesError.put("whose_error", ЛокальнаяВерсияПОСравнение);
                 String СгенерированованныйДатаДляВставки = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                contentValuesError.put("date_update", СгенерированованныйДатаДляВставки));
+                contentValuesError.put("date_update", СгенерированованныйДатаДляВставки);
 
                 ///TODO Записываем ошибки только определного сорта
                 if (!ТекстОшибки.trim().matches("(.*)UnknownHostException(.*)")
