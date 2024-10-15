@@ -664,7 +664,7 @@ public class MainActivityPasswords extends AppCompatActivity {
             // TODO: 29.09.2023 пароль и логин
             if (ПубличноеЛогин.length() > 3 && ПубличноеПароль.length() > 3) {
                 boolean ПроверкаНАстройкиСети =
-                        new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+                        new Class_Find_Setting_User_Network(getApplicationContext(),sqLiteDatabase).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
                 if (ПроверкаНАстройкиСети == true) {
                     Boolean РеальныйПингСервера =
                             new Class_Connections_Server(getApplicationContext()).МетодПингаСервераРаботаетИлиНет(getApplicationContext(),   getHiltPortJboss);

@@ -50,18 +50,17 @@ public class GetOkhhtpBuilderSSLWithCert implements InGetOkhhtpBuilder {
             builder.connectionSpecs(  ( Arrays.asList(spec,ConnectionSpec.CLEARTEXT,spec)));
             builder.retryOnConnectionFailure(false);
 
-            CertificatePinner certificatePinner = new CertificatePinner.Builder()
+      /*      CertificatePinner certificatePinner = new CertificatePinner.Builder()
                     .add("192.168.3.4", "sha256/341a7062a34c0740f00d73f3e921a8d68305c90dd1f43ef41546c2684f60ca1")
                     .build();
-            builder.certificatePinner(certificatePinner);
+            builder.certificatePinner(certificatePinner);*/
 
 
 
              KeyStore keyStore = KeyStore.getInstance("BKS");
             InputStream instream = context.getResources().openRawResource(R.raw.bksbasedsu1ru);
             keyStore.load(instream, "mypassword".toCharArray());
-            TrustManagerFactory tmf = TrustManagerFactory
-                    .getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
             tmf.init(keyStore);
             SSLContext sslContext = SSLContext.getInstance("TLS");//TLSv1.3
             sslContext.init(null, tmf.getTrustManagers(),  new SecureRandom());

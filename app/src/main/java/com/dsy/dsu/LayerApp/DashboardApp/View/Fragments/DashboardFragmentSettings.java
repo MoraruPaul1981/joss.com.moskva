@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -47,6 +48,7 @@ import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 
 import com.dsy.dsu.LayerBunessLogic.Hilt.JbossAdrress.qualifiers.QualifierJbossServer3;
 import com.dsy.dsu.LayerApp.TabelsApp.MainActivity_New_Templates;
+import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.LayerBunessLogic.Errors.MainActivity_Errors;
 import com.dsy.dsu.LayerApp.SettingsApp.MainActivity_Settings;
@@ -62,6 +64,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import dagger.hilt.EntryPoints;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.CompletableObserver;
@@ -113,8 +116,8 @@ public class DashboardFragmentSettings extends  DialogFragment {
     @QualifierJbossServer3
     public LinkedHashMap<Integer,String> getHiltPortJboss;
 
-
-
+    @Inject
+    SQLiteDatabase sqLiteDatabase;
 
     public DashboardFragmentSettings() {
         // Required empty public constructor
@@ -686,93 +689,78 @@ try{
 
                         final Boolean[] СтатусСервераСоюзаВключенИлиНЕт = {false};
 
-                    Completable.complete().blockingSubscribe(new CompletableObserver() {
-                        @Override
-                        public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-                            Boolean     СтатусСетиВыбранныйПользователем  =
-                                    new Class_Find_Setting_User_Network(getContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
 
+                        //SQLiteDatabase sqLiteDatabase  = EntryPoints.get(context, HiltInterfacesqlite.class).getHiltSqlite();
+
+                        Class_Find_Setting_User_Network classFindSettingUserNetwork=
+                                new Class_Find_Setting_User_Network(getContext(),sqLiteDatabase);
+
+                        Boolean     СтатусСетиВыбранныйПользователем  = classFindSettingUserNetwork.МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+
+                        // TODO: 26.06.2022
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+
+                        Class_Connections_Server class_connections_serverПингаСерераИзАктивтиМеню = new Class_Connections_Server(getActivity());
+
+
+                        if (СтатусСетиВыбранныйПользователем == true) {
+                            СтатусСервераСоюзаВключенИлиНЕт[0] =
+                                    class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getContext(),   getHiltPortJboss);
                             // TODO: 26.06.2022
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
                                     " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
-                            Class_Connections_Server class_connections_serverПингаСерераИзАктивтиМеню = new Class_Connections_Server(getActivity());
-
-
-                            if (СтатусСетиВыбранныйПользователем == true) {
-                                СтатусСервераСоюзаВключенИлиНЕт[0] =
-                                        class_connections_serverПингаСерераИзАктивтиМеню.МетодПингаСервераРаботаетИлиНет(getContext(),   getHiltPortJboss);
-                                // TODO: 26.06.2022
-                                Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
-
-                               }
-
                         }
 
-                        @Override
-                        public void onComplete() {
+                        // TODO: 26.06.2022
+                        Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
+                                " СтатусСервераСоюзаВключенИлиНЕт[0] " +СтатусСервераСоюзаВключенИлиНЕт[0]);
+
+                        if (   СтатусСервераСоюзаВключенИлиНЕт[0] == true) {
 
 
+                            handlerAsync.post(() -> {
+                                progressDialogДляСинхронизации.setTitle("Обмен данными");
+                                progressDialogДляСинхронизации.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                                progressDialogДляСинхронизации.setProgress(0);
+                                progressDialogДляСинхронизации.setCanceledOnTouchOutside(false);
+                                progressDialogДляСинхронизации.setMessage("В процессе ....");
+                                if (!progressDialogДляСинхронизации.isShowing()) {
+                                    progressDialogДляСинхронизации.show();
+                                }
+                            });
+
+// TODO: 10.07.2023  запуск обновление ПО
+                            serviceBootBinessLogic.startServiceBootAndAsync("IntentServiceBootAsync.com");
                             // TODO: 26.06.2022
                             Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+
-                                    " СтатусСервераСоюзаВключенИлиНЕт[0] " +СтатусСервераСоюзаВключенИлиНЕт[0]);
-
-                                if (   СтатусСервераСоюзаВключенИлиНЕт[0] == true) {
-
-
-                                    handlerAsync.post(() -> {
-                                        progressDialogДляСинхронизации.setTitle("Обмен данными");
-                                        progressDialogДляСинхронизации.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                                        progressDialogДляСинхронизации.setProgress(0);
-                                        progressDialogДляСинхронизации.setCanceledOnTouchOutside(false);
-                                        progressDialogДляСинхронизации.setMessage("В процессе ....");
-                                        if (!progressDialogДляСинхронизации.isShowing()) {
-                                            progressDialogДляСинхронизации.show();
-                                        }
-                                    });
-
-// TODO: 10.07.2023  запуск обновление ПО
-                                    serviceBootBinessLogic.startServiceBootAndAsync("IntentServiceBootAsync.com");
-                                    // TODO: 26.06.2022
-                                    Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
+                                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n");
 
 
 
-                                } else {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast toast = Toast.makeText(getContext(), "Сервер выкл. !!!", Toast.LENGTH_LONG);
-                                            toast.setGravity(Gravity.BOTTOM, 0, 40);
-                                            toast.show();
-                                        }
-                                    });
+                        } else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast toast = Toast.makeText(getContext(), "Сервер выкл. !!!", Toast.LENGTH_LONG);
+                                    toast.setGravity(Gravity.BOTTOM, 0, 40);
+                                    toast.show();
                                 }
-                                // TODO: 14.12.2023
-
-                                handlerAsync.postDelayed(() -> {
-                                    progressDialogДляСинхронизации.dismiss();
-                                    progressDialogДляСинхронизации.cancel();
-                                }, 3000);
-
+                            });
                         }
+                        // TODO: 14.12.2023
 
-                        @Override
-                        public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                            e.printStackTrace();
-                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                        }
-                    });
+                        handlerAsync.postDelayed(() -> {
+                            progressDialogДляСинхронизации.dismiss();
+                            progressDialogДляСинхронизации.cancel();
+                        }, 3000);
+
 
                 } catch (Exception e) {
             e.printStackTrace();

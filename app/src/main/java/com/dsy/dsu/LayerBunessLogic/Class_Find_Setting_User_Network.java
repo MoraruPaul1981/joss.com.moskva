@@ -5,7 +5,9 @@ import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
- 
+
+import androidx.annotation.NonNull;
+
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
@@ -15,17 +17,15 @@ import dagger.hilt.EntryPoints;
 
 public class Class_Find_Setting_User_Network {
 
-    Context context;
-    /////
+     Context context;
+     SQLiteDatabase sqLiteDatabase ;
 
-
-    private SQLiteDatabase sqLiteDatabase ;
-
-    public Class_Find_Setting_User_Network(Context context) {
+    public Class_Find_Setting_User_Network(@NonNull Context context,@NonNull  SQLiteDatabase sqLiteDatabase ) {
 
         this.context =context;
+        this.sqLiteDatabase =sqLiteDatabase;
 
-        sqLiteDatabase  = EntryPoints.get(context, HiltInterfacesqlite.class).getHiltSqlite();
+      // sqLiteDatabase  = EntryPoints.get(context, HiltInterfacesqlite.class).getHiltSqlite();
     }
     //функция получающая время операции ДАННАЯ ФУНКЦИЯ ВРЕМЯ ПРИМЕНЯЕТЬСЯ ВО ВСЕЙ
 

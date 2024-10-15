@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,12 +18,15 @@ import androidx.work.WorkerParameters;
 
 import com.dsy.dsu.LayerBunessLogic.Class_Find_Setting_User_Network;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
+import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.Service_For_Remote_Async_Binary;
 
 import com.dsy.dsu.LayerBunessLogic.WorkManagers.BL_WorkMangers.FindRunnigServiceBeforeWorkManager;
 import com.dsy.dsu.LayerBunessLogic.WorkManagers.BL_WorkMangers.ListenableFutures;
 
 import java.util.Date;
+
+import dagger.hilt.EntryPoints;
 
 public class MyWork_Async_Public extends Worker {
  /*   private String ИмяСлужбыWorkManger ="WorkManager Synchronizasiy_Data";*/
@@ -180,8 +184,11 @@ public class MyWork_Async_Public extends Worker {
         Long ФинальныйРезультатAsyncBackgroud=0l;
         try {
             // TODO: 22.12.2022  сама запуска синхронищации из workmanager ОБЩЕГО
+
+            SQLiteDatabase sqLiteDatabase  = EntryPoints.get(getApplicationContext(), HiltInterfacesqlite.class).getHiltSqlite();
+
             boolean ВыбранныйРежимСети =
-                    new Class_Find_Setting_User_Network(getApplicationContext()).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+                    new Class_Find_Setting_User_Network(getApplicationContext(),sqLiteDatabase).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
             Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                     + ВыбранныйРежимСети);
 

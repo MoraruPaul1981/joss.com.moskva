@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
@@ -26,6 +27,7 @@ import com.dsy.dsu.LayerBunessLogic.CreateFolderBinatySave.ClassCreateFolderBina
 import com.dsy.dsu.LayerBunessLogic.CreateFolderBinatySave.ClassCreateFolderCommitPays1C;
 import com.dsy.dsu.LayerBunessLogic.Errors.ClassCreateFileForError;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
+import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.LayerBunessLogic.Services.Service_For_Remote_Async_Binary;
 
@@ -43,6 +45,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import dagger.Module;
+import dagger.hilt.EntryPoints;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
@@ -610,9 +613,9 @@ public class CompleteRemoteSyncService {
             try{
                 // TODO: 03.10.2023 Запуск Синхронизации
 
+               SQLiteDatabase sqLiteDatabase  = EntryPoints.get(context, HiltInterfacesqlite.class).getHiltSqlite();
 
-
-                boolean ВыбранныйРежимСети = new Class_Find_Setting_User_Network(context).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
+                boolean ВыбранныйРежимСети = new Class_Find_Setting_User_Network(context,sqLiteDatabase).МетодПроветяетКакуюУстановкуВыбралПользовательСети();
                 Log.d(this.getClass().getName(), "  ВыбранныйРежимСети ВыбранныйРежимСети "
                         + ВыбранныйРежимСети);
 

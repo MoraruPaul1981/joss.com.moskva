@@ -8,25 +8,13 @@ import android.util.Log;
 
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 
-public class Class_Type_Connenction_Tel extends Class_GRUD_SQL_Operations {
-
+public class Class_Type_Connenction_Tel    {
     Context contextДляОпределенияКакойТИмПодключения=null;
-//
     Activity activityКакойТИмПодключения;
-    Class_GRUD_SQL_Operations classGrudSqlOperations;
-
     public Class_Type_Connenction_Tel(Context context) {
-        super(context);
-
         contextДляОпределенияКакойТИмПодключения=context;
         //
-
-
     }
-    //функция получающая время операции ДАННАЯ ФУНКЦИЯ ВРЕМЯ ПРИМЕНЯЕТЬСЯ ВО ВСЕЙ ПРОГРАММЕ
-    // TODO: 05.07.2021
-
-    //// второй метод с современный
     public String МетодОпределяемКакойТипПодключениеWIFIилиMobile() {
 
         String КакойТипПодключения = new String();
