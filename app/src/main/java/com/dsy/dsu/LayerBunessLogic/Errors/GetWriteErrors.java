@@ -21,7 +21,7 @@ public class GetWriteErrors {
         Integer getwiteNeError=0;
         try{
             String ИмяТаблицы= "errordsu1";
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerforsystemtables/"+ИмяТаблицы+"");
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/"+ИмяТаблицы+"");
             // TODO: 08.10.2024 Дополнительное добавление данных
             ContentResolver contentProviderError = context.getContentResolver();
                 // TODO: 12.04.2023 UPDATER model_ssl

@@ -41,7 +41,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
-import com.dsy.dsu.LayerBunessLogic.bl_getUserAndPassword.GetSuccessLogin;
+import com.dsy.dsu.LayerBunessLogic.bl_PasswordsApp.GetSuccessLogin;
  
  
 import com.dsy.dsu.LayerBunessLogic.DATE.Class_Generation_Data;

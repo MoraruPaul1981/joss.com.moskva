@@ -37,6 +37,7 @@ import androidx.work.WorkerParameters;
  
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
+import com.dsy.dsu.LayerBunessLogic.GrudOpersions.AfterTheSuccessOftheUpVersion;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.SubClassUpVersionDATA;
 import com.dsy.dsu.LayerBunessLogic.SubClass_Starting_Tasks_ЗапускДЛяЗадач;
@@ -888,18 +889,12 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
         //////TODO ПОСЛЕ ПОЯЛВЛЕНИЯ УВЕДОМЛЕНИЯ ЗАПИСЫАЕМ В В ТАБЛИЦУ СТАТУСА ЧТОДРННОЕ ЦУВЕДОМДЕНИЯ УЖЕ ПОКАЗЫВАЕМ
         try{
 
-            Class_GRUD_SQL_Operations  class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии=new Class_GRUD_SQL_Operations(getApplicationContext());
-
-            String ТаблицаОбрабокаиПриСменсатусаУведомленияЧтоЕгоУжекПоказхывали="data_notification";
-
         ContentValues contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали = new ContentValues();
-        ///
         contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали.put("alreadyshownnotifications", 1);
 
-            // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая=
-                    new SubClassUpVersionDATA(context).upVersionCurentTable(    ТаблицаОбрабокаиПриСменсатусаУведомленияЧтоЕгоУжекПоказхывали
-                            ,getApplicationContext() );
+                    new AfterTheSuccessOftheUpVersion(context).afterTheSuccessOftheUpVersion("data_notification",contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали,);
+
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая  " + РезультатУвеличинаяВерсияВнутриСамогоТабелСтрудникаПервая);
 
 
@@ -918,15 +913,6 @@ public class MyWork_Notifocations_Уведомления_Для_Задачи ext
         ////TODO КОНТЕЙНЕР ДЛЯ ОБНОВЛЕНИЯ
         class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(contentValuesСменаСтатусаЗадачиЧтоЕЕЕжуПоказывали);
 
-
-        ///TODO РЕЗУЛЬТАТ ОБНОВЛЕНИЕ ДАННЫх уведомления заадачи
-        Integer  ОбновляемСтатусЗадачиУведомленияЧТоЕЕУжеПоказывали= (Integer)  class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.
-                new UpdateData(getApplicationContext()).updatedata(class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.concurrentHashMapНабор,
-                class_grud_sql_operationsПослеУдаленияДобавляемДатуВерсии.contentValuesДляSQLBuilder_Для_GRUD_Операций,
-                new PUBLIC_CONTENT(getApplicationContext()).МенеджерПотоков,   sqLiteDatabase);
-
-        Log.d(this.getClass().getName(), " ОбновляемСтатусЗадачиУведомленияЧТоЕЕУжеПоказывали  " +ОбновляемСтатусЗадачиУведомленияЧТоЕЕУжеПоказывали
-                +" UUIDРочитаногоЗаданиеДляКотрогоДалееБудетПроизведенаСменаСтсусаНАОзнакомленный "+UUIDРочитаногоЗаданиеДляКотрогоДалееБудетПроизведенаСменаСтсусаНАОзнакомленный);
 
 
 

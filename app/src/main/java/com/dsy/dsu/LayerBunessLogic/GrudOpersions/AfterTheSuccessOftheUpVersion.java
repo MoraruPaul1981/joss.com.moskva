@@ -1,10 +1,14 @@
 package com.dsy.dsu.LayerBunessLogic.GrudOpersions;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ExecutionException;
 
@@ -17,13 +21,21 @@ public class AfterTheSuccessOftheUpVersion {
     }
 
 
-    private Integer afterTheSuccessOftheUpVersion(String tablenameForVersionUp, ContentValues contentVersionUp) throws ExecutionException, InterruptedException {
+    public Integer afterTheSuccessOftheUpVersion(@NotNull  String tablenameForVersionUp, @NotNull  ContentValues contentVersionUp,@NotNull  String whereUUID)
+            throws ExecutionException, InterruptedException {
         Integer afterTheSuccessOftheUpVersion = 0;
         try {
-            GetVersionUp getVersionUp=new GetVersionUp(context);
+          //  GetVersionUp getVersionUp=new GetVersionUp(context);
 
-            afterTheSuccessOftheUpVersion =
-                    getVersionUp.writeVersionUp(contentVersionUp,tablenameForVersionUp);
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/"+tablenameForVersionUp+"");
+            // TODO: 08.10.2024 Дополнительное добавление данных
+            ContentResolver contentProviderError = context.getContentResolver();
+            // TODO: 12.04.2023 UPDATER model_ssl
+            afterTheSuccessOftheUpVersion=  contentProviderError.update(uri, contentVersionUp,null,null);
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "  tablenameForVersionUp " +tablenameForVersionUp);
             ///TODO увеличение версии UP
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

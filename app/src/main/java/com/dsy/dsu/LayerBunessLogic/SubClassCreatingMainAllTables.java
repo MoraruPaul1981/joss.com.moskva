@@ -62,4 +62,28 @@ public class SubClassCreatingMainAllTables {
         }
         return getMainListTable;
     }
+
+
+    public CopyOnWriteArrayList<String> методCreatingSettingTabels(@NotNull Context context)  {
+        CopyOnWriteArrayList<String> getMainListTable = new CopyOnWriteArrayList();
+        try {
+            getMainListTable.addIfAbsent("successlogin");
+            getMainListTable.addIfAbsent("settings_tabels");
+            Log.d(this.getClass().getName(), "\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" +"  getMainListTable" + getMainListTable);
+
+            ///todo публикум название таблицы или цифру его
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                    this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                    Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+        return getMainListTable;
+    }
+
+    // TODO: 16.10.2024 end class
 }

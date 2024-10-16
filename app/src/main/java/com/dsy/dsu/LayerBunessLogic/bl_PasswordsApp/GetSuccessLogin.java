@@ -1,4 +1,4 @@
-package com.dsy.dsu.LayerBunessLogic.bl_getUserAndPassword;
+package com.dsy.dsu.LayerBunessLogic.bl_PasswordsApp;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -7,12 +7,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
-import com.dsy.dsu.LayerBunessLogic.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.SplittableRandom;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class GetSuccessLogin {
