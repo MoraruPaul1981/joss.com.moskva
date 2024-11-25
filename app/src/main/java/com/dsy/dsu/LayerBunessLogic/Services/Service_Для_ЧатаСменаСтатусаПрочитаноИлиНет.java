@@ -46,8 +46,6 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
     private Context context;
 
     private SQLiteDatabase sqLiteDatabase ;
-    private  Class_MODEL_synchronized  modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного ;
-    private PUBLIC_CONTENT   Class_Engine_SQLГдеНаходитьсяМенеджерПотоков ;
     private Class_Generation_Errors class_generation_errors;
 
     // TODO: 25.11.2024
@@ -219,17 +217,12 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
           @NonNull String СамоЗначенияИндифкатора,
            @NonNull Long ПолученныйUUIDТекущейСтрочкиКоторуюПрочитали,
            @NonNull Context context) {
-
         Integer РезультатОбновленияСтатусЧатаКакПрочитанный = 0;
-        Long РезультатУвеличинаяВерсияДАныхЧата = 0L;
-        String ТаблицаОбработкиВнутриЧтатаПриУвеличсенииВерсииДаннвъКоглаПрочинаноСообещния = "data_chat";
 
         try {
-           class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
-         modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного = new Class_MODEL_synchronized(context);
-             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(context);
             class_generation_errors=new Class_Generation_Errors(context);
-
+            Long РезультатУвеличинаяВерсияДАныхЧата = 0L;
+            String ТаблицаОбработкиВнутриЧтатаПриУвеличсенииВерсииДаннвъКоглаПрочинаноСообещния = "data_chat";
             // TODO: 15.07.2022
 
             ContentValues contentValuesОбновленниВТАблицеКакПрочитанныйМеняемСтатусЗаписисВчатеПостлеПросмотра = new ContentValues();
@@ -242,14 +235,22 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
             Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
 
             contentValuesОбновленниВТАблицеКакПрочитанныйМеняемСтатусЗаписисВчатеПостлеПросмотра.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
-            РезультатОбновленияСтатусЧатаКакПрочитанный = 0;
-            РезультатОбновленияСтатусЧатаКакПрочитанный = modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного.
-                    ЛокальногоОбновлениеДанныхЧерезКонтейнерУниверсальная(ТаблицаОбработкиВнутриЧтатаПриУвеличсенииВерсииДаннвъКоглаПрочинаноСообещния,
-                            contentValuesОбновленниВТАблицеКакПрочитанныйМеняемСтатусЗаписисВчатеПостлеПросмотра,
-                            ПолученныйUUIDТекущейСтрочкиКоторуюПрочитали, СамоЗначенияИндифкатора);
-            // TODO: 18.06.2022 повышаем верисю после успегной смены статус
-            Log.d(this.getClass().getName(), "  РезультатОбновленияСтатусЧатаКакПрочитанный"
-                    + РезультатОбновленияСтатусЧатаКакПрочитанный+ " РезультатОбновленияСтатусЧатаКакПрочитанный " +РезультатОбновленияСтатусЧатаКакПрочитанный);
+
+
+            РезультатОбновленияСтатусЧатаКакПрочитанный = getHiltAllDateBaseOpersions.updatingTabelWithWhere()
+                    .getupateTabelDataWithWhere(ТаблицаОбработкиВнутриЧтатаПриУвеличсенииВерсииДаннвъКоглаПрочинаноСообещния
+                            ,contentValuesОбновленниВТАблицеКакПрочитанныйМеняемСтатусЗаписисВчатеПостлеПросмотра
+                            ,ПолученныйUUIDТекущейСтрочкиКоторуюПрочитали, СамоЗначенияИндифкатора);
+
+
+            // TODO: 25.11.2024
+            Log.d(context.getClass().getName(), "\n"
+                            + " время: " + new Date() + "\n+" +
+                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " РезультатОбновленияСтатусЧатаКакПрочитанный " +РезультатОбновленияСтатусЧатаКакПрочитанный);
+
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -258,9 +259,7 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
                     this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-        if (РезультатОбновленияСтатусЧатаКакПрочитанный > 0) {
-            РезультатОбновленияСтатусЧатаКакПрочитанный = Integer.parseInt(String.valueOf(РезультатУвеличинаяВерсияДАныхЧата));
-        }
+
         return РезультатОбновленияСтатусЧатаКакПрочитанный;   // TODO: 05.07.2021 вставка новго сообщения в деве таблоицы Code_For_Chats_КодДля_Чата and DATA_Chat
     }
 

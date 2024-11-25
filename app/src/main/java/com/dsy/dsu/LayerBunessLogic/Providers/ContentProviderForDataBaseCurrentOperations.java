@@ -28,6 +28,7 @@ import com.dsy.dsu.LayerBunessLogic.SubClassCreatingMainAllTables;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -140,51 +141,40 @@ public class ContentProviderForDataBaseCurrentOperations extends ContentProvider
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Integer РезультатУдаления=0;
         try{
-            CompletableFuture       completableFutureУдаление=         CompletableFuture.supplyAsync(new Supplier<Integer>() {
-                @Override
-                public Integer get() {
-                    Integer РезультатУдаления=0;
-                    if (!sqlite.inTransaction()) {
-                        sqlite.beginTransaction();
-                    }
-                    Log.d(this.getClass().getName(), " uri"+uri );
-                    // TODO: 14.10.2022 метод определения текущней таблицы
-                    String table = МетодОпределяемТаблицу(uri);
-                    if (table!=null) {
-                        РезультатУдаления  = sqlite.delete(table, selection, selectionArgs);
-                        // TODO: 30.10.2021
-                        Log.w(getContext().getClass().getName(), " РезультатУдаления  " + РезультатУдаления);/////
-                        Uri ОтветВставкиДанных  = Uri.parse("content://"+РезультатУдаления.toString());
-                        String ответОперцииВставки=    Optional.ofNullable(ОтветВставкиДанных).map(Emmeter->Emmeter.toString().replace("content://","")).get();
-                     Integer   РезультатУдалениеСтатуса= Integer.parseInt(ответОперцииВставки);
-                        if (РезультатУдаления> 0) {
-                            getContext().getContentResolver().notifyChange(uri, null);
-                        }
-                    }else {
-                        Log.w(getContext().getClass().getName(), " table  " + table);/////
-                    }
-                    if (sqlite.inTransaction()) {
-
-                        sqlite.setTransactionSuccessful();
-                    }
-                    if (sqlite.inTransaction()) {
-                        sqlite.endTransaction();
-                    }
-                    return РезультатУдаления;
+            if (!sqlite.inTransaction()) {
+                sqlite.beginTransaction();
+            }
+            Log.d(this.getClass().getName(), " uri"+uri );
+            // TODO: 14.10.2022 метод определения текущней таблицы
+            String table = МетодОпределяемТаблицу(uri);
+            if (table!=null) {
+                РезультатУдаления  = sqlite.delete(table, selection, selectionArgs);
+                // TODO: 30.10.2021
+                Log.w(getContext().getClass().getName(), " РезультатУдаления  " + РезультатУдаления);/////
+                Uri ОтветВставкиДанных  = Uri.parse("content://"+РезультатУдаления.toString());
+                String ответОперцииВставки=    Optional.ofNullable(ОтветВставкиДанных).map(Emmeter->Emmeter.toString().replace("content://","")).get();
+                РезультатУдаления= Integer.parseInt(ответОперцииВставки);
+                if (РезультатУдаления> 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
                 }
-        }).exceptionally(e -> {
-            System.out.println(e.getClass());
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" +
-                    Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(),
-                    Thread.currentThread().getStackTrace()[2].getLineNumber());
-            return null;
-        });
-       РезультатУдаления=  (Integer) completableFutureУдаление.get();
+            }else {
+                Log.w(getContext().getClass().getName(), " table  " + table);/////
+            }
+            if (sqlite.inTransaction()) {
+
+                sqlite.setTransactionSuccessful();
+            }
+            if (sqlite.inTransaction()) {
+                sqlite.endTransaction();
+            }
+
+            // TODO: 25.11.2024
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " РезультатОбновленияСтатусЧатаКакПрочитанный " +РезультатУдаления);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

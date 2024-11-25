@@ -28,7 +28,7 @@ public class SubClass_ДляСменыСтатусаНаЗадачиВыполн
 
 
     public Boolean МетодСменыСтатусаНаОзкомленныйЗадениеСамимПользователем(@NonNull Context context,
-                                                                           @NonNull Long UUID_ПоКоторомуМыИИщменимСтатусОзнакомлнныйВТаблицыУведомления,
+                                                                           @NonNull Long UUID_ПоКоторомуМыИИщменимСтатус ,
                                                                            @NonNull Integer ПередаемСтатусзадачи,
                                                                            String ПримечанияОтКлинетаВыполнилИлиНетЗадачу) {
 
@@ -73,7 +73,7 @@ public class SubClass_ДляСменыСтатусаНаЗадачиВыполн
 
             ///TODO ТОЛЬКО ЛОКАЛЬНОЕ ОБНОВЛЕНИЕ НА ТАБЕЛЕ В АКТИВИТИ
             Integer РезультатЛокальногоОбновления_ОбновлениеСтатусОЗНАКОМЛЕННЫЙ = getHiltAllDateBaseOpersions.updatingTabelWithWhere()
-            .getupateTabelDataWithWhere(НазваниеТаблицыобработки,contentValuesДляОбновленияСтатусаОзнакомлненый,UUID_ПоКоторомуМыИИщменимСтатусОзнакомлнныйВТаблицыУведомления);
+            .getupateTabelDataWithWhere(НазваниеТаблицыобработки,contentValuesДляОбновленияСтатусаОзнакомлненый,UUID_ПоКоторомуМыИИщменимСтатус,"uuid");
 
 
             // TODO: 25.11.2024
@@ -81,7 +81,8 @@ public class SubClass_ДляСменыСтатусаНаЗадачиВыполн
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName() + " РезультатЛокальногоОбновления_ОбновлениеСтатусОЗНАКОМЛЕННЫЙ "
-                    +РезультатЛокальногоОбновления_ОбновлениеСтатусОЗНАКОМЛЕННЫЙ);
+                    +РезультатЛокальногоОбновления_ОбновлениеСтатусОЗНАКОМЛЕННЫЙ
+                    + " UUID_ПоКоторомуМыИИщменимСтатус " +UUID_ПоКоторомуМыИИщменимСтатус);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,8 +90,6 @@ public class SubClass_ДляСменыСтатусаНаЗадачиВыполн
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-            Log.e(context.getClass().getName(), "С ОШИБКОЙ  Стоп СЛУЖБА СЛУЖБАService_Notifications  ДЛЯ ЧАТА   ДЛЯ ЧАТА onDestroy() время " + new Date());
-
         }
         return РезультатСменыСтатусаНАОзнакомленый;
     }

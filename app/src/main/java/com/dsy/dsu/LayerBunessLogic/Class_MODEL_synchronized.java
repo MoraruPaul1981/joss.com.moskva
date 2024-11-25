@@ -1,14 +1,12 @@
 package com.dsy.dsu.LayerBunessLogic;
 
 import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
@@ -29,7 +27,6 @@ import com.dsy.dsu.LayerBunessLogic.Hilt.OkhhtpBuilder.interfaces.InGetOkhhtpBui
 
 
 import com.google.common.io.ByteSource;
-import com.google.common.util.concurrent.AtomicDouble;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -826,38 +823,23 @@ import okio.BufferedSink;
 
 
     /////////TODO КОНТЕЙНЕР УДАЛЕНИЕ СОТРУДНИКА ИЗ ТАБЕЛЯ  ДАННЫХ УНИВЕРСАЛЬНЫЙ
-    public Integer УдалениеТолькоПустогоТабеляЧерезКонтейнерУниверсальная(String ТаблицаОткудаУдлаяемЗапись,
-                                                                          String ЧерезКакоеПолеУдлаяемФлаг,
-                                                                          Long UUIDДляСостыковПриОбновления)
-            throws ExecutionException,
-            InterruptedException, TimeoutException {
+    public Integer removingOnlyBlankTabel(String ТаблицаОткудаУдлаяемЗапись,
+                                          String ЧерезКакоеПолеУдлаяемФлаг,
+                                          Long UUIDДляСостыковПриОбновления) {
         Integer Результат_ОбновлениеДанных = 0;
-        Integer Результат_ПриписиИзменнийВерсииДанных = 0;
-        // TODO: 03.09.2021  получение ПО НОВОМУ ДВИЖКУ
-        Class_GRUD_SQL_Operations  classGrudSqlOperationsДляУдаленияСотрудника;
-        // TODO: 30.08.2021    КОД ОБНОВЛЕНИЕ   ДАННЫХ   ЧЕРЕ
             try {
-                // TODO: 03.09.2021  получение ПО НОВОМУ ДВИЖКУ
-                classGrudSqlOperationsДляУдаленияСотрудника=new Class_GRUD_SQL_Operations(context);
-                classGrudSqlOperationsДляУдаленияСотрудника.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы",ТаблицаОткудаУдлаяемЗапись);
-                classGrudSqlOperationsДляУдаленияСотрудника.concurrentHashMapНабор.put("Флаг_ЧерезКакоеПолеСнаДанных",ЧерезКакоеПолеУдлаяемФлаг);
-                classGrudSqlOperationsДляУдаленияСотрудника.concurrentHashMapНабор.put("ЗначениеФлагСнаДанных",UUIDДляСостыковПриОбновления);
                 // TODO: 06.09.2021  КОНТЕЙНЕР ДЛЯ УДАЛЕНИЯ
                 ContentValues АдаптерУстанавливаемФлагНазАписьЧтоОнаУдаленная=new ContentValues();
+
                 АдаптерУстанавливаемФлагНазАписьЧтоОнаУдаленная.put("status_send", "Удаленная");///ПОКА НЕ ОТКЛЮЧИЛИ
                 String СгенерированованныйДатаВремениСейчаcДляУдаления=     new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
                 АдаптерУстанавливаемФлагНазАписьЧтоОнаУдаленная.put("date_update", СгенерированованныйДатаВремениСейчаcДляУдаления);///ПОКА НЕ ОТКЛЮЧИЛИ
-                Class_GRUD_SQL_Operations        class_grud_sql_operationsПовышаемВерсиюДанныхПриСозданеииИзШаблонаСотрудника=new Class_GRUD_SQL_Operations(context);
-
-
                 // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
                 Long РезультатУвеличинаяВерсияПриудалениеСотрудника = new SubClassUpVersionDATA(context).upVersionCurentTable(ТаблицаОткудаУдлаяемЗапись,context );
-                Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияПриудалениеСотрудника  " + РезультатУвеличинаяВерсияПриудалениеСотрудника);
-
                 //TODO  конец курант ча
                 АдаптерУстанавливаемФлагНазАписьЧтоОнаУдаленная.put("current_table", РезультатУвеличинаяВерсияПриудалениеСотрудника);
-                classGrudSqlOperationsДляУдаленияСотрудника.contentValuesДляSQLBuilder_Для_GRUD_Операций.putAll(АдаптерУстанавливаемФлагНазАписьЧтоОнаУдаленная);
-                Log.d(this.getClass().getName(), "UUIDДляСостыковПриОбновления   " +UUIDДляСостыковПриОбновления );
+
+
                     if (UUIDДляСостыковПриОбновления > 0) {
                         Результат_ОбновлениеДанных= (Integer)  classGrudSqlOperationsДляУдаленияСотрудника.
                                 new SleepData(context).sleepdata(classGrudSqlOperationsДляУдаленияСотрудника.concurrentHashMapНабор,
@@ -865,7 +847,12 @@ import okio.BufferedSink;
                                 Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,sqLiteDatabase);
                         Log.d(this.getClass().getName(), "Результат_ОбновлениеДанных   " + Результат_ОбновлениеДанных);
                     }
-                    Log.d(this.getClass().getName(), " Результат_ОбновлениеДанных   " + Результат_ОбновлениеДанных);
+                // TODO: 25.11.2024
+                Log.d(context.getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + " Результат_ОбновлениеДанных " +Результат_ОбновлениеДанных);
             } catch (Exception e) {///////ошибки
                 e.printStackTrace();
                 Log.e(Class_MODEL_synchronized.class.getName(), "Ошибка " + e.toString() + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +

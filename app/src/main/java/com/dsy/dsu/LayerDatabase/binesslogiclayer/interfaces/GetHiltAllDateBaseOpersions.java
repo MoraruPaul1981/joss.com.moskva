@@ -3,6 +3,7 @@ package com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces;
 
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting.DeletingTabelWithWhere;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
@@ -22,23 +23,20 @@ public interface GetHiltAllDateBaseOpersions {
 
     // TODO: 25.11.2024 Public
     PublicidAfterSuccessSynchronization publicidAfterSuccessSynchronization();
-
     PublicidAfterSuccessLogin publicidAfterSuccessLogin();
 
 
     // TODO: 25.11.2024 Cursors 
 
     GetAllCursor getAllCursor();
-
     GetSettingCursor getSettingCursor();
 
    
 
 
-    // TODO: 25.11.2024 Updates 
 
+    // TODO: 25.11.2024 Updates
     UpdatingDataSimple updatingDataSimple();
-    
     UpdatingTabelWithWhere updatingTabelWithWhere();
 
 
@@ -47,6 +45,12 @@ public interface GetHiltAllDateBaseOpersions {
 
     // TODO: 25.11.2024 Inserts 
     GetDataBaseInsert getbinessLogicDataBase();
+
+
+
+
+    // TODO: 25.11.2024 Deleting
+    DeletingTabelWithWhere deletingTabelWithWhere();
     
     
 

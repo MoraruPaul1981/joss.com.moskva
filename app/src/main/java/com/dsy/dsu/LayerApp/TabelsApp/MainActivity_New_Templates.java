@@ -444,7 +444,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                         @Override
                         public void accept(Object o) throws Throwable {
                             // TODO: 22.11.2022  первая часть
-                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).УдалениеТолькоПустогоТабеляЧерезКонтейнерУниверсальная(ИзКакойТаблицыУдалять,
+                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
                                     "uuid", ДляУдалениеUUID);
                             Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
                             if (Удаление>0) {
@@ -646,7 +646,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             СамоЗначениеUUIDДляУдаланиевсехСотрудников = итераторДляУдалениеВсегоТабеля.next();
             System.out.println(СамоЗначениеUUIDДляУдаланиевсехСотрудников);
             РезультатУдалениеВсехСотрудниковСамогоТАбеля[0] = new Class_MODEL_synchronized(getApplication()).
-                    УдалениеТолькоПустогоТабеляЧерезКонтейнерУниверсальная("tabels", "cfo",
+                    removingOnlyBlankTabel("tabels", "cfo",
                             Long.parseLong(String.valueOf(НазваниеУдаляемогоТАбеляВЦифровомФормате)));
             System.out.println("РезультатУдалениеВсехСотрудниковСамогоТАбеля " + РезультатУдалениеВсехСотрудниковСамогоТАбеля[0]);
             System.out.println(РезультатУдалениеВсехСотрудниковСамогоТАбеля[0]);

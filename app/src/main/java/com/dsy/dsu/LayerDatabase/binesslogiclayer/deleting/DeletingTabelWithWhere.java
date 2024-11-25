@@ -1,4 +1,4 @@
-package com.dsy.dsu.LayerDatabase.binesslogiclayer.updates;
+package com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -22,11 +22,11 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-public class UpdatingTabelWithWhere {
+public class DeletingTabelWithWhere {
 
     Context context;
 
-    public  @Inject UpdatingTabelWithWhere(@ApplicationContext Context hiltcontext) {
+    public  @Inject DeletingTabelWithWhere(@ApplicationContext Context hiltcontext) {
         this.context = hiltcontext;
 
     }
@@ -44,7 +44,7 @@ public class UpdatingTabelWithWhere {
             // TODO: 08.10.2024 Дополнительное добавление данных
             ContentResolver contentProviderError = context.getContentResolver();
             // TODO: 12.04.2023 UPDATER model_ssl
-            getupdatingDataWithWhere=  contentProviderError.update(uri, contentVersionUp,whereUUID.toString(),new String[]{colunmtwehe});
+            getupdatingDataWithWhere=  contentProviderError.delete(uri,whereUUID.toString(),new String[]{colunmtwehe});
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

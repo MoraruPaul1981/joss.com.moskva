@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -57,7 +56,6 @@ import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.LayerBunessLogic.GrudOpersions.GetAllCursor;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.ServiceUpdatePoОбновлениеПО;
-import com.dsy.dsu.LayerBunessLogic.Services.Service_For_Public;
 import com.dsy.dsu.LayerApp.DashboardApp.View.MainActivity_Dashboard;
 import com.dsy.dsu.R;
 import com.dsy.dsu.LayerBunessLogic.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
@@ -1925,7 +1923,7 @@ try{
                                     public void accept(Object o) throws Throwable {
                                         // TODO: 22.11.2022  первая часть
                                     Long    ДляУдалениеUUID=     cursor.getLong(0);
-                                   Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).УдалениеТолькоПустогоТабеляЧерезКонтейнерУниверсальная(ИзКакойТаблицыУдалять,
+                                   Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
                                                     "uuid", ДляУдалениеUUID);
                                             Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
                                         if (Удаление>0) {
@@ -2007,7 +2005,7 @@ try{
                         @Override
                         public void accept(Object o) throws Throwable {
                             // TODO: 22.11.2022  первая часть
-                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).УдалениеТолькоПустогоТабеляЧерезКонтейнерУниверсальная(ИзКакойТаблицыУдалять,
+                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
                                     "uuid", ДляУдалениеUUID);
                             Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
                             if (Удаление>0) {
