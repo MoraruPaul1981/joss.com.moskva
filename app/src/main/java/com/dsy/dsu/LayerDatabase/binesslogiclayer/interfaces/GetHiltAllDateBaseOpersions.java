@@ -4,6 +4,7 @@ package com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
 
 import dagger.hilt.EntryPoint;
@@ -22,5 +23,7 @@ public interface GetHiltAllDateBaseOpersions {
     GetAllCursor getAllCursor();
 
     GetSettingCursor getSettingCursor();
+
+    PublicidAfterSuccessLogin publicidAfterSuccessLogin();
 
 }

@@ -94,9 +94,7 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
        // TODO: 25.11.2024
 
             getHiltAllDateBaseOpersions = EntryPoints.get(getApplicationContext(), GetHiltAllDateBaseOpersions.class);
-
-
-
+            // TODO: 25.11.2024
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
