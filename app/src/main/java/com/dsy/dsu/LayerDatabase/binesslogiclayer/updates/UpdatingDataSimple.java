@@ -22,7 +22,6 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-
 public class UpdatingDataSimple {
 
     Context context;

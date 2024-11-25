@@ -22,19 +22,18 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-
-public class UpdatingDataWithWhere {
+public class UpdatingTabelWithWhere {
 
     Context context;
 
-    public  @Inject UpdatingDataWithWhere(@ApplicationContext Context hiltcontext) {
+    public  @Inject UpdatingTabelWithWhere(@ApplicationContext Context hiltcontext) {
         this.context = hiltcontext;
 
     }
 
 
 
-    public Integer getupdatingDataWithWhere(@NotNull  String tablenameUpdate,
+    public Integer getupateTabelDataWithWhere(@NotNull  String tablenameUpdate,
                                             @NotNull  ContentValues contentVersionUp,
                                             @NotNull  Long whereUUID)
             throws ExecutionException, InterruptedException {

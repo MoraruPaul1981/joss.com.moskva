@@ -7,7 +7,7 @@ import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingDataSimple;
-import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingDataWithWhere;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingTabelWithWhere;
 
 import dagger.hilt.EntryPoint;
 import dagger.hilt.InstallIn;
@@ -20,7 +20,7 @@ public interface GetHiltAllDateBaseOpersions {
     // TODO: 25.11.2024
 
 
-    // TODO: 25.11.2024 Public 
+    // TODO: 25.11.2024 Public
     PublicidAfterSuccessSynchronization publicidAfterSuccessSynchronization();
 
     PublicidAfterSuccessLogin publicidAfterSuccessLogin();
@@ -39,7 +39,11 @@ public interface GetHiltAllDateBaseOpersions {
 
     UpdatingDataSimple updatingDataSimple();
     
-    UpdatingDataWithWhere updatingDataWithWhere();
+    UpdatingTabelWithWhere updatingTabelWithWhere();
+
+
+
+
 
     // TODO: 25.11.2024 Inserts 
     GetDataBaseInsert getbinessLogicDataBase();
