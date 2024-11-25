@@ -6,6 +6,8 @@ import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingDataSimple;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingDataWithWhere;
 
 import dagger.hilt.EntryPoint;
 import dagger.hilt.InstallIn;
@@ -16,14 +18,32 @@ import dagger.hilt.components.SingletonComponent;
 public interface GetHiltAllDateBaseOpersions {
 
     // TODO: 25.11.2024
-    GetDataBaseInsert getbinessLogicDataBase();
 
+
+    // TODO: 25.11.2024 Public 
     PublicidAfterSuccessSynchronization publicidAfterSuccessSynchronization();
+
+    PublicidAfterSuccessLogin publicidAfterSuccessLogin();
+
+
+    // TODO: 25.11.2024 Cursors 
 
     GetAllCursor getAllCursor();
 
     GetSettingCursor getSettingCursor();
 
-    PublicidAfterSuccessLogin publicidAfterSuccessLogin();
+   
+
+
+    // TODO: 25.11.2024 Updates 
+
+    UpdatingDataSimple updatingDataSimple();
+    
+    UpdatingDataWithWhere updatingDataWithWhere();
+
+    // TODO: 25.11.2024 Inserts 
+    GetDataBaseInsert getbinessLogicDataBase();
+    
+    
 
 }
