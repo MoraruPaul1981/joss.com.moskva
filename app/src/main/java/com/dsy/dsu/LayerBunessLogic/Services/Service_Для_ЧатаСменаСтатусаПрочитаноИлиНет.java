@@ -55,7 +55,7 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
     // Random number generator
     private Context context;
 
-    private Class_GRUD_SQL_Operations    class_grud_sql_operations ;
+
 
     private SQLiteDatabase sqLiteDatabase ;
     private  Class_MODEL_synchronized  modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного ;
@@ -309,159 +309,10 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
 
 
 // TODO: 15.07.2022 метод создание нового сообщения только в одну таблицу
-private Long МетодЗаписиНовогоСообщенияТольковТаблицу_CHAT_КогдаЕщеМеждуПользователямиНетПереписки(
-        @NonNull Integer ПубличныйIDДляФрагмента,
-        @NonNull Long НовыйUUIDДляОбеихТаблицЧАТиДАТАЧАТдляПоляPARENT_UUID
-,@NonNull Context context
-,@NonNull Integer IDСкемПереписываюсь)
-        throws ExecutionException,
-        InterruptedException,
-        TimeoutException,
-        NoSuchPaddingException,
-        NoSuchAlgorithmException,
-        InvalidKeyException {
-    final Long[] РезультатВставки_НовойЗаписиРодительскуюТаблицыЧАТ = {0l};
-    final    String ПерваяТаблицыОбработкиТаблицаЧат = "chats";
-
-
-    try {
-        this.context=context;
-        class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
-        modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного = new Class_MODEL_synchronized(context);
-        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(context);
-        class_generation_errors=new Class_Generation_Errors(context);
-
-
-        LinkedBlockingQueue<Integer> linkedBlockingQueueДляЗаписиСразуДвестрокиЧатОДляКого = new LinkedBlockingQueue();
-    linkedBlockingQueueДляЗаписиСразуДвестрокиЧатОДляКого.offer(ПубличныйIDДляФрагмента);  //todo Я ---
-    linkedBlockingQueueДляЗаписиСразуДвестрокиЧатОДляКого.offer(Integer.parseInt(String.valueOf(IDСкемПереписываюсь)));//TODO КОМУ ПИШЕМ
 
 
 
-    // TODO: 15.07.2022 сама операция вставки
-    linkedBlockingQueueДляЗаписиСразуДвестрокиЧатОДляКого.forEach((ТекущееЗначениеДляЗаписиВЦиклеВДваСтлбика) -> {
 
-   try{
-
-            ContentValues contentValuesЗаписьНовогоСообщения_ТаблицаЧат = new ContentValues();
-            String СгенерированованныйДатаДляФрагмента = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("date_update", СгенерированованныйДатаДляФрагмента);
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("user_update", ПубличныйIDДляФрагмента);
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("id_user", Integer.parseInt(ТекущееЗначениеДляЗаписиВЦиклеВДваСтлбика.toString()));////бышвий user_for     ПолученыйIDДляЧата
-           // contentValuesЗаписьНовогоСообщения_ТаблицаЧат.putNull("_id");////бышвий user_for
-
-       Long   ЛокльныйUUIDТОлькоДЛЯОднойТаблицыChats =
-                    (Long) new Class_Generation_UUID(context).МетодГенерацииUUID();
-            ЛокльныйUUIDТОлькоДЛЯОднойТаблицыChats = ЛокльныйUUIDТОлькоДЛЯОднойТаблицыChats + new Random().nextInt(10);
-
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("uuid", ЛокльныйUUIDТОлькоДЛЯОднойТаблицыChats);// TODO Локальный Сгенерированый UUID
-
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("uuid_parent", НовыйUUIDДляОбеихТаблицЧАТиДАТАЧАТдляПоляPARENT_UUID);// TODO Общий UUID
-
-       // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-       Long РезультатУвеличинаяВерсияДАныхЧата=
-               new SubClassUpVersionDATA(context).upVersionCurentTable(    ПерваяТаблицыОбработкиТаблицаЧат,getApplicationContext());
-       Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхЧата  " + РезультатУвеличинаяВерсияДАныхЧата);
-
-
-       // TODO: 18.11.2022
-            contentValuesЗаписьНовогоСообщения_ТаблицаЧат.put("current_table", РезультатУвеличинаяВерсияДАныхЧата);
-            РезультатВставки_НовойЗаписиРодительскуюТаблицыЧАТ[0] = new Class_MODEL_synchronized(context)
-                    .ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНСообщенияДЛЯЧата(ПерваяТаблицыОбработкиТаблицаЧат,
-                            contentValuesЗаписьНовогоСообщения_ТаблицаЧат, ПерваяТаблицыОбработкиТаблицаЧат, "",
-                            true);
-                contentValuesЗаписьНовогоСообщения_ТаблицаЧат.clear();
-            Object вЫКИДИВАЕМоТРАБТАННЫЙэЛЕМЕНТ = linkedBlockingQueueДляЗаписиСразуДвестрокиЧатОДляКого.take().longValue();
-
-    } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            class_generation_errors.МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-    });
-
-        Log.w(context.getClass().getName(),  " РезультатВставки_НовойЗаписиРодительскуюТаблицыЧАТ[0] " +РезультатВставки_НовойЗаписиРодительскуюТаблицыЧАТ[0]);
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-        class_generation_errors.МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                this.getClass().getName(),
-                Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-    }
-
-    return РезультатВставки_НовойЗаписиРодительскуюТаблицыЧАТ[0];
-
-    // TODO: 15.07.2022 второй метод создания новго сообщения только для Таблицы DATA_CHAT когда между участниками уже есть переписка  
-
-}
-
-
-
-    private Long МетодСозданиеНовогоСообщениявТаблицы_DATA_CHATS_КогдаМеждуУчастникамиУжеБылаПереписка(
-            @NonNull Integer ПубличныйIDДляФрагмента,
-            @NonNull Long НовыйUUIDДляОбеихТаблицЧАТиДАТАЧАТдляПоляPARENT_UUID
-    , @NonNull String СамоСообщенияНовоеДляЧата
-    ,@NonNull Context context) {
-
-        Long РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS= 0l;
-
-        try {
-            this.context=context;
-            class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
-            modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного = new Class_MODEL_synchronized(context);
-            Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(context);
-            class_generation_errors=new Class_Generation_Errors(context);
-
-            final String ТаблицаВторойОбработкиДляТаблицыДата_Табеля = "data_chat";
-
-            Log.d(this.getClass().getName(), "  СамоСообщенияНовоеДляЧата "
-                    + СамоСообщенияНовоеДляЧата);
-            if (НовыйUUIDДляОбеихТаблицЧАТиДАТАЧАТдляПоляPARENT_UUID > 0) {
-
-                class_grud_sql_operations = new Class_GRUD_SQL_Operations(context);
-                ContentValues contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT = new ContentValues();
-                String СгенерированованныйДатаДляДаннойОперации = new Class_Generation_Data(context).ГлавнаяДатаИВремяОперацийСБазойДанных();
-                contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("date_update", СгенерированованныйДатаДляДаннойОперации);
-                contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("user_update", ПубличныйIDДляФрагмента);
-                contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("chat_uuid", НовыйUUIDДляОбеихТаблицЧАТиДАТАЧАТдляПоляPARENT_UUID);
-                Long ЛокальныйUUIDДляТаблицыДатаЧатВтораяТаблица = (Long) new Class_Generation_UUID(context).МетодГенерацииUUID();
-                contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("uuid", ЛокальныйUUIDДляТаблицыДатаЧатВтораяТаблица);
-
-                // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
-                Long РезультатУвеличинаяВерсияДАныхДатЧата=
-                        new SubClassUpVersionDATA(context).upVersionCurentTable(    ТаблицаВторойОбработкиДляТаблицыДата_Табеля,context);
-                Log.d(this.getClass().getName(), " РезультатУвеличинаяВерсияДАныхДатЧата  " + РезультатУвеличинаяВерсияДАныхДатЧата);
-
-                // TODO: 18.11.2022
-                contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("current_table", РезультатУвеличинаяВерсияДАныхДатЧата);
-                if (СамоСообщенияНовоеДляЧата.length() > 0) {
-                    contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.put("message", СамоСообщенияНовоеДляЧата.trim());
-                    РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS = new Class_MODEL_synchronized(context).
-                            ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНСообщенияДЛЯЧата(ТаблицаВторойОбработкиДляТаблицыДата_Табеля,
-                                    contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT, ТаблицаВторойОбработкиДляТаблицыДата_Табеля, "",
-                                    true);
-                    Log.d(this.getClass().getName(), "  РезультатВставки_ТолькоВДочернуюТаблицуТакаКакВСтрашойТАблицуУжеЕстьПереписка "
-                            + РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS);
-
-                    contentValuesЗаписьНовогоСообщения_ТаблицыDATA_CHAT.clear();
-                }
-            }
-            Log.w(context.getClass().getName(),  " РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS " +РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            class_generation_errors.МетодЗаписиВЖурналНовойОшибки(e.toString(),
-                    this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-        return РезультатВставкиНовогоСообщениявТАблицы_Data_CHATS;
-    }
 
 
 
