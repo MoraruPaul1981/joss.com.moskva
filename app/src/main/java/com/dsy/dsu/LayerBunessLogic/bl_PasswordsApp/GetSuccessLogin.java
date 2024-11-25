@@ -8,10 +8,13 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces.GetHiltAllDateBaseOpersions;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import dagger.hilt.EntryPoints;
 
 public class GetSuccessLogin {
 
@@ -21,7 +24,8 @@ public class GetSuccessLogin {
         this.context = context;
     }
 
-
+    // TODO: 25.11.2024
+    GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
 
 
     @NotNull
@@ -166,8 +170,16 @@ public class GetSuccessLogin {
             contentValuesChangeModeSLL.put("publicid",getuuidLocal);
             // TODO: 12.04.2023 UPDATER PUBLIC ID
             if(getuuidLocal>0 ){
-                // TODO: 12.04.2023 UPDATER model_ssl
+
+    /*            // TODO: 12.04.2023 UPDATER model_ssl
                 getmMode_Connection=  contentProvidermode_connection.update(uri, contentValuesChangeModeSLL,null,null);
+*/
+
+
+                getHiltAllDateBaseOpersions = EntryPoints.get(context, GetHiltAllDateBaseOpersions.class);
+
+    getmMode_Connection=      getHiltAllDateBaseOpersions.writeModeConnections().writeModeConnection(ИмяТаблицы,contentValuesChangeModeSLL,getuuidLocal,columsChange);
+
 
                 Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                         " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

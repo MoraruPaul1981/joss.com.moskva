@@ -1,4 +1,4 @@
-package com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting;
+package com.dsy.dsu.LayerDatabase.binesslogiclayer.updates;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -22,20 +22,20 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-public class DeletingTabelWithWhere {
+public class WriteModeConnections {
 
     Context context;
 
-    public  @Inject DeletingTabelWithWhere(@ApplicationContext Context hiltcontext) {
+    public  @Inject WriteModeConnections(@ApplicationContext Context hiltcontext) {
         this.context = hiltcontext;
 
     }
 
 
 
-    public Integer getupateTabelDataWithWhere(@NotNull  String tablenameUpdate,
+    public Integer writeModeConnection(@NotNull  String tablenameUpdate,
                                             @NotNull  ContentValues contentVersionUp,
-                                            @NotNull  Long whereUUID,
+                                            @NotNull  Integer whereUUID,
                                               @NotNull String colunmtwehe)
             throws ExecutionException, InterruptedException {
         Integer getupdatingDataWithWhere = 0;
@@ -44,7 +44,7 @@ public class DeletingTabelWithWhere {
             // TODO: 08.10.2024 Дополнительное добавление данных
             ContentResolver contentProviderError = context.getContentResolver();
             // TODO: 12.04.2023 UPDATER model_ssl
-            getupdatingDataWithWhere=  contentProviderError.delete(uri,whereUUID.toString(),new String[]{colunmtwehe});
+            getupdatingDataWithWhere=  contentProviderError.update(uri, contentVersionUp,whereUUID.toString(),new String[]{colunmtwehe});
 
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +

@@ -1,0 +1,66 @@
+package com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
+
+import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
+
+import java.util.concurrent.ExecutionException;
+
+import javax.inject.Inject;
+
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+import dagger.hilt.components.SingletonComponent;
+
+
+@Module
+@InstallIn(SingletonComponent.class)
+public class RemovingOnlyBlankTabel {
+
+    Context context;
+
+    public  @Inject RemovingOnlyBlankTabel(@ApplicationContext Context hiltcontext) {
+        this.context = hiltcontext;
+
+    }
+
+
+
+    public Integer removingOnlyBlankTabel(String tablenameDelete,
+                                              String colunmtwehe,
+                                              Long UUIDDelete)
+            throws ExecutionException, InterruptedException {
+        Integer getupdatingDataWithWhere = 0;
+        try {
+            // TODO: 25.11.2024
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/"+tablenameDelete+"");
+            // TODO: 08.10.2024 Дополнительное добавление данных
+            ContentResolver contentProviderError = context.getContentResolver();
+            // TODO: 12.04.2023 UPDATER model_ssl
+            getupdatingDataWithWhere=  contentProviderError.delete(uri,UUIDDelete.toString(),new String[]{colunmtwehe});
+
+            Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                    " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"+ "  tablenameDelete " +tablenameDelete+
+                    " getupdatingDataWithWhere " +getupdatingDataWithWhere);
+
+            // TODO: 21.03.2022
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
+                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
+            new Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
+                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
+        }
+
+        // TODO: 21.03.2022
+        return getupdatingDataWithWhere;
+    }
+
+
+
+}
