@@ -1,4 +1,4 @@
-package com.dsy.dsu.LayerBunessLogic.GrudOpersions;
+package com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -10,19 +10,27 @@ import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 
 import org.jetbrains.annotations.NotNull;
 
-public class GetAllCursor {
+import javax.inject.Inject;
+
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+import dagger.hilt.components.SingletonComponent;
+
+
+@Module
+@InstallIn(SingletonComponent.class)
+public class GetSettingCursor {
 
 
     Context context;
 
-    public GetAllCursor(Context context) {
-        this.context = context;
+    public  @Inject GetSettingCursor(@ApplicationContext Context hiltcontext) {
+        this.context = hiltcontext;
+
     }
 
-
-
-
-    public Cursor getCursor(@NotNull  String sql,@NotNull  String tableoperations,@NotNull  String[] getWhrere){
+    public Cursor getSettingCursor(@NotNull  String sql,@NotNull  String tableoperations,@NotNull  String[] getWhrere){
         // TODO: 14.10.2024
         Cursor getAllCursor=null;
         try{
@@ -30,7 +38,7 @@ public class GetAllCursor {
 // TODO: 14.10.2024
            // String sql=  " SELECT * FROM successLogin ORDER BY date_update DESC LIMIT 1  ";
             //String sql=  " SELECT * FROM view_tasks  WHERE    user_update=? AND status_write<>? AND message IS NOT NULL  ORDER BY status_write, date_update DESC   ";
-            Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + tableoperations + "");
+            Uri uri = Uri.parse("content://com.dsy.dsu.providerforsystemtables/" + tableoperations + "");
             ContentResolver contentResolverPublicID = context.getContentResolver();
             getAllCursor = contentResolverPublicID.query(uri, new String[]{},
                     new String(sql),

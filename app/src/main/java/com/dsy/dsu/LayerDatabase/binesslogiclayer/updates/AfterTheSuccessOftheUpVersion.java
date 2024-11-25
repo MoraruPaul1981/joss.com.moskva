@@ -1,4 +1,4 @@
-package com.dsy.dsu.LayerBunessLogic.GrudOpersions;
+package com.dsy.dsu.LayerDatabase.binesslogiclayer.updates;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -12,13 +12,26 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ExecutionException;
 
+import javax.inject.Inject;
+
+import dagger.Module;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+import dagger.hilt.components.SingletonComponent;
+
+
+@Module
+@InstallIn(SingletonComponent.class)
+
 public class AfterTheSuccessOftheUpVersion {
 
     Context context;
 
-    public AfterTheSuccessOftheUpVersion(Context context) {
-        this.context = context;
+    public  @Inject  AfterTheSuccessOftheUpVersion(@ApplicationContext Context hiltcontext) {
+        this.context = hiltcontext;
+
     }
+
 
 
     public Integer afterTheSuccessOftheUpVersion(@NotNull  String tablenameForVersionUp, @NotNull  ContentValues contentVersionUp,@NotNull  String whereUUID)

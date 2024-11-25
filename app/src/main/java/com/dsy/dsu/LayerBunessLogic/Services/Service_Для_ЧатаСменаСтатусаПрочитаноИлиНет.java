@@ -18,32 +18,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
- 
- 
-import com.dsy.dsu.LayerBunessLogic.DATE.Class_Generation_Data;
 import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
-import com.dsy.dsu.LayerBunessLogic.Class_Generation_UUID;
 import com.dsy.dsu.LayerBunessLogic.Class_MODEL_synchronized;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.SubClassUpVersionDATA;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces.GetHiltAllDateBaseOpersions;
 import com.google.android.material.button.MaterialButton;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeoutException;
-
-import javax.crypto.NoSuchPaddingException;
 
 import dagger.hilt.EntryPoints;
 
@@ -55,12 +45,14 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
     // Random number generator
     private Context context;
 
-
-
     private SQLiteDatabase sqLiteDatabase ;
     private  Class_MODEL_synchronized  modelДляФрагментаДляОперацииЗаписиНовгоСтатусаПрочитанного ;
     private PUBLIC_CONTENT   Class_Engine_SQLГдеНаходитьсяМенеджерПотоков ;
     private Class_Generation_Errors class_generation_errors;
+
+    // TODO: 25.11.2024
+    GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
+
 
 
     public Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет() {
@@ -96,9 +88,29 @@ public class Service_Для_ЧатаСменаСтатусаПрочитаноИ
    @Override
     public void onCreate() {
         super.onCreate();
+        try{
+
        sqLiteDatabase  = EntryPoints.get(getApplicationContext(), HiltInterfacesqlite.class).getHiltSqlite();
-        Log.i(getApplicationContext().getClass().getName(), " public class Service_Для_ЧатаСменаСтатусаПрочитаноИлиНет extends JobIntentService { " + new Date()+"\n"+
-                " Thread.currentThread().getName()  " +Thread.currentThread().getName());
+       // TODO: 25.11.2024
+
+            getHiltAllDateBaseOpersions = EntryPoints.get(getApplicationContext(), GetHiltAllDateBaseOpersions.class);
+
+
+
+            Log.d(context.getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+        } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        new   Class_Generation_Errors(context).МетодЗаписиВЖурналНовойОшибки(e.toString(),
+                this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
+                Thread.currentThread().getStackTrace()[2].getLineNumber());
+    }
+
     }
 
 
