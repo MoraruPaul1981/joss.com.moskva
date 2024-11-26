@@ -552,7 +552,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                 //TODO ОпеределяемСтарусЕслиХотьОднаНЕпрочитаное Союощение ДяТекущегоПользователя У каждого кто ему НАПИСАЛ
 
                                 МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты,getPublicID
-                                        , public_contentCompletionService);
+                                        );
 
 
 
@@ -1407,195 +1407,32 @@ try {
         /////
         public MODEL(Activity activity) {
 
-            ///
-            SQLiteCursor Курсор_ВычисляемПУбличныйID = null;
-
-            Class_GRUD_SQL_Operations class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть = new Class_GRUD_SQL_Operations(getActivity());
-
             try {
-
-
-                // TODO: 05.07.2021  получаем публичный ID
-
-
                 // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
+                Integer ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID(getContext()).getPublicIDAllApp(getContext());
 
-
-                ///
-                class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.
-                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "SuccessLogin");
-                ///////
-                class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.
-                        concurrentHashMapНабор.put("СтолбцыОбработки", "id");
-                //
-            /*        class_grud_sql_operations. concurrentHashMapНабор.put("ФорматПосика","uuid=?    AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
-                    ///"_id > ?   AND _id< ?"
-                    //////
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска1",finalПолученныйUUID);
-                    ///
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-                    ///
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                    //
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-*/
-                ////TODO другие поля
-
-                ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
-                ////
-                //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
-                ////
-                class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-                ////
-                class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.concurrentHashMapНабор.put("УсловиеЛимита", "1");
-                ////
-
-                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-
-
-                Курсор_ВычисляемПУбличныйID = null;
-                //////////////
-
-                Курсор_ВычисляемПУбличныйID = (SQLiteCursor) class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.
-                        new GetData(getActivity()).getdata(class_grud_sql_operationsВычисляемПУбличныйIDВтораяЧасть.concurrentHashMapНабор,
-                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabase);
-
-                Log.d(this.getClass().getName(), "GetData " + Курсор_ВычисляемПУбличныйID);
-
-
-
-
-       /*         // TODO: 08.09.2021  _old
-                Курсор_ВычисляемПУбличныйID=new Class_MODEL_synchronized(getContext()).КурсорУниверсальныйБазыДанных("SELECT id FROM SuccessLogin LIMIT 1 ");
-                /////
-*/
-                // TODO: 08.09.2021 resultat
-
-                if (Курсор_ВычисляемПУбличныйID.getCount() > 0) {
-                    //////////
-                    Курсор_ВычисляемПУбличныйID.moveToFirst();
-                    //////////////
-                    getPublicID = Курсор_ВычисляемПУбличныйID.getInt(0);
-                    //////
-                    Log.d(this.getClass().getName(), "ID " + getPublicID);
-
-                }
-
-                Курсор_ВычисляемПУбличныйID.close();
                 // TODO: 28.06.2021  обнуялем курсор перед получением данных
 
 
-                //  TimeUnit.MILLISECONDS.sleep(100);
-
-                Log.d(this.getClass().getName(), "  MODEL  ID " + getPublicID);
-
-
-                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-
-                Class_GRUD_SQL_Operations class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть = new Class_GRUD_SQL_Operations(getActivity());
-                ///
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы","viewchat");
-//                ///////
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("СтолбцыОбработки","*");
-//                //
-//      /*          class_grud_sql_operations_ДанныеДляСообщенийЧата. concurrentHashMapНабор.put("ФорматПосика","uuid=?    " +
-//                        "AND status_send !=? AND month_tabels=? AND  year_tabels =? AND fio IS NOT NULL ");
-//                    ///"_id > ?   AND _id< ?"*/
-//                    //////
-//
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("ФлагНепотораяемостиСтрок",true);
-//                    ///
-//            /*      class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-//                    ///
-//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);//ФлагНепотораяемостиСтрок
-//                    //
-//                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-//*/
-//                ////TODO другие поля*/
-//
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("ПоляГрупировки","id_user");
-//                ////
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("УсловиеГрупировки"," COUNT(*) >= 1");
-//                ////
-//                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-//                        concurrentHashMapНабор.put("УсловиеСортировки","date_update DESC");
-//                ////
-//               /// class_grud_sql_operationsMODEL. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                ////
-                // TODO: 30.09.2021 МЕТОД ЗАПУСКА СИНХРОНИЗАЦИИ ЧАТА ПО РАСПИСАНИЮ , НЕ ВЗАВИСИМОСТИ ОТ СОЗДАВАЛ ЛИ СООБЩЕНИЕ ИЛИ НЕТ
-
-                Integer ПубличныйIDДляФрагмента = new Class_Generations_PUBLIC_CURRENT_ID(getContext()).getPublicIDAllApp(getContext());
-
-
-                Log.d(this.getClass().getName(), "ПубличныйIDДляФрагмента " + ПубличныйIDДляФрагмента);
-
-
-                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                // class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть. concurrentHashMapНабор.put("УсловиеПоиска1",111);
-                ///
-                class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.concurrentHashMapНабор.put("СамFreeSQLКОд",///viewchat
-
-         /*               " SELECT  * FROM viewchat  WHERE     id_user   =" + ID +
-                                " ORDER BY  date_update  ASC ;");
-*/
-                        // " SELECT  * FROM chats WHERE id_user  = "+ПубличныйIDДляФрагмента +"  ORDER BY  date_update  ASC ;");
-
-
-                        " select cc.*," +
-                                " (select id_user " +
-                                " from chats " +
-                                " where id_user=" + ПубличныйIDДляФрагмента + "" +
-                                " ) as prev_date" +
-                                "  from chats cc " +
-                                " where cc.id_user <>" + ПубличныйIDДляФрагмента + "" + ";");
-
-/*              //  "DROP TABLE IF EXISTS my_chats; "+
-                "CREATE TEMPORARY TABLE my_chats AS "+
-                "SELECT * FROM chats WHERE id_user = "+ПубличныйIDДляФрагмента+"; "+
-                "SELECT  chats.* FROM chats 	inner join my_chats on chats.uuid_parent=my_chats.uuid_parent WHERE	chats.id_user <> "+ПубличныйIDДляФрагмента+";");*/
-
-                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ  вторая операиця
-                //////
-                КурсорДанныеДляСообщенийЧата = null;
-
-                ////////
-                КурсорДанныеДляСообщенийЧата = (SQLiteCursor) class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.
-                        new GetаFreeData(getActivity()).getfreedata(class_grud_sql_operations_ДанныеДляСообщенийЧатаТретьяЧасть.concurrentHashMapНабор,
-                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabase);
-
-
-                // TODO: 10.02.2022
-
-
-                Log.d(this.getClass().getName(), "КурсорДанныеДлязаписиичтнияЧата " + КурсорДанныеДляСообщенийЧата);
+                String sql=  "  \" select cc.*,\" +\n" +
+                        "                                \" (select id_user \" +\n" +
+                        "                                \" from chats \" +\n" +
+                        "                                \" where id_user=" + ПубличныйIDДляФрагмента +" +\n" +
+                        "                                \" ) as prev_date\" +\n" +
+                        "                                \"  from chats cc \" +\n" +
+                        "                                \" where cc.id_user <>" + ПубличныйIDДляФрагмента +" + \";\"   ";
+                // TODO: 26.11.2024
+                КурсорДанныеДляСообщенийЧата =getHiltAllDateBaseOpersions.
+                        getCursorMaximumDateChange().getCursor(sql,"chats"  );
 
 
                 if (КурсорДанныеДляСообщенийЧата != null) {
-
-
                     if (КурсорДанныеДляСообщенийЧата.getCount() > 0) {
 
-
-                        // TODO: 10.02.2022
-                        /// КурсорДанныеДляСообщенийЧата.moveToFirst();
-
-
-// TODO: 28.06.2021 мето заполения даными ФРАГМЕНТА СООБЩЕНИЯ
-
-
+                     // TODO: 28.06.2021 мето заполения даными ФРАГМЕНТА СООБЩЕНИЯ
                         new VIEW(getActivity()).МетодЗаполенияПервогоФрагментаДаннымиСообщения();
-
                         Log.d(this.getClass().getName(), "КурсорДанныеДлязаписиичтнияЧата " + КурсорДанныеДляСообщенийЧата.getCount());
-
-
                         // TODO: 10.02.2022 иницализация слушателя
-
-
                         МеодПодключениеСлушателяКурсораOBSERVER();
 
                         Log.d(this.getClass().getName(), "КурсорДанныеДлязаписиичтнияЧата " + КурсорДанныеДляСообщенийЧата.getCount());
