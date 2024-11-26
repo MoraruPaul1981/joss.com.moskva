@@ -846,7 +846,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     + " время: " + new Date() + "\n+" +
                     " Класс в процессе... " + this.getClass().getName() + "\n" +
                     " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                    + " PublicIDСотрудника " +PublicIDСотрудника);
+                    + " PublicID " +PublicID);
 
 
 
@@ -856,7 +856,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             Cursor cursorLoginAndPassword= getSuccessLogin.gettingSuccessLogin();
             ПубличноеIDПолученныйИзСервлетаДляUUID=getSuccessLogin.getSuccessPublicID(cursorLoginAndPassword);
 
-            Log.d(this.getClass().getName(), "PublicIDСотрудника " + PublicIDСотрудника
+            Log.d(this.getClass().getName(), "PublicID " + PublicID
                     + " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
 
 
@@ -898,9 +898,27 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             //TODO закрываем курсор с максимальной датой
             Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата.close();
 
-            if (PublicIDСотрудника == 0) {
+
+            if (PublicID == 0) {
+
                 МетодКогдаДанныхСамихТабелйНет();
+
+                // TODO: 25.11.2024
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
             }
+            
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
+
+
+
             String[] НазваниеТабеля = {""};
             String[] ДатаТабеляИзБАзы = {""};
 
@@ -2142,16 +2160,15 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     @SuppressLint("Range")
     private ContentValues МетодЗаполениеяДаннымиСотрудникаДляШаблонаЕслиОниЕсть(ContentValues АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель,
                                                                                 @NonNull Long UUIDgeneratorOpertion,
-                                                                                @NonNull Cursor Курсор_СамиДАнные)
-            throws ExecutionException, InterruptedException {
+                                                                                @NonNull Cursor Курсор_СамиДАнные) {
         try{
+            // TODO: 26.11.2024  
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("status_send", " ");
             String СгенерированованныйДатаДляВставки = new Class_Generation_Data(getApplicationContext()).ГлавнаяДатаИВремяОперацийСБазойДанных();
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("date_update", СгенерированованныйДатаДляВставки);
             АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель.put("uuid_tabel", MainParentUUID);
             // TODO: 08.10.2021 повышаем версию
-            Class_GRUD_SQL_Operations class_grud_sql_operationsПовышаемВерсиюДанныхПриСозданеииИзШаблонаСотрудника
-                    = new Class_GRUD_SQL_Operations(getApplicationContext());
+ 
             // TODO: 18.03.2023  получаем ВЕСИЮ ДАННЫХ
             Long РезультатУвеличинаяВерсияДАныхЧата =
                     new SubClassUpVersionDATA(getApplicationContext()).upVersionCurentTable(    "data_tabels",getApplicationContext());

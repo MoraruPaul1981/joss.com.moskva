@@ -25,7 +25,6 @@ import dagger.hilt.components.SingletonComponent;
 public class InsertNewEmployeeFromATemplate {
 
     Context context;
-
     Long version;
 
 
@@ -33,8 +32,6 @@ public class InsertNewEmployeeFromATemplate {
         this.context = hiltcontext;
 
     }
-
-
 
 
   public   Integer   insertingaNewEmployeeFromATemplate(@NotNull String tableoperations,
