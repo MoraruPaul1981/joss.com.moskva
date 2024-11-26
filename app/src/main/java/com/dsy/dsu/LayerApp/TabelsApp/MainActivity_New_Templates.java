@@ -59,6 +59,7 @@ import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.util.concurrent.AtomicDouble;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -138,6 +139,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
     // TODO: 25.11.2024
     GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
+
+    int PublicID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -822,8 +825,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
 
     protected void МетодаСозданиеТабеляИзБазы() throws InterruptedException, ExecutionException, TimeoutException, ParseException {
-
-        int PublicIDСотрудника = 0;
         try {
             try {
                 LinearLayoutСозданныхТабелей.removeAllViews();
@@ -837,7 +838,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             Cursor Курсор_КоторыйЗагружаетГотовыеШаблоны = null;
             String МесяцМаскимальнаяДатавТабеляхПоМесецям = null;
 
-            PublicIDСотрудника = МетодПолучениеPublicIDСотрудника();
+            PublicID = МетодПолучениеPublicIDСотрудника();
 
 
             // TODO: 25.11.2024
@@ -874,7 +875,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
             //////todo работающий NULL в query
 
-         Cursor   Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = МетодКоторыйПоказываетМаксимальнуюДатуИзменения(PublicIDСотрудника);
+         Cursor   Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = МетодКоторыйПоказываетМаксимальнуюДатуИзменения( );
 
             if (Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата.getCount() > 0) {
 
@@ -890,7 +891,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                        + " МесяцМаскимальнаяДатавТабеляхПоМесецям " +МесяцМаскимальнаяДатавТабеляхПоМесецям  + " МесяцМаскимальнаяДатавТабеляхПоМесецям  "+МесяцМаскимальнаяДатавТабеляхПоМесецям);
+                        + " МесяцМаскимальнаяДатавТабеляхПоМесецям " +МесяцМаскимальнаяДатавТабеляхПоМесецям);
             } else {
                 МесяцМаскимальнаяДатавТабеляхПоМесецям = "";
             }
@@ -981,7 +982,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                             ///
                             try {
                                 Button КнопкаНАжалиНАВыбраныйШаблон = (Button) v;
-                                    SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней =
+                                // TODO: 26.11.2024
+                                Cursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней =
                                             МетодЗаполненияТабеляИзЗаранееСозданогоШабона();
                                     Log.d(this.getClass().getName(), " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней "
                                             + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней);
@@ -1019,7 +1021,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                         /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
                         protected void МетодЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель(
                                 Button v,
-                                SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней) {
+                                 Cursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней) {
                             try {
                                 // TODO: 25.11.2024
                                 Log.d(getApplicationContext().getClass().getName(), "\n"
@@ -1262,22 +1264,27 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     }
 
 
-    //////TODO вычисляем максимальную дату для LISTVIEW
 
-    SQLiteCursor МетодКоторыйПоказываетМаксимальнуюДатуИзменения(int полученнаяUUIDНазванияОрганизации)
-            throws ExecutionException, InterruptedException {
-        SQLiteCursor Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = null;
-        Class_GRUD_SQL_Operations class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения = new Class_GRUD_SQL_Operations(getApplicationContext());
+
+
+
+    //////TODO вычисляем максимальную дату для LISTVIEW
+  Cursor МетодКоторыйПоказываетМаксимальнуюДатуИзменения( ) {
+      Cursor Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = null;
         try {
-            class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "Templates");
-            class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор.put("СтолбцыОбработки", "date_update , name_templates");
-            class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор.put("ФорматПосика", "   date_update = (SELECT MAX(date_update) FROM Templates)  ");
-            class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор.put("ПоляГрупировки", "name_templates");
-            class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор.put("УсловиеЛимита", "1");
-            Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = (SQLiteCursor) class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsторыйПоказываетМаксимальнуюДатуИзменения.concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,  sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData " + Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата);
+            String sql=  " SELECT date_update , name_templates  FROM Templates  WHERE date_update = (SELECT MAX(date_update) FROM Templates)  " +
+                    "       group by  name_templates  ORDER BY date_update DESC LIMIT 1    ";
+            Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата =getHiltAllDateBaseOpersions.
+                    getCursorMaximumDateChange().getCursor(sql,"Templates"  );
+
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата  "
+                    +Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -1285,10 +1292,16 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-//
-
         return Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата;
     }
+
+
+
+
+
+
+
+
 
 
     private void МетодКогдаДанныхСамихТабелйНет() {
@@ -1992,15 +2005,42 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                             .doAfterNext(new Consumer<Integer>() {
                                 @Override
                                 public void accept(Integer integer) throws Throwable {
-                                    Long   ВставкиСотрудниковИзШаблона=0l;
+
+                                    Integer   ВставкиСотрудниковИзШаблона=0;
+
                                     String ТаблицаОбработкиДорбалвенИзШаблона = "data_tabels";
+
                                     if (АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0].size() > 0) {
-                                    ВставкиСотрудниковИзШаблона = new Class_MODEL_synchronized(getApplicationContext()).
-                                                ВставкаДанныхЧерезКонтейнерТолькоПриСозданииНовогоСотрудникаУниверсальная(ТаблицаОбработкиДорбалвенИзШаблона,
-                                                        АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]);
-                                        //////TODO когда true -это значет применяеться только не вобмене  и говорит что плюс записываем изменению версии джанных
+
+                                        // TODO: 26.11.2024 вставляем сотрудника из шаблона
+                        ВставкиСотрудниковИзШаблона       =getHiltAllDateBaseOpersions.insertNewEmployeeFromATemplate()
+                                .insertingaNewEmployeeFromATemplate(ТаблицаОбработкиДорбалвенИзШаблона,
+                                                                    АдаптерДляВставкиИзГотоваШаблонаВТаблицуТабель[0]);
+
+                                        // TODO: 25.11.2024
+                                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                                + " время: " + new Date() + "\n+" +
+                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " ВставкиСотрудниковИзШаблона  "
+                                                +ВставкиСотрудниковИзШаблона);
+
+                                        // TODO: 25.11.2024
+                                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                                + " время: " + new Date() + "\n+" +
+                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " ВставкиСотрудниковИзШаблона  "
+                                                +ВставкиСотрудниковИзШаблона);
+
                                     }
-                                    Log.d(this.getClass().getName(), "  ВставкиСотрудниковИзШаблона " + ВставкиСотрудниковИзШаблона);
+                                    // TODO: 25.11.2024
+                                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " ВставкиСотрудниковИзШаблона  "
+                                            +ВставкиСотрудниковИзШаблона);
 // TODO: 24.05.2021 вставка если пользователь разреил атоматическую вставку выходных дней
                                     // TODO: 24.05.2021  месяц
                                     if (ВставкиСотрудниковИзШаблона > 0) {

@@ -6,11 +6,13 @@ import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorBasedontheRec
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromDataTemplateCreatedUser;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromFio;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorLoadsReadyTemplatesMaximumDate;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorMaximumDateChange;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorPublicIDCurrentEmployee;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting.RemovingOnlyBlankTabel;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.InsertNewEmployeeFromATemplate;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.UpdatingDataSimple;
@@ -51,7 +53,7 @@ public interface GetHiltAllDateBaseOpersions {
 
     GetCursorBasedontheReceivedElectronicNameoftheOrganization getCursorBasedontheReceivedElectronicNameoftheOrganization();
 
-
+    GetCursorMaximumDateChange getCursorMaximumDateChange();
 
 
 
@@ -65,6 +67,10 @@ public interface GetHiltAllDateBaseOpersions {
 
     // TODO: 25.11.2024 Inserts 
     GetDataBaseInsert getbinessLogicDataBase();
+
+
+    InsertNewEmployeeFromATemplate insertNewEmployeeFromATemplate();
+
 
 
 
