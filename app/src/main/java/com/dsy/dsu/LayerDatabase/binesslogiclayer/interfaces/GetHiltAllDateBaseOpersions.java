@@ -2,6 +2,7 @@ package com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces;
 
 
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorBasedontheReceivedElectronicNameoftheOrganization;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromDataTemplateCreatedUser;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromFio;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorLoadsReadyTemplatesMaximumDate;
@@ -46,6 +47,11 @@ public interface GetHiltAllDateBaseOpersions {
     GetCursorDataFromDataTemplateCreatedUser getCursorDataFromDataTemplateCreatedUser();
 
     GetCursorDataFromFio getCursorDataFromFio();
+
+
+    GetCursorBasedontheReceivedElectronicNameoftheOrganization getCursorBasedontheReceivedElectronicNameoftheOrganization();
+
+
 
 
 

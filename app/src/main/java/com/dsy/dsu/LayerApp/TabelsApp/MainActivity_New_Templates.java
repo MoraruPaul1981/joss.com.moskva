@@ -1025,7 +1025,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                                 Log.d(getApplicationContext().getClass().getName(), "\n"
                                         + " время: " + new Date() + "\n+" +
                                         " Класс в процессе... " + this.getClass().getName() + "\n" +
-                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()+
                                         " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней  "
                                                 + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней);
 
@@ -1236,24 +1236,20 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
     // TODO: 12.03.2021  метод записываем В КОНКРЕНТЫЙ ТАБЕЛЬ СОТРУДНИКОВ ИЗ ЗАРАНЕЕ СОЗДАНОГО ШАБЛОНА
 
-    protected SQLiteCursor МетодЗаполненияТабеляИзЗаранееСозданогоШабона() {
-        SQLiteCursor Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = null;
-        Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона = new Class_GRUD_SQL_Operations(getApplicationContext());
+    protected Cursor МетодЗаполненияТабеляИзЗаранееСозданогоШабона() {
+        Cursor Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = null;
         try {
-            Log.d(this.getClass().getName(), "МетодЗаполненияТабеляИзЗаранееСозданогоШабона ");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "tabel");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("СтолбцыОбработки", "*");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("ФорматПосика", "status_send!=?  AND cfo=? ");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("УсловиеПоиска1", "Удаленная");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("УсловиеПоиска2", DigitalNameCFO);
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-            class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор.put("УсловиеЛимита", "1");
-            Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = null;
-            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-            Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле = (SQLiteCursor) class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗаполненияТабеляИзЗаранееСозданогоШабона.concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков, sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData " + Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле);
+            // TODO: 26.11.2024
+            String sql=  " SELECT * FROM tabel  WHERE status_send!=?  AND cfo=?   ORDER BY date_update DESC  ";
+              Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле =getHiltAllDateBaseOpersions.
+                    getCursorBasedontheReceivedElectronicNameoftheOrganization().getCursor(sql,"tabel" ,new String[]{"Удаленная",String.valueOf(DigitalNameCFO)});
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле "
+                    +Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле);
 // TODO: 12.03.2021  мы получили даные на основании ЦИФРОВОГО ИИЕНИ ДАЛЕЕ БУДЕМ ЗАПОЛНЯТЬ ЕГО ДАННЫМИ
         } catch (Exception e) {
             e.printStackTrace();
@@ -1262,7 +1258,6 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
-//
         return Курсор_НаОсновеПолученогоЭлектроногоНазваниеОрганицииПонемуПолучаемВсеИнформацииОТабеле;
     }
 
@@ -1295,86 +1290,45 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
         return Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата;
     }
 
-//////
-
-
-    //////TODO вычисляем максимальную дату для СПИНЕРА ДЛЯ ВАДАПТЕРА AAARYADAPTER
-
-    Cursor МетодКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера()
-            throws ExecutionException, InterruptedException {
-        SQLiteCursor Курсор_КоторыйЗагружаетГотовыеШАблоныМаксимальнаяДатаДляСпинера = null;
-        Class_GRUD_SQL_Operations class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера = new Class_GRUD_SQL_Operations(getApplicationContext());
-        try {
-            class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "Templates");
-            class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор.put("СтолбцыОбработки", "name_templates");
-            class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор.put("ФорматПосика", " date_update = (SELECT MAX(date_update) FROM Templates) ");
-            class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-            class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор.put("УсловиеЛимита", "1");
-            Курсор_КоторыйЗагружаетГотовыеШАблоныМаксимальнаяДатаДляСпинера = (SQLiteCursor) class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsКоторыйПоказываетМаксимальнуюДатуИзмененияДляСпинера.concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,  sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData " + Курсор_КоторыйЗагружаетГотовыеШАблоныМаксимальнаяДатаДляСпинера);
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                    " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-            new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                    Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-        }
-///////
-
-        return Курсор_КоторыйЗагружаетГотовыеШАблоныМаксимальнаяДатаДляСпинера;
-    }
-
 
     private void МетодКогдаДанныхСамихТабелйНет() {
         try {
             ШАблонвВидеКнопок = new Button(this);////СОЗДАЕМ НОВЫЕ КНОПКИ НА АКТИВТИ
-
             ШАблонвВидеКнопок.setTag(" * В данном месяце нет табеля * ");
             ШАблонвВидеКнопок.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
             ШАблонвВидеКнопок.setMinLines(10);
-
             ШАблонвВидеКнопок.setTextSize(14);
-
             ШАблонвВидеКнопок.setText("* нет Шаблона  " + "(создайте) *");
-
             ШАблонвВидеКнопок.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-
             ШАблонвВидеКнопок.setTextColor(Color.RED);
-
             ШАблонвВидеКнопок.setHintTextColor(Color.RED);
-            /////
-
             Drawable icon = getResources().getDrawable(R.mipmap.icon_dsu1_tabels_sam_tamples);
             icon.setBounds(0, 1, 60, 60);
-            //  ШАблонвВидеКнопок.setPadding (0,0, 0, 150);
             ШАблонвВидеКнопок.setCompoundDrawables(icon, null, null, null);
-
-            ////
             ШАблонвВидеКнопок.setBackground(this.getResources().getDrawable(R.drawable.textlines_tabel_row));
-            //////ДОБАЯЛЕМ СТРОЧКУ
-////////унопки распологаем внутири скролбар
             ((Activity) КонтекстШаблоны).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ////////унопки распологаем внутири скролбара
                     LinearLayoutСозданныхТабелей.addView(ШАблонвВидеКнопок); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАРА
                 }
             });
-
-            ///////
-            ///КОНЕЦ ЗАПОЛЕНИЯ ТАБЕЛЯ ИЗ ДАННЫХ
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
         }
     }
+
+
+
+
 
 
     /////МЕТОД СОЗДАНИЕ ДАТЫ И КАЛЕНДАРЯ
