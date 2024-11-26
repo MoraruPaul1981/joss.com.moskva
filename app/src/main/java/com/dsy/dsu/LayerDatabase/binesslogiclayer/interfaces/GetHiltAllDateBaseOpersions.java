@@ -2,6 +2,8 @@ package com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces;
 
 
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorLoadsReadyTemplatesMaximumDate;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorPublicIDCurrentEmployee;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting.RemovingOnlyBlankTabel;
@@ -34,6 +36,12 @@ public interface GetHiltAllDateBaseOpersions {
     GetSettingCursor getSettingCursor();
 
     GetCursorSuccessLogin getCursorSuccessLogin();
+
+    GetCursorLoadsReadyTemplatesMaximumDate getCursorLoadsReadyTemplatesMaximumDate();
+
+    GetCursorPublicIDCurrentEmployee getCursorPublicIDCurrentEmployee();
+
+
 
 
 
