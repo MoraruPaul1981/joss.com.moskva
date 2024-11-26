@@ -7,6 +7,7 @@ import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromDataT
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorDataFromFio;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorLoadsReadyTemplatesMaximumDate;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorMaximumDateChange;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorMessageUnreadUser;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorPublicIDCurrentEmployee;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
@@ -55,6 +56,12 @@ public interface GetHiltAllDateBaseOpersions {
     GetCursorBasedontheReceivedElectronicNameoftheOrganization getCursorBasedontheReceivedElectronicNameoftheOrganization();
 
     GetCursorMaximumDateChange getCursorMaximumDateChange();
+
+    GetCursorMessageUnreadUser getCursorMessageUnreadUser();
+
+
+
+
 
 
 

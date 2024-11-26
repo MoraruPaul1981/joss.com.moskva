@@ -44,6 +44,7 @@ import com.dsy.dsu.LayerBunessLogic.Class_Generations_PUBLIC_CURRENT_ID;
 import com.dsy.dsu.LayerBunessLogic.SubClassGET_FIO;
 
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces.GetHiltAllDateBaseOpersions;
 import com.dsy.dsu.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -95,11 +96,23 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
     private ProgressBar progressBarДляЧатаСообщения;
     private  String КлючДляFirebaseNotification = "2a1819db-60c8-4ca3-a752-1b6cd9cadfa1";
 
+
+    GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try{
             sqLiteDatabase  = EntryPoints.get(getContext(), HiltInterfacesqlite.class).getHiltSqlite();
+            // TODO: 26.11.2024
+            // TODO: 26.11.2024
+            getHiltAllDateBaseOpersions = EntryPoints.get(getContext(), GetHiltAllDateBaseOpersions.class);
+
+            // TODO: 25.11.2024
+            Log.d(getContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -154,7 +167,6 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
             Log.d(this.getClass().getName(), "  ID   " +getPublicID);
 
             MODEL modelФрагментСообщениия =new MODEL(getActivity());
-
 
               getPublicID = new GettingpPublicID().gettingpPublicID(getContext());
 
@@ -327,30 +339,16 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
         }
 
         private void МетодЗаполенияПервогоФрагментаДаннымиСообщения() throws ExecutionException, InterruptedException {
-            // КурсорДанныеДляСообщенийЧата
-
-            SubClassGET_FIO subClassGET_fio=       new SubClassGET_FIO(getContext());
-            // ID
-            ///
-            Class_GRUD_SQL_Operations class_grud_sql_operationsЗаполенияПервогоФрагментаДаннымиСообщенияЧастьПервая = new Class_GRUD_SQL_Operations(getActivity());
-
-            // TODO: 11.02.2022
-            Class_GRUD_SQL_Operations       class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате=new Class_GRUD_SQL_Operations(getContext());
-
-            // TODO: 11.02.2022
-            PUBLIC_CONTENT public_contentCompletionService=new PUBLIC_CONTENT(getContext());
-
-            // TODO: 11.02.2022
-            // TODO: 18.02.2022
-            ЛистДополнительныеПрарментыID=new ArrayList();
-            // TODO: 18.02.2022
-            ЛистДополнительныеПрарменты_UUID=new ArrayList();
-
-          АдаптерДляСообщенийДляФрагментаСообщенияОтРазныхЛюдей = null;
             try {
 
-                /////
-
+                SubClassGET_FIO subClassGET_fio=       new SubClassGET_FIO(getContext());
+                PUBLIC_CONTENT public_contentCompletionService=new PUBLIC_CONTENT(getContext());
+                // TODO: 11.02.2022
+                // TODO: 18.02.2022
+                ЛистДополнительныеПрарментыID=new ArrayList();
+                ЛистДополнительныеПрарменты_UUID=new ArrayList();
+                АдаптерДляСообщенийДляФрагментаСообщенияОтРазныхЛюдей = null;
+                // TODO: 26.11.2024
                 АдаптерДляСообщенийДляФрагментаСообщенияОтРазныхЛюдей = new SimpleCursorAdapter(getContext(), R.layout.simple_for_chats_messages, КурсорДанныеДляСообщенийЧата,
                         new String[]{"user_update", "uuid"}, ///
                         new int[]{android.R.id.text1, android.R.id.text2}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
@@ -718,173 +716,65 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                             new Class_Generation_Errors(getActivity()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                            ///
-
 
                         }
                     }
 
-                    private void МетодТЕСТОВЫЙВТОРОТОМНАХОДИТЬСяЗАпускПрогресбраИБезАктивтиИТестовыйAxceessДополемтеольныйНААкждуюСтрочкуДанныеACCESSINFo(TextView view, int IDдляпервогоФрагментаПользовательКоторыйНаписал) {
-    /*                LinkedHashMap<String,Object> linkedHashMap=new LinkedHashMap();
-
-     // TODO: 14.02.2022
-     linkedHashMap.put("bugle",String.valueOf(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты));
-     linkedHashMap.put("bugle1",String.valueOf(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты+1));
-     linkedHashMap.put("bugle2",String.valueOf(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты+2));
-     linkedHashMap.put("bugle3",String.valueOf(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты+3));
 
 
-   accessibilityNodeInfo1дуль =view.createAccessibilityNodeInfo();
-
-     List<String>list=new ArrayList<String>();
-
-     list.add(0,linkedHashMap.toString());
-     list.add(1,linkedHashMap.values().toArray().toString());
-     list.add(2,linkedHashMap.keySet().toArray().toString());
-
-     accessibilityNodeInfo1дуль.setAvailableExtraData(list);*/
-                        // TODO: 14.02.2022
-
-                        //  accessibilityNodeInfo1дуль.setContentDescription("ContentDisrerere");
 
 
-                        //  accessibilityNodeInfo1дуль.setHintText(String.valueOf(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты));
 
 
-                        // TODO: 14.02.2022
-                        //  List lisss=accessibilityNodeInfo1дуль.getAvailableExtraData();
-
-                        // TODO: 14.02.2022
-
-                        //   accessibilityNodeInfo1дуль.getExtras();
 
 
-                        //  Log.d(this.getClass().getName(), "  lisss  " + lisss);
-
-
-     /*                   View rootView = (View )((Activity)getContext()).getWindow().getDecorView().findViewById(R.id.viewФрагментСообщенияНазваниеЧАты);
-                        // TODO: 22.12.2021
-
-
-                        TextView textView333 = (TextView ) view.getRootView().findViewById(  android.R.id.text1);
-                        // TODO: 22.12.2021
-
-                        Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал);
-
-
-                        // TODO: 14.02.2022
-                        LayoutInflater inflater = (LayoutInflater) getContext()
-                                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View v = inflater.inflate(R.layout.fragment1_layout, null);
-
-                        ListView tvnetwork = (ListView) v.findViewById(R.id.list);*/
-                    }
                     // TODO: 11.02.2022 третий преесенный метод в нижний классsub для ТЕКС1
-
-                    private void МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(Long ПолученныйUUIDСтчрокиКтоМнеНАписал,
-                                                                                                              Integer getPublicID
-
-                            ,PUBLIC_CONTENT public_contentCompletionService) {
-                        ///
-// TODO: 11.02.2022
-
+                    private void МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(
+                          @NonNull  Long ПолученныйUUIDСтчрокиКтоМнеНАписал,
+                          @NonNull   Integer getPublicID) {
                         try{
+                            // TODO: 25.11.2024
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-                            Log.d(this.getClass().getName(), "ПолученныйUUIDСтчрокиКтоМнеНАписал " + ПолученныйUUIDСтчрокиКтоМнеНАписал  + " ID " +getPublicID);
+                            String sql=  " SELECT * FROM data_chat  WHERE user_update  <>  ?   AND status_write=?  AND chat_uuid=?  " +
+                                    "          ORDER BY date_update DESC      ";
+                            Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате =getHiltAllDateBaseOpersions.
+                                    getCursorMessageUnreadUser().getCursor(sql,"data_chat",new String[]{getPublicID.toString(),String.valueOf(0),ПолученныйUUIDСтчрокиКтоМнеНАписал.toString()}  );
 
-
-                            Class_GRUD_SQL_Operations       class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате=new Class_GRUD_SQL_Operations(getContext());
-
-
-                            Class_GRUD_SQL_Operations.GetData class_grud_sql_operationsФрагментМСообщения= class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.new GetData(getContext());
-
-
-
-
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "data_chat");
-                            ///////
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("СтолбцыОбработки", "*");
-                            //
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("ФорматПосика", " user_update  <>  ?   AND status_write=?  AND chat_uuid=? ");//todo old_    id_user
-                            ///"_id > ?   AND _id< ?"
-                            //////
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("УсловиеПоиска1", getPublicID);
-                            //////
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("УсловиеПоиска2", 0);
-                            //////
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("УсловиеПоиска3",ПолученныйUUIDСтчрокиКтоМнеНАписал);
-                            ///
-      /*             class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-                    ///
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                    //
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......*/
-
-                            ////TODO другие поля
-
-                            ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
-                            ////
-                            //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
-                            ////
-                            class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-                            ////
-                            /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                            ////
-
-                            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-                            Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате = null;
-// TODO: 11.02.2022
-
-
-                            /*       Class_GRUD_SQL_Operations.GetData class_grud_sql_operations= class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.new GetData(getActivity());*/
-
-                            //////
-                            ///////
-                            Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате = (SQLiteCursor) class_grud_sql_operationsФрагментМСообщения
-                                    .getdata(class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                                    concurrentHashMapНабор,
-                                            public_contentCompletionService.МенеджерПотоков,
-                                            sqLiteDatabase);
-
-
-
-
-                            Log.d(this.getClass().getName(), "GetData " + Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате);
-
-
+                            // TODO: 25.11.2024
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате  "
+                                    +Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате);
 
                             if (Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.getCount() > 0) {
-
-                                // TODO: 28.12.2021
                                 Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.moveToFirst();
-                                // TODO: 28.12.2021
-                                Log.d(this.getClass().getName(), "Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.getCount() "
-                                        + Курсор_ИщемСтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.getCount());
 
                             }
+                            // TODO: 25.11.2024
+                            Log.d(getContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-
-
-                            /////////////
                         } catch (Exception e) {
                             e.printStackTrace();
-                            ///метод запись ошибок в таблицу
                             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                             new   Class_Generation_Errors(getContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                     Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                         }
 
-
-
                     }
+
+
+
+
 // TODO: 11.02.2022 четвертый метод переноса
 
 
