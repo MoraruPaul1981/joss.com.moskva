@@ -890,7 +890,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                         + " время: " + new Date() + "\n+" +
                         " Класс в процессе... " + this.getClass().getName() + "\n" +
                         " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
-                        + " МесяцМаскимальнаяДатавТабеляхПоМесецям " +МесяцМаскимальнаяДатавТабеляхПоМесецям  + " Удаление  "+Удаление);
+                        + " МесяцМаскимальнаяДатавТабеляхПоМесецям " +МесяцМаскимальнаяДатавТабеляхПоМесецям  + " МесяцМаскимальнаяДатавТабеляхПоМесецям  "+МесяцМаскимальнаяДатавТабеляхПоМесецям);
             } else {
                 МесяцМаскимальнаяДатавТабеляхПоМесецям = "";
             }
@@ -902,10 +902,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             }
             String[] НазваниеТабеля = {""};
             String[] ДатаТабеляИзБАзы = {""};
-            ////todo ЗАГРУЖАЕМ КУРСОР ПОЛУЧЕННЫЙ С ГОТОВЫМИ ТАБЕЛЯ ЗА КОНКЕРТНЫЙ МЕСЯЦ
-            if (Курсор_КоторыйЗагружаетГотовыеШаблоны != null) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
-                Log.d(this.getClass().getName(), " Курсор_КоторыйЗагружаетГотовыеШаблоны " + Курсор_КоторыйЗагружаетГотовыеШаблоны.getCount());
-            }
+
             if (Курсор_КоторыйЗагружаетГотовыеШаблоны.getCount() > 0) {/////ЕСЛИ ЕСТЬХОТЯБЫ ОДИН ТАБЕЛЬ
                 Log.d(this.getClass().getName(), " Курсор_КоторыйЗагружаетГотовыеШаблоны " + Курсор_КоторыйЗагружаетГотовыеШаблоны.getCount());
                 ////TODO СТАВИМ КУРСОР НА НУЖНУЮ ПОЗИЦИЮ
@@ -921,16 +918,11 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     LinearLayoutСозданныхТабелей.invalidate();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    ///метод запись ошибок в таблицу
-               /* Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());*/
                 }
+
+
                 String СамСтатусАтбеля;
                     TExtvieeСловоТабельВсегоШАблонов.setText(TExtvieeСловоТабельВсегоШАблонов.getText());
-
-
-
-
 
                 ////// todo заргужаем название табелеей ЦИКЛ загружаем на активти  УЖЕ СОЗДАННЫЕ ТАБЕЛЯ И ВИД ИХ ДЕЛАЕМ КАК КНОПКА
                 do {
@@ -1007,336 +999,159 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                ///метод запись ошибок в таблицу
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
                                         Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
                             }
-                            ///  ((TextView) v).setBackgroundColor(Color.parseColor("#F5FFFA"));
-
                         }
 
 
-                        ////////////////////////TODO event
 
 
-                        ////////
+
+
+
+
+
 
 
                         /////TODO метод запуска кода при однократорм нажатии просто загузка сотрудников табель
                         protected void МетодЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель(
                                 Button v,
                                 SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней) {
-
-                            ///
-
-                            // TODO: 07.09.2021
-
-                            SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм = null;
                             try {
+                                // TODO: 25.11.2024
+                                Log.d(getApplicationContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней  "
+                                                + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней);
 
-
-                                // TODO: 12.03.2021 первое действие получаем данные данного шаблона
-                                // ((TextView) v).setBackgroundColor(Color.RED);
-
-
-                                Log.d(this.getClass().getName(), " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней  "
-                                        + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней);
-
-                                // String ПередаемСозданнуюДатуНовогоТабеля = (String) ((TextView) СпинерВыборДату.getChildAt(0)).getText();///дата нового табеля
                                 ///////todo ВЫТАСКИЕВАЕМ НАЗВАНИЕ ТАБЕЛЯ
                                 Button ИзКнопкиПолучаемНазваниеТабеля = v;
-
                                 String ПередаемСозданнуюНазваниеТабеля = ИзКнопкиПолучаемНазваниеТабеля.getText().toString();
 
-                                Log.d(this.getClass().getName(), " ПередаемСозданнуюНазваниеТабеля  " + ПередаемСозданнуюНазваниеТабеля);
 
                                 ///////todo ВЫТАСКИЕВАЕМ НАЗВАНИЕ ТАБЕЛЯ
-
                                 Button ИзКнопкиПолучаемUUIDТабеля = v;
-
                                 Object ПередаваемыйИзКнопкиПолучаемUUIDТабеля = ИзКнопкиПолучаемНазваниеТабеля.getTag();
-
                                 Log.d(this.getClass().getName(), " ПередаваемыйИзКнопкиПолучаемUUIDТабеля  " + ПередаваемыйИзКнопкиПолучаемUUIDТабеля.toString());
 
 
-                                /////////TODO действие второе
-                                // TODO: 12.03.2021 выше полученных курсор с данными   Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм
 
 
-                                Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм = null;
-
-                                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-
-                                ///
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель = new Class_GRUD_SQL_Operations(getApplicationContext());
-
-                                ///
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "Fio_Template");
-                                ///////
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        concurrentHashMapНабор.put("СтолбцыОбработки", "*");///fio_uuid
-                                //
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        concurrentHashMapНабор.put("ФорматПосика", "fio_template=? ");
-                                ///"_id > ?   AND _id< ?"
 
                                 Long РодительскийUUIDДляПоскаДанных = Long.parseLong(ПередаваемыйИзКнопкиПолучаемUUIDТабеля.toString().trim());
-                                //////
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        concurrentHashMapНабор.put("УсловиеПоиска1", РодительскийUUIDДляПоскаДанных);
-                                ///
-                           /*         class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-                                    ///
-                                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                                    //
-                                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-*/
-                                ////TODO другие поля
 
-                                ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
-                                ////
-                                //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
-                                ////
-                                class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-                                ////
-                                /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                                ////
+                                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
+                                String sql=  " SELECT * FROM Fio_Template  WHERE fio_template=?   GROUP BY name_templates   ORDER BY date_update DESC   ";
+                               Cursor Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь =getHiltAllDateBaseOpersions.
+                                       getCursorDataFromDataTemplateCreatedUser().getCursor(sql,"Fio_Template" ,new String[]{РодительскийUUIDДляПоскаДанных.toString()});
 
-                                // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-
-                                Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм = (SQLiteCursor) class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                        new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                concurrentHashMapНабор,
-                                        Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,  sqLiteDatabase);
-                                //////
-
-
-                                Log.d(this.getClass().getName(), "GetData " + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм);
-
-
-
-
-
-                         /*           // TODO: 07.09.2021    _old
-                                                Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм =
-                                                        new Class_MODEL_synchronized(getApplicationContext()).КурсорУниверсальныйДляБазыДанных("Fio_Template",
-                                                                new String[]{"fio_uuid"},//     new String[]{"name,id,uuid,BirthDate,snils},
-                                                                "fio_template=? ",//AND status_send IS NULL//"Удаленная" //AND status_send!=?" /AND status_send IS NULL AND  name IS NOT NULL AND fio IS NOT NULL
-                                                                new String[]{ПередаваемыйИзКнопкиПолучаемUUIDТабеля.toString()},
-                                                                null, null, "date_update DESC", null);
-*/
-
+                                // TODO: 25.11.2024
+                                Log.d(getApplicationContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + " РодительскийUUIDДляПоскаДанных " +РодительскийUUIDДляПоскаДанных
+                                        + " Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь  "+Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь);
 
 
 
 
                                 StringBuffer stringBuffer = new StringBuffer();
-
                                 int lines = 0;
-
                                 ////todo результат
+                                if (Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.getCount() > 0) {
+                                    Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.moveToFirst();
+                                    // TODO: 25.11.2024
+                                    Log.d(getApplicationContext().getClass().getName(), "\n"
+                                            + " время: " + new Date() + "\n+" +
+                                            " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                            " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                            + " РодительскийUUIDДляПоскаДанных " +РодительскийUUIDДляПоскаДанных
+                                            + " Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.getCount()  "+Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.getCount());
 
-                                if (Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount() > 0) {
-
-                                    Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.moveToFirst();
-
-                                    Log.d(this.getClass().getName(), "Курсор_ПолчеамДанныеУжеСозданнымШаблоном.getCount() "
-                                            + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount());
-
-
-                                    Log.d(this.getClass().getName(), "Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount() "
-                                            + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount());
-
-
-                                    // TODO: 14.03.2021
-                                    //
-                                    Cursor ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм = null;
 
                                     // TODO: 26.09.2021  КОПИРУЕМ ОДИН КУРСОР ИЗ ДРУГОВА КУРСОР АДЛЯ ВИЧЧИСЛЕНИЯ ФИО ПО UUID ИЩ РОДИТЕЛЬСКОЙ ТАБЛИЦЫ
-                                    ////
-                                    ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм = Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм;
-
-
-
-
-                                    ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.moveToFirst();
-
-
                                     // TODO: 17.03.2021 запускам даные из курсора
-
                                     do {
 
+                                        Integer ИндексГдеНАходитьсяUUIDФИО = Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.getColumnIndex("fio_uuid");
+                                        Long ПолученныйUUIDДЛЯПолучениеДанных = Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.getLong(ИндексГдеНАходитьсяUUIDФИО);
 
-                                        //ССылкаНаСозданнуюБазу.execSQL(" DELETE FROM tabels WHERE fio= -9223372036854775808; ");
-
-                                        //    ССылкаНаСозданнуюБазу.execSQL(" DELETE FROM Fio_Template WHERE fio_uuid= -9223372036854775808; ");
-
-
-                                        //     int g=                     ССылкаНаСозданнуюБазу.delete("Fio_Template","fio_uuid=?",new String[]{"-9223372036854775808"});
-
-
-                                        Integer ИндексГдеНАходитьсяUUIDФИО = ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getColumnIndex("fio_uuid");
-
-                                        /////
-                                        Long ПолученныйUUIDДЛЯПолучениеДанных = ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getLong(ИндексГдеНАходитьсяUUIDФИО);
-
-                                        Log.d(this.getClass().getName(), "ПолученныйUUIDДЛЯПолучениеДанных "
-                                                + ПолученныйUUIDДЛЯПолучениеДанных);
-
+                                        // TODO: 25.11.2024
+                                        Log.d(getApplicationContext().getClass().getName(), "\n"
+                                                + " время: " + new Date() + "\n+" +
+                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " ПолученныйUUIDДЛЯПолучениеДанных " +ПолученныйUUIDДЛЯПолучениеДанных);
 
                                         // TODO: 07.09.2021  резуьтат
                                         if (ПолученныйUUIDДЛЯПолучениеДанных > 0) {
 
-                                            Cursor Курсор_ТаблицаФИО = null;
-                                            ///
-
-
                                             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
+                                            String sqlТаблицаФио=  " SELECT name,uuid FROM fio  WHERE uuid=?       ORDER BY date_update DESC   ";
+                                             Cursor   Курсор_ТаблицаФИО =getHiltAllDateBaseOpersions.
+                                                     getCursorDataFromFio().getCursor( sqlТаблицаФио,"fio" ,new String[]{ПолученныйUUIDДЛЯПолучениеДанных.toString()});
 
-                                            ///
-                                            // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-
-                                            ///
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель = new Class_GRUD_SQL_Operations(getApplicationContext());
-
-
-                                            ///
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    concurrentHashMapНабор.put("НазваниеОбрабоатываемойТаблицы", "fio");
-                                            ///////
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    concurrentHashMapНабор.put("СтолбцыОбработки", "name,uuid");
-                                            //
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    concurrentHashMapНабор.put("ФорматПосика", "uuid=? ");
-                                            ///"_id > ?   AND _id< ?"
-                                            //////
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    concurrentHashMapНабор.put("УсловиеПоиска1", ПолученныйUUIDДЛЯПолучениеДанных);
-                                            ///
-                                       /*     class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-                                            ///
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                                            //
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-
-                                            ////TODO другие поля*//*     class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска2","Удаленная");
-                                            ///
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                                            //
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-
-                                            ////TODO другие поля*/
-
-                                            ///classGrudSqlOperations. concurrentHashMapНабор.put("ПоляГрупировки",null);
-                                            ////
-                                            //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
-                                            ////
-                                            class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
-                                            ////
-                                            /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
-                                            ////
-
-                                            // TODO: 27.08.2021  ПОЛУЧЕНИЕ ДАННЫХ ОТ КЛАССА GRUD-ОПЕРАЦИИ
-
-                                            Курсор_ТаблицаФИО = (SQLiteCursor) class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsЗапускаетПереходНаЗаполенияСозданнымШАБЛОНОМВТабель.
-                                                            concurrentHashMapНабор,
-                                                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,  sqLiteDatabase);
-
-
-                                            //////
-
-                                            Log.d(this.getClass().getName(), "GetData " + Курсор_ТаблицаФИО);
-
-
-
-
-                                   /*         // TODO: 07.09.2021    ___old
-                                           Курсор_ТаблицаФИО = new Class_MODEL_synchronized(getApplicationContext()).КурсорУниверсальныйДляБазыДанных("fio",
-                                        new String[]{"name,uuid"},//     new String[]{"name,id,uuid,BirthDate,snils},
-                                        "uuid=?",//AND status_send IS NULL//"Удаленная" //AND status_send!=?" /AND status_send IS NULL AND  name IS NOT NULL AND fio IS NOT NULL
-                                        new String[]{String.valueOf(ПолученныйUUIDДЛЯПолучениеДанных)},
-                                        null, null, "date_update DESC", null);
-*/
+                                            // TODO: 25.11.2024
+                                            Log.d(getApplicationContext().getClass().getName(), "\n"
+                                                    + " время: " + new Date() + "\n+" +
+                                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                    + " РодительскийUUIDДляПоскаДанных " +РодительскийUUIDДляПоскаДанных
+                                                    + " Курсор_ТаблицаФИО  "+Курсор_ТаблицаФИО);
 
 
                                             // TODO: 07.09.2021   resultat
 
                                             if (Курсор_ТаблицаФИО.getCount() > 0) {
-                                                /////
                                                 Курсор_ТаблицаФИО.moveToFirst();
-
-
                                                 String ИмяПолученоИзФИо = Курсор_ТаблицаФИО.getString(0);
-
-
                                                 stringBuffer.append(ИмяПолученоИзФИо).append("\n");
-
                                             }
-
                                         }
 
-                                    } while (ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.moveToNext());
+                                    } while (Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь.moveToNext());
                                     /////
 
-
-                                  /*  ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.close();
-
-                                    Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.close();*/
-
-
-                                    //ДляСообщениеКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.close();
-
-                                    String yourInput = "...";
-
                                     Matcher m = Pattern.compile("\r\n|\r|\n").matcher(stringBuffer.toString());
-
-
-
                                     while (m.find()) {
                                         lines++;
                                     }
                                     lines = lines ;
-
-
                                 } else {
 
                                     Snackbar.make(v, "В шаблоне нет сотрудников.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                                     //Toast.makeText(getApplicationContext(), "в шаблоне нет сотрудников.", Toast.LENGTH_SHORT).show();
                                 }
 
-
-
-
-
-
-
-
-
                                 ((TextView) v).setBackgroundColor(Color.parseColor("#F5FFFA"));
 
+
+                                // TODO: 25.11.2024
+                                Log.d(getApplicationContext().getClass().getName(), "\n"
+                                        + " время: " + new Date() + "\n+" +
+                                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                        + "    ((TextView) v).getText()" +  ((TextView) v).getText().toString());
+
+
                                 // TODO: 08.10.2021 ПЕРЕХОДИМ НА СОЗДАНЕИ СОТРУДНИКОВ ИЗ ШАБЛОНА
-
-
                                 // TODO: 14.03.2021 метод записываем сотрудников в табель на базе ранее созданого шаблона
-                                СообщениеЗаполнениеСотрудниковИзШаблона("Шаблоны", "Заполнить Табель из Шаблона ? :"
-                                                + "\n" + "\n" + stringBuffer.toString() + ":" + lines + " кол.", true,
+
+                                СообщениеЗаполнениеСотрудниковИзШаблона("Шаблоны",
+                                        "Заполнить Табель из Шаблона ? :"
+                                                + "\n" + "\n" + stringBuffer.toString() + ":" + lines + " кол.",
                                         Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
-                                        Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм, ПередаемСозданнуюНазваниеТабеля,
-                                        ПередаваемыйИзКнопкиПолучаемUUIDТабеля,lines,v);
+                                        Курсор_ДаннымиИзШаблонаДАнныхСозданныйПользователь,
+                                        ((TextView) v));
 
-
-                                /////
-                                ///КОНЕЦ ЗАПОЛЕНИЯ ТАБЕЛЯ ИЗ ДАННЫХ
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                ///метод запись ошибок в таблицу
                                 Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                                         " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
                                 new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -1348,33 +1163,12 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                     });
 
 
-                    ///todo клик по табелби преход на сотрудников
-                    /////
-/////
-
-
-                    //////
-
                     if (МесяцМаскимальнаяДатавТабеляхПоМесецям.trim().equals(НазваниеТабеля[0].trim())) {
-
-
                         LinearLayoutСозданныхТабелей.addView(ШАблонвВидеКнопок, 0); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
-
-
                     } else {
-                        //TODO  ОЧИЩАЕМ ПАМТЬ
-
-
-                        ////////унопки распологаем внутири скролбара
                         LinearLayoutСозданныхТабелей.addView(ШАблонвВидеКнопок, ИндексДляСозданныхОбьектовНаАктивитиТАбель[0]); /////СОЗДАЕМ НАКШИ КНОПКИ ВНУРИ СКРОЛБАР
-
-
                     }
                     ИндексДляСозданныхОбьектовНаАктивитиТАбель[0]++;///увеличиваем
-
-
-                    ////ТУТ НАПИСАН  КОД КОТОРЫЙ ЗАПУСКАЕТ САМ ТАБЕЛЬ ПРИ НАЖАТИИ НА СОЗДАННЫЕ КНОПКА-ТАБЕЛЬ
-
 
                     /////todo ЦИКЛ ЗАГРУЗКИ ТОЛЬКО НАЗВАНИЙ ТАБЕЛЯ
                 } while (Курсор_КоторыйЗагружаетГотовыеШаблоны.moveToNext());
@@ -1388,27 +1182,19 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
             ////TODO ПОСЛЕ ЗАПОЛЕНЕИЯ ТАБЕЛЯ В АКТИВИТИ
             LinearLayoutСозданныхТабелей.invalidate();
-
             LinearLayoutСозданныхТабелей.requestLayout();
-
             ScrollНаАктивтиСозданныхТабелей.invalidate();
-
-            // TODO: 30.01.2022
-
             ScrollНаАктивтиСозданныхТабелей.requestLayout();
-
-
             ScrollНаАктивтиСозданныхТабелей.fullScroll(View.FOCUS_UP);
 
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName());
 
-            ///TODO удалем из памяти курсор
-            /////    Курсор_КоторыйЗагружаетГотовыеШаблоны.close();
-
-            /////
-            ///КОНЕЦ ЗАПОЛЕНИЯ ТАБЕЛЯ ИЗ ДАННЫХ
         } catch (Exception e) {
             e.printStackTrace();
-            ///метод запись ошибок в таблицу
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
                     " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
             new Class_Generation_Errors(getApplicationContext()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
@@ -2070,12 +1856,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     @UiThread
     protected void СообщениеЗаполнениеСотрудниковИзШаблона(String ШабкаДиалога,
                                                            final String СообщениеДиалога,
-                                                           boolean статус,
-                                                           SQLiteCursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
-                                                           SQLiteCursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм,
-                                                           String ПередаемСозданнуюНазваниеТабеля,
-                                                           Object ПередаваемыйИзКнопкиПолучаемUUIDТабеля
-            , int lines,
+                                                           Cursor Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
+                                                           Cursor Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм,
                                                            @NonNull TextView view) {
         ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ///////СОЗДАЕМ ДИАЛОГ ДА ИЛИ НЕТ
 //////сам вид
@@ -2096,13 +1878,16 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             @Override
             public void onClick(View v) {
                 alertDialog.dismiss();
-                Log.d(this.getClass().getName(), " создание нового сотрудникаКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм " + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount());
+                Log.d(this.getClass().getName(), " создание нового сотрудникаКурсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм "
+                        + Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм.getCount());
                 Log.d(this.getClass().getName(), " Переход на  Шаблоны");
 
                 // TODO: 17.03.2021 запусить добадение сотрудниковвиз шабона
                 try {
+
                     МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона(Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней,
                             Курсор_СДаннымиИзШаблонаДАнныхСозданныйПользовательм);
+
                     Log.d(this.getClass().getName(), " Переход на  Шаблоны"
                             + " Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней "
                             + Курсор_КотрыйПолученИзТаблицыТабельТолькоДляПолученияНаОсновеСФОляВставкиВыходныхДней +
@@ -2185,8 +1970,8 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     }
 
 
-    void МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона(@NonNull SQLiteCursor Курсор_ВыходныеДниДанные,
-                                                            @NonNull  SQLiteCursor Курсор_СамиДАнные) throws InterruptedException {
+    void МетодСамойЗаписиСотрудниковИзРанееСозданногШаблона(@NonNull  Cursor Курсор_ВыходныеДниДанные,
+                                                            @NonNull   Cursor Курсор_СамиДАнные) throws InterruptedException {
 
      
         try {
