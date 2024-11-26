@@ -1,5 +1,6 @@
 package com.dsy.dsu.LayerBunessLogic.bl_PasswordsApp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -35,15 +36,13 @@ public class GetSuccessLogin {
   try{
 // TODO: 14.10.2024
       String sql=  " SELECT * FROM successLogin ORDER BY date_update DESC LIMIT 1  ";
-      Uri uri = Uri.parse("content://com.dsy.dsu.providerforsystemtables/" + "successLogin" + "");
-      ContentResolver contentResolverPublicID = context.getContentResolver();
-      cursorLoginAndPassword = contentResolverPublicID.query(uri, new String[]{},
-              new String(sql),
-              new String[]{}, null);///   "  //// SELECT * FROM  viewtabel WHERE year_tabels=?  AND month_tabels=?  AND cfo=?  AND status_send!=?
+      getHiltAllDateBaseOpersions = EntryPoints.get(context, GetHiltAllDateBaseOpersions.class);
+      cursorLoginAndPassword=      getHiltAllDateBaseOpersions.getCursorSuccessLogin().getCursor(sql,"successLogin");
 
       if (cursorLoginAndPassword.getCount() > 0) {
           cursorLoginAndPassword.moveToFirst();
       }
+
 
       Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
             " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
@@ -155,6 +154,7 @@ public class GetSuccessLogin {
 
 
 
+    @SuppressLint("SuspiciousIndentation")
     public    Integer getWriteModeConnection(@NotNull String getchangeMode, @NotNull Integer getuuidLocal, @NotNull String columsChange){
         // TODO: 14.10.2024
         Integer getmMode_Connection=0;
@@ -170,10 +170,6 @@ public class GetSuccessLogin {
             contentValuesChangeModeSLL.put("publicid",getuuidLocal);
             // TODO: 12.04.2023 UPDATER PUBLIC ID
             if(getuuidLocal>0 ){
-
-    /*            // TODO: 12.04.2023 UPDATER model_ssl
-                getmMode_Connection=  contentProvidermode_connection.update(uri, contentValuesChangeModeSLL,null,null);
-*/
 
 
                 getHiltAllDateBaseOpersions = EntryPoints.get(context, GetHiltAllDateBaseOpersions.class);

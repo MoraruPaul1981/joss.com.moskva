@@ -53,16 +53,18 @@ import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Class_MODEL_synchronized;
 import com.dsy.dsu.LayerBunessLogic.DATE.SubClassCursorLoader;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
-import com.dsy.dsu.LayerBunessLogic.GrudOpersions.GetAllCursor;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.Services.ServiceUpdatePoОбновлениеПО;
 import com.dsy.dsu.LayerApp.DashboardApp.View.MainActivity_Dashboard;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces.GetHiltAllDateBaseOpersions;
 import com.dsy.dsu.R;
 import com.dsy.dsu.LayerBunessLogic.WorkManagers.BL_WorkMangers.CreateSingleWorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.common.util.concurrent.AtomicDouble;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -137,6 +139,12 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
 
     private   Cursor Курсор_ДанныеСпиннера;
     private ServiceUpdatePoОбновлениеПО.localBinderОбновлениеПО localBinderОбновлениеПО;//TODO новаЯ
+
+
+    // TODO: 25.11.2024
+    GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -148,7 +156,13 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
             subClassCursorLoader=      new SubClassCursorLoader();
             sqLiteDatabase  = EntryPoints.get(getApplicationContext(), HiltInterfacesqlite.class).getHiltSqlite();
             Class_Engine_SQLГдеНаходитьсяМенеджерПотоков =new PUBLIC_CONTENT (getApplicationContext());
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+
+
+
+            getHiltAllDateBaseOpersions = EntryPoints.get(getApplicationContext(), GetHiltAllDateBaseOpersions.class);
+
+
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -406,14 +420,12 @@ public class MainActivity_List_Tabels extends AppCompatActivity  {
         Cursor cursorDelete=null;
         try{
             // TODO: 15.10.2024 GET DATA ALL NEW
-            GetAllCursor getAllCursor=new GetAllCursor(context);
             String sql=  " SELECT uuid FROM  data_tabels  WHERE uuid_tabel=?     AND status_send!=?  ";
             String[] getWhrere=  new String[]{String.valueOf(СамоЗначениеUUID),"Удаленная" };
-            cursorDelete   =getAllCursor.getCursor(sql,"data_tabels",  getWhrere);
-
+            cursorDelete=   getHiltAllDateBaseOpersions.getAllCursor().getCursor(sql,"data_tabels",  getWhrere);
             Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                     " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " getAllCursor " +getAllCursor+
+                    " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " cursorDelete " +cursorDelete+
                     "cursorDelete " + cursorDelete);
     } catch (Exception e) {
         e.printStackTrace();
@@ -1923,9 +1935,16 @@ try{
                                     public void accept(Object o) throws Throwable {
                                         // TODO: 22.11.2022  первая часть
                                     Long    ДляУдалениеUUID=     cursor.getLong(0);
-                                   Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
-                                                    "uuid", ДляУдалениеUUID);
-                                            Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
+                                   Integer     Удаление =getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
+                                           "uuid", ДляУдалениеUUID);
+
+                                        // TODO: 25.11.2024
+                                        Log.d(context.getClass().getName(), "\n"
+                                                + " время: " + new Date() + "\n+" +
+                                                " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                                " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                                + " ДляУдалениеUUID " +ДляУдалениеUUID  + " Удаление  "+Удаление);
+                                        // TODO: 26.11.2024
                                         if (Удаление>0) {
                                             УдалениеintegerArrayList.add(Удаление);
                                         }
@@ -2005,9 +2024,15 @@ try{
                         @Override
                         public void accept(Object o) throws Throwable {
                             // TODO: 22.11.2022  первая часть
-                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
+                            Integer     Удаление =getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
                                     "uuid", ДляУдалениеUUID);
-                            Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
+
+                            // TODO: 25.11.2024
+                            Log.d(context.getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " ДляУдалениеUUID " +ДляУдалениеUUID  + " Удаление  "+Удаление);
                             if (Удаление>0) {
                                 УдалениеintegerArrayList.add(Удаление);
                             }

@@ -2,6 +2,7 @@ package com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces;
 
 
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetAllCursor;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting.RemovingOnlyBlankTabel;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
@@ -32,7 +33,7 @@ public interface GetHiltAllDateBaseOpersions {
     GetAllCursor getAllCursor();
     GetSettingCursor getSettingCursor();
 
-   
+    GetCursorSuccessLogin getCursorSuccessLogin();
 
 
 

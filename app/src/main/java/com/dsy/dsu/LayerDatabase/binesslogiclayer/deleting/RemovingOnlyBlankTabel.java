@@ -32,8 +32,7 @@ public class RemovingOnlyBlankTabel {
 
     public Integer removingOnlyBlankTabel(String tablenameDelete,
                                               String colunmtwehe,
-                                              Long UUIDDelete)
-            throws ExecutionException, InterruptedException {
+                                              Long UUIDDelete) {
         Integer getupdatingDataWithWhere = 0;
         try {
             // TODO: 25.11.2024

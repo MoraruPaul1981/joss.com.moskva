@@ -54,6 +54,7 @@ import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 import com.dsy.dsu.LayerBunessLogic.SubClassGetPublicId;
 import com.dsy.dsu.LayerBunessLogic.SubClassUpVersionDATA;
 import com.dsy.dsu.LayerApp.DashboardApp.View.Fragments.DashboardFragmentSettings;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.interfaces.GetHiltAllDateBaseOpersions;
 import com.dsy.dsu.R;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -135,6 +136,9 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
+    // TODO: 25.11.2024
+    GetHiltAllDateBaseOpersions getHiltAllDateBaseOpersions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try{
@@ -144,7 +148,11 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
         activity=this;
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = new PUBLIC_CONTENT(getApplicationContext());
-        getSupportActionBar().hide(); ///скрывать тул бар
+
+            getHiltAllDateBaseOpersions = EntryPoints.get(getApplicationContext(), GetHiltAllDateBaseOpersions.class);
+
+
+            getSupportActionBar().hide(); ///скрывать тул бар
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  );
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
@@ -444,9 +452,15 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
                         @Override
                         public void accept(Object o) throws Throwable {
                             // TODO: 22.11.2022  первая часть
-                            Integer     Удаление = new Class_MODEL_synchronized(getApplicationContext()).removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
+                            Integer     Удаление =getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel(ИзКакойТаблицыУдалять,
                                     "uuid", ДляУдалениеUUID);
-                            Log.d(this.getClass().getName(), " ДляУдалениеUUID " + ДляУдалениеUUID);
+
+                            // TODO: 25.11.2024
+                            Log.d(getApplicationContext().getClass().getName(), "\n"
+                                    + " время: " + new Date() + "\n+" +
+                                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                                    + " ДляУдалениеUUID " +ДляУдалениеUUID  + " Удаление  "+Удаление);
                             if (Удаление>0) {
                                 УдалениеintegerArrayList.add(Удаление);
                             }
@@ -530,21 +544,35 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             String СодержимоеКурсора = null;
             String СодержимоеКурсораНазваниеТабеля = null;
             РезультатУдалениеСамогоТАбеля = 0;
+
             /////TODO КОД ПРИ ОБНОВЛЯЕМ ПРИ ТАБЕЛЯ (ВАРИАНТ ВАРИАНТ УДЯЛЯЕМ А НИЖЕ ПРОСТО ОБНОВЛЯЕМ КОЛОКУ И ВПИСЫВАЕМ уДАЛЕННЫЕ)
-            РезультатУдалениеСамогоТАбеля = classModel_synchronizedСсылкаДляУдаленияШаблона.
-                    УдалениеТолькоШАблонЧерезКонтейнерУниверсальная(НазваниеТаблицыГдеУдалитьШАБЛОН,
-                            "uuid",
-                            String.valueOf(СамоЗначениеUUID));
-            Log.d(this.getClass().getName(), " РезультатУдалениеСотрудникаИзТаблея " + РезультатУдалениеСамогоТАбеля + " СамоЗначениеUUID " + СамоЗначениеUUID);
+
+            РезультатУдалениеСамогоТАбеля =getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel(НазваниеТаблицыГдеУдалитьШАБЛОН,
+                    "uuid", СамоЗначениеUUID);
+
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " ДляУдалениеUUID " +ДляУдалениеUUID  + " РезультатУдалениеСамогоТАбеля  "+РезультатУдалениеСамогоТАбеля);
+
+
             // TODO: 28.01.2022 удаление  ВО ВТОРОЙ ТАБЛИЦЕ НИЖНЕЙ
             Integer РезультатУдалениеСамогоФИО_Шаблон = 0;
-            Log.d(this.getClass().getName(), " РезультатУдалениеСотрудникаИзТаблея " + РезультатУдалениеСамогоТАбеля + " СамоЗначениеUUID " + СамоЗначениеUUID);
             if (РезультатУдалениеСамогоТАбеля > 0) {
-                Log.d(this.getClass().getName(), " УСпешное удаление ШАБЛОНА ШАБЛОНА Templates  РезультатУдалениеСамогоФИО_Шаблон " + РезультатУдалениеСамогоФИО_Шаблон + " СамоЗначениеUUID " + СамоЗначениеUUID);
                 /////TODO КОД ПРИ ОБНОВЛЯЕМ ПРИ ТАБЕЛЯ (ВАРИАНТ ВАРИАНТ УДЯЛЯЕМ А НИЖЕ ПРОСТО ОБНОВЛЯЕМ КОЛОКУ И ВПИСЫВАЕМ уДАЛЕННЫЕ)
-                РезультатУдалениеСамогоФИО_Шаблон = classModel_synchronizedСсылкаДляУдаленияШаблона.УдалениеТолькоШАблонЧерезКонтейнерУниверсальная("fio_template",
-                        "fio_template",
-                        String.valueOf(СамоЗначениеUUID));
+                РезультатУдалениеСамогоФИО_Шаблон =    getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel("fio_template",
+                        "fio_template", СамоЗначениеUUID);
+
+                // TODO: 25.11.2024
+                Log.d(getApplicationContext().getClass().getName(), "\n"
+                        + " время: " + new Date() + "\n+" +
+                        " Класс в процессе... " + this.getClass().getName() + "\n" +
+                        " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                        + " ДляУдалениеUUID " +ДляУдалениеUUID  + " РезультатУдалениеСамогоТАбеля  "+РезультатУдалениеСамогоТАбеля);
+
+
             }
             Log.d(this.getClass().getName(), " РезультатУдалениеСамогоФИО_Шаблон " + РезультатУдалениеСамогоФИО_Шаблон + " СамоЗначениеUUID " + СамоЗначениеUUID);
             ///TODO СООБЩЕНИЕ О РЕЗУЛЬТАТОВ
@@ -638,21 +666,40 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void МетодУдалениеВсехСотрудниковВТАбеле(Long СамоЗначениеUUID, String ДляУдалениеUUID,
-                                                     Integer НазваниеУдаляемогоТАбеляВЦифровомФормате) throws ExecutionException, InterruptedException, TimeoutException {
-        final long[] РезультатУдалениеВсехСотрудниковСамогоТАбеля = {0};
+                                                     Integer НазваниеУдаляемогоТАбеляВЦифровомФормате)  {
+        long РезультатУдалениеВсехСотрудниковСамогоТАбеля = 0;
         try {
-            String СамоЗначениеUUIDДляУдаланиевсехСотрудников = null;
-            Iterator<String> итераторДляУдалениеВсегоТабеля = СодержимоеКурсораUUIDТабеляПриУдалениеиТАбеляилиВместеССотрудником.iterator();
-            СамоЗначениеUUIDДляУдаланиевсехСотрудников = итераторДляУдалениеВсегоТабеля.next();
-            System.out.println(СамоЗначениеUUIDДляУдаланиевсехСотрудников);
-            РезультатУдалениеВсехСотрудниковСамогоТАбеля[0] = new Class_MODEL_synchronized(getApplication()).
-                    removingOnlyBlankTabel("tabels", "cfo",
-                            Long.parseLong(String.valueOf(НазваниеУдаляемогоТАбеляВЦифровомФормате)));
-            System.out.println("РезультатУдалениеВсехСотрудниковСамогоТАбеля " + РезультатУдалениеВсехСотрудниковСамогоТАбеля[0]);
-            System.out.println(РезультатУдалениеВсехСотрудниковСамогоТАбеля[0]);
+
+            Iterator<Long> итераторДляУдалениеВсегоТабеля = СодержимоеКурсораUUIDТабеляПриУдалениеиТАбеляилиВместеССотрудником.iterator();
+            // TODO: 26.11.2024
+          Long  СамоЗначениеUUIDДляУдаланиевсехСотрудников = итераторДляУдалениеВсегоТабеля.next();
+
+
+            // TODO: 26.11.2024
+            РезультатУдалениеВсехСотрудниковСамогоТАбеля =getHiltAllDateBaseOpersions.removingOnlyBlankTabel().removingOnlyBlankTabel("tabels", "cfo",
+                    СамоЗначениеUUIDДляУдаланиевсехСотрудников);
+
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " ДляУдалениеUUID " +ДляУдалениеUUID  + " РезультатУдалениеВсехСотрудниковСамогоТАбеля  "+РезультатУдалениеВсехСотрудниковСамогоТАбеля);
+
+
+
             СообщениеПослеУдаленияСамогоТАбеля("Оповещение Табеля", "Успешное удалание Табеля"
                     + "\n" + " (с сотрудниками): "
                     + СодержимоеКурсораUUIDТабеляПриУдалениеиТАбеляилиВместеССотрудником.size(), true, НазваниеУдаляемогоТАбеляВЦифровомФормате);
+
+
+            // TODO: 25.11.2024
+            Log.d(getApplicationContext().getClass().getName(), "\n"
+                    + " время: " + new Date() + "\n+" +
+                    " Класс в процессе... " + this.getClass().getName() + "\n" +
+                    " метод в процессе... " + Thread.currentThread().getStackTrace()[2].getMethodName()
+                    + " ДляУдалениеUUID " +ДляУдалениеUUID  + " РезультатУдалениеВсехСотрудниковСамогоТАбеля  "+РезультатУдалениеВсехСотрудниковСамогоТАбеля);
+
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
@@ -794,7 +841,7 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
 
 
             // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-            Class_GRUD_SQL_Operations class_grud_sql_operationsСозданиеТабеляИзБазы = new Class_GRUD_SQL_Operations(getApplicationContext());
+
 
             ///
             class_grud_sql_operationsСозданиеТабеляИзБазы = new Class_GRUD_SQL_Operations(getApplicationContext());
@@ -810,27 +857,16 @@ public class MainActivity_New_Templates extends AppCompatActivity implements Dat
             class_grud_sql_operationsСозданиеТабеляИзБазы.concurrentHashMapНабор.put("УсловиеПоиска1", "Удаленная");
             ///
             class_grud_sql_operationsСозданиеТабеляИзБазы.concurrentHashMapНабор.put("УсловиеПоиска2", ПубличноеIDПолученныйИзСервлетаДляUUID);
-            ///
-                  /*  class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска3",МЕсяцДляКурсораТабелей);
-                    //
-                    class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеПоиска4",ГодДляКурсораТабелей);////УсловиеПоискаv4,........УсловиеПоискаv5 .......
-*/
-            ////TODO другие поля
 
             class_grud_sql_operationsСозданиеТабеляИзБазы.concurrentHashMapНабор.put("ПоляГрупировки", "name_templates");
-            ////
-            //class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеГрупировки",null);
-            ////
+
             class_grud_sql_operationsСозданиеТабеляИзБазы.concurrentHashMapНабор.put("УсловиеСортировки", "date_update DESC");
             ////
-            /// class_grud_sql_operations. concurrentHashMapНабор.put("УсловиеЛимита","1");
-            ////
-            Курсор_КоторыйЗагружаетГотовыеШаблоны = (SQLiteCursor) class_grud_sql_operationsСозданиеТабеляИзБазы.
-                    new GetData(getApplicationContext()).getdata(class_grud_sql_operationsСозданиеТабеляИзБазы.concurrentHashMapНабор,
-                    Class_Engine_SQLГдеНаходитьсяМенеджерПотоков.МенеджерПотоков,  sqLiteDatabase);
-            Log.d(this.getClass().getName(), "GetData " + Курсор_КоторыйЗагружаетГотовыеШаблоны);
+
+
+
+
             //////todo работающий NULL в query
-            Log.d(this.getClass().getName(), " Курсор_КоторыйЗагружаетГотовыеШаблоны.getCount() " + Курсор_КоторыйЗагружаетГотовыеШаблоны.getCount());
             /////TODO курсор для нахождения даты максимальной
             SQLiteCursor Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = null;
             Курсор_КоторыйЗагружаетГотовыеШаблоныМаксимальнаяДата = МетодКоторыйПоказываетМаксимальнуюДатуИзменения(ПолученнаяUUIDНазванияОрганизации);
