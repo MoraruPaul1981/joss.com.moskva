@@ -50,8 +50,8 @@ public class SubClassWriterPUBLICIDtoDatabase {
             contentValuesNewPublicWitnSussecLogin.put("date_update", ДатаДЛяОчисткиИВстсвкиИмениИПароль);
 
             // TODO: 08.10.2024 Update or Insert  In table SuccessLogin PUBLIC ID
-            результатЗаписиНовогоПароляПользователявБазцуsuccesslogin =getHiltAllDateBaseOpersions.insertNewEmployeeFromATemplate()
-                    .insertingaNewEmployeeFromATemplate("successlogin",
+            результатЗаписиНовогоПароляПользователявБазцуsuccesslogin =getHiltAllDateBaseOpersions.insertAfterSuccessPublicIDSyncSuccessLogin()
+                    .insertAfterSuccessPublicIDSyncSuccessLogin("successlogin",
                             contentValuesNewPublicWitnSussecLogin);
 
             // TODO: 25.11.2024
