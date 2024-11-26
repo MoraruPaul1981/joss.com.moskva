@@ -46,6 +46,7 @@ import com.dsy.dsu.LayerBunessLogic.Errors.Class_Generation_Errors;
 import com.dsy.dsu.LayerBunessLogic.Class_MODEL_synchronized;
 import com.dsy.dsu.LayerBunessLogic.CnangeServers.PUBLIC_CONTENT;
 
+import com.dsy.dsu.LayerBunessLogic.GetPublicID.GettingpPublicID;
 import com.dsy.dsu.LayerBunessLogic.Hilt.JbossAdrress.qualifiers.QualifierJbossServer3;
 import com.dsy.dsu.LayerApp.TabelsApp.MainActivity_New_Templates;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
@@ -789,13 +790,20 @@ try{
                                         new Class_Connections_Server(getContext()).МетодПингаСервераРаботаетИлиНет(getContext(),   getHiltPortJboss);
 
                                 if (ЕслиСвязьсСервером == true) {
-                                    String ПолученыйТекущееИмяПользователя = new Class_MODEL_synchronized(getContext())
-                                            .МетодПолучениеИмяСистемыДляСменыПользователя(getActivity());
+                                    // TODO: 26.11.2024
+                                    Integer getPublicID = new GettingpPublicID().gettingpPublicID(getContext());
 
-                                MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity())
+
+                                    Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
+                                            " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
+                                            " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                                            + " getPublicID" +getPublicID);
+
+
+                                    MaterialAlertDialogBuilder materialAlertDialogBuilder = new MaterialAlertDialogBuilder(getActivity())
                                                 .setTitle("Смена данных")
                                                 .setMessage("Данные будут удалены" + "\n"
-                                                        + " (текущий пользователь : ) " + ПолученыйТекущееИмяПользователя.toUpperCase())
+                                                        + " (текущий пользователь : ) " + getPublicID.toString().toUpperCase())
                                                  .setIcon(R.drawable.icon_dsu1_web_success)
                                              .setPositiveButton("Да", new DialogInterface.OnClickListener() {
                                     @Override

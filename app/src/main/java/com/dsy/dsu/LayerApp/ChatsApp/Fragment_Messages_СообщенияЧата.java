@@ -34,6 +34,7 @@ import androidx.lifecycle.Observer;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import com.dsy.dsu.LayerBunessLogic.GetPublicID.GettingpPublicID;
 import com.dsy.dsu.LayerBunessLogic.Hilt.Sqlitehilt.HiltInterfacesqlite;
 import com.dsy.dsu.LayerBunessLogic.bl_PasswordsApp.GetSuccessLogin;
  
@@ -75,7 +76,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
     private View viewФрагментСообщенияНазваниеЧАты;
     private   PUBLIC_CONTENT Class_Engine_SQLГдеНаходитьсяМенеджерПотоков = null;///
     private SQLiteDatabase sqLiteDatabase ;
-    private Integer ПубличноеIDПолученныйИзСервлетаДляUUID = 0;
+    private Integer getPublicID = 0;
     private   String ФИОдляпервогоФрагмента;
     private   Long UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты;
     private   HashMap<String, Object> ХэщЗапусАктивтиИзФрагмента;
@@ -147,44 +148,28 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         try {
-
             ХэщЗапусАктивтиИзФрагмента = new HashMap<>();
-
             // TODO  ////////////////////////////МОДЕЛЬ MVC ////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
-
-
-
-            //  viewФрагментСообщенияНазваниеЧАты.getBackground().setTint(Color.parseColor("#212121"));
+            Log.d(this.getClass().getName(), "  ID   " +getPublicID);
 
             MODEL modelФрагментСообщениия =new MODEL(getActivity());
 
-            modelФрагментСообщениия.МетодПолученияПубличногоIDДляСообщенийЧата();
 
-            modelФрагментСообщениия =new MODEL(getActivity());
+              getPublicID = new GettingpPublicID().gettingpPublicID(getContext());
 
-
-
-            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " +getPublicID);
 
 
             // TODO: 04.11.2021   ЗАПУСКАЕМ СИНХРОНИАХЦИИЮ  через ONESIGNAL
 
             modelФрагментСообщениия.МетодПодписываемсяОдноразовыйСлушателяСлужбыОбюмена();
 
-            Log.d(this.getClass().getName(), "  ID   " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " +getPublicID);
 
             modelФрагментСообщениия.МетодЗапускаОБЩЕЙСлушателяОбщегоWorkManager();
 
-            Log.d(this.getClass().getName(), "  ID   " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+            Log.d(this.getClass().getName(), "  ID   " + getPublicID);
 
 
             new Fragment_Messages_СообщенияЧата.MODEL(getActivity());
@@ -409,7 +394,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
                                        МетодГлавныйЗаполняемДаннымиНашSimpleCursorAdapter((TextView) view,
-                                            cursor,subClassGET_fio,ПубличноеIDПолученныйИзСервлетаДляUUID
+                                            cursor,subClassGET_fio,getPublicID
                                                ,public_contentCompletionService );
                                     ///
                                     // TODO: 21.12.2021
@@ -494,7 +479,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
                     protected  View МетодГлавныйЗаполняемДаннымиНашSimpleCursorAdapter(TextView view, Cursor cursor,
                                                                                        SubClassGET_FIO subClassGET_fio,
-                                                                                       Integer ПубличноеIDПолученныйИзСервлетаДляUUID,
+                                                                                       Integer getPublicID,
                                                                                        PUBLIC_CONTENT public_contentCompletionService) {
 
 
@@ -535,15 +520,15 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
                             Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  "
                                     + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                    " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                    " ID " + getPublicID);
 
 
 
-                            if (ПубличноеIDПолученныйИзСервлетаДляUUID.compareTo(IDдляпервогоФрагментаПользовательКоторыйНаписал) !=0) {
+                            if (getPublicID.compareTo(IDдляпервогоФрагментаПользовательКоторыйНаписал) !=0) {
 
 
                                 Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                        " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " + getPublicID);
 
 
                                 //TODO ПЕРВОЕ ДЕЙСТВИЕ  Я НАПИСАЛ  ДЕЙСТВИЕ МНЕ НАПИСАЛИ ДРУГИЕ УЧАСТИК ЧАТА   #1
@@ -556,7 +541,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                 Log.d(this.getClass().getName(), "  ФИОдляпервогоФрагмента  " + ФИОдляпервогоФрагмента
                                         + " IDдляпервогоФрагментаПользовательКоторыйНаписал "
                                         + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                        " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " + getPublicID);
 
 
                                 //TODO ПЕРВОЕ ДЕЙСТВИЕ  Я НАПИСАЛ  ДЕЙСТВИЕ МНЕ НАПИСАЛИ ДРУГИЕ УЧАСТИК ЧАТА   #1
@@ -564,11 +549,11 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                                 // TODO: 21.12.2021
 
                                 Log.d(this.getClass().getName(), " I DдляпервогоФрагментаДляСообщенияTag " + UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты+
-                                        " ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                        " ID " +getPublicID);
 
                                 //TODO ОпеределяемСтарусЕслиХотьОднаНЕпрочитаное Союощение ДяТекущегоПользователя У каждого кто ему НАПИСАЛ
 
-                                МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты,ПубличноеIDПолученныйИзСервлетаДляUUID
+                                МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(UUIDдляпервогоФрагментаДляСообщенияTagДляПередачиВоДругиеФрагменты,getPublicID
                                         , public_contentCompletionService);
 
 
@@ -623,7 +608,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
 
                             Log.d(this.getClass().getName(), "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал +
-                                    " ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                    " ID " + getPublicID);
 
 
 
@@ -697,14 +682,14 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                             //    view.setFontFeatureSettings(String.valueOf(IDдляпервогоФрагментаПользовательКоторыйНаписал));
 
                                 // TODO: 14.02.2022
-                                Log.d(this.getClass().getName(), "  ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
+                                Log.d(this.getClass().getName(), "  ID  " + getPublicID + " \n" +
                                         "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал+ " ЛистДополнительныеПрарментыID " +
                                         ЛистДополнительныеПрарментыID.toArray().toString()
                                         + "ЛистДополнительныеПрарменты_UUID.toArray().toString()  " +ЛистДополнительныеПрарменты_UUID.toArray().toString() );
                             }
 
 
-                            Log.d(this.getClass().getName(), "  ID  " + ПубличноеIDПолученныйИзСервлетаДляUUID + " \n" +
+                            Log.d(this.getClass().getName(), "  ID  " + getPublicID + " \n" +
                                     "  IDдляпервогоФрагментаПользовательКоторыйНаписал  " + IDдляпервогоФрагментаПользовательКоторыйНаписал);
 
                             // TODO: 21.12.2021
@@ -797,7 +782,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                     // TODO: 11.02.2022 третий преесенный метод в нижний классsub для ТЕКС1
 
                     private void МетодВычисляемЕслиХотьОдноСообщениеНеПрочитаноДляТекущегоПользоватеялСтрочки(Long ПолученныйUUIDСтчрокиКтоМнеНАписал,
-                                                                                                              Integer ПубличноеIDПолученныйИзСервлетаДляUUID
+                                                                                                              Integer getPublicID
 
                             ,PUBLIC_CONTENT public_contentCompletionService) {
                         ///
@@ -805,7 +790,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
 
                         try{
 
-                            Log.d(this.getClass().getName(), "ПолученныйUUIDСтчрокиКтоМнеНАписал " + ПолученныйUUIDСтчрокиКтоМнеНАписал  + " ID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
+                            Log.d(this.getClass().getName(), "ПолученныйUUIDСтчрокиКтоМнеНАписал " + ПолученныйUUIDСтчрокиКтоМнеНАписал  + " ID " +getPublicID);
 
 
                             Class_GRUD_SQL_Operations       class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате=new Class_GRUD_SQL_Operations(getContext());
@@ -827,7 +812,7 @@ public class Fragment_Messages_СообщенияЧата extends Fragment {
                             ///"_id > ?   AND _id< ?"
                             //////
                             class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
-                                    concurrentHashMapНабор.put("УсловиеПоиска1", ПубличноеIDПолученныйИзСервлетаДляUUID);
+                                    concurrentHashMapНабор.put("УсловиеПоиска1", getPublicID);
                             //////
                             class_grud_sql_operationsCтатусХотьестьОДинНольНЕПрочттаноеСообщениевЧате.
                                     concurrentHashMapНабор.put("УсловиеПоиска2", 0);
@@ -1600,9 +1585,9 @@ try {
                     //////////
                     Курсор_ВычисляемПУбличныйID.moveToFirst();
                     //////////////
-                    ПубличноеIDПолученныйИзСервлетаДляUUID = Курсор_ВычисляемПУбличныйID.getInt(0);
+                    getPublicID = Курсор_ВычисляемПУбличныйID.getInt(0);
                     //////
-                    Log.d(this.getClass().getName(), "ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                    Log.d(this.getClass().getName(), "ID " + getPublicID);
 
                 }
 
@@ -1612,7 +1597,7 @@ try {
 
                 //  TimeUnit.MILLISECONDS.sleep(100);
 
-                Log.d(this.getClass().getName(), "  MODEL  ID " + ПубличноеIDПолученныйИзСервлетаДляUUID);
+                Log.d(this.getClass().getName(), "  MODEL  ID " + getPublicID);
 
 
                 // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
@@ -1838,29 +1823,6 @@ try {
         // TODO: 08.09.2021  Метод Получает ФИО на основании выбраного сотрудника
 
 
-        public void МетодПолученияПубличногоIDДляСообщенийЧата() {
-            try {
-
-                // TODO: 26.08.2021 НОВЫЙ ВЫЗОВ НОВОГО КЛАСС GRUD - ОПЕРАЦИИ
-                // TODO: 14.10.2020 Получаем ЛОгин и Пароль
-                GetSuccessLogin getSuccessLogin   =  new GetSuccessLogin(getContext());
-                Cursor cursorLoginAndPassword= getSuccessLogin.gettingSuccessLogin();
-                ПубличноеIDПолученныйИзСервлетаДляUUID=getSuccessLogin.getSuccessPublicID(cursorLoginAndPassword);
-
-                Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
-                        " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                        " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
-                        + " ПубличноеIDПолученныйИзСервлетаДляUUID " +ПубличноеIDПолученныйИзСервлетаДляUUID);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() +
-                        " Линия  :" + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                new Class_Generation_Errors(getActivity()).МетодЗаписиВЖурналНовойОшибки(e.toString(), this.getClass().getName(),
-                        Thread.currentThread().getStackTrace()[2].getMethodName(), Thread.currentThread().getStackTrace()[2].getLineNumber());
-                ///
-            }
-
-        }
 
 
 

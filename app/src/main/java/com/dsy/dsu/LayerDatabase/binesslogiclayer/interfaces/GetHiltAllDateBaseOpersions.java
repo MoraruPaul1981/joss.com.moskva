@@ -12,6 +12,7 @@ import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetCursorSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.cursors.GetSettingCursor;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.deleting.RemovingOnlyBlankTabel;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.GetDataBaseInsert;
+import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.InsertAfterSuccessPublicIDSyncSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.inserts.InsertNewEmployeeFromATemplate;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessLogin;
 import com.dsy.dsu.LayerDatabase.binesslogiclayer.updates.PublicidAfterSuccessSynchronization;
@@ -70,6 +71,10 @@ public interface GetHiltAllDateBaseOpersions {
 
 
     InsertNewEmployeeFromATemplate insertNewEmployeeFromATemplate();
+
+
+    InsertAfterSuccessPublicIDSyncSuccessLogin insertAfterSuccessPublicIDSyncSuccessLogin();
+
 
 
 

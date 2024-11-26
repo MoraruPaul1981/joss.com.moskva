@@ -22,22 +22,22 @@ import dagger.hilt.components.SingletonComponent;
 
 @Module
 @InstallIn(SingletonComponent.class)
-public class InsertNewEmployeeFromATemplate {
+public class InsertAfterSuccessPublicIDSyncSuccessLogin {
 
     Context context;
     Long version;
 
 
-    public  @Inject InsertNewEmployeeFromATemplate(@ApplicationContext Context hiltcontext) {
+    public  @Inject InsertAfterSuccessPublicIDSyncSuccessLogin(@ApplicationContext Context hiltcontext) {
         this.context = hiltcontext;
 
     }
 
 
-  public   Integer   insertingaNewEmployeeFromATemplate(@NotNull String tableoperations,
+  public   Integer   insertAfterSuccessPublicIDSyncSuccessLogin(@NotNull String tableoperations,
                                                  @NotNull ContentValues contentValuesInsertingaNewEmployeeFromATemplate){
         // TODO: 26.11.2024
-        Integer   insertingaNewEmployeeFromATemplate=0;
+        Integer   getinsertAfterSuccessPublicIDSyncSuccessLogin=0;
         try{
             Uri uri = Uri.parse("content://com.dsy.dsu.providerdatabasecurrentoperations/" + tableoperations + "");
             ContentResolver contentResolver = context.getContentResolver();
@@ -47,11 +47,12 @@ public class InsertNewEmployeeFromATemplate {
             String ответОперцииВставки=    Optional.ofNullable(urlРезультатNewOrderTranport)
                     .map(Emmeter->Emmeter.toString().replace("content://","")).get();
 
-            insertingaNewEmployeeFromATemplate= Integer.parseInt(ответОперцииВставки);
+            getinsertAfterSuccessPublicIDSyncSuccessLogin= Integer.parseInt(ответОперцииВставки);
 
         Log.d(this.getClass().getName(),"\n" + " class " + Thread.currentThread().getStackTrace()[2].getClassName() + "\n" +
                 " metod " + Thread.currentThread().getStackTrace()[2].getMethodName() + "\n" +
-                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n" + " insertingaNewEmployeeFromATemplate " +insertingaNewEmployeeFromATemplate);
+                " line " + Thread.currentThread().getStackTrace()[2].getLineNumber() + "\n"
+                + " getinsertAfterSuccessPublicIDSyncSuccessLogin " +getinsertAfterSuccessPublicIDSyncSuccessLogin);
     } catch (Exception e) {
         e.printStackTrace();
         Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -61,7 +62,7 @@ public class InsertNewEmployeeFromATemplate {
                 this.getClass().getName(), Thread.currentThread().getStackTrace()[2].getMethodName(),
                 Thread.currentThread().getStackTrace()[2].getLineNumber());
     }
-        return  insertingaNewEmployeeFromATemplate;
+        return  getinsertAfterSuccessPublicIDSyncSuccessLogin;
     }
 
 
