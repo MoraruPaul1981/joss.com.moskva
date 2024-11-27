@@ -1414,13 +1414,13 @@ try {
                 // TODO: 28.06.2021  обнуялем курсор перед получением данных
 
 
-                String sql=  "  \" select cc.*,\" +\n" +
-                        "                                \" (select id_user \" +\n" +
-                        "                                \" from chats \" +\n" +
-                        "                                \" where id_user=" + ПубличныйIDДляФрагмента +" +\n" +
-                        "                                \" ) as prev_date\" +\n" +
-                        "                                \"  from chats cc \" +\n" +
-                        "                                \" where cc.id_user <>" + ПубличныйIDДляФрагмента +" + \";\"   ";
+                String sql=  "   select cc.*, +\n" +
+                        "                                 (select id_user +\n" +
+                        "                               from chats  +\n" +
+                        "                             where id_user=" + ПубличныйIDДляФрагмента.toString() +" +\n" +
+                        "                               ) as prev_date +\n" +
+                        "                                from chats cc  +\n" +
+                        "                                where cc.id_user <>" + ПубличныйIDДляФрагмента.toString() +";   ";
                 // TODO: 26.11.2024
                 КурсорДанныеДляСообщенийЧата =getHiltAllDateBaseOpersions.
                         getCursorMaximumDateChange().getCursor(sql,"chats"  );
