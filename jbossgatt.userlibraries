@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Gradle: javax.enterprise:cdi-api:2.0.SP1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.enterprise/cdi-api/2.0.SP1/4049cdc830c72149c3315182e0441960de935e0e/cdi-api-2.0.SP1.jar" />
+  </library>
+  <library name="Gradle: javax.enterprise.concurrent:javax.enterprise.concurrent-api:1.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.enterprise.concurrent/javax.enterprise.concurrent-api/1.1/cc4240956c4e8a7231aadd919fdee8fe39a2e50d/javax.enterprise.concurrent-api-1.1.jar" />
+  </library>
+  <library name="Gradle: javax.ejb:javax.ejb-api:3.2.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.ejb/javax.ejb-api/3.2.2/8921a3e3cb30fe5966531ad53902eef19303123b/javax.ejb-api-3.2.2.jar" />
+  </library>
+  <library name="Gradle: javax.json.bind:javax.json.bind-api:1.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.json.bind/javax.json.bind-api/1.0/10332203cb05f4ab2e8bf058bfd7d99648c5ca68/javax.json.bind-api-1.0.jar" />
+  </library>
+  <library name="Gradle: javax.security.enterprise:javax.security.enterprise-api:1.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.security.enterprise/javax.security.enterprise-api/1.0/4ab0f608789881cdb859f8e0798b8294aae3e4ed/javax.security.enterprise-api-1.0.jar" />
+  </library>
+  <library name="Gradle: javax.faces:javax.faces-api:2.3">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.faces/javax.faces-api/2.3/2a642453ab5ce7a506b46164de8258ee463a9197/javax.faces-api-2.3.jar" />
+  </library>
+  <library name="Gradle: javax.servlet:javax.servlet-api:4.0.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/4.0.1/a27082684a2ff0bf397666c3943496c44541d1ca/javax.servlet-api-4.0.1.jar" />
+  </library>
+  <library name="Gradle: javax.transaction:javax.transaction-api:1.3">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.transaction/javax.transaction-api/1.3/e006adf5cf3cca2181d16bd640ecb80148ec0fce/javax.transaction-api-1.3.jar" />
+  </library>
+  <library name="Gradle: javax:javaee-api:8.0.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax/javaee-api/8.0.1/515a40c1f19802a18a187f59bfbe445a62218a04/javaee-api-8.0.1.jar" />
+  </library>
+  <library name="Gradle: org.jboss.spec.javax.ejb:jboss-ejb-api_3.2_spec:2.0.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.ejb/jboss-ejb-api_3.2_spec/2.0.0.Final/d21bf727c723a38d53595cdf04a40bdc7b48900c/jboss-ejb-api_3.2_spec-2.0.0.Final.jar" />
+  </library>
+  <library name="Gradle: javax.websocket:javax.websocket-api:1.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.websocket/javax.websocket-api/1.1/eeeb68631711256418dfbb47b11c731b6c8f6235/javax.websocket-api-1.1.jar" />
+  </library>
+  <library name="Gradle: org.jboss.spec.javax.servlet:jboss-servlet-api_4.0_spec:2.0.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.servlet/jboss-servlet-api_4.0_spec/2.0.0.Final/d7b4e3420cf0b462bc599738ea4360fd05c15500/jboss-servlet-api_4.0_spec-2.0.0.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate:hibernate-entitymanager:5.6.15.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-entitymanager/5.6.15.Final/806ececadeeb9b0f8fcaff6058453cf3feb3680f/hibernate-entitymanager-5.6.15.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate:hibernate-annotations:3.5.6-Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-annotations/3.5.6-Final/a07cb36d5485927f925f941ab6dd61f8ffb4b935/hibernate-annotations-3.5.6-Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate:hibernate-core:5.6.15.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-core/5.6.15.Final/ab14b7cef1fdff654ca81923048a6034d6c7cfa7/hibernate-core-5.6.15.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate:hibernate-validator:5.4.3.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-validator/5.4.3.Final/7c3d91629e81937b33dffd5b170956ef9c76af97/hibernate-validator-5.4.3.Final.jar" />
+  </library>
+  <library name="Gradle: com.microsoft.sqlserver:mssql-jdbc:9.5.0-SNAPSHOT.jre8-preview">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.microsoft.sqlserver/mssql-jdbc/9.5.0-SNAPSHOT.jre8-preview/aa1d65f19b08852d4ef8257ea93782d9ed1ec375/mssql-jdbc-9.5.0-SNAPSHOT.jre8-preview.jar" />
+  </library>
+  <library name="Gradle: io.reactivex.rxjava3:rxjava:3.1.6">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/io.reactivex.rxjava3/rxjava/3.1.6/fd824db2008535f59f2ac0c7bfe8d49fb7193e0/rxjava-3.1.6.jar" />
+  </library>
+  <library name="Gradle: org.jetbrains:annotations:24.1.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/7af6a669488450c4a07c2c3254e2151df42d7d04/annotations-24.1.0.jar" />
+  </library>
+  <library name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.15.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.15.1/92a90d3739e970e03b5971839e4fe51f13c1fa3/jackson-annotations-2.15.1.jar" />
+  </library>
+  <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.15.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor/2.15.1/c1c88d6050bbfbfb040e1036e1cfb8f82e00df7b/jackson-dataformat-cbor-2.15.1.jar" />
+  </library>
+  <library name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.15.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.15.1/ac9ba74d208faf356e4719a49e59c6ea9237c01d/jackson-databind-2.15.1.jar" />
+  </library>
+  <library name="Gradle: com.fasterxml.jackson.core:jackson-core:2.15.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.15.1/241c054ba8503de092a12acad9f083dd39935cc0/jackson-core-2.15.1.jar" />
+  </library>
+  <library name="Gradle: org.jboss.ejb3:jboss-ejb3-ext-api:2.4.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.ejb3/jboss-ejb3-ext-api/2.4.0.Final/d52165b247a38aa73ecee49e573d8c5583ce70f/jboss-ejb3-ext-api-2.4.0.Final.jar" />
+  </library>
+  <library name="Gradle: com.google.gcm:gcm-server:1.0.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.google.gcm/gcm-server/1.0.0/b85d10fbde25252642605a2c0e461a603b15c1fa/gcm-server-1.0.0.jar" />
+  </library>
+  <library name="Gradle: com.googlecode.json-simple:json-simple:1.1.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1.1/c9ad4a0850ab676c5c64461a05ca524cdfff59f1/json-simple-1.1.1.jar" />
+  </library>
+  <library name="Gradle: javax.el:javax.el-api:3.0.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.el/javax.el-api/3.0.0/60a59edc89f93d57541da31ee1c83428ab1cdcb3/javax.el-api-3.0.0.jar" />
+  </library>
+  <library name="Gradle: javax.interceptor:javax.interceptor-api:1.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.interceptor/javax.interceptor-api/1.2/a5c058610aebacc1eb89c89e8fde2a978090e374/javax.interceptor-api-1.2.jar" />
+  </library>
+  <library name="Gradle: javax.inject:javax.inject:1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar" />
+  </library>
+  <library name="Gradle: com.sun.mail:javax.mail:1.6.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.sun.mail/javax.mail/1.6.2/935151eb71beff17a2ffac15dd80184a99a0514f/javax.mail-1.6.2.jar" />
+  </library>
+  <library name="Gradle: org.jboss.spec.javax.transaction:jboss-transaction-api_1.3_spec:2.0.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.3_spec/2.0.0.Final/7bbf1eb921ef82816a01e1fe1c7e404a38aa46dc/jboss-transaction-api_1.3_spec-2.0.0.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate.common:hibernate-commons-annotations:5.1.2.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/5.1.2.Final/e59ffdbc6ad09eeb33507b39ffcf287679a498c8/hibernate-commons-annotations-5.1.2.Final.jar" />
+  </library>
+  <library name="Gradle: org.jboss.logging:jboss-logging:3.4.3.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.4.3.Final/c4bd7e12a745c0e7f6cf98c45cdcdf482fd827ea/jboss-logging-3.4.3.Final.jar" />
+  </library>
+  <library name="Gradle: javax.persistence:javax.persistence-api:2.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.persistence/javax.persistence-api/2.2/25665ac8c0b62f50e6488173233239120fc52c96/javax.persistence-api-2.2.jar" />
+  </library>
+  <library name="Gradle: net.bytebuddy:byte-buddy:1.12.18">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.12.18/875a9c3f29d2f6f499dfd60d76e97a343f9b1233/byte-buddy-1.12.18.jar" />
+  </library>
+  <library name="Gradle: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.1.1.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss.spec.javax.transaction/jboss-transaction-api_1.2_spec/1.1.1.Final/a8485cab9484dda36e9a8c319e76b5cc18797b58/jboss-transaction-api_1.2_spec-1.1.1.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate:hibernate-commons-annotations:3.2.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate/hibernate-commons-annotations/3.2.0.Final/ce990611448fc2865469e3b68d2fe76b050e3c4f/hibernate-commons-annotations-3.2.0.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate.javax.persistence/hibernate-jpa-2.0-api/1.0.0.Final/6728add2c60f6621c3a77ba71fe6f6b798d14ee0/hibernate-jpa-2.0-api-1.0.0.Final.jar" />
+  </library>
+  <library name="Gradle: org.slf4j:slf4j-api:1.5.8">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.5.8/2aaf496dfd551adb9b079f58a7e2d55eb383fc82/slf4j-api-1.5.8.jar" />
+  </library>
+  <library name="Gradle: antlr:antlr:2.7.7">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/antlr/antlr/2.7.7/83cd2cd674a217ade95a4bb83a8a14f351f48bd0/antlr-2.7.7.jar" />
+  </library>
+  <library name="Gradle: org.jboss:jandex:2.4.2.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jboss/jandex/2.4.2.Final/1e1c385990b258ff1a24c801e84aebbacf70eb39/jandex-2.4.2.Final.jar" />
+  </library>
+  <library name="Gradle: com.fasterxml:classmate:1.5.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.5.1/3fe0bed568c62df5e89f4f174c101eab25345b6c/classmate-1.5.1.jar" />
+  </library>
+  <library name="Gradle: org.glassfish.jaxb:jaxb-runtime:2.3.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/2.3.1/dd6dda9da676a54c5b36ca2806ff95ee017d8738/jaxb-runtime-2.3.1.jar" />
+  </library>
+  <library name="Gradle: javax.xml.bind:jaxb-api:2.3.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.xml.bind/jaxb-api/2.3.1/8531ad5ac454cc2deb9d4d32c40c4d7451939b5d/jaxb-api-2.3.1.jar" />
+  </library>
+  <library name="Gradle: javax.activation:javax.activation-api:1.2.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.activation/javax.activation-api/1.2.0/85262acf3ca9816f9537ca47d5adeabaead7cb16/javax.activation-api-1.2.0.jar" />
+  </library>
+  <library name="Gradle: javax.validation:validation-api:1.1.0.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/1.1.0.Final/8613ae82954779d518631e05daa73a6a954817d5/validation-api-1.1.0.Final.jar" />
+  </library>
+  <library name="Gradle: org.hibernate.orm:hibernate-c3p0:6.1.7.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate.orm/hibernate-c3p0/6.1.7.Final/9319b613676199a095a18fa5ec32c10ceb6f2b6b/hibernate-c3p0-6.1.7.Final.jar" />
+  </library>
+  <library name="Gradle: org.reactivestreams:reactive-streams:1.0.4">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.reactivestreams/reactive-streams/1.0.4/3864a1320d97d7b045f729a326e1e077661f31b7/reactive-streams-1.0.4.jar" />
+  </library>
+  <library name="Gradle: junit:junit:4.10">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/junit/junit/4.10/e4f1766ce7404a08f45d859fb9c226fc9e41a861/junit-4.10.jar" />
+  </library>
+  <library name="Gradle: javax.activation:activation:1.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/javax.activation/activation/1.1/e6cb541461c2834bdea3eb920f1884d1eb508b50/activation-1.1.jar" />
+  </library>
+  <library name="Gradle: org.glassfish.jaxb:txw2:2.3.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/2.3.1/a09d2c48d3285f206fafbffe0e50619284e92126/txw2-2.3.1.jar" />
+  </library>
+  <library name="Gradle: com.sun.istack:istack-commons-runtime:3.0.7">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtime/3.0.7/c197c86ceec7318b1284bffb49b54226ca774003/istack-commons-runtime-3.0.7.jar" />
+  </library>
+  <library name="Gradle: org.jvnet.staxex:stax-ex:1.8">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.jvnet.staxex/stax-ex/1.8/8cc35f73da321c29973191f2cf143d29d26a1df7/stax-ex-1.8.jar" />
+  </library>
+  <library name="Gradle: com.sun.xml.fastinfoset:FastInfoset:1.2.15">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.15/bb7b7ec0379982b97c62cd17465cb6d9155f68e8/FastInfoset-1.2.15.jar" />
+  </library>
+  <library name="Gradle: org.hamcrest:hamcrest-core:1.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.1/860340562250678d1a344907ac75754e259cdb14/hamcrest-core-1.1.jar" />
+  </library>
+  <library name="Gradle: org.hibernate.common:hibernate-commons-annotations:6.0.6.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate.common/hibernate-commons-annotations/6.0.6.Final/77a5f94b56d49508e0ee334751db5b78e5ccd50c/hibernate-commons-annotations-6.0.6.Final.jar" />
+  </library>
+  <library name="Gradle: org.glassfish.jaxb:jaxb-runtime:3.0.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/3.0.2/9897322f5de201bfbfcd1f4f46ffdd4204673b3c/jaxb-runtime-3.0.2.jar" />
+  </library>
+  <library name="Gradle: org.glassfish.jaxb:jaxb-core:3.0.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-core/3.0.2/e83d0b0005525ddd8b8642bd0bb02227fcf871f1/jaxb-core-3.0.2.jar" />
+  </library>
+  <library name="Gradle: com.sun.activation:jakarta.activation:2.0.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.sun.activation/jakarta.activation/2.0.1/828b80e886a52bb09fe41ff410b10b342f533ce1/jakarta.activation-2.0.1.jar" />
+  </library>
+  <library name="Gradle: org.hibernate.orm:hibernate-core:6.1.7.Final">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.hibernate.orm/hibernate-core/6.1.7.Final/343f47b34c96fe9c44bf9b219a7b3c5d6d2fc90e/hibernate-core-6.1.7.Final.jar" />
+  </library>
+  <library name="Gradle: com.mchange:c3p0:0.9.5.5">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.mchange/c3p0/0.9.5.5/37dfc3021e5589d65ff2ae0becf811510b87ab01/c3p0-0.9.5.5.jar" />
+  </library>
+  <library name="Gradle: org.glassfish.jaxb:txw2:3.0.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/3.0.2/8c448a44cdcdbb5dd48ff2eb88cab858ed52cf91/txw2-3.0.2.jar" />
+  </library>
+  <library name="Gradle: com.sun.istack:istack-commons-runtime:4.0.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtime/4.0.1/4e25c41d338aad4a2c92d0020c9ae0335fad5099/istack-commons-runtime-4.0.1.jar" />
+  </library>
+  <library name="Gradle: jakarta.xml.bind:jakarta.xml.bind-api:3.0.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.xml.bind-api/3.0.1/5257932df36ff3e4e6de50429dde946490a6a800/jakarta.xml.bind-api-3.0.1.jar" />
+  </library>
+  <library name="Gradle: jakarta.persistence:jakarta.persistence-api:3.0.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/jakarta.persistence/jakarta.persistence-api/3.0.0/affc7884a85b6876d438a88b5d21ea29b1cc2dd8/jakarta.persistence-api-3.0.0.jar" />
+  </library>
+  <library name="Gradle: jakarta.transaction:jakarta.transaction-api:2.0.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/jakarta.transaction/jakarta.transaction-api/2.0.0/24a0525b4acfbca4086d2f1278be3a084fe1c67d/jakarta.transaction-api-2.0.0.jar" />
+  </library>
+  <library name="Gradle: jakarta.inject:jakarta.inject-api:2.0.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/jakarta.inject/jakarta.inject-api/2.0.0/46fc8560b6fd17b78396d88f39c1a730457671f0/jakarta.inject-api-2.0.0.jar" />
+  </library>
+  <library name="Gradle: org.antlr:antlr4-runtime:4.10.1">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.10.1/10839f875928f59c622d675091d51a43ea0dc5f7/antlr4-runtime-4.10.1.jar" />
+  </library>
+  <library name="Gradle: com.mchange:mchange-commons-java:0.2.19">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/com.mchange/mchange-commons-java/0.2.19/7a4bee38ea02bd7dee776869b19fb3f6861d6acf/mchange-commons-java-0.2.19.jar" />
+  </library>
+  <library name="Gradle: org.junit.jupiter:junit-jupiter-api:5.10.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.2/fb55d6e2bce173f35fd28422e7975539621055ef/junit-jupiter-api-5.10.2.jar" />
+  </library>
+  <library name="Gradle: org.junit.platform:junit-platform-commons:1.10.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.2/3197154a1f0c88da46c47a9ca27611ac7ec5d797/junit-platform-commons-1.10.2.jar" />
+  </library>
+  <library name="Gradle: org.opentest4j:opentest4j:1.3.0">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar" />
+  </library>
+  <library name="Gradle: org.apiguardian:apiguardian-api:1.1.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar" />
+  </library>
+  <library name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.10.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.2/f1f8fe97bd58e85569205f071274d459c2c4f8cd/junit-jupiter-engine-5.10.2.jar" />
+  </library>
+  <library name="Gradle: org.junit.platform:junit-platform-engine:1.10.2">
+    <archive path="C:/Users/moraru_pi/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.2/d53bb4e0ce7f211a498705783440614bfaf0df2e/junit-platform-engine-1.10.2.jar" />
+  </library>
+</eclipse-userlibraries>
+
