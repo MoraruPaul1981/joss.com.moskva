@@ -1,0 +1,4 @@
+rootProject.name = "jbossgatt"
+
+include 'app'
+include 'lib'

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+  <session-factory>    <!--TODO РЕЛИЗ-->
+    <!--РЕЛИЗ-->
+    <property name="connection.url">jdbc:sqlserver://11.11.11.12:1433;databaseName=storage</property>
+    <property name="hibernate.connection.password">4321Qwer</property>
+    <property name="hibernate.connection.username">obmen</property>
+
+
+    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="show_sql">true</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="connection.pool_size">200</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="connection.autocommit">true</property>
+    <property name="hibernate.connection.isolation">4</property>
+    <property name="hibernate.transaction.auto_close_session">true</property>
+    <property name="hibernate.generate_statistics=true">true</property>
+    <property name="hibernate.proc.param_null_passing">true</property>
+
+
+    <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+    <property name="hibernate.cache.use_structured_entries">true</property>
+    <property name="org.hibernate.flushMode" >commit</property>
+    <property name="hibernate.jdbc.use_streams_for_binary">true</property>
+
+
+
+
+
+
+
+
+
+
+    <!-- TODO c3p0-->
+    <property name="hibernate.c3p0.preferredTestQuery">select 1</property>
+    <property name="connection.provider_class">org.hibernate.c3p0.internal.C3P0ConnectionProvider</property>
+    <property name="hibernate.c3p0.min_size">5</property>
+    <property name="hibernate.c3p0.max_size">200</property>
+    <property name="hibernate.c3p0.timeout">300</property>
+    <property name="hibernate.c3p0.max_statements">50</property>
+    <property name="hibernate.c3p0.idle_test_period">3000</property>
+    <property name="hibernate.generate_statistics">true</property>
+    <property name="hibernate.query.plan_cache_max_size">8192</property>
+
+
+
+
+
+
+    <!--//TODO настройка серверов и подключению JDBC -->
+   <!-- <property name = "hibernate.transaction.factory_class">org.hibernate.resource.transaction.backend.jdbc.internal.JdbcResourceLocalTransactionCoordinatorBuilderImpl</property>
+    <property name="hibernate.current_session_context_class">thread</property>
+    <property name="hibernate.transaction.jta.platform">org.hibernate.engine.transaction.jta.platform.internal.JBossAppServerJtaPlatform</property>
+
+-->
+
+
+    <!--//TODO настройка серверов и подключению JTA -->
+      <property name = "hibernate.transaction.factory_class">org.hibernate.resource.transaction.backend.jta.internal.JtaTransactionCoordinatorBuilderImpl</property>
+      <property name="hibernate.current_session_context_class">jta</property>
+      <property name="hibernate.transaction.jta.platform">org.hibernate.engine.transaction.jta.platform.internal.JBossAppServerJtaPlatform</property>
+
+
+
+
+
+    <mapping class="model.Fio"/>
+    <mapping class="model.Organization"/>
+    <mapping class="model.Depatment"/>
+    <mapping class="model.Region"/>
+    <mapping class="model.Cfo"/>
+    <mapping class="model.Notification"/>
+    <mapping class="model.Template"/>
+    <mapping class="model.FioTemplate"/>
+    <mapping class="model.Chat"/>
+    <mapping class="model.DataChat"/>
+    <mapping class="model.Tabel"/>
+    <mapping class="model.DataTabel"/>
+    <mapping class="model.DataNotification"/>
+    <mapping class="model.TypeMaterial"/>
+    <mapping class="model.Company"/>
+    <mapping class="model.Track"/>
+    <mapping class="model.ChatUser"/>
+    <mapping class="model.ViewOnesignal"/>
+    <mapping class="model.NomenVesov"/>
+    <mapping class="model.Settingtab"/>
+    <mapping class="model.GetMaterialsData"/>
+    <mapping class="model.Prof"/>
+    <mapping class="model.UsersEntity"/>
+    <mapping class="model.UsersEntitySuccess"/>
+    <mapping class="model.ModificationServerEntity"/>
+    <mapping class="model.OrderTc"/>
+    <mapping class="model.VidTc"/>
+    <mapping class="model.MateriBinary"/>
+    <mapping class="model.ListmacmasterssousEntity"/>
+    <mapping class="model.GattserversuccessEntity"/>
+    <mapping class="model.CompleteallmacadressusersEntity"/>
+
+  </session-factory>
+</hibernate-configuration>

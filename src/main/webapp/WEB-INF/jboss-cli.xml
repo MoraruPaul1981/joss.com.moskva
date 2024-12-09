@@ -1,0 +1,10 @@
+<ssl>
+    <alias>client</alias>
+    <key-store>../certificate/server.pfx</key-store>
+    <key-store-password>password</key-store-password>
+    <key-password>password</key-password>
+    <trust-store>../certificate/server.pfx</trust-store>
+    <trust-store-password>password</trust-store-password>
+    <modify-trust-store>false</modify-trust-store>
+</ssl>
+

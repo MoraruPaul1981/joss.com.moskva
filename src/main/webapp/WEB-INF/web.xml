@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>indexfilterpublic.jsp</welcome-file>
+        <welcome-file>default.html</welcome-file>
+        <welcome-file>default.htm</welcome-file>
+        <welcome-file>default.jsp</welcome-file>
+    </welcome-file-list>
+
+
+
+
+
+
+
+
+
+
+
+    <servlet>
+        <servlet-name>DSU1DonwloadsServlet</servlet-name>
+        <servlet-class>dowsloadpojboss.DSU1DonwloadsServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1DonwloadsServlet</servlet-name>
+        <url-pattern>/sous.jboss.download</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
+        <servlet-name>DSU1ServletRuntimeJboss</servlet-name>
+        <servlet-class>runtimes.DSU1ServletRuntimeJboss</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1ServletRuntimeJboss</servlet-name>
+        <url-pattern>/sous.jboss.runtimejboss</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DSU1ScannerServlet</servlet-name>
+        <servlet-class>scanners.ScannerServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1ScannerServlet</servlet-name>
+        <url-pattern>/sous.jboss.scanner</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>DSU1GattServerServlet</servlet-name>
+        <servlet-class>scanners.GattServerServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DSU1GattServerServlet</servlet-name>
+        <url-pattern>/sous.jboss.gattserver</url-pattern>
+    </servlet-mapping>
+
+
+
+
+
+
+    <filter>
+        <filter-name>FilterRuntime</filter-name>
+        <filter-class>Filters.FilterRuntime</filter-class>
+        <async-supported>true</async-supported>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterRuntime</filter-name>
+        <url-pattern>/sous.jboss.download</url-pattern>
+        <url-pattern>/sous.jboss.runtimejboss</url-pattern>
+        <url-pattern>/sous.jboss.scanner</url-pattern>
+        <url-pattern>/sous.jboss.gattserver</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>ASYNC</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+<!--//TODO Безопасность-->
+
+
+
+    <description>Виды подключение через ssl и  без него </description>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secure Content</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+           <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+   <!--      <transport-guarantee>NONE</transport-guarantee>-->
+        </user-data-constraint>
+    </security-constraint>
+
+
+
+    <security-role>
+        <description>Роли доступа</description>
+        <role-name>sous</role-name>
+    </security-role>
+
+
+
+
+</web-app>
