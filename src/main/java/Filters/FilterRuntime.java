@@ -2,6 +2,7 @@ package Filters;
 
 import businesslogic.SubClassWriterErros;
 import businesslogic.bl_sessionfactory.InSessionFactoryGatt;
+import businesslogic.bl_x509.GetX509Certificate;
 import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;
@@ -35,7 +36,8 @@ public class FilterRuntime implements Filter {
     @InSessionFactoryGatt
     SessionFactory getsessionHibernateGatt;
 
-
+    @Inject
+    GetX509Certificate getX509Certificate;
 
 //TODO фильтр commit 19.02.2024--10.26
 
@@ -51,12 +53,8 @@ public class FilterRuntime implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // TODO Auto-generated method stub
         try {
-            X509Certificate[] getx509CertificateAndroid=
-                    (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
-
-           // TODO: 03.12.2024 состыковка Сертификатов
-            String commonName = new LdapName(getx509CertificateAndroid[0].getSubjectX500Principal().getName()).getRdns().stream()
-                    .filter(i -> i.getType().equalsIgnoreCase("C")).findFirst().get().getValue().toString();
+            // TODO: 03.12.2024 состыковка Сертификатов
+            String commonName = getX509Certificate.getX509Certificate(request);
 
             // TODO: 02.11.2023 ЗАпускаем Код Фиильра
             businessLogicFilterRuntime.startFilterRuntime(request,response,chain,ЛОГ);
@@ -66,7 +64,9 @@ public class FilterRuntime implements Filter {
                     " metod "+Thread.currentThread().getStackTrace()[2].getMethodName() +"\n"+
                     " line "+  Thread.currentThread().getStackTrace()[2].getLineNumber()+"\n"+
                     " Success    doFilter doFilter doFilter request.isSecure() "+ request.isSecure()+
-                     "\n" + " getx509CertificateAndroid " +getx509CertificateAndroid  + "commonName  "+commonName);
+                    "commonName  "+commonName);
+
+
             
         } catch (Exception e) {
             subClassWriterErros.
